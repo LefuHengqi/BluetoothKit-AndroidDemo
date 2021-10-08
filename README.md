@@ -347,10 +347,10 @@
     protected double ppBonePercentage;                                        //骨骼肌率(%)
     protected double ppBodyMuscleControlKg;                                   //肌肉控制量(kg)
     protected double ppVFPercentage;                                          //皮下脂肪(%)
-    protected PPBodyEnum.PPBodyGrade ppBodyHealth;                            //健康评估
+    protected PPBodyEnum.PPBodyGrade ppBodyHealth;                            //健康类型
     protected PPBodyEnum.PPBodyFatGrade ppFatGrade;                           //肥胖等级
-    protected PPBodyEnum.PPBodyHealthAssessment ppBodyHealthGrade;            //健康等级
-    protected PPBodyEnum.PPBodyfatErrorType ppBodyfatErrorType;                //错误类型
+    protected PPBodyEnum.PPBodyHealthAssessment ppBodyHealthGrade;            //健康评估
+    protected PPBodyEnum.PPBodyfatErrorType ppBodyfatErrorType;               //错误类型
 
    
   注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
@@ -363,30 +363,30 @@
       PPBodyfatErrorTypeImpedance(-1),    //!< 阻抗有误,阻抗有误时, 不计算除BMI/idealWeightKg以外参数(写0)
       PPBodyfatErrorTypeAge(-1),          //!< 年龄参数有误，需在 6   ~ 99岁(不计算除BMI/idealWeightKg以外参数)
       PPBodyfatErrorTypeWeight(-2),       //!< 体重参数有误，需在 10  ~ 200kg(有误不计算所有参数)
-      PPBodyfatErrorTypeHeight(-3);       //!< 身高参数有误，需在 90 ~ 220cm(不计算所有参数)
+      PPBodyfatErrorTypeHeight(-3);       //!< 身高参数有误，需在 90  ~ 220cm(不计算所有参数)
 
-  2.健康评估 PPBodyEnum.PPBodyfatErrorType
+  2.健康类型 PPBodyEnum.PPBodyGrade
   
       PPBodyGradeThin(0),             //!< 偏瘦型
       PPBodyGradeLThinMuscle(1),      //!< 标准型
       PPBodyGradeMuscular(2),         //!< 超重型
       PPBodyGradeLackofexercise(3);   //!< 肥胖型
 
-  3.肥胖等级 PPBodyEnum.PPBodyfatErrorType
+  3.肥胖等级 PPBodyEnum.PPBodyFatGrade
   
       PPBodyGradeFatOne(0),             //!< 肥胖1级
       PPBodyGradeLFatTwo(1),            //!< 肥胖2级
       PPBodyGradeFatThree(2),           //!< 肥胖3级
       PPBodyGradeFatFour(-1);           //!< 参数错误
   
-  4.健康等级 PPBodyEnum.PPBodyfatErrorType
+  4.健康评估 PPBodyEnum.PPBodyHealthAssessment
   
       PPBodyAssessment1(0),          //!< 健康存在隐患
       PPBodyAssessment2(1),          //!< 亚健康
       PPBodyAssessment3(2),          //!< 一般
       PPBodyAssessment4(3),          //!< 良好
       PPBodyAssessment5(4),          //!< 非常好
-      PPBodyAssessmentError(-1);          //!< 参数错误
+      PPBodyAssessmentError(-1);     //!< 参数错误
   
 ### IV .闭目单脚模式相关方法
 

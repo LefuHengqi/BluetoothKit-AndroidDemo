@@ -27,8 +27,8 @@ import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.util.ByteUtil;
 import com.peng.ppscale.util.UnitUtil;
 import com.peng.ppscale.vo.PPBodyFatModel;
+import com.peng.ppscale.vo.PPUserGender;
 import com.peng.ppscale.vo.PPUserModel;
-import com.peng.ppscale.vo.PPUserSex;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     int maternityMode = 0;//孕妇模式1  默认0
     int sportMode = 0;//运动员模式1  默认0
     PPUnitType unit = PPUnitType.Unit_KG;
-    PPUserSex sex = PPUserSex.PPUserSexMale;
+    PPUserGender sex = PPUserGender.PPUserGenderMale;
     int group = 0;
 
     @Override
@@ -204,9 +204,9 @@ public class MainActivity extends AppCompatActivity {
                 if (number.length() > 0) {
                     int sex = Integer.parseInt(number);
                     if (sex == 0) {
-                        MainActivity.this.sex = PPUserSex.PPUserSexFemal;
+                        MainActivity.this.sex = PPUserGender.PPUserGenderFemale;
                     } else {
-                        MainActivity.this.sex = PPUserSex.PPUserSexMale;
+                        MainActivity.this.sex = PPUserGender.PPUserGenderMale;
                     }
                 }
 

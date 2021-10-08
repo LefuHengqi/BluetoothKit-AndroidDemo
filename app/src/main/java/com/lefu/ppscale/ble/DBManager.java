@@ -31,7 +31,7 @@ public class DBManager {
     }
 
     public void insertDevice(PPDeviceModel model) {
-        DeviceModel deviceModel = new DeviceModel(model.getDeviceMac(), model.getDeviceName(), model.getDeviceType());
+        DeviceModel deviceModel = new DeviceModel(model.getDeviceMac(), model.getDeviceName(), model.deviceType.getType());
         deviceModelDao.insertOrReplace(deviceModel);
     }
 
