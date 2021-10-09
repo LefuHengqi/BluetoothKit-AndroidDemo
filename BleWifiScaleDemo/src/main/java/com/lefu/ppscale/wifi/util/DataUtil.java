@@ -1,8 +1,8 @@
 package com.lefu.ppscale.wifi.util;
 
 import com.peng.ppscale.vo.PPBodyFatModel;
+import com.peng.ppscale.vo.PPUserGender;
 import com.peng.ppscale.vo.PPUserModel;
-import com.peng.ppscale.vo.PPUserSex;
 
 public class DataUtil {
     private static DataUtil dataUtil;
@@ -23,7 +23,7 @@ public class DataUtil {
     public DataUtil() {
         userModel = new PPUserModel.Builder().setAge(18)
                 .setHeight(180)
-                .setSex(PPUserSex.PPUserSexMale)
+                .setSex(PPUserGender.PPUserGenderMale)
                 .setGroupNum(0)
                 .build();
     }

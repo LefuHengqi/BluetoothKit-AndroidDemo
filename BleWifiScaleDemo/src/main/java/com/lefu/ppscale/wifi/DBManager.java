@@ -30,7 +30,7 @@ public class DBManager {
     }
 
     public void insertDevice(PPDeviceModel model) {
-        DeviceModel deviceModel = new DeviceModel(model.getDeviceMac(), model.getDeviceName(), model.getDeviceType());
+        DeviceModel deviceModel = new DeviceModel(model.getDeviceMac(), model.getDeviceName(), model.deviceType.getType());
         deviceModelDao.insertOrReplace(deviceModel);
     }
 
@@ -50,7 +50,6 @@ public class DBManager {
         List<DeviceModel> deviceModelList = deviceModelDao.loadAll();
         return deviceModelList;
     }
-
 
     public DeviceModel getDevice(String mac) {
         DeviceModel deviceModel = deviceModelDao.queryBuilder().where(DeviceModelDao.Properties.DeviceMac.eq(mac)).unique();

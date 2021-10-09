@@ -30,10 +30,10 @@ public class BodyDataDetailActivity extends AppCompatActivity {
 
         PPUserModel userModel = DataUtil.util().getUserModel();
 
-        BodyFataDataModel bodyFataDataModel = new BodyFataDataModel(wifiDataBean.getWeight(), wifiDataBean.getImpedance(), "",
-                userModel, DeviceManager.HEALTH_SCALE6, PPUnitType.Unit_KG);
+        if (wifiDataBean != null) {
+            BodyFataDataModel bodyFataDataModel = new BodyFataDataModel(wifiDataBean.getWeight(), wifiDataBean.getImpedance(), "",
+                    userModel, DeviceManager.HEALTH_SCALE6, PPUnitType.Unit_KG);
 
-        if (bodyFataDataModel != null) {
             textView.setText(bodyFataDataModel.toString());
         } else {
             PPBodyFatModel bodyData = DataUtil.util().getBodyDataModel();
@@ -41,6 +41,7 @@ public class BodyDataDetailActivity extends AppCompatActivity {
                 textView.setText(bodyData.toString());
             }
         }
+
 
     }
 }

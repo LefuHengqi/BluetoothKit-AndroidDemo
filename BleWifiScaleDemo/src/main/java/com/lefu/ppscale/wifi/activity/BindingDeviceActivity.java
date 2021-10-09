@@ -134,7 +134,7 @@ public class BindingDeviceActivity extends FragmentActivity {
             @Override
             public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
                 Logger.d("bodyBaseModel scaleName " + bodyBaseModel.getScaleName());
-                String weightStr = PPUtil.getWeight(bodyBaseModel.getUnit(), bodyBaseModel.getPpWeightKg());
+                String weightStr = PPUtil.getWeight(bodyBaseModel.getUnit(), bodyBaseModel.getPpWeightKg(), bodyBaseModel.getScaleName());
                 weightTextView.setText(weightStr);
             }
         });
@@ -154,7 +154,7 @@ public class BindingDeviceActivity extends FragmentActivity {
                         Logger.d("monitorLockData  bodyFatModel heartRate = " + bodyFatModel.getPpHeartRate());
                     }
                     mbodyDataModel = bodyFatModel;
-                    String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg());
+                    String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getScaleName());
                     if (weightTextView != null) {
                         weightTextView.setText(weightStr);
                     }
@@ -244,7 +244,7 @@ public class BindingDeviceActivity extends FragmentActivity {
     }
 
     private void showDialog(final PPDeviceModel deviceModel, final PPBodyFatModel bodyDataModel) {
-        String content = getString(R.string.whether_to_save_the_) + PPUtil.getWeight(bodyDataModel.getUnit(), bodyDataModel.getPpWeightKg());
+        String content = getString(R.string.whether_to_save_the_) + PPUtil.getWeight(bodyDataModel.getUnit(), bodyDataModel.getPpWeightKg(), bodyDataModel.getScaleName());
         if (builder == null) {
             builder = new AlertDialog.Builder(BindingDeviceActivity.this);
         }

@@ -38,7 +38,7 @@ public class WifiDataListAdapter extends ArrayAdapter {
 
         WifiDataBean wifiDataBean = JSON.parseObject(dataVo.getWeightJson(), WifiDataBean.class);
 
-        weightKgText.setText(PPUtil.getWeight(PPUnitType.Unit_KG, wifiDataBean.getWeight()));
+        weightKgText.setText(PPUtil.getWeight(PPUnitType.Unit_KG, wifiDataBean.getWeight(), wifiDataBean.getType()));
 
         try {
             String dateTime = PPUtil.formatDate2(Long.parseLong(wifiDataBean.getTimestamp()));

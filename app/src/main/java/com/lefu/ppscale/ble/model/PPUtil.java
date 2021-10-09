@@ -111,7 +111,7 @@ public class PPUtil {
      * @return
      */
     public synchronized static float getWeightValue(PPUnitType unit, double htWeightKg, String scaleName) {
-        if (isTwoPointScale(scaleName)) {
+        if (isTwoPointScale(scaleName) || scaleName.endsWith("005")) {
             if (unit == PPUnitType.Unit_KG) {
                 if (htWeightKg < 100) {
                     return keep1Point2(htWeightKg);
