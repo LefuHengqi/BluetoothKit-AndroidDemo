@@ -67,3 +67,4 @@ fastlane/readme.md
 .DS_Store
 ppscale-new-master/build
 app/release/
+ppscale-android-maven/

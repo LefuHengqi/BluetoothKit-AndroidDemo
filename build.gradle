@@ -24,9 +24,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-//        maven { url 'http://192.168.16.197:9090/nexus/content/repositories/public' }
-//        maven { url 'http://nexus.lefuenergy.com/repository/maven-public' }
-//        maven { url 'http://59.36.140.10:9011/service/rest/repository/browse/maven-releases' }
+        maven {
+            url "https://raw.githubusercontent.com/PPScale/ppscale-android-maven/main"
+        }
     }
 }
 

@@ -65,7 +65,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'org.greenrobot:greendao:3.3.0'
 //    implementation project(':ppscale')
-    implementation project(':ppscale-new-master')
+    implementation 'com.peng.ppscale:ppscale:2.0.0'
     implementation project(":body_sl")
 //    implementation project(":body_sl_master")
 
