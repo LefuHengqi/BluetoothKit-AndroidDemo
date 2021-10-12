@@ -22,6 +22,7 @@ import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
+import com.peng.ppscale.business.device.DeviceManager;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.business.ble.listener.PPLockDataInterface;
 import com.peng.ppscale.business.ble.listener.PPProcessDateInterface;
@@ -32,6 +33,7 @@ import com.peng.ppscale.util.Logger;
 import com.peng.ppscale.vo.PPBodyBaseModel;
 import com.peng.ppscale.vo.PPBodyFatModel;
 import com.peng.ppscale.vo.PPDeviceModel;
+import com.peng.ppscale.vo.PPScaleDefine;
 import com.peng.ppscale.vo.PPUserModel;
 
 import java.util.ArrayList;
@@ -150,6 +152,17 @@ public class BindingDeviceActivity extends Activity {
                         weightTextView.setText(weightStr);
                         showDialog(deviceModel, bodyFatModel);
                     }
+                    //数据锁定后，需要手动调用获取历史数据指令，首先要确定您的秤支持获取历史，再调用。
+                    if (ppScale != null) {
+                        if (DeviceManager.DeviceList.DeviceListHistory.contains(deviceModel.getDeviceName()) ||
+                                (deviceModel.deviceFuncType &
+                                        PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
+                                        == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
+                        {
+                            ppScale.getHistoryData();
+                        }
+
+                    }
                 } else {
                     Logger.d("正在测量心率");
                 }
@@ -185,6 +198,7 @@ public class BindingDeviceActivity extends Activity {
                     } else {
                         Logger.d("ppScale_ isEnd = " + isEnd);
                     }
+
                 }
             });
         }

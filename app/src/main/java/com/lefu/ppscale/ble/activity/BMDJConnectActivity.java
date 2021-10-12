@@ -46,9 +46,7 @@ public class BMDJConnectActivity extends AppCompatActivity {
             public void monitorBMDJConnectFail() {
 
             }
-        });{
-
-        }
+        });
         BleOptions bleOptions = new BleOptions.Builder()
                 .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_BMDJ)
                 .setDeviceType(PPDeviceType.Contants.FAT_AND_BMDJ)
