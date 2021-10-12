@@ -105,13 +105,13 @@ public class PPUtil {
     }
 
     /**
-     * 传入kg，根据重量单位得出相应值 心率称保留两位，其他称保留一位
+     * 传入kg，根据重量单位得出相应值 称保留两位，其他称保留一位
      *
      * @param htWeightKg
      * @return
      */
     public synchronized static float getWeightValue(PPUnitType unit, double htWeightKg, String scaleName) {
-        if (isTwoPointScale(scaleName) || scaleName.endsWith("005")) {
+        if (isTwoPointScale(scaleName)) {
             if (unit == PPUnitType.Unit_KG) {
                 if (htWeightKg < 100) {
                     return keep1Point2(htWeightKg);
@@ -131,8 +131,8 @@ public class PPUtil {
         return keep1Point1(htWeightKg);
     }
 
-    private static boolean isTwoPointScale(String scaleType) {
-        return !TextUtils.isEmpty(scaleType) && (DeviceUtil.Point2_Scale_List.contains(scaleType));
+    private static boolean isTwoPointScale(String scaleName) {
+        return !TextUtils.isEmpty(scaleName) && (DeviceUtil.Point2_Scale_List.contains(scaleName) || scaleName.endsWith("005"));
     }
 
     /**
