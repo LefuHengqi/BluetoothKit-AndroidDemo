@@ -22,7 +22,7 @@
          //下面是master分支的集成方式，已集成相应的so文件
          dependencies {
                 、、、
-                    implementation project(':ppscale-new-master')
+                    implementation 'com.peng.ppscale:ppscale:2.0.1'
                     //如果你的秤是直流秤，请再引用body_sl
                     //implementation project(":body_sl")
          }

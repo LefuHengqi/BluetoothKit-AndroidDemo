@@ -160,6 +160,9 @@ public class BindingDeviceActivity extends Activity {
                                         == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
                         {
                             ppScale.getHistoryData();
+                        } else {
+                            //这里可以直接断开蓝牙
+
                         }
 
                     }
