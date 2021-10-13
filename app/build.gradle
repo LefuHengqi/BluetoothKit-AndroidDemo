@@ -65,16 +65,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'org.greenrobot:greendao:3.3.0'
-    implementation project(':ppscale')
-//    implementation 'com.peng.ppscale:ppscale:2.0.1'
-    implementation project(":body_sl")
-//    implementation project(":body_sl_master")
+//    implementation project(':ppscale')
+    implementation 'com.peng.ppscale:ppscale:2.0.1'
+    implementation 'com.lefu.body_sl:body_sl:1.0.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
 
 }
