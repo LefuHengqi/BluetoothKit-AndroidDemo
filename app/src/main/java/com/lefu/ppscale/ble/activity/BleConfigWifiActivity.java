@@ -39,6 +39,8 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                 Logger.e("xxxxxxxxxxxx-" + sn);
                 Logger.e("xxxxxxxxxxxx-deviceName = " + deviceModel.getDeviceName() + " mac = " + deviceModel.getDeviceMac());
                 ppScale.stopWifiConfig();
+                ppScale.stopSearch();
+                ppScale.disConnect();
                 finish();
             }
         });
@@ -68,8 +70,8 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     private BleOptions getBleOptions() {
         return new BleOptions.Builder()
                 .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_CONFIG_WIFI)
-                .setPassword("12345678")
-                .setSsid("IT05-2.4G")
+                .setPassword("lefu123456")
+                .setSsid("IT36")
                 .build();
     }
 
@@ -110,8 +112,8 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        ppScale.stopSearch();
         ppScale.stopWifiConfig();
         ppScale.disConnect();
-        ppScale.stopSearch();
     }
 }

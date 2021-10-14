@@ -81,16 +81,16 @@ public class MainActivity extends AppCompatActivity {
         mBtnScaleWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showDialog();
+                showDialog();
 
-                if (PPScale.isBluetoothOpened()) {
-                    Intent intent = new Intent(MainActivity.this, BindingDeviceActivity.class);
-                    intent.putExtra(BindingDeviceActivity.UNIT_TYPE, unit.getType());
-                    intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 1);
-                    startActivity(intent);
-                } else {
-                    PPScale.openBluetooth();
-                }
+//                if (PPScale.isBluetoothOpened()) {
+//                    Intent intent = new Intent(MainActivity.this, BindingDeviceActivity.class);
+//                    intent.putExtra(BindingDeviceActivity.UNIT_TYPE, unit.getType());
+//                    intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 1);
+//                    startActivity(intent);
+//                } else {
+//                    PPScale.openBluetooth();
+//                }
             }
         });
 

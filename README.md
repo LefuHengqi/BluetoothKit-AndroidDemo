@@ -16,15 +16,26 @@
 
 #####  gradle自动导入方式
 
+
+在project的build.gradle中引入
+
+    allprojects {
+        repositories {
+            、、、
+            maven { url "https://raw.githubusercontent.com/PPScale/ppscale-android-maven/main" }
+            }
+    }
+
+
 在需要引入sdk的module下的build.gradle中加入
  
-         //根据不同的分支请采用不同的artifactId，格式是：ppscale-分支名
+         //根据不同的分支请采用不同的artifactId，格式是：com.lefu.ppscale:分支名:版本号
          //下面是master分支的集成方式，已集成相应的so文件
          dependencies {
                 、、、
-                    implementation 'com.peng.ppscale:ppscale:2.0.1'
-                    //如果你的秤是直流秤，请再引用body_sl
-                    //implementation project(":body_sl")
+                implementation 'com.lefu.ppscale:ppscale:2.0.1'
+                //如果你的秤是直流秤，请再引用body_sl
+                implementation 'com.lefu.ppscale:body_sl:1.0.0'
          }
     
 ### Ⅱ .使用说明
