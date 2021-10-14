@@ -25,7 +25,7 @@ allprojects {
         google()
         mavenCentral()
         maven { url "https://raw.githubusercontent.com/PPScale/ppscale-android-maven/main" }
-        maven { url "https://raw.githubusercontent.com/PPScale/body_sl-android-maven/master" }
+//        maven { url "https://raw.githubusercontent.com/PPScale/body_sl-android-maven/master" }
     }
 }
 
