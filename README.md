@@ -478,6 +478,11 @@ PPUserModel参数说明：
     ----0.0.5.2----
     1、增加两款直流秤的兼容 2、增加孕妇模式
     
+使用的第三方库：
+
+1、芯片方案商提供的体脂计算库
+2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)
+
 Contact Developer：
 Email: yanfabu-5@lefu.cc
 
