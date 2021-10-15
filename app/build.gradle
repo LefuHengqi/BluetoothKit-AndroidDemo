@@ -67,6 +67,7 @@ dependencies {
     implementation 'org.greenrobot:greendao:3.3.0'
 //    implementation project(':ppscale')
     implementation 'com.lefu.ppscale:ppscale:2.0.1'
+    //如果包含直流秤,请引用body_sl
     implementation 'com.lefu.ppscale:body_sl:1.0.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

@@ -6,39 +6,25 @@
 
 ## 一、 蓝牙wiFi相关的文档
 示例module是：BleWifiScaleDemo
-[蓝牙WIFI秤文档中文](BleWifiScaleDemo/README_CN.md)   |  
+[蓝牙WIFI秤文档中文](BleWifiScaleDemo/README_CN.md)    
 [Bluetooth WIFI Scale example English](BleWifiScaleDemo/README_EN.md) 
         
 ## 二、蓝牙体脂秤示例
-###### 2.1 蓝牙配网
 
 ###  Ⅰ. 集成方式
 
-#####  gradle自动导入方式
-
-
-在project的build.gradle中引入
-
-    allprojects {
-        repositories {
-            、、、
-            maven { url "https://raw.githubusercontent.com/PPScale/ppscale-android-maven/main" }
-            }
-    }
-
+#####  sdk引入方式
 
 在需要引入sdk的module下的build.gradle中加入
- 
-         //根据不同的分支请采用不同的artifactId，格式是：com.lefu.ppscale:分支名:版本号
-         //下面是master分支的集成方式，已集成相应的so文件
+
          dependencies {
                 、、、
-                implementation 'com.lefu.ppscale:ppscale:2.0.1'
-                //如果你的秤是直流秤，请再引用body_sl
-                implementation 'com.lefu.ppscale:body_sl:1.0.0'
+                        implementation 'com.lefu.ppscale:ppscale:2.0.1'
+                        //如果包含直流秤,请引用body_sl
+                        implementation 'com.lefu.ppscale:body_sl:1.0.0'
          }
     
-### Ⅱ .使用说明
+### Ⅱ .系统蓝牙使用说明
 
 * 由于需要蓝牙连接，Demo需要真机运行。
 
@@ -65,9 +51,9 @@
     5. 在“绑定设备”和“上秤称重”页面接收到外设返回的数据后，会自动停止扫描并断开与外设的连接，然后把数据通过回调的方式传回“主页信息”更新体重一栏，具体的数据可以去“ 数据详情”页查看。
     
        
-### Ⅲ .ppscalelib在蓝牙设备的使用
+### Ⅲ .PPScale在蓝牙设备的使用
     
-###### 1.1 绑定或扫描指定蓝牙设备
+#### 1.1 绑定或扫描指定蓝牙设备
 
         //绑定设备和扫描设备的区别在于  searchType  0绑定设备 1扫描指定设备
         //setProtocalFilterImpl() 接收数据回调接口，过程数据、锁定数据、历史数据，
@@ -108,8 +94,8 @@
 
 注意：如果需要自动循环扫描，需要在lockedData()后重新调用 ppScale.startSearchBluetoothScaleWithMacAddressList()
     
-###### 1.2  BleOptions 蓝牙参数配置
-####### 1.2.1  设备能力选择
+#### 1.2  BleOptions 蓝牙参数配置
+##### 1.2.1  设备能力选择
 
      //配置需要扫描的秤类型 默认全部，可选为了更快的搜索你的设备，你可以选择你需要使用的设备能力
      *                     具备的能力：
@@ -125,57 +111,20 @@
      *                     所有秤{@link BleOptions.ScaleFeatures#FEATURES_ALL}
      *                     自定义{@link BleOptions.ScaleFeatures#FEATURES_CUSTORM} //选则自定义需要设置PPScale的setDeviceList()
     setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_NORMAL)
-    
-####### 1.2.2    设备连接方式配置
-    
-        public static final int SEARCH_TAG_NORMAL = 0; //默认，先广播，再连接，再断开
-        public static final int SEARCH_TAG_DIRECT_CONNECT = 1; //直连   支持孕妇模式的秤，请务必打开直连开关
-        public static final int SEARCH_TAG_BABY = 2;  //抱婴连接模式，前后两次称重，中间不断开
-    
-     BleOptions()setSearchTag(BleOptions.ScaleFeatures.FEATURES_NORMAL)
-    
-###### 1.3  PPBleStateInterface，蓝牙状态监控回调和系统蓝牙状态回调
 
-    //包含两个回调方法，一个是蓝牙状态监控，一个是系统蓝牙回调
-   
-     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
-            //蓝牙状态监控
-            //deviceModel 在蓝牙处于扫描过程中，它是null
-            @Override
-            public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
-                if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
-                    Logger.d("设备已连接");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
-                    Logger.d("设备连接中");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
-                    Logger.d("设备已断开");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateStop) {
-                    Logger.d("停止扫描");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
-                    Logger.d("扫描中");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
-                    Logger.d("扫描超时");
-                } else {
-                    Logger.e("蓝牙状态异常");
-                }
-            }
-    
-            //系统蓝牙回调
-            @Override
-            public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {
-                if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
-                    Logger.e("系统蓝牙断开");
-                    Toast.makeText(BindingDeviceActivity.this, "系统蓝牙断开", Toast.LENGTH_SHORT).show();
-                } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
-                    Logger.d("系统蓝牙打开");
-                    Toast.makeText(BindingDeviceActivity.this, "系统蓝牙打开", Toast.LENGTH_SHORT).show();
-                } else {
-                    Logger.e("系统蓝牙异常");
-                }
-            }
-        };
-    
-###### 1.4  ProtocalFilterImpl
+##### 1.2.2  用户基础信息
+
+PPUserModel参数说明：
+
+        userHeight、age、sex必须是真实的 
+        userHeight范围是100-220cm
+        age范围是10-99
+        sex 0为女 1为男   
+        maternityMode 0为正常 1为孕妇   
+
+#### 1.3  数据处理
+
+##### 1.3.1  过程数据和锁定数据
 
     //根据需求实现接口
     //监听过程数据setPPProcessDateInterface()
@@ -213,7 +162,9 @@
                     }
                 }
             });
-    
+
+##### 1.3.2  历史数据
+
             if (searchType != 0) {
                 //Do not receive offline data when binding the device， If you need to receive offline data, please implement this interface
                 protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
@@ -227,74 +178,8 @@
                     }
                 });
             }
-           
-###### 1.5  PPUserModel   用户基础信息 
-        
-        userHeight、age、sex必须是真实的 
-        userHeight范围是100-220cm
-        age范围是10-99
-        sex 0为女 1为男   
-        maternityMode 0为正常 1为孕妇   
-             
-      
-###### 1.6 食物秤说明
-   
-   单位枚举类 PPUnitType
-    
-        Unit_KG(0),//KG
-    
-        Unit_LB(1),//LB
-    
-        PPUnitST(2),//ST
-    
-        PPUnitJin(3),//斤
-    
-        PPUnitG(4),//g
-    
-        PPUnitLBOZ(5),//lb:oz
-    
-        PPUnitOZ(6),//oz
-    
-        PPUnitMLWater(7),//ml(water)
-    
-        PPUnitMLMilk(8);//milk
 
-   正负值问题：
-   
-       PPBodyFatModel的字段里:
-       int thanZero; //正负 0表示负值 1 正值
-
-   切换单位调用： 
-   
-        PPScale.changeKitchenScaleUnit(PPUnitType unitType)
-    
-   食物秤归零： 
-        
-        PPScale.toZeroKitchenScale()
-   
-   使用食物秤在不需要连接时，需要手动断开连接
-   
-       PPScale.disConnect()
-            
-###### 1.7 蓝牙操作相关
-
-预留蓝牙操作对象
-
-     BluetoothClient client = ppScale.getBleClient();
-
-停止扫描
-
-       ppScale.stopSearch();
-      
-断开设备连接
-
-        ppScale.disConnect();
-          
-最后你需要在离开页面的之前调用stopSearch方法。
-具体的实现请参考Demo中BindingDeviceActivity和ScaleWeightActivity中的代码。
-
-
-###### 1.8 PPBodyFatModel 实例化说明
+#### 1.4 数据对象实例化方式 PPBodyFatModel 
 如果是自行解析蓝牙协议数据的，需要实例化该类，来获取对应的其他身体数据，
 
     /**
@@ -322,7 +207,7 @@
         super(ppWeightKg, impedance, scaleType, userModel, scaleName, PPUnitType.Unit_KG);
     }
 
-###### 1.9  PPBodyFatModel 参数说明
+##### 1.4.1 数据对象PPBodyFatModel 参数说明
 
     protected int impedance;                                                  //阻抗值（加密）
     //    protected float ppZTwoLegs;                                         //脚对脚阻抗值(Ω), 范围200.0 ~ 1200.0
@@ -358,52 +243,139 @@
     protected double ppBonePercentage;                                        //骨骼肌率(%)
     protected double ppBodyMuscleControlKg;                                   //肌肉控制量(kg)
     protected double ppVFPercentage;                                          //皮下脂肪(%)
-    protected PPBodyEnum.PPBodyGrade ppBodyHealth;                            //健康类型
+    protected PPBodyEnum.PPBodyGrade ppBodyHealth;                            //健康评估
     protected PPBodyEnum.PPBodyFatGrade ppFatGrade;                           //肥胖等级
-    protected PPBodyEnum.PPBodyHealthAssessment ppBodyHealthGrade;            //健康评估
-    protected PPBodyEnum.PPBodyfatErrorType ppBodyfatErrorType;               //错误类型
+    protected PPBodyEnum.PPBodyHealthAssessment ppBodyHealthGrade;            //健康等级
+    protected PPBodyEnum.PPBodyfatErrorType ppBodyfatErrorType;                //错误类型
 
-   
-  注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
-  
-###### 1.10  PPBodyEnum 参数说明 
-  
-  1.错误类型 PPBodyEnum.PPBodyfatErrorType
-  
+
+注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
+
+###### 1.4.2.1 错误类型 PPBodyEnum.PPBodyfatErrorType
+
       PPBodyfatErrorTypeNone(0),         //!< 无错误(可读取所有参数)
       PPBodyfatErrorTypeImpedance(-1),    //!< 阻抗有误,阻抗有误时, 不计算除BMI/idealWeightKg以外参数(写0)
       PPBodyfatErrorTypeAge(-1),          //!< 年龄参数有误，需在 6   ~ 99岁(不计算除BMI/idealWeightKg以外参数)
       PPBodyfatErrorTypeWeight(-2),       //!< 体重参数有误，需在 10  ~ 200kg(有误不计算所有参数)
-      PPBodyfatErrorTypeHeight(-3);       //!< 身高参数有误，需在 90  ~ 220cm(不计算所有参数)
+      PPBodyfatErrorTypeHeight(-3);       //!< 身高参数有误，需在 90 ~ 220cm(不计算所有参数)
 
-  2.健康类型 PPBodyEnum.PPBodyGrade
-  
+###### 1.4.2.2 健康评估 PPBodyEnum.PPBodyfatErrorType
+
       PPBodyGradeThin(0),             //!< 偏瘦型
       PPBodyGradeLThinMuscle(1),      //!< 标准型
       PPBodyGradeMuscular(2),         //!< 超重型
       PPBodyGradeLackofexercise(3);   //!< 肥胖型
 
-  3.肥胖等级 PPBodyEnum.PPBodyFatGrade
-  
+###### 1.4.2.3 肥胖等级 PPBodyEnum.PPBodyfatErrorType
+
       PPBodyGradeFatOne(0),             //!< 肥胖1级
       PPBodyGradeLFatTwo(1),            //!< 肥胖2级
       PPBodyGradeFatThree(2),           //!< 肥胖3级
       PPBodyGradeFatFour(-1);           //!< 参数错误
-  
-  4.健康评估 PPBodyEnum.PPBodyHealthAssessment
-  
+
+###### 1.4.2.4 健康等级 PPBodyEnum.PPBodyfatErrorType
+
       PPBodyAssessment1(0),          //!< 健康存在隐患
       PPBodyAssessment2(1),          //!< 亚健康
       PPBodyAssessment3(2),          //!< 一般
       PPBodyAssessment4(3),          //!< 良好
       PPBodyAssessment5(4),          //!< 非常好
-      PPBodyAssessmentError(-1);     //!< 参数错误
-  
-### IV .闭目单脚模式相关方法
+      PPBodyAssessmentError(-1);          //!< 参数错误
+
+###### 1.4.2.5、身体类型 PPBodyFatModel.ppBodyType
+
+     0 偏瘦型
+     1 偏瘦肌肉型
+     2 肌肉发达型
+     3 缺乏运动型
+     4 标准型
+     5 标准肌肉型
+     6 浮肿肥胖型
+     7 偏胖肌肉型
+     8 肌肉型偏胖
+
+#### 1.5   蓝牙状态监控回调和系统蓝牙状态回调
+
+包含两个回调方法，一个是蓝牙状态监控，一个是系统蓝牙回调
+
+     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
+            //蓝牙状态监控
+            //deviceModel 在蓝牙处于扫描过程中，它是null
+            @Override
+            public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
+                if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
+                    Logger.d("设备已连接");
+                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
+                    Logger.d("设备连接中");
+                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
+                    Logger.d("设备已断开");
+                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateStop) {
+                    Logger.d("停止扫描");
+                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
+                    Logger.d("扫描中");
+                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
+                    Logger.d("扫描超时");
+                } else {
+                    Logger.e("蓝牙状态异常");
+                }
+            }
+    
+            //系统蓝牙回调
+            @Override
+            public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {
+                if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
+                    Logger.e("系统蓝牙断开");
+                    Toast.makeText(BindingDeviceActivity.this, "系统蓝牙断开", Toast.LENGTH_SHORT).show();
+                } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
+                    Logger.d("系统蓝牙打开");
+                    Toast.makeText(BindingDeviceActivity.this, "系统蓝牙打开", Toast.LENGTH_SHORT).show();
+                } else {
+                    Logger.e("系统蓝牙异常");
+                }
+            }
+        };
+
+## 三 .食物秤说明
+
+### 1.1 单位枚举类 PPUnitType
+    
+        Unit_KG(0),//KG
+    
+        Unit_LB(1),//LB
+    
+        PPUnitST(2),//ST
+    
+        PPUnitJin(3),//斤
+    
+        PPUnitG(4),//g
+    
+        PPUnitLBOZ(5),//lb:oz
+    
+        PPUnitOZ(6),//oz
+    
+        PPUnitMLWater(7),//ml(water)
+    
+        PPUnitMLMilk(8);//milk
+
+### 1.2  正负值问题：
+   
+       PPBodyFatModel的字段里:
+       int thanZero; //正负 0表示负值 1 正值
+### 1.3   切换单位调用： 
+   
+        PPScale.changeKitchenScaleUnit(PPUnitType unitType)
+### 1.4   食物秤归零： 
+        
+        PPScale.toZeroKitchenScale()
+### 1.5   使用食物秤在不需要连接时，需要手动断开连接
+   
+       PPScale.disConnect()
+## 四 .闭目单脚模式
 
 使用PPScale的实例对象调用扫描附近设备的方法来搜索附近的闭目单脚蓝牙秤并进行连接。
+
+### 1.1 连接闭目单脚设备
 ```
-/// 连接闭目单脚设备
         ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
                 protocalFilter.setBmdjConnectInterface(new PPBMDJConnectInterface() {
                     @Override
@@ -434,31 +406,46 @@
                 ppScale.enterBMDJModel();
 ```
 
-退出闭目单脚模式并停止扫描断开连接
+### 1.2 退出闭目单脚模式并停止扫描断开连接
 ```
 /// 停止扫描切断开闭目单脚的设备
 -  ppScale.exitBMDJModel();
 ```
-监听闭目单脚状态
+### 1.3 监听闭目单脚状态
 ```
 (interface)PPBMDJStatesInterface
 ```
 
-发送指令使设备进入闭目单脚模式
+### 1.4 发送指令使设备进入闭目单脚模式
 ```
 /// 闭目单脚设备进入准备状态
 - (void)enterBMDJModel()
 ```
-在回调函数中返回闭目单脚站立的时间
+### 1.5 在回调函数中返回闭目单脚站立的时间
 ```
 /// 设备退出闭目单脚状态
 - (interface)PPBMDJDataInterface;
 ```
 
---- 
+## 五 .蓝牙操作相关
+
+### 1.1 预留蓝牙操作对象
+
+     BluetoothClient client = ppScale.getBleClient();
+### 1.2 停止扫描
+
+       ppScale.stopSearch();
+### 1.3 断开设备连接
+
+        ppScale.disConnect();
+最后你需要在离开页面的之前调用stopSearch方法。
+具体的实现请参考Demo中BindingDeviceActivity和ScaleWeightActivity中的代码。
 
 
-### VI .版本更新说明
+----------------------------------------------------------------------------------------
+
+
+## 六 .版本更新说明
    
     ----0.0.1-----
     1、增加maven配置  2、增加兼容BodyFat Scale1
