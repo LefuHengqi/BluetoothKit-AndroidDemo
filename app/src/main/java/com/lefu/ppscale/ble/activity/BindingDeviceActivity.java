@@ -107,7 +107,7 @@ public class BindingDeviceActivity extends Activity {
     private BleOptions getBleOptions() {
         return new BleOptions.Builder()
                 .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_NORMAL)
-                .setSearchTag(BleOptions.SEARCH_TAG_DIRECT_CONNECT)//直连  孕妇模式时请开启直连
+                .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)//直连  孕妇模式时请开启直连
                 .setUnitType(unitType)
                 .build();
     }
@@ -153,19 +153,17 @@ public class BindingDeviceActivity extends Activity {
                         showDialog(deviceModel, bodyFatModel);
                     }
                     //数据锁定后，需要手动调用获取历史数据指令，首先要确定您的秤支持获取历史，再调用。
-                    if (ppScale != null) {
-                        if (DeviceManager.DeviceList.DeviceListHistory.contains(deviceModel.getDeviceName()) ||
-                                (deviceModel.deviceFuncType &
-                                        PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
-                                        == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
-                        {
-                            ppScale.getHistoryData();
-                        } else {
-                            //这里可以直接断开蓝牙
-
-                        }
-
-                    }
+//                    if (ppScale != null) {
+//                        if (DeviceManager.DeviceList.DeviceListHistory.contains(deviceModel.getDeviceName()) ||
+//                                (deviceModel.deviceFuncType &
+//                                        PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
+//                                        == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
+//                        {
+//                            ppScale.getHistoryData();
+//                        } else {
+//                            //这里可以直接断开蓝牙
+//                        }
+//                    }
                 } else {
                     Logger.d("正在测量心率");
                 }

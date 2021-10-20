@@ -65,8 +65,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'org.greenrobot:greendao:3.3.0'
-//    implementation project(':ppscale')
-    implementation 'com.lefu.ppscale:ppscale:2.0.1'
+    implementation project(':ppscale')
+//    implementation 'com.lefu.ppscale:ppscale:2.0.2'
     //如果包含直流秤,请引用body_sl
     implementation 'com.lefu.ppscale:body_sl:1.0.0'
 
