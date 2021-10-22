@@ -102,6 +102,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button mBtnSearchDevice = findViewById(R.id.searchDeviceListBtn);
+        mBtnSearchDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //扫描设备列表
+                Intent intent = new Intent(MainActivity.this, ScanDeviceListActivity.class);
+                //读取历史数据
+//                Intent intent = new Intent(MainActivity.this, ReadHistoryListActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Button mBtnDataDetail = findViewById(R.id.dataDetailBtn);
         mBtnDataDetail.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
         // 身高
         EditText heightET = findViewById(R.id.editText3);

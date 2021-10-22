@@ -16,6 +16,7 @@
     <string name="binding_device">绑定设备</string>
     <string name="weigh_on_the_scale">上秤称重</string>
     <string name="equipment_management">设备管理</string>
+    <string name="scan_device">扫描设备</string>
     <string name="unit_normal">
          0：表示KG 1 表示LB
          2：表示ST 3 表示斤

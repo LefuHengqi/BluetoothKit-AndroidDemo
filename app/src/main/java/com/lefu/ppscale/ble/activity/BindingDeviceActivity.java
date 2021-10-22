@@ -22,6 +22,7 @@ import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
+import com.peng.ppscale.business.ble.send.BleSendDelegate;
 import com.peng.ppscale.business.device.DeviceManager;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.business.ble.listener.PPLockDataInterface;
@@ -88,19 +89,19 @@ public class BindingDeviceActivity extends Activity {
      * 参数配置
      * <p>
      *
-     * @param ScaleFeatures 为了更快的搜索你的设备，你可以选择你需要使用的设备能力
-     *                      具备的能力：
-     *                      体重秤{@link BleOptions.ScaleFeatures#FEATURES_WEIGHT}
-     *                      脂肪秤{@link BleOptions.ScaleFeatures#FEATURES_FAT}
-     *                      心率秤{@link BleOptions.ScaleFeatures#FEATURES_HEART_RATE}
-     *                      离线秤{@link BleOptions.ScaleFeatures#FEATURES_HISTORY}
-     *                      闭目单脚秤{@link BleOptions.ScaleFeatures#FEATURES_BMDJ}
-     *                      秤端计算{@link BleOptions.ScaleFeatures#FEATURES_CALCUTE_IN_SCALE}
-     *                      WIFI秤{@link BleOptions.ScaleFeatures#FEATURES_CONFIG_WIFI} 请参考{@link BleConfigWifiActivity}
-     *                      食物秤{@link BleOptions.ScaleFeatures#FEATURES_FOOD_SCALE}
-     *                      所有人体秤{@link BleOptions.ScaleFeatures#FEATURES_NORMAL}  //不包含食物秤
-     *                      所有秤{@link BleOptions.ScaleFeatures#FEATURES_ALL}
-     *                      自定义{@link BleOptions.ScaleFeatures#FEATURES_CUSTORM} //选则自定义需要设置PPScale的setDeviceList()
+     * @param //ScaleFeatures 为了更快的搜索你的设备，你可以选择你需要使用的设备能力
+     *                        具备的能力：
+     *                        体重秤{@link BleOptions.ScaleFeatures#FEATURES_WEIGHT}
+     *                        脂肪秤{@link BleOptions.ScaleFeatures#FEATURES_FAT}
+     *                        心率秤{@link BleOptions.ScaleFeatures#FEATURES_HEART_RATE}
+     *                        离线秤{@link BleOptions.ScaleFeatures#FEATURES_HISTORY}
+     *                        闭目单脚秤{@link BleOptions.ScaleFeatures#FEATURES_BMDJ}
+     *                        秤端计算{@link BleOptions.ScaleFeatures#FEATURES_CALCUTE_IN_SCALE}
+     *                        WIFI秤{@link BleOptions.ScaleFeatures#FEATURES_CONFIG_WIFI} 请参考{@link BleConfigWifiActivity}
+     *                        食物秤{@link BleOptions.ScaleFeatures#FEATURES_FOOD_SCALE}
+     *                        所有人体秤{@link BleOptions.ScaleFeatures#FEATURES_NORMAL}  //不包含食物秤
+     *                        所有秤{@link BleOptions.ScaleFeatures#FEATURES_ALL}
+     *                        自定义{@link BleOptions.ScaleFeatures#FEATURES_CUSTORM} //选则自定义需要设置PPScale的setDeviceList()
      * @return
      * @parm unitType 单位，用于秤端切换单位
      */
@@ -118,7 +119,7 @@ public class BindingDeviceActivity extends Activity {
      * @return
      */
     private ProtocalFilterImpl getProtocalFilter() {
-        ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
+        final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
         protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
             /**
              * 过程数据
@@ -200,6 +201,20 @@ public class BindingDeviceActivity extends Activity {
                         Logger.d("ppScale_ isEnd = " + isEnd);
                     }
 
+                    if (isEnd) {
+                        if (ppScale != null) {
+                            ppScale.deleteHistoryData();
+                            new Handler().postDelayed(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    if (ppScale != null) {
+                                        ppScale.disConnect();
+                                    }
+                                }
+                            }, BleSendDelegate.POST_DELAY_MILLS);
+                        }
+                    }
                 }
             });
         }
