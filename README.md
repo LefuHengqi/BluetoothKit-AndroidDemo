@@ -25,7 +25,7 @@
          }
     
 ### Ⅱ .系统蓝牙使用说明
-
+### 1.1 蓝牙权限相关
 * 由于需要蓝牙连接，Demo需要真机运行。
 
 * 在Android 6.0及以上系统版本，启动扫描前，需确保开启 
@@ -40,17 +40,55 @@
     
 * 使用Demo过程中需要您打开蓝牙，同时给予Demo定位权限
 
+### 1.2 功能使用
+
+#### 1.2.1 蓝牙配网
     1、蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
+#### 1.2.2 绑定设备
+	绑定设备 - 在这个控制器在被实例化后会开始扫描附近的外设，并将您的外设做一个记录。
+#### 1.2.3 上秤称重
+	上秤称重 - 这个控制器在被实例化后也会开始扫描附近的外设，通过过滤去连接已绑定过的设备。所以只有被绑定过后才能去进行上秤称重，否则无法接收到数据。
+#### 1.2.4 设备管理
+    设备管理 - 这个控制器会用列表的方式展示你在“绑定设备”页面绑定的外设。你可以通过长按的方式去删除已绑定设备。
+#### 1.2.5 数据详情
+    在“绑定设备”和“上秤称重”页面接收到外设返回的数据后，会自动停止扫描并断开与外设的连接，然后把数据通过回调的方式传回“主页信息”更新体重一栏，具体的数据可以去“ 数据详情”页查看。
+#### 1.2.6 扫描附近设备
+	搜索附近支持的设备ScanDeviceListActivity.java
 
-    2. 绑定设备 - 在这个控制器在被实例化后会开始扫描附近的外设，并将您的外设做一个记录。
+	 	//获取周围蓝牙秤设备
+        ppScale.monitorSurroundDevice();
+		//连接选定设备
+		if (ppScale != null) {
+               ppScale.connectWithMacAddressList(models);
+        }
 
-    3. 上秤称重 - 这个控制器在被实例化后也会开始扫描附近的外设，通过过滤去连接已绑定过的设备。所以只有被绑定过后才能去进行上秤称重，否则无法接收到数据。
+#### 1.2.7 读取历史数据
+	需要先“绑定设备”然后再读取“历史数据”	ReadHistoryListActivity.java
+	 //直接读取历史数据，需要传入要读取的秤
+    private void bindingDevice() {
 
-    4. 设备管理 - 这个控制器会用列表的方式展示你在“绑定设备”页面绑定的外设。你可以通过长按的方式去删除已绑定设备。
+        List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
 
-    5. 在“绑定设备”和“上秤称重”页面接收到外设返回的数据后，会自动停止扫描并断开与外设的连接，然后把数据通过回调的方式传回“主页信息”更新体重一栏，具体的数据可以去“ 数据详情”页查看。
-    
-       
+        if (deviceList != null && !deviceList.isEmpty()) {
+            List<String> addressList = new ArrayList<>();
+            for (DeviceModel deviceModel : deviceList) {
+                addressList.add(deviceModel.getDeviceMac());
+            }
+            ppScale = new PPScale.Builder(this)
+                    .setProtocalFilterImpl(getProtocalFilter())
+                    .setBleOptions(getBleOptions())
+                    .setDeviceList(addressList)//注意：这里是必传项
+                    .setUserModel(userModel)
+                    .setBleStateInterface(bleStateInterface)
+                    .build();
+            //获取历史数据
+            tv_starts.setText("开始读取离线数据");
+            ppScale.fetchHistoryData();
+        } else {
+            tv_starts.setText("请先绑定设备");
+        }
+
+    }
 ### Ⅲ .PPScale在蓝牙设备的使用
     
 #### 1.1 绑定或扫描指定蓝牙设备
@@ -482,6 +520,10 @@ PPUserModel参数说明：
 
 1、芯片方案商提供的体脂计算库
 2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)
+
+
+常见问题：
+1、[Unknown host ‘raw.githubusercontent.com‘](https://blog.csdn.net/u010356768/article/details/109488286)
 
 Contact Developer：
 Email: yanfabu-5@lefu.cc
