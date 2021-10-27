@@ -81,16 +81,16 @@ public class MainActivity extends AppCompatActivity {
         mBtnScaleWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+//                showDialog();
 
-//                if (PPScale.isBluetoothOpened()) {
-//                    Intent intent = new Intent(MainActivity.this, BindingDeviceActivity.class);
-//                    intent.putExtra(BindingDeviceActivity.UNIT_TYPE, unit.getType());
-//                    intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 1);
-//                    startActivity(intent);
-//                } else {
-//                    PPScale.openBluetooth();
-//                }
+                if (PPScale.isBluetoothOpened()) {
+                    Intent intent = new Intent(MainActivity.this, BindingDeviceActivity.class);
+                    intent.putExtra(BindingDeviceActivity.UNIT_TYPE, unit.getType());
+                    intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 1);
+                    startActivity(intent);
+                } else {
+                    PPScale.openBluetooth();
+                }
             }
         });
 
@@ -320,22 +320,11 @@ public class MainActivity extends AppCompatActivity {
                 .setHeight(this.height)
                 .setGroupNum(this.group)
                 .setSex(this.sex)
-                .setMaternityMode(maternityMode) //孕妇模式 1  正常模式0  默认0
-                .setSportsman(sportMode) //运动员模式 1  正常模式0  默认0
+                .setPregnantMode(maternityMode == 1) //孕妇模式 1  正常模式0  默认0
+                .setAthleteMode(sportMode == 1) //运动员模式 1  正常模式0  默认0
                 .build();
         DataUtil.util().setUserModel(userModel);
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 
     public void requestPower() {
         //判断是否已经赋予权限

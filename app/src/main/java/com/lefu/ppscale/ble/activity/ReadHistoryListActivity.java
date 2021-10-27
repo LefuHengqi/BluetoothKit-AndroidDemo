@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,8 +21,6 @@ import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
-import com.peng.ppscale.business.ble.send.BleSendDelegate;
-import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
 import com.peng.ppscale.util.Logger;
@@ -57,7 +53,6 @@ public class ReadHistoryListActivity extends Activity {
     //0是绑定设备 1是搜索已有设备
     public static final String SEARCH_TYPE = "SearchType";
 
-    private PPUnitType unitType;
     private PPUserModel userModel;
     private AlertDialog alertDialog;
     boolean isOnResume = false;//页面可见时再重新发起扫描
@@ -74,42 +69,34 @@ public class ReadHistoryListActivity extends Activity {
 
         int unit = getIntent().getIntExtra(UNIT_TYPE, 0);
 
-        unitType = PPUnitType.values()[unit];
-
         userModel = DataUtil.util().getUserModel();
 
         adapter = new DeviceListAdapter(this, R.layout.list_view_device, deviceModels);
         ListView listView = (ListView) findViewById(R.id.list_View);
         listView.setAdapter(adapter);
 
-        bindingDevice();
+        initPPScaleAndConnectDevice();
     }
 
     /**
-     * 参数配置
-     * <p>
-     *
-     * @param //ScaleFeatures 为了更快的搜索你的设备，你可以选择你需要使用的设备能力
-     *                        具备的能力：
-     *                        体重秤{@link BleOptions.ScaleFeatures#FEATURES_WEIGHT}
-     *                        脂肪秤{@link BleOptions.ScaleFeatures#FEATURES_FAT}
-     *                        心率秤{@link BleOptions.ScaleFeatures#FEATURES_HEART_RATE}
-     *                        离线秤{@link BleOptions.ScaleFeatures#FEATURES_HISTORY}
-     *                        闭目单脚秤{@link BleOptions.ScaleFeatures#FEATURES_BMDJ}
-     *                        秤端计算{@link BleOptions.ScaleFeatures#FEATURES_CALCUTE_IN_SCALE}
-     *                        WIFI秤{@link BleOptions.ScaleFeatures#FEATURES_CONFIG_WIFI} 请参考{@link BleConfigWifiActivity}
-     *                        食物秤{@link BleOptions.ScaleFeatures#FEATURES_FOOD_SCALE}
-     *                        所有人体秤{@link BleOptions.ScaleFeatures#FEATURES_NORMAL}  //不包含食物秤
-     *                        所有秤{@link BleOptions.ScaleFeatures#FEATURES_ALL}
-     *                        自定义{@link BleOptions.ScaleFeatures#FEATURES_CUSTORM} //选则自定义需要设置PPScale的setDeviceList()
-     * @return
-     * @parm unitType 单位，用于秤端切换单位
+     * 获取历史数据
      */
+    private void fetchHistoryData() {
+        if (ppScale != null) {
+            ppScale.fetchHistoryData();
+        }
+    }
+
+    private void deleteHistoryData() {
+        //删除历史
+        if (ppScale != null) {
+            ppScale.deleteHistoryData();
+        }
+    }
+
     private BleOptions getBleOptions() {
         return new BleOptions.Builder()
-                .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_NORMAL)
                 .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)//直连  孕妇模式时请开启直连
-                .setUnitType(unitType)
                 .build();
     }
 
@@ -123,6 +110,7 @@ public class ReadHistoryListActivity extends Activity {
         final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
 
         protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
+
             /**
              * 历史数据
              *
@@ -153,20 +141,8 @@ public class ReadHistoryListActivity extends Activity {
                     } else {
                         tv_starts.setText("读取历史数据结束");
                     }
-                    //历史数据结束，删除历史数据，并断开连接
-                    if (ppScale != null) {
-                        //删除历史
-//                        ppScale.deleteHistoryData();
-                        new Handler().postDelayed(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                if (ppScale != null) {
-                                    ppScale.disConnect();
-                                }
-                            }
-                        }, BleSendDelegate.POST_DELAY_MILLS);
-                    }
+                    //历史数据结束，删除历史数据
+//                        deleteHistoryData();
                 }
             }
         });
@@ -183,25 +159,20 @@ public class ReadHistoryListActivity extends Activity {
     }
 
     //直接读取历史数据，需要传入要读取的秤
-    private void bindingDevice() {
+    private void initPPScaleAndConnectDevice() {
 
         List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
 
         if (deviceList != null && !deviceList.isEmpty()) {
-            List<String> addressList = new ArrayList<>();
-            for (DeviceModel deviceModel : deviceList) {
-                addressList.add(deviceModel.getDeviceMac());
-            }
             ppScale = new PPScale.Builder(this)
                     .setProtocalFilterImpl(getProtocalFilter())
                     .setBleOptions(getBleOptions())
-                    .setDeviceList(addressList)//注意：这里是必传项
                     .setUserModel(userModel)
                     .setBleStateInterface(bleStateInterface)
                     .build();
-            //获取历史数据
             tv_starts.setText("开始读取离线数据");
-            ppScale.fetchHistoryData();
+            //连接设备
+            ppScale.connectAddress(deviceList.get(0).getDeviceMac());
         } else {
             tv_starts.setText("请先绑定设备");
         }
@@ -223,6 +194,9 @@ public class ReadHistoryListActivity extends Activity {
                 Logger.d(getString(R.string.scan_timeout));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 Logger.d(getString(R.string.scanning));
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
+                Logger.d(getString(R.string.writable));
+                fetchHistoryData();
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
             }
@@ -248,7 +222,7 @@ public class ReadHistoryListActivity extends Activity {
             @Override
             public void run() {
                 if (isOnResume) {
-                    bindingDevice();
+                    initPPScaleAndConnectDevice();
                 }
             }
         }, 1000);

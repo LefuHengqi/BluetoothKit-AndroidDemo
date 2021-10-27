@@ -130,7 +130,6 @@ public class ScanDeviceListActivity extends Activity {
         return new BleOptions.Builder()
                 .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_NORMAL)
                 .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)//直连  孕妇模式时请开启直连
-                .setUnitType(unitType)
                 .build();
     }
 
@@ -199,6 +198,8 @@ public class ScanDeviceListActivity extends Activity {
                 Logger.d(getString(R.string.scan_timeout));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 Logger.d(getString(R.string.scanning));
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
+                Logger.d(getString(R.string.writable));
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
             }

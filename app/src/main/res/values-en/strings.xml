@@ -41,6 +41,7 @@
 	<string name="stop_scanning">Stop scanning</string>
     <string name="scan_timeout">Scan timeout</string>
 	<string name="scanning">Scan</string>
+    <string name="writable">Writable</string>
 	<string name="bluetooth_status_is_abnormal">Bluetooth is abnormal</string>
 	<string name="system_bluetooth_disconnect">Disconnect the Bluetooth system</string>
 	<string name="system_blutooth_on">Open the Bluetooth system</string>

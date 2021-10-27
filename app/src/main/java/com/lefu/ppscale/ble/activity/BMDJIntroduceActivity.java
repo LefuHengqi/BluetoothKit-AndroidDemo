@@ -50,13 +50,11 @@ public class BMDJIntroduceActivity extends AppCompatActivity {
 
         BleOptions bleOptions = new BleOptions.Builder()
                 .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_BMDJ)
-                .setUnitType(PPUnitType.Unit_KG)
                 .build();
 
         ppScale = new PPScale.Builder(this)
                 .setProtocalFilterImpl(protocalFilter)
                 .setBleOptions(bleOptions)
-//                .setBleStateInterface(bleStateInterface)
                 .build();
 
     }

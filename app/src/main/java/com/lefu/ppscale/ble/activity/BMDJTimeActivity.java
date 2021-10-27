@@ -31,7 +31,6 @@ public class BMDJTimeActivity extends AppCompatActivity {
             public void monitorBMDJStandTime(int standTime) {
                 double second = (double) (standTime / 10.0);
                 textView.setText(PPUtil.keep1Point3(second) + "");
-
             }
 
             @Override
@@ -44,7 +43,6 @@ public class BMDJTimeActivity extends AppCompatActivity {
 
         BleOptions bleOptions = new BleOptions.Builder()
                 .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_BMDJ)
-                .setUnitType(PPUnitType.Unit_KG)
                 .build();
 
         ppScale = new PPScale.Builder(this)
