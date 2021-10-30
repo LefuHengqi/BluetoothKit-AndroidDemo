@@ -36,7 +36,7 @@ public class DeviceListAdapter extends ArrayAdapter {
         TextView tv_ssid = (TextView) view.findViewById(R.id.device_ssid);
         nameText.setText(deviceModel.getDeviceName());
         macText.setText(deviceModel.getDeviceMac());
-        if (PPDeviceType.Scale.isConfigWifiScale(deviceModel.getDeviceName())) {
+        if (deviceModel.deviceType == PPScaleDefine.PPDeviceType.PPDeviceTypeCC) {
             if (!TextUtils.isEmpty(deviceModel.getSsid())) {
                 tv_ssid.setText(deviceModel.getSsid());
             } else {

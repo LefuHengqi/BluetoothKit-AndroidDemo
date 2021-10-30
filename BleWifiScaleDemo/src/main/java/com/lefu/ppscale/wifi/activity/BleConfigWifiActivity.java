@@ -31,18 +31,13 @@ import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
-import com.peng.ppscale.business.device.DeviceManager;
 import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
 import com.peng.ppscale.util.Logger;
 import com.peng.ppscale.vo.PPDeviceModel;
 
-import org.w3c.dom.Text;
-
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -77,7 +72,6 @@ public class BleConfigWifiActivity extends AppCompatActivity {
 
         address = getIntent().getStringExtra("address");
         initView();
-
 
     }
 
@@ -190,22 +184,23 @@ public class BleConfigWifiActivity extends AppCompatActivity {
             }
         });
 
-        List<String> devices = new ArrayList<>();
-        devices.add(address);
+//        List<String> devices = new ArrayList<>();
+//        devices.add(address);
         ppScale = new PPScale.Builder(this)
                 .setProtocalFilterImpl(protocalFilter)
                 .setBleOptions(getBleOptions())
-                .setDeviceList(devices)
+//                .setDeviceList(devices)
                 .setBleStateInterface(bleStateInterface)
                 .build();
-        ppScale.startSearchBluetoothScaleWithMacAddressList();
+//        ppScale.startSearchBluetoothScaleWithMacAddressList();
+        ppScale.connectAddress(address);
     }
 
     /**
      * 参数配置 绑定时请确保WIFI是2.4G，并且账号密码正确
      *
-     * @param password     WIFI密码
-     * @param featuresFlag 具备的能力，WIFI秤{@link BleOptions.ScaleFeatures#FEATURES_CONFIG_WIFI}
+     * @param //password     WIFI密码
+     * @param //featuresFlag 具备的能力，WIFI秤{@link BleOptions.ScaleFeatures#FEATURES_CONFIG_WIFI}
      *                     具备的能力，体重秤{@link BleOptions.ScaleFeatures#FEATURES_WEIGHT}
      *                     具备的能力，脂肪秤{@link BleOptions.ScaleFeatures#FEATURES_FAT}
      *                     具备的能力，心率秤{@link BleOptions.ScaleFeatures#FEATURES_HEART_RATE}
@@ -215,11 +210,11 @@ public class BleConfigWifiActivity extends AppCompatActivity {
      * @parm ssid          WIFI账号  不可为空
      */
     private BleOptions getBleOptions() {
-        ssid = etWifiName.getText().toString();
+
         return new BleOptions.Builder()
                 .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_CONFIG_WIFI)
-                .setPassword(etWifiKey.getText().toString())
-                .setSsid(ssid)
+//                .setPassword(etWifiKey.getText().toString())
+//                .setSsid(ssid)
                 .build();
     }
 
@@ -239,6 +234,9 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                 Logger.d(getString(R.string.stop_scanning));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 Logger.d(getString(R.string.scanning));
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
+                Logger.d(getString(R.string.scanning));
+                startConfiWifi();
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
             }
@@ -258,9 +256,17 @@ public class BleConfigWifiActivity extends AppCompatActivity {
         }
     };
 
+    private void startConfiWifi() {
+        ssid = etWifiName.getText().toString();
+        String password = etWifiKey.getText().toString();
+        if (ppScale != null) {
+            ppScale.configWifi(ssid, password);
+        }
+    }
+
     private void stopPPScale() {
         if (ppScale != null) {
-            ppScale.stopWifiConfig();
+//            ppScale.stopWifiConfig();
             ppScale.disConnect();
             ppScale.stopSearch();
             ppScale = null;

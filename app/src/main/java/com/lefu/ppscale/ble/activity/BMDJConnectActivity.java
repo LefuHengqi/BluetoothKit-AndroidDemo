@@ -49,7 +49,7 @@ public class BMDJConnectActivity extends AppCompatActivity {
         });
         BleOptions bleOptions = new BleOptions.Builder()
                 .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_BMDJ)
-                .setDeviceType(PPDeviceType.Contants.FAT_AND_BMDJ)
+//                .setDeviceType(PPDeviceType.Contants.FAT_AND_BMDJ)
                 .build();
 
         ppScale = new PPScale.Builder(getApplicationContext())

@@ -1,5 +1,7 @@
 package com.lefu.ppscale.wifi.model;
 
+import com.peng.ppscale.vo.PPScaleDefine;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;

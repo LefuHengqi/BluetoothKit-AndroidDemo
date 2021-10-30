@@ -24,6 +24,7 @@ import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
 import com.lefu.ppscale.wifi.net.okhttp.RetCallBack;
 import com.lefu.ppscale.wifi.net.okhttp.vo.SaveWifiGroupBean;
 import com.peng.ppscale.business.device.PPDeviceType;
+import com.peng.ppscale.vo.PPScaleDefine;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +49,7 @@ public class DeviceListActivity extends AppCompatActivity {
             @Override
             public void onItemClickViewInside(int position, View v) {
                 DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
-                if (PPDeviceType.Scale.isConfigWifiScale(deviceModel.getDeviceName())) {
+                if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
                     Intent intent = new Intent(DeviceListActivity.this, DeveloperActivity.class);
                     intent.putExtra(DeveloperActivity.ADDRESS, deviceModel.getDeviceMac());
                     startActivity(intent);
@@ -90,14 +91,14 @@ public class DeviceListActivity extends AppCompatActivity {
                 DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
                 switch (view.getId()) {
                     case R.id.tvSetting:
-                        if (PPDeviceType.Scale.isConfigWifiScale(deviceModel.getDeviceName())) {
+                        if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
                             Intent intent = new Intent(DeviceListActivity.this, DeveloperActivity.class);
                             intent.putExtra(DeveloperActivity.ADDRESS, deviceModel.getDeviceMac());
                             startActivity(intent);
                         }
                         break;
                     default:
-                        if (PPDeviceType.Scale.isConfigWifiScale(deviceModel.getDeviceName())) {
+                        if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
                             Intent intent = new Intent(DeviceListActivity.this, BleConfigWifiActivity.class);
                             intent.putExtra("address", deviceModel.getDeviceMac());
                             startActivity(intent);
