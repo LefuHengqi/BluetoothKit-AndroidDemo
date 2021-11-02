@@ -18,7 +18,7 @@ import com.lefu.ppscale.ble.DBManager;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
 import com.lefu.ppscale.ble.model.DeviceModel;
-import com.lefu.ppscale.ble.model.PPUtil;
+import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack;
@@ -167,7 +167,7 @@ public class BindingDeviceActivity extends Activity {
      */
     private BleOptions getBleOptions() {
         return new BleOptions.Builder()
-                .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)//直连  孕妇模式时请开启直连
+                .setSearchTag(BleOptions.SEARCH_TAG_DIRECT_CONNECT)//直连  孕妇模式时请开启直连
                 .build();
     }
 

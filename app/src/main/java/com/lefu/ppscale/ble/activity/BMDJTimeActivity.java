@@ -7,10 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.lefu.ppscale.ble.R;
-import com.lefu.ppscale.ble.model.PPUtil;
+import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
-import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.business.ble.bmdj.PPBMDJDataInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
 
@@ -30,13 +29,13 @@ public class BMDJTimeActivity extends AppCompatActivity {
             @Override
             public void monitorBMDJStandTime(int standTime) {
                 double second = (double) (standTime / 10.0);
-                textView.setText(PPUtil.keep1Point3(second) + "");
+                textView.setText(PPUtil.keepPoint1(second) + "");
             }
 
             @Override
             public void monitorBMDJMeasureEnd(int standTime) {
                 double second = (double) (standTime / 10.0);
-                textView.setText(PPUtil.keep1Point3(second) + "");
+                textView.setText(PPUtil.keepPoint1(second) + "");
                 ppScale.exitBMDJModel();
             }
         });

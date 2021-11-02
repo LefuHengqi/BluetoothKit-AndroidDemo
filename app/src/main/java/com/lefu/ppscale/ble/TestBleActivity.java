@@ -11,7 +11,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.peng.ppscale.util.ByteUtils;
+import com.peng.ppscale.util.ByteUtil;
 
 
 public class TestBleActivity extends AppCompatActivity {
@@ -35,7 +35,7 @@ public class TestBleActivity extends AppCompatActivity {
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, final byte[] scanRecord) {
 
-            Log.d("liyp_ ble = ",  ByteUtils.byteToString(scanRecord));
+            Log.d("liyp_ ble = ", ByteUtil.byteToString(scanRecord));
 
             runOnUiThread(new Runnable() {
                 @Override

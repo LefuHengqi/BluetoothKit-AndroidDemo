@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
-import com.lefu.ppscale.ble.model.PPUtil;
+import com.peng.ppscale.util.PPUtil;
 
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.device.PPUnitType;
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (PPScale.isBluetoothOpened()) {
-                    Intent intent = new Intent(MainActivity.this, BleConfigWifiActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(MainActivity.this, BleConfigWifiActivity.class);
+//                    startActivity(intent);
                 } else {
                     PPScale.openBluetooth();
                 }
@@ -324,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
                 .setAthleteMode(sportMode == 1) //运动员模式 1  正常模式0  默认0
                 .build();
         DataUtil.util().setUserModel(userModel);
+        DataUtil.util().setUnit(this.unit);
     }
 
     public void requestPower() {

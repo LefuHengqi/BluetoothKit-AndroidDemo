@@ -1,13 +1,19 @@
 package com.lefu.ppscale.ble.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
 import com.peng.ppscale.vo.PPBodyFatModel;
+import com.ppscale.data_range.vo.BodyItem;
+import com.ppscale.data_range.vo.PPBodyFatDetailModel;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class BodyDataDetailActivity extends AppCompatActivity {
 
@@ -17,8 +23,20 @@ public class BodyDataDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_body_data_detail);
         TextView textView = findViewById(R.id.data_detail);
         PPBodyFatModel bodyData = DataUtil.util().getBodyDataModel();
-        if (bodyData != null && !TextUtils.isEmpty(bodyData.toString())) {
-            textView.setText(bodyData.toString());
+        if (bodyData != null) {
+//            textView.setText(bodyData.toString());
+
+            PPBodyFatDetailModel ppBodyFatDetailModel = new PPBodyFatDetailModel(this, bodyData, DataUtil.util().getUnit());
+
+            Map<String, BodyItem> bodyItems = ppBodyFatDetailModel.getBodyItems();
+
+            if (bodyItems != null && !bodyItems.isEmpty()) {
+                List<BodyItem> bodyItemList = new ArrayList<>(bodyItems.values());
+                for (BodyItem bodyItem : bodyItemList) {
+                    textView.append(bodyItem.toString() + "\n");
+                }
+            }
+
         }
     }
 }

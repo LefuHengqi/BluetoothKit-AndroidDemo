@@ -15,7 +15,7 @@ import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
 import com.lefu.ppscale.ble.model.DataUtil;
 import com.lefu.ppscale.ble.model.DeviceModel;
-import com.lefu.ppscale.ble.model.PPUtil;
+import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;

@@ -2,38 +2,27 @@ package com.lefu.ppscale.ble.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.lefu.ppscale.ble.DBManager;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
 import com.lefu.ppscale.ble.model.DataUtil;
 import com.lefu.ppscale.ble.model.DeviceModel;
-import com.lefu.ppscale.ble.model.PPUtil;
-import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
-import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
-import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
-import com.peng.ppscale.business.ble.listener.PPLockDataInterface;
-import com.peng.ppscale.business.ble.listener.PPProcessDateInterface;
 import com.peng.ppscale.business.ble.listener.PPSearchDeviceInfoInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
 import com.peng.ppscale.util.Logger;
-import com.peng.ppscale.vo.PPBodyBaseModel;
-import com.peng.ppscale.vo.PPBodyFatModel;
 import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPUserModel;
 

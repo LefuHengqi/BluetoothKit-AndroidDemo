@@ -18,7 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.BleConfigWifiActivity"></activity>
         <activity android:name=".activity.BindingDeviceActivity" />
         <activity android:name=".activity.DeviceListActivity" />
         <activity android:name=".activity.BodyDataDetailActivity" />

@@ -1,5 +1,6 @@
 package com.lefu.ppscale.ble.model;
 
+import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.vo.PPBodyFatModel;
 import com.peng.ppscale.vo.PPUserModel;
 import com.peng.ppscale.vo.PPUserGender;
@@ -8,6 +9,7 @@ public class DataUtil {
     private static DataUtil dataUtil;
     private PPBodyFatModel bodyDataModel;
     private PPUserModel userModel;
+    PPUnitType unit = PPUnitType.Unit_KG;
 
     public static DataUtil util() {
         if (dataUtil == null) {
@@ -42,5 +44,13 @@ public class DataUtil {
 
     public void setUserModel(PPUserModel userModel) {
         this.userModel = userModel;
+    }
+
+    public void setUnit(PPUnitType unit) {
+        this.unit = unit;
+    }
+
+    public PPUnitType getUnit() {
+        return unit;
     }
 }
