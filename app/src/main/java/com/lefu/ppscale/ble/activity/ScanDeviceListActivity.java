@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
 import com.lefu.ppscale.ble.model.DataUtil;
-import com.lefu.ppscale.ble.model.DeviceModel;
+import com.lefu.ppscale.db.dao.DeviceModel;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.PPSearchDeviceInfoInterface;

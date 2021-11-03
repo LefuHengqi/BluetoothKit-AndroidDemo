@@ -17,10 +17,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lefu.ppscale.wifi.DBManager;
+import com.lefu.ppscale.db.dao.DBManager;
+import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.R;
 import com.lefu.ppscale.wifi.SettingManager;
-import com.lefu.ppscale.wifi.model.DeviceModel;
 import com.lefu.ppscale.wifi.net.okhttp.DataTask;
 import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
 import com.lefu.ppscale.wifi.net.okhttp.RetCallBack;
@@ -153,7 +153,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
 
                 Map<String, String> map = new HashMap<>();
                 map.put("sn", sn);
-                map.put("uid", SettingManager.get().getUid());
+                map.put("uid", SettingManager.get(BleConfigWifiActivity.this).getUid());
 
                 DataTask.post(NetUtil.SAVE_WIFI_GROUP, map, new RetCallBack<SaveWifiGroupBean>(SaveWifiGroupBean.class) {
 
@@ -201,11 +201,11 @@ public class BleConfigWifiActivity extends AppCompatActivity {
      *
      * @param //password     WIFI密码
      * @param //featuresFlag 具备的能力，WIFI秤{@link BleOptions.ScaleFeatures#FEATURES_CONFIG_WIFI}
-     *                     具备的能力，体重秤{@link BleOptions.ScaleFeatures#FEATURES_WEIGHT}
-     *                     具备的能力，脂肪秤{@link BleOptions.ScaleFeatures#FEATURES_FAT}
-     *                     具备的能力，心率秤{@link BleOptions.ScaleFeatures#FEATURES_HEART_RATE}
-     *                     具备的能力，离线秤{@link BleOptions.ScaleFeatures#FEATURES_HISTORY}
-     *                     具备的能力，闭目单脚秤{@link BleOptions.ScaleFeatures#FEATURES_BMDJ}
+     *                       具备的能力，体重秤{@link BleOptions.ScaleFeatures#FEATURES_WEIGHT}
+     *                       具备的能力，脂肪秤{@link BleOptions.ScaleFeatures#FEATURES_FAT}
+     *                       具备的能力，心率秤{@link BleOptions.ScaleFeatures#FEATURES_HEART_RATE}
+     *                       具备的能力，离线秤{@link BleOptions.ScaleFeatures#FEATURES_HISTORY}
+     *                       具备的能力，闭目单脚秤{@link BleOptions.ScaleFeatures#FEATURES_BMDJ}
      * @return
      * @parm ssid          WIFI账号  不可为空
      */

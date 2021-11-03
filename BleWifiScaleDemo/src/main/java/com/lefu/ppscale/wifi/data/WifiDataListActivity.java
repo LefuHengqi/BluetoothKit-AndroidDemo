@@ -11,21 +11,13 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSON;
-import com.lefu.ppscale.wifi.DBManager;
-import com.lefu.ppscale.wifi.MainActivity;
 import com.lefu.ppscale.wifi.R;
 import com.lefu.ppscale.wifi.SettingManager;
-import com.lefu.ppscale.wifi.activity.BodyDataDetailActivity;
-import com.lefu.ppscale.wifi.adapter.DeviceListAdapter;
+import com.lefu.ppscale.wifi.activity.WifiBodyDataDetailActivity;
 import com.lefu.ppscale.wifi.adapter.WifiDataListAdapter;
-import com.lefu.ppscale.wifi.model.DeviceModel;
 import com.lefu.ppscale.wifi.net.okhttp.DataTask;
 import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
 import com.lefu.ppscale.wifi.net.okhttp.RetCallBack;
-import com.lefu.ppscale.wifi.util.DataUtil;
-import com.peng.ppscale.business.device.DeviceManager;
-import com.peng.ppscale.business.device.PPUnitType;
-import com.peng.ppscale.vo.PPUserModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,7 +70,7 @@ public class WifiDataListActivity extends AppCompatActivity {
 
                 WifiDataBean wifiDataBean = JSON.parseObject(dataVo.getWeightJson(), WifiDataBean.class);
 
-                Intent intent = new Intent(WifiDataListActivity.this, BodyDataDetailActivity.class);
+                Intent intent = new Intent(WifiDataListActivity.this, WifiBodyDataDetailActivity.class);
                 intent.putExtra("wifiDataBean", wifiDataBean);
                 startActivity(intent);
 
@@ -90,9 +82,10 @@ public class WifiDataListActivity extends AppCompatActivity {
     private void initData() {
 
         Map<String, String> map = new HashMap<>();
-        map.put("uid", SettingManager.get().getUid());
+        map.put("uid", SettingManager.get(this).getUid());
 
         DataTask.get(NetUtil.GET_SCALE_WEIGHTS, map, new RetCallBack<WifiDataVo>(WifiDataVo.class) {
+
             @Override
             public void onError(Call call, Exception e, int id) {
 

@@ -10,11 +10,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.lefu.ppscale.ble.DBManager;
+import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
 import com.lefu.ppscale.ble.model.DataUtil;
-import com.lefu.ppscale.ble.model.DeviceModel;
+import com.lefu.ppscale.db.dao.DeviceModel;
 import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
@@ -67,7 +67,6 @@ public class ReadHistoryListActivity extends Activity {
 
         tv_starts = findViewById(R.id.tv_starts);
 
-        int unit = getIntent().getIntExtra(UNIT_TYPE, 0);
 
         userModel = DataUtil.util().getUserModel();
 

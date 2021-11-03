@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">PPBluetoothLE_WiFi</string>
     <string name="height">身高（厘米）</string>
     <string name="_30_220">取值范围：30-220</string>
     <string name="value_range_30_220">取值范围：30-220</string>

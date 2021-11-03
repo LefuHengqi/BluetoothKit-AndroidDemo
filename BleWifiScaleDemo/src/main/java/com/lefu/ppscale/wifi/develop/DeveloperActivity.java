@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.lefu.ppscale.wifi.R;
-import com.lefu.ppscale.wifi.activity.DeviceListActivity;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface;
@@ -28,50 +27,49 @@ import com.peng.ppscale.vo.PPDeviceModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
-
-public class DeveloperActivity extends AppCompatActivity {
+public class DeveloperActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String ADDRESS = "address";
 
-    @BindView(R.id.iv_Left)
     ImageView iv_Left;
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.developer_mode_id_startConnect)
     Button reStartConnectView;
-    @BindView(R.id.developer_mode_id_input_modifyServerIP)
     EditText inputServerIP;
-    @BindView(R.id.developer_mode_id_input_modifyServerDNS)
     EditText inputServerDNS;
-    @BindView(R.id.developer_mode_id_password)
     TextView mPasswordView;
-    @BindView(R.id.developer_mode_id_ssid)
     TextView mSsidView;
-    @BindView(R.id.developer_mode_id_sn)
     TextView mSnView;
 
     private PPScale ppScale;
-    private Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.developer_activity);
 
-        unbinder = ButterKnife.bind(this);
         initView();
         initData();
-
-
     }
 
     protected void initView() {
+        iv_Left = findViewById(R.id.iv_Left);
+        tvTitle = findViewById(R.id.tv_title);
+        reStartConnectView = findViewById(R.id.developer_mode_id_startConnect);
+        inputServerIP = findViewById(R.id.developer_mode_id_input_modifyServerIP);
+        inputServerDNS = findViewById(R.id.developer_mode_id_input_modifyServerDNS);
+        mPasswordView = findViewById(R.id.developer_mode_id_password);
+        mSsidView = findViewById(R.id.developer_mode_id_ssid);
+        mSnView = findViewById(R.id.developer_mode_id_sn);
+        Button developer_mode_id_getSSID = findViewById(R.id.developer_mode_id_getSSID);
+        Button developer_mode_id_modifyServerIP = findViewById(R.id.developer_mode_id_modifyServerIP);
+        Button developer_mode_id_modifyServerDNS = findViewById(R.id.developer_mode_id_modifyServerDNS);
         iv_Left.setVisibility(View.VISIBLE);
+        developer_mode_id_getSSID.setOnClickListener(this);
+        developer_mode_id_modifyServerIP.setOnClickListener(this);
+        developer_mode_id_modifyServerDNS.setOnClickListener(this);
+        reStartConnectView.setOnClickListener(this);
+        reStartConnectView.setOnClickListener(this);
+
     }
 
     protected void initData() {
@@ -193,55 +191,6 @@ public class DeveloperActivity extends AppCompatActivity {
         }
     }
 
-
-    @OnClick({R.id.iv_Left,
-            R.id.developer_mode_id_getSSID,
-            R.id.developer_mode_id_modifyServerIP,
-            R.id.developer_mode_id_modifyServerDNS,
-            R.id.developer_mode_id_startConnect,
-            R.id.developer_mode_id_clearSSID,
-    })
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_Left:
-                finish();
-                break;
-            case R.id.developer_mode_id_getSSID:
-                if (ppScale != null) {
-                    ppScale.sendInquityWifiConfig();
-                }
-                break;
-            case R.id.developer_mode_id_modifyServerIP:
-                String ip = inputServerIP.getText().toString();
-                if (!TextUtils.isEmpty(ip)) {
-                    ip = ip.trim();
-                    if (ppScale != null) {
-                        ppScale.sendModifyServerIp(ip);
-                    }
-                }
-                break;
-            case R.id.developer_mode_id_modifyServerDNS:
-                String dns = inputServerDNS.getText().toString();
-                if (!TextUtils.isEmpty(dns)) {
-                    dns = dns.trim();
-                    if (ppScale != null) {
-                        ppScale.sendModifyServerDNS(dns);
-                    }
-                }
-                break;
-            case R.id.developer_mode_id_startConnect:
-                startScanBle();
-                break;
-            case R.id.developer_mode_id_clearSSID:
-                if (ppScale != null) {
-                    ppScale.sendDeleteWifiConfig();
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -252,10 +201,36 @@ public class DeveloperActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        if (unbinder != null) {
-            unbinder.unbind();
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.iv_Left) {
+            finish();
+        } else if (id == R.id.developer_mode_id_getSSID) {
+            if (ppScale != null) {
+                ppScale.sendInquityWifiConfig();
+            }
+        } else if (id == R.id.developer_mode_id_modifyServerIP) {
+            String ip = inputServerIP.getText().toString();
+            if (!TextUtils.isEmpty(ip)) {
+                ip = ip.trim();
+                if (ppScale != null) {
+                    ppScale.sendModifyServerIp(ip);
+                }
+            }
+        } else if (id == R.id.developer_mode_id_modifyServerDNS) {
+            String dns = inputServerDNS.getText().toString();
+            if (!TextUtils.isEmpty(dns)) {
+                dns = dns.trim();
+                if (ppScale != null) {
+                    ppScale.sendModifyServerDNS(dns);
+                }
+            }
+        } else if (id == R.id.developer_mode_id_startConnect) {
+            startScanBle();
+        } else if (id == R.id.developer_mode_id_clearSSID) {
+            if (ppScale != null) {
+                ppScale.sendDeleteWifiConfig();
+            }
         }
-        super.onDestroy();
     }
 }

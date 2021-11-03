@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PPBluetoothLE</string>
+    <string name="app_name">PPScale</string>
     <string name="height">身高（厘米）</string>
     <string name="_30_220">取值范围：30-220</string>
     <string name="value_range_30_220">取值范围：30-220</string>
@@ -14,6 +14,8 @@
     <string name="data_details">数据详情</string>
     <string name="blutooth_distribution_net">蓝牙配网</string>
     <string name="binding_device">绑定设备</string>
+    <string name="function_list_ble">蓝牙功能列表</string>
+    <string name="function_list_wifi">WiFi功能列表</string>
     <string name="weigh_on_the_scale">上秤称重</string>
     <string name="equipment_management">设备管理</string>
     <string name="scan_device">扫描设备</string>

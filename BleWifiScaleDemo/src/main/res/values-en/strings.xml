@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">PPBluetoothLE_WiFi</string>
 	<string name="height">Height (cm)</string>
 	<string name="_30_220">Range: 30-220</string>
 	<string name="value_range_30_220">Range: 30-220</string>

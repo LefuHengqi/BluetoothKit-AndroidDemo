@@ -10,21 +10,19 @@ public class SettingManager {
     private final String SHARE_PREFERENCES = "set";
     private final String UID = "UID";
 
-    private Context context;
     private static SettingManager settingManager;
     private static SharedPreferences spf;
 
     private SettingManager(Context context) {
-        this.context = context;
         spf = context.getSharedPreferences(SHARE_PREFERENCES, Context.MODE_PRIVATE);
     }
 
 
-    public static SettingManager get() {
+    public static SettingManager get(Context context) {
         if (settingManager == null) {
             synchronized (SettingManager.class) {
                 if (settingManager == null) {
-                    settingManager = new SettingManager(PPApplication.getInstance());
+                    settingManager = new SettingManager(context);
                 }
             }
         }

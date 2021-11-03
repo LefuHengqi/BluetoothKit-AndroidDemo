@@ -13,13 +13,9 @@ import com.alibaba.fastjson.JSON;
 import com.lefu.ppscale.wifi.R;
 import com.lefu.ppscale.wifi.data.WifiDataBean;
 import com.lefu.ppscale.wifi.data.WifiDataVo;
-import com.lefu.ppscale.wifi.model.DeviceModel;
 import com.lefu.ppscale.wifi.util.PPUtil;
 import com.peng.ppscale.business.device.PPUnitType;
-import com.peng.ppscale.util.DateUtil;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 public class WifiDataListAdapter extends ArrayAdapter {

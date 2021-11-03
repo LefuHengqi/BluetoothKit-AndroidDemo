@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">乐瘦</string>
     <string name="hello">你好,</string>
     <string name="MeasureWeight">点击\'测量\'按键可直接称重哦!\n 快来体验吧！</string>
     <string name="iSee">我知道了</string>
