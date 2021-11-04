@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
+import com.lefu.ppscale.ble.model.DataUtil;
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity;
 import com.lefu.ppscale.wifi.data.WifiDataListActivity;
 import com.peng.ppscale.business.ble.PPScale;
@@ -38,6 +39,8 @@ public class WifiFunctionListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WifiFunctionListActivity.this, WifiDataListActivity.class);
+                intent.putExtra("userinfo", DataUtil.util().getUserModel());
+//                intent.putExtra("unit", PPUtil.getWeightUnitNum(DataUtil.util().getUnit()));
                 startActivity(intent);
             }
         });

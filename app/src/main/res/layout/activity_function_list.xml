@@ -14,12 +14,12 @@
         android:text="@string/scan_device" />
 
     <Button
-        android:id="@+id/wificonfigBtn"
+        android:id="@+id/eadHistoryListBtn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
-        android:text="@string/blutooth_distribution_net" />
+        android:text="@string/eadHistoryList" />
 
     <Button
         android:id="@+id/bmdjBtn"

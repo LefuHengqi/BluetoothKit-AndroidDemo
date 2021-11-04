@@ -12,6 +12,9 @@ import android.text.TextUtils;
 
 import com.peng.ppscale.util.Logger;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class WifiUtil {
@@ -158,6 +161,12 @@ public class WifiUtil {
         } else {
             return null;
         }
+    }
+
+    /*** 日期long格式化为yyyy/MM/dd HH:mm ***/
+    public static String formatDate2(long date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(new Date(date));
     }
 
 }

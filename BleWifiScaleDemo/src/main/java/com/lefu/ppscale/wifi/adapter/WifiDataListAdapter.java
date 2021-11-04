@@ -13,8 +13,9 @@ import com.alibaba.fastjson.JSON;
 import com.lefu.ppscale.wifi.R;
 import com.lefu.ppscale.wifi.data.WifiDataBean;
 import com.lefu.ppscale.wifi.data.WifiDataVo;
-import com.lefu.ppscale.wifi.util.PPUtil;
+import com.lefu.ppscale.wifi.util.WifiUtil;
 import com.peng.ppscale.business.device.PPUnitType;
+import com.peng.ppscale.util.PPUtil;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class WifiDataListAdapter extends ArrayAdapter {
         weightKgText.setText(PPUtil.getWeight(PPUnitType.Unit_KG, wifiDataBean.getWeight(), wifiDataBean.getType()));
 
         try {
-            String dateTime = PPUtil.formatDate2(Long.parseLong(wifiDataBean.getTimestamp()));
+            String dateTime = WifiUtil.formatDate2(Long.parseLong(wifiDataBean.getTimestamp()));
             weichtTime.setText(dateTime);
         } catch (Exception e) {
             e.printStackTrace();

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.activity.BindingDeviceActivity;
+import com.lefu.ppscale.ble.activity.ReadHistoryListActivity;
 import com.lefu.ppscale.ble.activity.ScanDeviceListActivity;
 import com.lefu.ppscale.ble.bmdj.BMDJConnectActivity;
 import com.peng.ppscale.business.ble.PPScale;
@@ -23,19 +24,6 @@ public class FunctionListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_function_list);
 
-        Button mBtnConfigWifi = findViewById(R.id.wificonfigBtn);
-        mBtnConfigWifi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PPScale.isBluetoothOpened()) {
-//                    Intent intent = new Intent(FunctionListActivity.this, BleConfigWifiActivity.class);
-//                    startActivity(intent);
-                } else {
-                    PPScale.openBluetooth();
-                }
-            }
-        });
-
         Button mBtnSearchDevice = findViewById(R.id.searchDeviceListBtn);
         mBtnSearchDevice.setOnClickListener(new View.OnClickListener() {
 
@@ -43,8 +31,15 @@ public class FunctionListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //扫描设备列表
                 Intent intent = new Intent(FunctionListActivity.this, ScanDeviceListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.eadHistoryListBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 //读取历史数据
-//                Intent intent = new Intent(MainActivity.this, ReadHistoryListActivity.class);
+                Intent intent = new Intent(FunctionListActivity.this, ReadHistoryListActivity.class);
                 startActivity(intent);
             }
         });

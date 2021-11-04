@@ -11,6 +11,8 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSON;
+import com.lefu.ppscale.db.dao.DBManager;
+import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.R;
 import com.lefu.ppscale.wifi.SettingManager;
 import com.lefu.ppscale.wifi.activity.WifiBodyDataDetailActivity;
@@ -18,6 +20,7 @@ import com.lefu.ppscale.wifi.adapter.WifiDataListAdapter;
 import com.lefu.ppscale.wifi.net.okhttp.DataTask;
 import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
 import com.lefu.ppscale.wifi.net.okhttp.RetCallBack;
+import com.peng.ppscale.vo.PPUserModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +38,8 @@ public class WifiDataListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_data_list);
-//        final List<DeviceModel> list = DBManager.manager().getDeviceList();
+        final List<DeviceModel> list = DBManager.manager().getDeviceList();
+
         adapter = new WifiDataListAdapter(WifiDataListActivity.this, R.layout.list_view_device, new ArrayList<WifiDataVo.Data>());
         listView = (ListView) findViewById(R.id.list_View);
         listView.setAdapter(adapter);
@@ -49,9 +53,9 @@ public class WifiDataListActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.determine, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        DBManager.manager().deleteDevice(list.get(position));
-//                        list.remove(position);
-//                        adapter.notifyDataSetChanged();
+                        DBManager.manager().deleteDevice(list.get(position));
+                        list.remove(position);
+                        adapter.notifyDataSetChanged();
                     }
                 });
 
@@ -67,11 +71,13 @@ public class WifiDataListActivity extends AppCompatActivity {
 
                 WifiDataVo.Data dataVo = (WifiDataVo.Data) parent.getAdapter().getItem(position);
 
-
                 WifiDataBean wifiDataBean = JSON.parseObject(dataVo.getWeightJson(), WifiDataBean.class);
+
+                PPUserModel userModel = (PPUserModel) getIntent().getSerializableExtra("userinfo");
 
                 Intent intent = new Intent(WifiDataListActivity.this, WifiBodyDataDetailActivity.class);
                 intent.putExtra("wifiDataBean", wifiDataBean);
+                intent.putExtra("userinfo", userModel);
                 startActivity(intent);
 
             }

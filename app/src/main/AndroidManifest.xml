@@ -29,6 +29,7 @@
         <activity android:name=".wififunction.WifiFunctionListActivity" />
         <activity android:name=".function.FunctionListActivity" />
         <activity android:name="TestBleActivity" />
+        <activity android:name=".userinfo.UserinfoActivity" />
     </application>
 
 </manifest>
