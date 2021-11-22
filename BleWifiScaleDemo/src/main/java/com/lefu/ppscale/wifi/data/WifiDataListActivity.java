@@ -11,10 +11,10 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSON;
+import com.lefu.base.SettingManager;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.R;
-import com.lefu.ppscale.wifi.SettingManager;
 import com.lefu.ppscale.wifi.activity.WifiBodyDataDetailActivity;
 import com.lefu.ppscale.wifi.adapter.WifiDataListAdapter;
 import com.lefu.ppscale.wifi.net.okhttp.DataTask;

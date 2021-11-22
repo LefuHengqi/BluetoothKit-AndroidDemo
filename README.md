@@ -19,7 +19,7 @@
 
          dependencies {
                 、、、
-                        implementation 'com.lefu.ppscale:ppscale:2.0.1'
+                        implementation 'com.lefu.ppscale:ppscale:2.0.6'
                         //如果包含直流秤,请引用body_sl
                         implementation 'com.lefu.ppscale:body_sl:1.0.0'
          }

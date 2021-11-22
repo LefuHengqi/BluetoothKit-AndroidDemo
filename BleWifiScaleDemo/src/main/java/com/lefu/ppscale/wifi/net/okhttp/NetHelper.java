@@ -1,13 +1,11 @@
 package com.lefu.ppscale.wifi.net.okhttp;
 
 import android.content.Context;
-import android.telecom.Call;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.R;
-import com.lefu.ppscale.wifi.SettingManager;
 import com.lefu.ppscale.wifi.net.okhttp.vo.SaveWifiGroupBean;
 
 import java.util.HashMap;

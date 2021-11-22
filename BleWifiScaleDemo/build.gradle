@@ -45,6 +45,7 @@ dependencies {
 //    compileOnly 'org.greenrobot:greendao:3.3.0'
     compileOnly project(':ppscale')
     compileOnly project(':data_db')
+    compileOnly project(':base')
 //    implementation 'com.lefu.ppscale:ppscale:2.0.4'
 //    implementation 'com.lefu.ppscale:body_sl:1.0.0'
 //    implementation('com.peng.ppscale:ppscale-new-master:0.0.4.16.1') {

@@ -25,15 +25,24 @@ import android.view.View
 import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.lefu.base.SettingManager
 import com.lefu.ppscale.ble.model.DataUtil
 import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.util.PPUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val userModel =
+            SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
+
+        if (userModel == null) {
+            startActivity(Intent(this@MainActivity, UserinfoActivity::class.java))
+        }
         requestPower()
 
         onBtnClck()

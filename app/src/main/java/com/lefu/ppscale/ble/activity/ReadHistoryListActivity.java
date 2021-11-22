@@ -95,7 +95,7 @@ public class ReadHistoryListActivity extends Activity {
 
     private BleOptions getBleOptions() {
         return new BleOptions.Builder()
-                .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)//直连  孕妇模式时请开启直连
+                .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)
                 .build();
     }
 

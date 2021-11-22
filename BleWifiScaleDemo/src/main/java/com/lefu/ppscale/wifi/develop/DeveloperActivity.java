@@ -68,7 +68,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
         developer_mode_id_modifyServerIP.setOnClickListener(this);
         developer_mode_id_modifyServerDNS.setOnClickListener(this);
         reStartConnectView.setOnClickListener(this);
-        reStartConnectView.setOnClickListener(this);
+        iv_Left.setOnClickListener(this);
 
     }
 
@@ -162,7 +162,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
                 case PPBleStateSearchCanceled:
                     Logger.d(getString(R.string.scan_cancle));
 
-                    tvTitle.setText(getString(R.string.scan_cancle));
+//                    tvTitle.setText(getString(R.string.scan_cancle));
                     break;
                 case PPBleWorkSearchTimeOut:
                     Logger.d(getString(R.string.scan_time_out));

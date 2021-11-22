@@ -10,11 +10,11 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.lefu.base.SettingManager;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
-import com.lefu.ppscale.wifi.SettingManager;
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity;
 import com.lefu.ppscale.wifi.develop.DeveloperActivity;
 import com.lefu.ppscale.wifi.net.okhttp.NetHelper;

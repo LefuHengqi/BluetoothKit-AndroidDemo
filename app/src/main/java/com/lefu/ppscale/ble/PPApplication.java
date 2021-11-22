@@ -4,6 +4,7 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
 
+import com.lefu.base.SettingManager;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.peng.ppscale.business.ble.PPScale;
 
@@ -16,6 +17,7 @@ public class PPApplication extends Application {
         mApp = this;
         DBManager.initGreenDao(this);
         PPScale.setDebug(true);
+        SettingManager.get(this);
     }
 
 

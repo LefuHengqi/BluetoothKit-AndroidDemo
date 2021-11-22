@@ -1,5 +1,6 @@
 package com.lefu.ppscale.ble.model;
 
+import com.lefu.base.SettingManager;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.vo.PPBodyFatModel;
 import com.peng.ppscale.vo.PPUserModel;
@@ -23,11 +24,7 @@ public class DataUtil {
     }
 
     public DataUtil() {
-        userModel = new PPUserModel.Builder().setAge(18)
-                .setHeight(180)
-                .setSex(PPUserGender.PPUserGenderMale)
-                .setGroupNum(0)
-                .build();
+
     }
 
     public PPBodyFatModel getBodyDataModel() {
@@ -39,11 +36,19 @@ public class DataUtil {
     }
 
     public PPUserModel getUserModel() {
+        userModel = SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel.class);
+        if (userModel == null) {
+            userModel = new PPUserModel.Builder().setAge(18)
+                    .setHeight(180)
+                    .setSex(PPUserGender.PPUserGenderMale)
+                    .setGroupNum(0)
+                    .build();
+        }
         return userModel;
     }
 
     public void setUserModel(PPUserModel userModel) {
-        this.userModel = userModel;
+        SettingManager.get().setDataObj(SettingManager.USER_MODEL, userModel);
     }
 
     public void setUnit(PPUnitType unit) {

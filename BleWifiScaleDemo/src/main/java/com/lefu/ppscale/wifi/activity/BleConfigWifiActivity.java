@@ -17,10 +17,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lefu.base.SettingManager;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.R;
-import com.lefu.ppscale.wifi.SettingManager;
 import com.lefu.ppscale.wifi.net.okhttp.DataTask;
 import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
 import com.lefu.ppscale.wifi.net.okhttp.RetCallBack;

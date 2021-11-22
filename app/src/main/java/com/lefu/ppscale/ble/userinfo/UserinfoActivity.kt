@@ -183,5 +183,9 @@ class UserinfoActivity : AppCompatActivity() {
         DataUtil.util().unit = unit
     }
 
+    fun onSave(view: View) {
+        onBackPressed()
+    }
+
 
 }
