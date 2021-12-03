@@ -57,25 +57,26 @@ dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation project(path: ':BleWifiScaleDemo')
-    implementation project(path: ':data_db')
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-
-//    implementation project(':ppscale')
-    implementation project(':data_range')
-    implementation project(':base')
-//    implementation project(':BleWifiScaleDemo')
-    implementation 'com.lefu.ppscale:ppscale:2.1.2-SNAPSHOT'
-    //如果包含直流秤,请引用body_sl
-    implementation 'com.lefu.ppscale:body_sl:1.0.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation project(':BleWifiScaleDemo')
+    implementation project(':data_db')
+    implementation project(':data_range')
+    implementation project(':base')
+    //如果包含直流秤,请引用body_sl
+    implementation 'com.lefu.ppscale:body_sl:1.0.0'
+
+    implementation project(':ppscale')
+//    implementation 'com.lefu.ppscale:ppscale:2.1.3-SNAPSHOT'
 
 
 }
