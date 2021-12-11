@@ -28,6 +28,7 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
         public final static Property DeviceType = new Property(3, int.class, "deviceType", false, "DEVICE_TYPE");
         public final static Property Sn = new Property(4, String.class, "sn", false, "SN");
         public final static Property Ssid = new Property(5, String.class, "ssid", false, "SSID");
+        public final static Property AccuracyType = new Property(6, int.class, "accuracyType", false, "ACCURACY_TYPE");
     }
 
 
@@ -48,7 +49,8 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
                 "\"DEVICE_NAME\" TEXT," + // 2: deviceName
                 "\"DEVICE_TYPE\" INTEGER NOT NULL ," + // 3: deviceType
                 "\"SN\" TEXT," + // 4: sn
-                "\"SSID\" TEXT);"); // 5: ssid
+                "\"SSID\" TEXT," + // 5: ssid
+                "\"ACCURACY_TYPE\" INTEGER NOT NULL );"); // 6: accuracyType
     }
 
     /** Drops the underlying database table. */
@@ -86,6 +88,7 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
         if (ssid != null) {
             stmt.bindString(6, ssid);
         }
+        stmt.bindLong(7, entity.getAccuracyType());
     }
 
     @Override
@@ -117,6 +120,7 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
         if (ssid != null) {
             stmt.bindString(6, ssid);
         }
+        stmt.bindLong(7, entity.getAccuracyType());
     }
 
     @Override
@@ -132,7 +136,8 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // deviceName
             cursor.getInt(offset + 3), // deviceType
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // sn
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // ssid
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // ssid
+            cursor.getInt(offset + 6) // accuracyType
         );
         return entity;
     }
@@ -145,6 +150,7 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
         entity.setDeviceType(cursor.getInt(offset + 3));
         entity.setSn(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setSsid(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setAccuracyType(cursor.getInt(offset + 6));
      }
     
     @Override

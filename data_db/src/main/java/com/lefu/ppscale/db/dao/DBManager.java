@@ -47,7 +47,6 @@ public class DBManager {
         return sqLiteDatabase;
     }
 
-
     public void insertDevice(DeviceModel model) {
         deviceModelDao.insertOrReplace(model);
     }

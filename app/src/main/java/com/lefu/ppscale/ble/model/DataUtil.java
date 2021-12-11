@@ -3,6 +3,7 @@ package com.lefu.ppscale.ble.model;
 import com.lefu.base.SettingManager;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.vo.PPBodyFatModel;
+import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPUserModel;
 import com.peng.ppscale.vo.PPUserGender;
 
@@ -10,6 +11,7 @@ public class DataUtil {
     private static DataUtil dataUtil;
     private PPBodyFatModel bodyDataModel;
     private PPUserModel userModel;
+    private PPDeviceModel deviceModel;
     PPUnitType unit = PPUnitType.Unit_KG;
 
     public static DataUtil util() {
@@ -57,5 +59,13 @@ public class DataUtil {
 
     public PPUnitType getUnit() {
         return unit;
+    }
+
+    public PPDeviceModel getDeviceModel() {
+        return deviceModel;
+    }
+
+    public void setDeviceModel(PPDeviceModel deviceModel) {
+        this.deviceModel = deviceModel;
     }
 }

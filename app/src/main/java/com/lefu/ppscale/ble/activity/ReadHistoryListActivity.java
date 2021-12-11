@@ -118,7 +118,7 @@ public class ReadHistoryListActivity extends Activity {
              * @param dateTime
              */
             @Override
-            public void monitorHistoryData(PPBodyFatModel bodyFatModel, boolean isEnd, String dateTime) {
+            public void monitorHistoryData(PPBodyFatModel bodyFatModel, boolean isEnd, String dateTime, PPDeviceModel deviceModel) {
                 if (bodyFatModel != null) {
                     Logger.d("ppScale_ isEnd = " + isEnd + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyFatModel.getPpWeightKg());
                 } else {
@@ -127,7 +127,7 @@ public class ReadHistoryListActivity extends Activity {
                 if (!isEnd) {
                     if (bodyFatModel != null) {
 
-                        String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getScaleName());
+                        String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
 
                         DeviceModel bodyModel = new DeviceModel(bodyFatModel.getImpedance() + "", weightStr, -1);
 

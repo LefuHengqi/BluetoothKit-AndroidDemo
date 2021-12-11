@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
 import com.peng.ppscale.vo.PPBodyFatModel;
+import com.peng.ppscale.vo.PPDeviceModel;
 import com.ppscale.data_range.vo.BodyItem;
 import com.ppscale.data_range.vo.PPBodyFatDetailModel;
 
@@ -25,8 +26,13 @@ public class BodyDataDetailActivity extends AppCompatActivity {
         PPBodyFatModel bodyData = DataUtil.util().getBodyDataModel();
         if (bodyData != null) {
 //            textView.setText(bodyData.toString());
+            int accuracyType = 1;
+            PPDeviceModel deviceModel = DataUtil.util().getDeviceModel();
+            if (deviceModel != null) {
+                accuracyType = deviceModel.deviceAccuracyType.getType();
+            }
 
-            PPBodyFatDetailModel ppBodyFatDetailModel = new PPBodyFatDetailModel(this, bodyData, DataUtil.util().getUnit());
+            PPBodyFatDetailModel ppBodyFatDetailModel = new PPBodyFatDetailModel(this, bodyData, DataUtil.util().getUnit(), accuracyType);
 
             Map<String, BodyItem> bodyItems = ppBodyFatDetailModel.getBodyItems();
 

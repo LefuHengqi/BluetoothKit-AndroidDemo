@@ -15,22 +15,7 @@ public class DeviceModel {
     private int deviceType;
     private String sn;
     private String ssid;
-    @Generated(hash = 1805901528)
-    public DeviceModel(Long id, String deviceMac, String deviceName, int deviceType,
-            String sn, String ssid) {
-        this.id = id;
-        this.deviceMac = deviceMac;
-        this.deviceName = deviceName;
-        this.deviceType = deviceType;
-        this.sn = sn;
-        this.ssid = ssid;
-    }
-
-
-
-    @Generated(hash = 210163102)
-    public DeviceModel() {
-    }
+    private int accuracyType;
 
     public DeviceModel(String deviceMac, String deviceName, int deviceType) {
         this.deviceMac = deviceMac;
@@ -38,6 +23,20 @@ public class DeviceModel {
         this.deviceType = deviceType;
     }
 
+    @Generated(hash = 87238658)
+    public DeviceModel(Long id, String deviceMac, String deviceName, int deviceType,
+            String sn, String ssid, int accuracyType) {
+        this.id = id;
+        this.deviceMac = deviceMac;
+        this.deviceName = deviceName;
+        this.deviceType = deviceType;
+        this.sn = sn;
+        this.ssid = ssid;
+        this.accuracyType = accuracyType;
+    }
+    @Generated(hash = 210163102)
+    public DeviceModel() {
+    }
     public Long getId() {
         return this.id;
     }
@@ -74,6 +73,13 @@ public class DeviceModel {
     public void setSsid(String ssid) {
         this.ssid = ssid;
     }
+    public int getAccuracyType() {
+        return this.accuracyType;
+    }
+    public void setAccuracyType(int accuracyType) {
+        this.accuracyType = accuracyType;
+    }
+    
     
 
 }

@@ -1,5 +1,6 @@
 package com.lefu.ppscale.wifi.adapter;
 
+import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.alibaba.fastjson.JSON;
+import com.lefu.ppscale.db.dao.DBManager;
+import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.R;
 import com.lefu.ppscale.wifi.data.WifiDataBean;
 import com.lefu.ppscale.wifi.data.WifiDataVo;
 import com.lefu.ppscale.wifi.util.WifiUtil;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.util.PPUtil;
+import com.peng.ppscale.vo.PPScaleDefine;
 
 import java.util.List;
 
@@ -35,7 +39,12 @@ public class WifiDataListAdapter extends ArrayAdapter {
 
         WifiDataBean wifiDataBean = JSON.parseObject(dataVo.getWeightJson(), WifiDataBean.class);
 
-        weightKgText.setText(PPUtil.getWeight(PPUnitType.Unit_KG, wifiDataBean.getWeight(), wifiDataBean.getType()));
+        DeviceModel device = DBManager.manager().getDevice(wifiDataBean.getMac());
+        int accuracyType = PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType();
+        if (device != null) {
+            accuracyType = device.getAccuracyType();
+        }
+        weightKgText.setText(PPUtil.getWeight(PPUnitType.Unit_KG, wifiDataBean.getWeight(), accuracyType));
 
         try {
             String dateTime = WifiUtil.formatDate2(Long.parseLong(wifiDataBean.getTimestamp()));

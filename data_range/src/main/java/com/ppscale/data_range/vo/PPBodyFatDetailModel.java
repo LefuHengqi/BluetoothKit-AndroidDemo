@@ -41,8 +41,8 @@ public class PPBodyFatDetailModel {
 
     Map<String, BodyItem> bodyItems = new HashMap<>();
 
-    public PPBodyFatDetailModel(Context context, PPBodyFatModel bodyFat, PPUnitType unitType) {
-        initBodyIndex(context, bodyFat, unitType);
+    public PPBodyFatDetailModel(Context context, PPBodyFatModel bodyFat, PPUnitType unitType, int accuracyType) {
+        initBodyIndex(context, bodyFat, unitType, accuracyType);
     }
 
     public Map<String, BodyItem> getBodyItems() {
@@ -70,7 +70,7 @@ public class PPBodyFatDetailModel {
      * @param bodyFat
      * @return
      */
-    private void initBodyIndex(Context context, PPBodyFatModel bodyFat, PPUnitType unitType) {
+    private void initBodyIndex(Context context, PPBodyFatModel bodyFat, PPUnitType unitType, int accuracyType) {
 
         int sex = UserUtil.getEnumSex(bodyFat.getPpSex());
         int height = (int) bodyFat.getPpHeightCm();
@@ -83,8 +83,8 @@ public class PPBodyFatDetailModel {
         weight.setCode(FLAG_WEIGHTKG);
         int index = StripedStand.weightLevel(sex, height, bodyFat.getPpWeightKg());
         weight.setLevelIndex(index);
-        weight.setDataVal(PPUtil.getWeight(unitType, bodyFat.getPpWeightKg(), bodyFat.getScaleName()));
-        weight.setValue(PPUtil.getWeightValue(unitType, bodyFat.getPpWeightKg(), bodyFat.getScaleName()));
+        weight.setDataVal(PPUtil.getWeight(unitType, bodyFat.getPpWeightKg(), accuracyType));
+        weight.setValue(PPUtil.getWeightValue(unitType, bodyFat.getPpWeightKg(), accuracyType));
         weight.setUnit(PPUtil.getWeightUnit(unitType));
         FatDescribeEntity weightAdvice = BodyAdviceUtil.getWeightAdvice(index);
         weight.setSide(context.getString(weightAdvice.side));
