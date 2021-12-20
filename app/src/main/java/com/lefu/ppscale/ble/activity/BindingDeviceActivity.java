@@ -258,6 +258,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 //可写状态，可以发送指令，例如切换单位，获取历史数据等
                 sendUnitDataScale();
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
+                Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
                 ppScale.connectDevice(deviceModel);
             } else {
@@ -293,11 +294,13 @@ public class BindingDeviceActivity extends AppCompatActivity {
                         //发送失败
                     } else if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                         //发送成功
+
                     } else if (sendState == PPScaleSendState.PP_DEVICE_ERROR) {
                         //设备错误，说明不支持该指令
                     } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
                         //设备未连接
                     }
+                    disConnect();
                 }
             });
         }
@@ -337,7 +340,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
         super.onDestroy();
         if (ppScale != null) {
             ppScale.stopSearch();
-            ppScale.disConnect();
+//            ppScale.disConnect();
         }
         if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.dismiss();
@@ -410,7 +413,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
         DBManager.manager().insertDevice(deviceModel);
 
         DataUtil.util().setBodyDataModel(bodyDataModel);
-        disConnect();
     }
 
     private void disConnect() {

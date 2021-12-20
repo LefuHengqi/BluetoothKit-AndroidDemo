@@ -47,7 +47,7 @@
     <string name="scan_timeout">扫描超时</string>
     <string name="scanning">扫描中</string>
     <string name="Connectable">可连接</string>
-    <string name="writable">Can send instructions</string>
+    <string name="writable">可以写</string>
     <string name="bluetooth_status_is_abnormal">蓝牙状态异常</string>
     <string name="system_bluetooth_disconnect">系统蓝牙断开</string>
     <string name="system_blutooth_on">系统蓝牙打开</string>

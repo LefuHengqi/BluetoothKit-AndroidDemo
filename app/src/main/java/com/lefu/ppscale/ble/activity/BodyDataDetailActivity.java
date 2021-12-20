@@ -25,7 +25,7 @@ public class BodyDataDetailActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.data_detail);
         PPBodyFatModel bodyData = DataUtil.util().getBodyDataModel();
         if (bodyData != null) {
-//            textView.setText(bodyData.toString());
+            textView.setText(bodyData.toString());
             int accuracyType = 1;
             PPDeviceModel deviceModel = DataUtil.util().getDeviceModel();
             if (deviceModel != null) {
@@ -39,7 +39,7 @@ public class BodyDataDetailActivity extends AppCompatActivity {
             if (bodyItems != null && !bodyItems.isEmpty()) {
                 List<BodyItem> bodyItemList = new ArrayList<>(bodyItems.values());
                 for (BodyItem bodyItem : bodyItemList) {
-                    textView.append(bodyItem.toString() + "\n");
+//                    textView.append(bodyItem.toString() + "\n");
                 }
             }
 
