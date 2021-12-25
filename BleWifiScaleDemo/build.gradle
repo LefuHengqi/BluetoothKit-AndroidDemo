@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
@@ -43,10 +43,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 //    compileOnly 'org.greenrobot:greendao:3.3.0'
-    compileOnly project(':ppscale')
+//    compileOnly project(':ppscale')
     compileOnly project(':data_db')
     compileOnly project(':base')
-//    implementation 'com.lefu.ppscale:ppscale:2.0.4'
+    api "com.lefu.ppscale:ppscale:$ppscale_version"
 //    implementation 'com.lefu.ppscale:body_sl:1.0.0'
 //    implementation('com.peng.ppscale:ppscale-new-master:0.0.4.16.1') {
 //        exclude group: 'com.inuker.bluetooth'
@@ -57,4 +57,5 @@ dependencies {
     compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6'
     compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6'
 
+//    implementation(name: 'ppscale-2.1.3-20211221.061422-1', ext: 'aar')
 }
