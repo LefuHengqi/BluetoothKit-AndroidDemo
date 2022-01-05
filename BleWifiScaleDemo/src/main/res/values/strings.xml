@@ -35,6 +35,7 @@
     <string name="device_disconnected">设备已断开</string>
     <string name="stop_scanning">停止扫描</string>
     <string name="scanning">扫描中</string>
+    <string name="Writable">可写</string>
     <string name="bluetooth_status_is_abnormal">蓝牙状态异常</string>
     <string name="system_bluetooth_disconnect">系统蓝牙断开</string>
     <string name="system_blutooth_on">系统蓝牙打开</string>

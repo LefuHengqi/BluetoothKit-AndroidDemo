@@ -125,10 +125,6 @@ public class BleConfigWifiActivity extends AppCompatActivity {
      */
     private void startConfigWifi() {
         if (!is2_4G) {
-            /*String wifiKey = etWifiKey.getText().toString();
-            if (wifiKey.isEmpty()) {
-            } else {
-            }*/
             startNextStep();
         }
     }
@@ -180,41 +176,23 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                     }
                 });
 
-//                finish();
             }
         });
 
-//        List<String> devices = new ArrayList<>();
-//        devices.add(address);
         ppScale = new PPScale.Builder(this)
                 .setProtocalFilterImpl(protocalFilter)
                 .setBleOptions(getBleOptions())
-//                .setDeviceList(devices)
                 .setBleStateInterface(bleStateInterface)
                 .build();
-//        ppScale.startSearchBluetoothScaleWithMacAddressList();
         ppScale.connectAddress(address);
     }
 
     /**
-     * 参数配置 绑定时请确保WIFI是2.4G，并且账号密码正确
-     *
-     * @param //password     WIFI密码
-     * @param //featuresFlag 具备的能力，WIFI秤{@link BleOptions.ScaleFeatures#FEATURES_CONFIG_WIFI}
-     *                       具备的能力，体重秤{@link BleOptions.ScaleFeatures#FEATURES_WEIGHT}
-     *                       具备的能力，脂肪秤{@link BleOptions.ScaleFeatures#FEATURES_FAT}
-     *                       具备的能力，心率秤{@link BleOptions.ScaleFeatures#FEATURES_HEART_RATE}
-     *                       具备的能力，离线秤{@link BleOptions.ScaleFeatures#FEATURES_HISTORY}
-     *                       具备的能力，闭目单脚秤{@link BleOptions.ScaleFeatures#FEATURES_BMDJ}
-     * @return
-     * @parm ssid          WIFI账号  不可为空
+     * 参数配置
      */
     private BleOptions getBleOptions() {
-
         return new BleOptions.Builder()
                 .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_CONFIG_WIFI)
-//                .setPassword(etWifiKey.getText().toString())
-//                .setSsid(ssid)
                 .build();
     }
 
@@ -235,7 +213,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 Logger.d(getString(R.string.scanning));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
-                Logger.d(getString(R.string.scanning));
+                Logger.d(getString(R.string.Writable));
                 startConfiWifi();
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
@@ -256,6 +234,9 @@ public class BleConfigWifiActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * 绑定时请确保WIFI是2.4G，并且账号密码正确
+     */
     private void startConfiWifi() {
         ssid = etWifiName.getText().toString();
         String password = etWifiKey.getText().toString();

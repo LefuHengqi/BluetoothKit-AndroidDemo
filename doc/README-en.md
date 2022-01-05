@@ -1,139 +1,479 @@
 [English Docs](README-en.md)  | [中文文档](../README.md)
 
-#  LF Bluetooth Scale SDK
+# LF Bluetooth scale/WiFi scale SDK
 
-## 一、Bluetooth WiFi related documents
+## One. Bluetooth WiFi related documents
+
+ppscale is the Bluetooth connection logic and data analysis logic. When the developer integrates,
+please use the integration method of the library downloaded from maven. It is recommended that
+developers check the README.md document to complete the integration.
+
 The example module is: BleWifiScaleDemo
-[蓝牙WIFI秤文档中文](BleWifiScaleDemo/README_CN.md)  | 
-[Bluetooth WIFI Scale example](BleWifiScaleDemo/README_EN.md) 
-   
-## 二、Bluetooth body fat scale example  
+[Bluetooth WIFI Scale Document Chinese](BleWifiScaleDemo/README_CN.md)
+[Bluetooth WIFI Scale example English](BleWifiScaleDemo/README_EN.md)
 
-###  Ⅰ . Integration method - two methods
-#####  gradle Automatic import method
+## Two, Bluetooth body fat scale example
 
-Add to build.gradle under the module that needs to import the SDK
- 
-          //Please use different artifactId according to different branches, the format is: ppscale-branch name
-          //The following is the integration method of the master branch, the corresponding so file has been integrated
-          dependencies {
-                 ,,
-                     implementation project(':ppscale-new-master')
-                     //If your scale is a DC scale, please quote body_sl
-                     //implementation project(":body_sl")
-          }
+### Ⅰ. Integration method
+
+##### sdk introduction method
+
+Add to the build.gradle under the module that needs to import the SDK (for the latest version,
+please check the libs under the module of ppscalelib)
+
+         dependencies {
+                    //1.aar introduction
+                    implementation files('libs/ppscale-213-20220105-0327015.aar')
+                    //2.github maven introduced, you need to refer to build.gradle under Project to introduce maven {url "https://raw.githubusercontent.com/PPScale/ppscale-android-maven/main"}
+                    //implementation'com.lefu.ppscale:ppscale:2.1.3-SNAPSHOT'
+         }
+
+### Ⅱ. Instructions for use
+
+### 1.1 Bluetooth permissions related
+
+* Due to the need for Bluetooth connection, Demo needs to run on a real machine.
+
+* In Android 6.0 and above system versions, make sure to turn it on before starting the scan
+
+    1. Positioning permissions
+    2. Positioning switch
+    3. Bluetooth switch
+
+* If you need information other than the weight value, you need to enter your height, age, gender
+  and go on the scale barefoot.
+
+* During the use of Demo, you need to turn on Bluetooth and give Demo location permission
+
+### 1.2 General functions
+
+#### 1.2.1 User information editing
+
+User information editing-enter the user's height, age, gender and weight unit, if the scale supports
+pregnant women mode and athlete mode can also be turned on
+
+What can be entered:
+
+    The value range of height: 30-220 cm;
+    The range of age: 10-99 years old;
+    Weight unit 0 stands for kilograms, 1 stands for catties, and 2 stands for pounds;
+    Gender 1 represents male, 0 represents female;
+    User group value range 0-9 (this value is required for specific scales)
+    Maternity mode 1 on 0 off (requires scale support)
+    Athlete mode 1 is on, 0 is off (requires scale support)
+
+PPUserModel parameter description:
+
+    userHeight, age, sex must be real
+    userHeight range is 100-220cm
+    age range is 10-99
+    sex 0 for female 1 for male
+    isAthleteMode;//Athlete mode false is normal true open (requires scale support)
+    isPregnantMode;//Pregnant woman mode false is normal true open (requires scale support)
+
+#### 1.2.2 Binding device
+
+Binding device-After this controller is instantiated, it will scan for nearby peripherals and make a
+record of your peripherals.
+
+#### 1.2.3 Weighing on the scale
+
+Weighing on the scale-This controller will also start scanning nearby peripherals after being
+instantiated, and connect the bound devices through filtering. Therefore, the weighing can only be
+carried out after being bound, otherwise the data cannot be received.
+
+#### 1.2.4 Device Management
+
+Device Management-This controller will display the peripherals you bind on the "Bind Devices" page in a list. You can delete the bound device by long pressing.
+
+#### 1.2.5 Data details
+
+    After receiving the data returned by the peripherals on the "Bind Device" and "Weighing on Scale" pages, it will automatically jump to the data details page
+
+### 1.3 Bluetooth function
+
+#### 1.3.1 Scan device
+
+Search nearby supported devices ScanDeviceListActivity.java
+
+    //Get surrounding Bluetooth scale equipment 
+    ppScale.monitorSurroundDevice(); 
+    //Connect to selected device
+    if (ppScale != null){
+        ppScale.connectWithMacAddressList(models);
+    }
+
+#### 1.3.2 Read historical data
+
+Need to "bind the device" and then read the "historical data" ReadHistoryListActivity.java //Read
+historical data directly, you need to pass in the scale to be read private void bindingDevice() {
+
+        List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
+
+        if (deviceList != null && !deviceList.isEmpty()) {
+            List<String> addressList = new ArrayList<>();
+            for (DeviceModel deviceModel: deviceList) {
+                addressList.add(deviceModel.getDeviceMac());
+            }
+            ppScale = new PPScale.Builder(this)
+                    .setProtocalFilterImpl(getProtocalFilter())
+                    .setBleOptions(getBleOptions())
+                    .setDeviceList(addressList)//Note: This is a mandatory item
+                    .setUserModel(userModel)
+                    .setBleStateInterface(bleStateInterface)
+                    .build();
+            //Get historical data
+            tv_starts.setText("Start reading offline data");
+            ppScale.fetchHistoryData();
+        } else {
+            tv_starts.setText("Please bind the device first");
+        }
+
+    }
+
+#### 1.3.3 [Close eyes single foot] (#Close eyes single foot mode)
+
+### 1.4 WiFi function
+
+#### 1.4.1 Matters needing attention
+
+The default Server domain name address is: https://api.lefuenergy.com
+
+    1. Make sure that the server is normal and the router can connect to the server normally
+    2. Make sure that the WiFi environment is 2.4G or 2.4/5G mixed mode, and single 5G mode is not
+       supported
+    3. Make sure the account password is correct
+    4. Make sure that the Server address used by the scale corresponds to the Server address used by the
+       App
+
+#### 1.4.2 The basic process of WiFi distribution network
+
+Bluetooth network configuration-this function is used for Bluetooth WiFi scales, used when
+configuring the network for the scale
+
+    1. First make sure that the Bluetooth WiFi scale has been bound
+    2. The user enters the Wifi account and password
+    3. Initiate a connection to the device,
+    4. After the connection is successful, in the writable callback (PPBleWorkStateWritable), send the
+       account and password to the scale
     
-### Ⅱ .Instruction of use
-
-* Due to the need the Bluetooth connection, Demo needs to run by a real machine.
-
-* In Android 6.0 and above system versions, make sure to turn on it before start the scanning
-
-    1、Location permission
-    2、Positioning switch
-    3、Bluetooth switch
-
-* If you need the information other than the weight, you need to enter your height, age, gender and go on the scale with barefoot.
-
-* Height range: 30-220 cm；Age range: 10-99 years old；Unit 0 represent kilogram，1 represent jin，2 represent pound；Gender 1 represent male，0 represent female；The value range of user group is 0-9（The specific scale needs this value）
-
-* You need to turn on Bluetooth and give Demo location permission when you using the Demo
+       ppScale.configWifi(ssid, password)
     
-    1. Bluetooth network configuration   -this function is used for Bluetooth WiFi scales, used when configuring the network for the scale
+    5. In the monitor of PPConfigWifiInterface, the monitorConfigState method returns the sn code. At
+       this time, the WiFi icon on the scale will flash first (connecting to the router), and then
+       constant (connecting to the router successfully and obtaining sn),
+    6. Pass sn to Server to verify whether the scale has been registered
+    7. If the server returns success, the network configuration is successful, otherwise the network
+       configuration fails
 
-    2、Binding device - It will start scanning for nearby peripherals after this controller is instantiated and make a record of your peripherals.
+#### 1.4.3 Data List
 
-    3、Weighing on scale - It will also start scanning nearby peripherals after this controller is instantiated, and connect to the bound devices through filtering. Therefore, the weighing can only be carried out after being bound, otherwise the data cannot be received.
+Data list-is the offline data of the scale obtained from the server and stored on the server, not
+the historical data stored on the scale
 
-    4、Equipment management - This controller will display the peripherals you bind on the "Bind Device" page in a list. You can delete the bound device by long pressing.
+### Ⅲ. Use of PPScale in Bluetooth devices
 
-    5、After receiving the data returned by the peripherals on the "Bind Device" and "Weighing on Scales" pages, it will automatically stop scanning and disconnect from the peripherals, and then send the data back to the "Homepage Information" update via callback For the weight column, you can check the the specific data on "Data Details".
+#### 1.1 Bind or scan specified Bluetooth devices
 
-### Ⅲ .The use of ppscalelib
-######  1.1 Bind or scan specified devices
-    
-        //The difference between binding device and scanning device is  searchType  0 Binding device 1 Scanning specified device
-        //setProtocalFilterImpl() Receive data callback interface, process data, lock data, historical data
-        //setDeviceList()The parameter of the function is not null，Binding needs to pass null (or not call)，Scan the specified device, please upload the list of the specified device<DeviceModel>。Bind
-        //setBleOptions()Bluetooth parameter configuration
-        //setBleStateInterface() need parameter PPBleStateInterface，Bluetooth status monitoring callback and system Bluetooth status callback    //startSearchBluetoothScaleWithMacAddressList（）Start scanning device
-        //setUserModel() parameter PPUserModel normal status， setUserModel() is necessary，
-        
-        /**
-        * sdk entrance, Instance object 
+        //The difference between binding device and scanning device is searchType 0 binding device 1 scanning specified device
+        //setProtocalFilterImpl() Receive data callback interface, process data, lock data, historical data,
+        //The parameter of the setDeviceList() function is not empty, and the binding needs to pass null (or not call). To scan the specified device, please pass the List<DeviceModel> of the specified device. Bind
+        //setBleOptions() Bluetooth parameter configuration
+        //setBleStateInterface() requires the parameter PPBleStateInterface, Bluetooth status monitoring callback and system Bluetooth status callback
+        //startSearchBluetoothScaleWithMacAddressList() start scanning device
+        //setUserModel() parameter PPUserModel is normal, setUserModel() is necessary,
+            
+       /**
+        * sdk entry, instance object
         */
        private void bindingDevice() {
-               if (searchType == 0) {
-                   ppScale = new PPScale.Builder(this)
-                           .setProtocalFilterImpl(getProtocalFilter())
-                           .setBleOptions(getBleOptions())
-       //                    .setDeviceList(null)
-                           .setBleStateInterface(bleStateInterface)
-                            .setUserModel(userModel);
-                           .build();
-                   ppScale.startSearchBluetoothScaleWithMacAddressList();
-               } else {
-                   List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
-                   List<String> addressList = new ArrayList<>();
-                   for (DeviceModel deviceModel : deviceList) {
-                       addressList.add(deviceModel.getDeviceMac());
-                   }
-                   ppScale = new PPScale.Builder(this)
-                           .setProtocalFilterImpl(getProtocalFilter())
-                           .setBleOptions(getBleOptions())
-                           .setDeviceList(addressList)
-                           .setBleStateInterface(bleStateInterface)
-                           .setUserModel(userModel)
-                           .build();
-                   ppScale.startSearchBluetoothScaleWithMacAddressList();
-               }
-           
-Note: If you need to automatically cycle scan, you need to call again after loadedData() ppScale.startSearchBluetoothScaleWithMacAddressList()
+           if (searchType == 0) {
+               ppScale = new PPScale.Builder(this)
+                       .setProtocalFilterImpl(getProtocalFilter())
+                       .setBleOptions(getBleOptions())
+                        // .setDeviceList(null)
+                       .setBleStateInterface(bleStateInterface)
+                       .setUserModel(userModel)
+                       .build();
+               ppScale.startSearchBluetoothScaleWithMacAddressList();
+           } else {
+               List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
+               List<String> addressList = new ArrayList<>();
+               for (DeviceModel deviceModel: deviceList) {
+                   addressList.add(deviceModel.getDeviceMac());
 
-######  1.2 BleOptions Bluetooth parameter configuration
+            } ppScale = new PPScale.Builder(this)
+            .setProtocalFilterImpl(getProtocalFilter())
+            .setBleOptions(getBleOptions())
+            .setDeviceList(addressList)
+            .setBleStateInterface(bleStateInterface)
+            .setUserModel(userModel) parameter PPUserModel is normal, setUserModel() is required, .build();
+                ppScale.startSearchBluetoothScaleWithMacAddressList(); }
 
-####### 1.2.1  Equipment capacity selection
+Note: If you need to scan automatically in a loop, you need to call
+ppScale.startSearchBluetoothScaleWithMacAddressList() again after lockedData()
 
-        //Configure the type of scale that needs to be scanned default all，Optional 
-     *                     Capabilities：
-     *                     weighing scale {@link BleOptions.ScaleFeatures#FEATURES_WEIGHT}
-     *                     Fat scale {@link BleOptions.ScaleFeatures#FEATURES_FAT}
-     *                     Heart rate scale {@link BleOptions.ScaleFeatures#FEATURES_HEART_RATE}
-     *                     Offline scale{@link BleOptions.ScaleFeatures#FEATURES_HISTORY}
-     *                     Closed eye single foot scale{@link BleOptions.ScaleFeatures#FEATURES_BMDJ}
-     *                     Weighing calculation {@link BleOptions.ScaleFeatures#FEATURES_CALCUTE_IN_SCALE}
-     *                     WIFI scale {@link BleOptions.ScaleFeatures#FEATURES_CONFIG_WIFI} 请参考{@link BleConfigWifiActivity}
-     *                     Food scale {@link BleOptions.ScaleFeatures#FEATURES_FOOD_SCALE}
-     *                     All body scales {@link BleOptions.ScaleFeatures#FEATURES_NORMAL}  //Does not include food scale
-     *                     All scales {@link BleOptions.ScaleFeatures#FEATURES_ALL}
-     *                     customize {@link BleOptions.ScaleFeatures#FEATURES_CUSTORM} //If you choose to customize, you need to set PPScale.java-->setDeviceList()
-               
-        setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_NORMAL)
-        
-####### 1.2.2 Device connection configuration
-                 
-        public static final int SEARCH_TAG_NORMAL = 0; //By default, broadcast first, then connect, and then disconnect
-        public static final int SEARCH_TAG_DIRECT_CONNECT = 1; //Direct connection to scales that support maternity mode, please be sure to turn on the direct connection switch
-        public static final int SEARCH_TAG_BABY = 2; //Baby holding connection mode, weighing twice before and after, without disconnection in the middle
-        
-         BleOptions() --> setSearchTag(BleOptions.ScaleFeatures.FEATURES_NORMAL)
-        
-        
-###### 1.3 PPBleStateInterface, Bluetooth status monitoring callback and system Bluetooth status callback
+#### 1.3 Data Processing
 
-    //Contains two callback methods, one is Bluetooth status monitoring, the other is system Bluetooth callback
+##### 1.3.1 Process data and lock data
+
+    //Implement the interface according to the needs
+    //Monitor process data setPPProcessDateInterface()
+    //Monitor lock data setPPLockDataInterface()
+    //Monitor historical data setPPHistoryDataInterface()
+   
+     ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
+            protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
+            //Process data
+                @Override
+                public void monitorProcessData(PPBodyBaseModel bodyBaseModel) {
+                    Logger.d("bodyBaseModel scaleName "+ bodyBaseModel.getScaleName());
+                    //weight
+                    String weightStr = PPUtil.getWeight(unitType, bodyBaseModel.getPpWeightKg());
+                    
+                }
+            });
+            protocalFilter.setPPLockDataInterface(new PPLockDataInterface() {
+                //Monitor lock data
+                @Override
+                public void monitorLockData(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
+                    if (bodyFatModel.isHeartRateEnd()) {
+                        if (bodyFatModel != null) {
+                            Logger.d("monitorLockData bodyFatModel weightKg = "+ bodyFatModel.getPpWeightKg());
+                        } else {
+                            Logger.d("monitorLockData bodyFatModel heartRate = "+ bodyFatModel.getPpHeartRate());
+                        }
+                        String weightStr = PPUtil.getWeight(unitType, bodyFatModel.getPpWeightKg());
+                        if (weightTextView != null) {
+                            weightTextView.setText(weightStr);
+                            showDialog(deviceModel, bodyFatModel);
+                        }
+                    } else {
+                        Logger.d("Measuring heart rate");
+                    }
+                }
+            });
+
+##### 1.3.2 Historical data
+
+            if (searchType != 0) {
+                //Do not receive offline data when binding the device, If you need to receive offline data, please implement this interface
+                protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
+                    @Override
+                    public void monitorHistoryData(PPBodyFatModel bodyBaseModel, boolean isEnd, String dateTime) {
+                        if (bodyBaseModel != null) {
+                            Logger.d("ppScale_ isEnd = "+ isEnd +" dateTime = "+ dateTime +" bodyBaseModel weight kg = "+ bodyBaseModel.getPpWeightKg());
+                        } else {
+                            Logger.d("ppScale_ isEnd = "+ isEnd);
+                        }
+                    }
+                });
+            }
+
+#### 1.4 Data object instantiation method PPBodyFatModel
+
+If you parse the Bluetooth protocol data by yourself, you need to instantiate this class to obtain
+the corresponding other body data.
+
+    /**
+     * Single weighing
+     *
+     * @param ppWeightKg weight must be passed
+     * @param scaleType device type {@link com.peng.ppscale.business.device.PPDeviceType#PPDeviceTypeBodyFat} optional
+     * @param userModel user information, fat measurement data must be transmitted {@link PPUserModel}
+     * @param scaleName Bluetooth scale name optional
+     */
+    public PPBodyFatModel(double ppWeightKg, String scaleType, PPUserModel userModel, String scaleName) {
+        super(ppWeightKg, scaleType, userModel, scaleName);
+    }
+
+    /**
+     * Fat test
+     *
+     * @param ppWeightKg weight must be passed
+     * @param impedance Encrypted impedance, fat measurement data must be transmitted
+     * @param scaleType device type {@link com.peng.ppscale.business.device.PPDeviceType#PPDeviceTypeBodyFat} optional
+     * @param userModel user information, fat measurement data must be transmitted {@link PPUserModel}
+     * @param scaleName Bluetooth scale name optional
+     */
+    public PPBodyFatModel(double ppWeightKg, int impedance, String scaleType, PPUserModel userModel, String scaleName) {
+        super(ppWeightKg, impedance, scaleType, userModel, scaleName, PPUnitType.Unit_KG);
+    }
+
+##### 1.4.1 Data object PPBodyFatModel parameter description
+
+    protected int impedance; //Impedance value (encrypted)
+    // protected float ppZTwoLegs; //Pin-to-pin impedance value (Ω), range 200.0 ~ 1200.0
+    protected double ppWeightKg; //Weight
+    protected int ppHeartRate; //Heart rate
+    protected int scaleType; // said type
+    protected boolean isHeartRateEnd = true; //Heart rate end symbol
+    protected String scaleName; //Name
+    protected int thanZero;//Positive and negative 0 means negative value 1 positive value 
+    protected PPUnitType unit; //weight unit default kg 
+    protected PPUserModel userModel; 
+    protected PPUserSex ppSex; //Gender protected double ppHeightCm; //Height (cm), needs to be 90 ~ 220cm 
+    protected int ppAge; //Age (years old),must be 6 ~ 99 years old 
+    protected double ppProteinPercentage; //Protein, resolution 0.1, range 2.0% ~ 30.0% 
+    protected int ppBodyAge; //Body age, 6~99 years old 
+    protected double ppIdealWeightKg; //Ideal weight (kg)
+    protected double ppBMI; //BMI body mass index, resolution 0.1, range 10.0 ~ 90.0 
+    protected int ppBMR; //Basal Metabolic Rate, resolution 1, range 500 ~ 10000 
+    protected int ppVFAL; //Visceral fat area leverl Visceral fat, resolution 1, range 1 ~ 60 
+    protected double ppBoneKg; //Bone mass (kg), resolution 0.1, range 0.5 ~ 8.0 
+    protected double ppBodyfatPercentage; //Fat percentage (%),resolution 0.1, range 5.0% ~ 75.0% 
+    protected double ppWaterPercentage; //Water content (%),resolution 0.1, range 35.0% ~ 75.0% 
+    protected double ppMuscleKg; //Muscle mass (kg), resolution 0.1,range 10.0 ~ 120.0 
+    protected int ppBodyType; //Body type 
+    protected int ppBodyScore; //Body score 50 ~ 100 points 
+    protected double ppMusclePercentage; //Muscle rate (%), resolution 0.1, range 5%~90%
+    protected double ppBodyfatKg; //Fat mass (kg)
+    protected double ppBodystandard; //standard weight (kg)
+    protected double ppLoseFatWeightKg; //Fat-free body weight (kg)
+    protected double ppControlWeightKg; //Weight control (kg)
+    protected double ppFatControlKg; //Fat control volume (kg)
+    protected double ppBonePercentage; //Skeletal muscle rate (%)
+    protected double ppBodyMuscleControlKg; //Muscle control volume (kg)
+    protected double ppVFPercentage; //Subcutaneous fat (%)
+    protected PPBodyEnum.PPBodyGrade ppBodyHealth; //health assessment 
+    protected PPBodyEnum.PPBodyFatGrade ppFatGrade; //obesity grade 
+    protected PPBodyEnum.PPBodyHealthAssessment ppBodyHealthGrade; //health level 
+    protected PPBodyEnum.PPBodyfatErrorType ppBodyfatErrorType;//error type
+
+Note: When you get the object when using it, please call the corresponding get method to get the
+corresponding value
+
+###### 1.4.2.1 Error Type PPBodyEnum.PPBodyfatErrorType
+
+      PPBodyfatErrorTypeNone(0), //! <No error (all parameters can be read)
+      PPBodyfatErrorTypeImpedance(-1), //!< If the impedance is wrong, when the impedance is wrong, the parameters other than BMI/idealWeightKg will not be calculated (write 0)
+      PPBodyfatErrorTypeAge(-1), //!< The age parameter is wrong, it needs to be between 6 and 99 years old (does not calculate parameters other than BMI/idealWeightKg)
+      PPBodyfatErrorTypeWeight(-2), //!< The weight parameter is wrong, it needs to be 10 ~ 200kg (if there is an error, all parameters will not be calculated)
+      PPBodyfatErrorTypeHeight(-3); //!< The height parameter is wrong, it needs to be within 90 ~ 220cm (not counting all parameters)
+
+###### 1.4.2.2 Health Assessment PPBodyEnum.PPBodyfatErrorType
+
+      PPBodyGradeThin(0), //! <Thin type
+      PPBodyGradeLThinMuscle(1), //!< Standard type
+      PPBodyGradeMuscular(2), //! <Super Heavy
+      PPBodyGradeLackofexercise(3); //!< Obesity
+
+###### 1.4.2.3 Obesity level PPBodyEnum.PPBodyfatErrorType
+
+      PPBodyGradeFatOne(0), //! <Obesity Level 1
+      PPBodyGradeLFatTwo(1), //! <Obesity Level 2
+      PPBodyGradeFatThree(2), //! <Fatty Grade 3
+      PPBodyGradeFatFour(-1); //!< parameter error
+
+###### 1.4.2.4 Health Level PPBodyEnum.PPBodyfatErrorType
+
+      PPBodyAssessment1(0), //!< There are hidden dangers to health
+      PPBodyAssessment2(1), //! <Sub-health
+      PPBodyAssessment3(2), //! <General
+      PPBodyAssessment4(3), //! <good
+      PPBodyAssessment5(4), //! <Very good
+      PPBodyAssessmentError(-1); //!< parameter error
+
+###### 1.4.2.5, body type PPBodyFatModel.ppBodyType
+
+     0 Lean
+     1 Lean muscle type
+     2 Muscular
+     3 lack of exercise
+     4 Standard
+     5 Standard muscle type
+     6 Puffiness and obesity
+     7 Fat muscle type
+     8 Muscular overweight
+
+##### 1.4.2 Device object PPDeviceModel parameter description
+
+    String deviceMac;//device mac
+    String deviceName;//device Bluetooth name
+    /**
+     * Equipment type
+     *
+     * @see com.peng.ppscale.business.device.PPDeviceType.ScaleType
+     * @deprecated
+     */
+    String scaleType;
+    /**
+     * Power
+     */
+    int devicePower = -1;
+    /**
+     * Hardware version number
+     * @deprecated
+     */
+    String firmwareVersion;
+    /**
+     * Equipment type
+     *
+     * @see PPScaleDefine.PPDeviceType
+     */
+    public PPScaleDefine.PPDeviceType deviceType;
+    /**
+     * Protocol mode
+     *
+     * @see PPScaleDefine.PPDeviceProtocolType
+     */
+    public PPScaleDefine.PPDeviceProtocolType deviceProtocolType;
+    /**
+     * Calculation
+     * @see PPScaleDefine.PPDeviceCalcuteType
+     */
+    public PPScaleDefine.PPDeviceCalcuteType deviceCalcuteType;
+    /**
+     * Accuracy
+     *
+     * @see PPScaleDefine.PPDeviceAccuracyType
+     */
+     public PPScaleDefine.PPDeviceAccuracyType deviceAccuracyType;
+     /**
+     * Power supply mode
+     *
+     * @see PPScaleDefine.PPDevicePowerType
+     */
+     public PPScaleDefine.PPDevicePowerType devicePowerType;
+     /**
+     * Device connection type, used for the state that must be directly connected
+     *
+     * @see PPScaleDefine.PPDeviceConnectType
+      */
+      public PPScaleDefine.PPDeviceConnectType deviceConnectType;
+      /**
+     * Function type, multi-functional superposition
+     *
+     * @see PPScaleDefine.PPDeviceFuncType
+      */
+      public int deviceFuncType;
+      /**
+     * Supported units
+     *
+     * @see PPScaleDefine.PPDeviceUnitType
+      */
+      public int deviceUnitType;
+      /**
+      * Can you connect
+      */
+      public boolean deviceConnectAbled;
+
+#### 1.5 Bluetooth status monitoring callback and system Bluetooth status callback
+
+Contains two callback methods, one is Bluetooth status monitoring, the other is system Bluetooth
+callback
 
      PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
             //Bluetooth status monitoring
             //deviceModel is in the scanning process of Bluetooth, it is null
             @Override
-            public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState) {
+            public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
                 if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
-                    Logger.d("Device connected");
+                    Logger.d("The device is connected");
                 } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
-                    Logger.d("Device connecting");
+                    Logger.d("device connecting");
                 } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
-                    Logger.d("Device disconnected");
+                    Logger.d("The device has been disconnected");
                 } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateStop) {
                     Logger.d("Stop scanning");
                 } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
@@ -141,224 +481,74 @@ Note: If you need to automatically cycle scan, you need to call again after load
                 } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
                     Logger.d("Scan timeout");
                 } else {
-                    Logger.e("Bluetooth status is abnormal");
+                    Logger.e("Bluetooth status abnormal");
                 }
             }
-
-        //system Bluetooth callback
-        @Override
-        public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {
-            if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
-                Logger.e("System Bluetooth disconnect");
-                Toast.makeText(BindingDeviceActivity.this, "System Bluetooth disconnect", Toast.LENGTH_SHORT).show();
-            } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
-                Logger.d("System Bluetooth turn on");
-                Toast.makeText(BindingDeviceActivity.this, "System Bluetooth disconnect", Toast.LENGTH_SHORT).show();
-            } else {
-                Logger.e("System Bluetooth is abnormal");
-            }
-        }
-    };
-
-###### 1.4 ProtocalFilterImpl
-
-    //Implement the interfaces according to requirements
-    //Monitor process data setPPProcessDateInterface()
-    //Monitor lock data setPPLockDataInterface()
-    //Monitor history data setPPHistoryDataInterface()
-   
-     ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
-            protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
-            //process data
-                @Override
-                public void monitorProcessData(PPBodyBaseModel bodyBaseModel) {
-                    Logger.d("bodyBaseModel scaleName " + bodyBaseModel.getScaleName());
-                    //weight
-                    String weightStr = PPUtil.getWeight(unitType, bodyBaseModel.getPpWeightKg());
-            }
-        });
-        protocalFilter.setPPLockDataInterface(new PPLockDataInterface() {
-            //Monitor lock data
+    
+            //System Bluetooth callback
             @Override
-            public void monitorLockData(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {  
-                if (bodyFatModel.isHeartRateEnd()) {
-                    if (bodyFatModel != null) {
-                        Logger.d("monitorLockData  bodyFatModel weightKg = " + bodyFatModel.getPpWeightKg());
-                    } else {
-                        Logger.d("monitorLockData  bodyFatModel heartRate = " + bodyFatModel.getPpHeartRate());
-                    }
-                    String weightStr = PPUtil.getWeight(unitType, bodyFatModel.getPpWeightKg());
-                    if (weightTextView != null) {
-                        weightTextView.setText(weightStr);
-                        showDialog(deviceModel, bodyFatModel);
-                    }
+            public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {
+                if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
+                    Logger.e("System Bluetooth disconnected");
+                    Toast.makeText(BindingDeviceActivity.this, "System Bluetooth is disconnected", Toast.LENGTH_SHORT).show();
+                } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
+                    Logger.d("System Bluetooth is on");
+                    Toast.makeText(BindingDeviceActivity.this, "System Bluetooth is on", Toast.LENGTH_SHORT).show();
                 } else {
-                    Logger.d("Measuring the Heart Rate");
+                    Logger.e("System Bluetooth Abnormal");
                 }
             }
-        });
+        };
 
-        if (searchType != 0) {
-            //Do not receive offline data when binding the device， If you need to receive offline data, please implement this interface
-            protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
-                @Override
-                public void monitorHistoryData(PPBodyFatModel bodyBaseModel, boolean isEnd, String dateTime) {
-                    if (bodyBaseModel != null) {
-                        Logger.d("ppScale_ isEnd = " + isEnd + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyBaseModel.getPpWeightKg());
-                    } else {
-                        Logger.d("ppScale_ isEnd = " + isEnd);
-                    }
-                }
-            });
-        }
-     
+## 3. Food scale instructions
 
-###### 1.5 PPUserModel Basic information of user
+### 1.1 Unit enumeration class PPUnitType
+
+        Unit_KG(0),//KG
     
-    userHeight、age、sex Must be true
-    userHeight range is 100-220cm
-    age range is10-99
-    sex 0 is female 1 is male   
-    maternityMode 0 is normal and 1 is pregnant
+        Unit_LB(1),//LB
     
-###### 1.6 Instructions for Food Scale
-   
-Unit enumeration class PPUnitType
+        PPUnitST(2),//ST
     
-         Unit_KG(0),//KG
+        PPUnitJin(3),//jin
     
-         Unit_LB(1),//LB
+        PPUnitG(4),//g
     
-         PPUnitST(2),//ST
+        PPUnitLBOZ(5),//lb:oz
     
-         PPUnitJin(3),//jin
+        PPUnitOZ(6),//oz
     
-         PPUnitG(4),//g
+        PPUnitMLWater(7),//ml(water)
     
-         PPUnitLBOZ(5),//lb:oz
-    
-         PPUnitOZ(6),//oz
-    
-         PPUnitMLWater(7),//ml(water)
-    
-         PPUnitMLMilk(8);//milk
+        PPUnitMLMilk(8);//milk
 
-Positive and negative value problems:
-   
-        In the field of PPBodyFatModel:
-        int thanZero; //Positive and negative 0 means negative value 1 positive value
+### 1.2 Positive and negative value problems:
 
-Switch unit call:
-   
-         PPScale.changeKitchenScaleUnit(PPUnitType unitType)
-    
-Zero the food scale:
-        
-         PPScale.toZeroKitchenScale()
-   
-When using a food scale, you need to disconnect it manually when you don’t need to connect it
-   
-        PPScale.disConnect()  
-    
-###### 1.7 Related Bluetooth Operation
+       In the field of PPBodyFatModel:
+       int thanZero; //Positive and negative 0 means negative value 1 positive value
 
-Reserved Bluetooth operation object
+### 1.3 Switch unit call:
 
-    BluetoothClient client = ppScale.getBleClient();
-    
-Stop scanning
+        PPScale.changeKitchenScaleUnit(PPUnitType unitType)
 
-    ppScale.stopSearch();
-   
-Disconnect device
+### 1.4 Food scale reset:
 
-    ppScale.disConnect();
-    
-Finally you need to call the stopSearch method before leaving the page. For specific implementation, please refer to the code in BindingDeviceActivity and ScaleWeightActivity in Demo。
+        PPScale.toZeroKitchenScale()
 
-###### 1.8 PPBodyFatModel Parameter Description
+### 1.5 When using a food scale, you need to disconnect it manually when you don’t need to connect it
 
-    protected int impedance;                                //Impedance value (encrypted)
-    //    protected float ppZTwoLegs;   //Foot-to-foot impedance value(Ω), range 200.0 ~ 1200.0
-    protected double ppWeightKg;                                              //Weight
-    protected int ppHeartRate;                                              //Heart Rate
-    protected int scaleType;                                                //Scale’s type
-    protected boolean isHeartRateEnd = true;                            //Heart rate end icon
-    protected String scaleName;                                            //Scale’s name
-    
-    protected PPUserModel userModel;
-    protected PPUserSex ppSex;                                                //Gender
-    protected double ppHeightCm;                  //Height(cm)，need to between 90 ~ 220cm
-    protected int ppAge;                     //age(years old), need to between 6 ~ 99 years old
-    protected double ppProteinPercentage;          //protein, Resolution0.1, range 2.0% ~ 30.0%
-    protected int ppBodyAge;                             //body age, 6~99 years old protected double ppIdealWeightKg;                                   //Ideal weight(kg)
-    protected double ppBMI;            //BMI Body mass index, Resolution 0.1, range 10.0 ~ 90.0
-    protected int ppBMR;           //Basal Metabolic Rate BMR, Resolution 1, range 500 ~ 10000
-    protected int ppVFAL;          //Visceral fat area leverl Visceral fat, Resolution 1, range 1 ~ 60
-    protected double ppBoneKg;                //bone mass(kg), Resolution 0.1, range 0.5 ~ 8.0
-    protected double ppBodyfatPercentage;       //fat rate(%), Resolution 0.1, range5.0% ~ 75.0%
-    protected double ppWaterPercentage;        //water(%), Resolution 0.1, range 35.0% ~ 75.0%
-    protected double ppMuscleKg;          //Muscle mass(kg), Resolution 0.1, range 10.0 ~ 120.0
-    protected int ppBodyType;                                               //body type
-    protected int ppBodyScore;                                 //Body score 50 ~ 100 points
-    protected double ppMusclePercentage;       //Muscle rate(%),Resolution 0.1，range 5%~90%
-    protected double ppBodyfatKg;                                          //Fat mass(kg)
-    protected double ppBodystandard;                                //Standard Weight(kg)
-    protected double ppLoseFatWeightKg;                              //Lean body mass(kg)
-    protected double ppControlWeightKg;                               //Weight control(kg)
-    protected double ppFatControlKg;                                 //Fat control mass(kg)
-    protected double ppBonePercentage;                              //Bone Percentage(%)
-    protected double ppBodyMuscleControlKg;                      //Muscle control mass(kg)
-    protected double ppVFPercentage;                                //Subcutaneous fat(%)
-    protected PPBodyEnum.PPBodyGrade ppBodyHealth;                            //Body Health
-    protected PPBodyEnum.PPBodyFatGrade ppFatGrade;                           //Fat Grade
-    protected PPBodyEnum.PPBodyHealthAssessment ppBodyHealthGrade;            //Body Health Grade
-    protected PPBodyEnum.PPBodyfatErrorType ppBodyfatErrorType;                //Error type
+       PPScale.disConnect()
 
-Note: When you get the object when using it, please call the corresponding get method to get the corresponding value
+## Four. Closed eyes and single foot mode
 
-###### 1.9  PPBodyFatModel Parameter Description
-  
-  1.Error type: PPBodyEnum.PPBodyfatErrorType
-  
-      PPBodyfatErrorTypeNone(0),          //!< No error (all parameters can be read)
-      PPBodyfatErrorTypeImpedance(-1),    //!< If the impedance is wrong, when the impedance is wrong, the parameters other than BMI/idealWeightKg will not be calculated (write 0)
-      PPBodyfatErrorTypeAge(-1),          //!< The age parameter is wrong, and it needs to be between 6 and 99 years old (not counting parameters other than BMI/idealWeightKg)
-      PPBodyfatErrorTypeWeight(-2),       //!< The weight parameter is wrong, it needs to be 10 ~ 200kg (all parameters will not be calculated if it is wrong)
-      PPBodyfatErrorTypeHeight(-3);       //!< The height parameter is wrong, it needs to be 90 ~ 220cm (not counting all parameters)
+###### Closed eyes and single foot mode
 
-  2.Body Health: PPBodyEnum.PPBodyfatErrorType
-  
-      PPBodyGradeThin(0),             //!< Lean
-      PPBodyGradeLThinMuscle(1),      //!< Standard
-      PPBodyGradeMuscular(2),         //!< Super heavy
-      PPBodyGradeLackofexercise(3);   //!< Obese
+Use PPScale's instance object to call the method of scanning nearby devices to search for nearby
+closed-eye single-leg Bluetooth scales and connect.
 
-  3.Obesity grade: PPBodyEnum.PPBodyfatErrorType
-  
-      PPBodyGradeFatOne(0),             //!< Obesity Grade 1
-      PPBodyGradeLFatTwo(1),            //!< Obesity Grade 2
-      PPBodyGradeFatThree(2),           //!< Obesity Grade 3
-      PPBodyGradeFatFour(-1);           //!< Parameter error
-  
-  4.Health level: PPBodyEnum.PPBodyfatErrorType
-  
-      PPBodyAssessment1(0),             //!< Health risks
-      PPBodyAssessment2(1),             //!< Sub-health
-      PPBodyAssessment3(2),             //!< general
-      PPBodyAssessment4(3),             //!< good
-      PPBodyAssessment5(4),             //!< very good
-      PPBodyAssessmentError(-1);        //!< Parameter error
+### 1.1 Connect a closed-eye single-leg device
 
-
-Bluetooth status monitoring, please refer to this document:   1.3  PPBleStateInterface       
-
-
-## IV .Related methods of closed-eye single-leg mode
-
-Use the PPScale instance object to call the method of scanning nearby devices to search for nearby closed-eye single-leg Bluetooth scales and connect.
 ```
-/// Connect a closed-eye single-leg device
         ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
                 protocalFilter.setBmdjConnectInterface(new PPBMDJConnectInterface() {
                     @Override
@@ -389,64 +579,62 @@ Use the PPScale instance object to call the method of scanning nearby devices to
                 ppScale.enterBMDJModel();
 ```
 
-Exit closed-eye single-foot mode and stop scanning to disconnect
+### 1.2 Exit the closed-eye single-leg mode and stop scanning to disconnect
+
 ```
-/// 停止扫描切断开闭目单脚的设备
--  ppScale.exitBMDJModel();
+// Stop scanning and cut off the device that opens and closes the single foot
+-ppScale.exitBMDJModel();
 ```
-Monitor the status of one foot with closed eyes
+
+### 1.3 Monitor the status of closed eyes and one foot
+
 ```
 (interface)PPBMDJStatesInterface
 ```
 
-Send instructions to enter the closed-eye single-leg mode
+### 1.4 Send instructions to make the device enter the closed-eye single-leg mode
+
 ```
-/// 闭目单脚设备进入准备状态
-- (void)enterBMDJModel()
-```
-Return the time of standing on one foot with closed eyes in the callback function
-```
-/// 设备退出闭目单脚状态
-- (interface)PPBMDJDataInterface;
+// The closed-eye single-leg device enters the ready state
+-(void)enterBMDJModel()
 ```
 
---- 
+### 1.5 Return the time of standing on one foot with closed eyes in the callback function
 
-### V .Version update instructions
-   
-        ----0.0.1-----
-        1、Add maven configuration  2、Increase compatibility 'BodyFat Scale1'
-        ----0.0.2-----
-        1、Add Bluetooth WIFI distribution network function
-        ----0.0.3-----
-        1. Optimize the Bluetooth distribution network function 2. Improve the compatibility of broadcast data
-        ----0.0.3.4-----
-        1. Increase Health Scale5
-        ----0.0.3.6-----
-        1. Add Bluetooth device information to the Bluetooth distribution network
-        ----0.0.3.7-----
-        1. Add LF_SC fat broadcasting scale
-        ----0.0.3.9-----
-        1. Add PPBodyEnum.kt, increase error type output, modify body type, obesity level, health level callback method
-        ----0.0.4.1-----
-        Increase food scale compatible with 11byte
-        ----0.0.4.3-----
-        1. Optimized for frequent connection, the weighing cannot be performed normally when connected continuously. 2. PPUserModel is initialized in advance
-        ----0.0.4.5-----
-        Modify the broadcast analysis logic
-        ----0.0.4.6-----
-        Add baby weighing tag to optimize baby weighing
-        ----0.0.4.7-----
-        Increase compatible with Electronic Scale1
-        ----0.0.4.8-----
-        Add Bluetooth WiFi device reset function
-        ----0.0.4.10-----
-        1. Add the unitType field 2. Add the callback for obtaining battery and firmware version number information
-        ----0.0.5.2----
-        1. Increase compatibility of two DC scales 2. Increase maternity mode
+```
+/// The device exits the closed-eye single-foot state
+-(interface)PPBMDJDataInterface;
+```
 
-Contact Developer：
-Email: yanfabu-5@lefu.cc
+## Five. Bluetooth operation related
+
+### 1.1 Reserved Bluetooth operation object
+
+     BluetoothClient client = ppScale.getBleClient();
+
+### 1.2 Stop scanning
+
+        ppScale.stopSearch();
+
+### 1.3 Disconnect the device
+
+         ppScale.disConnect();
+
+Finally, you need to call the stopSearch method before leaving the page. For specific
+implementation, please refer to the code in BindingDeviceActivity and ScaleWeightActivity in Demo.
+
+## 六. [Version update instructions](doc/version_update.md)
+
+## Seven. Third-party libraries used
+
+#### 1. Body fat calculation library provided by chip solution provider
+
+#### 2. [bluetoothkit1.4.0 Bluetooth library](https://github.com/dingjikerbo/Android-BluetoothKit)
+
+## Eight. [Common problem](doc/common_problem.md)
+
+Contact Developer: Email: yanfabu-5@lefu.cc
+
 
    
    

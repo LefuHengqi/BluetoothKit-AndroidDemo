@@ -45,7 +45,9 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
 
 #### 1.2.1 用户信息编辑
 
-    用户信息编辑 - 输入用户身高，年龄、性别以及体重单位，如果秤支持孕妇模式和运动员模式也可开启
+用户信息编辑 - 输入用户身高，年龄、性别以及体重单位，如果秤支持孕妇模式和运动员模式也可开启
+
+可输入的内容:
 
     身高的取值范围：30-220厘米；
     年龄的取值范围：10-99岁；
@@ -53,7 +55,16 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
     性别 1代表男，0代表女；
     用户组取值范围 0-9（特定的秤需要这个值）
     孕妇模式 1开启 0关闭(需要秤支持)
-    和运动员模式1开启 0关闭(需要秤支持)
+    运动员模式1开启 0关闭(需要秤支持)
+
+PPUserModel参数说明：
+
+    userHeight、age、sex必须是真实的 
+    userHeight范围是100-220cm
+    age年龄 范围是10-99
+    sex 性别 0为女 1为男
+    isAthleteMode;//运动员模式 false为正常 true开启(需要秤支持)
+    isPregnantMode;//孕妇模式 false为正常 true开启(需要秤支持)
 
 #### 1.2.2 绑定设备
 
@@ -115,14 +126,34 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
 
 #### 1.3.3 [闭目单脚](#闭目单脚模式)
 
-<a href="#anchor">Link to Anchor</a>
-
 ### 1.4 WiFi功能
 
-#### 1.4.1 蓝牙配网
+#### 1.4.1 注意事项
 
-    蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
+默认Server域名地址是：https://api.lefuenergy.com
 
+1、确保Server正常，路由器能正常连接到Server
+2、确保WiFi环境是2.4G或2.4/5G混合模式，不支持单5G模式
+3、确保账号密码正确
+4、确保秤端使用的Server地址与App使用的Server地址对应
+
+#### 1.4.2 WiFi配网的基本流程
+蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
+
+1、首先确保已经绑定了蓝牙WiFi秤
+2、用户输入Wifi账号和密码
+3、发起连接设备，
+4、连接成功后，在可写的回调（PPBleWorkStateWritable）里面，将账号和密码发送给秤
+
+    ppScale.configWifi(ssid, password)
+
+5、在PPConfigWifiInterface的监听器里面monitorConfigState方法返回sn码，此时秤上的WiFi图标会先闪烁（连接路由器中），再常量（连接路由器成功并获取到sn），
+6、将sn传给Server验证秤是否已经完成注册
+7、Server返回成功，则配网成功，否则配网失败
+
+#### 1.4.3 数据列表
+
+数据列表 -是从Server端获取的秤存在Server端的离线数据,并非秤端存储的历史数据
 
 ### Ⅲ .PPScale在蓝牙设备的使用
 
@@ -166,18 +197,6 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
                }
 
 注意：如果需要自动循环扫描，需要在lockedData()后重新调用 ppScale.startSearchBluetoothScaleWithMacAddressList()
-
-#### 1.2  BleOptions 蓝牙参数配置
-
-##### 1.2.2 用户基础信息
-
-PPUserModel参数说明：
-
-        userHeight、age、sex必须是真实的 
-        userHeight范围是100-220cm
-        age范围是10-99
-        sex 0为女 1为男   
-        maternityMode 0为正常 1为孕妇   
 
 #### 1.3 数据处理
 
@@ -351,6 +370,80 @@ PPUserModel参数说明：
      7 偏胖肌肉型
      8 肌肉型偏胖
 
+##### 1.4.2 设备对象PPDeviceModel 参数说明
+
+    String deviceMac;//设备mac
+    String deviceName;//设备蓝牙名称
+    /**
+     * 设备类型
+     *
+     * @see com.peng.ppscale.business.device.PPDeviceType.ScaleType
+     * @deprecated
+     */
+    String scaleType;
+    /**
+     * 电量
+     */
+    int devicePower = -1;
+    /**
+     * 硬件版本号
+     * @deprecated 
+     */
+    String firmwareVersion;
+    /**
+     * 设备类型
+     *
+     * @see PPScaleDefine.PPDeviceType
+     */
+    public PPScaleDefine.PPDeviceType deviceType;
+    /**
+     * 协议模式
+     *
+     * @see PPScaleDefine.PPDeviceProtocolType
+     */
+    public PPScaleDefine.PPDeviceProtocolType deviceProtocolType;
+    /**
+     * 计算方式
+     *
+     * @see PPScaleDefine.PPDeviceCalcuteType
+     */
+    public PPScaleDefine.PPDeviceCalcuteType deviceCalcuteType;
+    /**
+     * 精度
+     *
+     * @see PPScaleDefine.PPDeviceAccuracyType
+     */
+    public PPScaleDefine.PPDeviceAccuracyType deviceAccuracyType;
+    /**
+     * 供电模式
+     *
+     * @see PPScaleDefine.PPDevicePowerType
+     */
+    public PPScaleDefine.PPDevicePowerType devicePowerType;
+    /**
+     * 设备连接类型，用于必须直连的状态
+     *
+     * @see PPScaleDefine.PPDeviceConnectType
+     */
+    public PPScaleDefine.PPDeviceConnectType deviceConnectType;
+    /**
+     * 功能类型，可多功能叠加
+     *
+     * @see PPScaleDefine.PPDeviceFuncType
+     */
+    public int deviceFuncType;
+    /**
+     * 支持的单位
+     *
+     * @see PPScaleDefine.PPDeviceUnitType
+     */
+    public int deviceUnitType;
+    /**
+     * 是否能连接
+     */
+    public boolean deviceConnectAbled;
+
+
 #### 1.5 蓝牙状态监控回调和系统蓝牙状态回调
 
 包含两个回调方法，一个是蓝牙状态监控，一个是系统蓝牙回调
@@ -432,8 +525,8 @@ PPUserModel参数说明：
        PPScale.disConnect()
 
 ## 四 .闭目单脚模式
-# 闭目单脚模式    
-<a id="anchor"></a> Anchor
+
+###### 闭目单脚模式
 
 使用PPScale的实例对象调用扫描附近设备的方法来搜索附近的闭目单脚蓝牙秤并进行连接。
 
@@ -473,7 +566,7 @@ PPUserModel参数说明：
 ### 1.2 退出闭目单脚模式并停止扫描断开连接
 
 ```
-/// 停止扫描切断开闭目单脚的设备
+// 停止扫描切断开闭目单脚的设备
 -  ppScale.exitBMDJModel();
 ```
 
@@ -486,7 +579,7 @@ PPUserModel参数说明：
 ### 1.4 发送指令使设备进入闭目单脚模式
 
 ```
-/// 闭目单脚设备进入准备状态
+// 闭目单脚设备进入准备状态
 - (void)enterBMDJModel()
 ```
 
@@ -513,16 +606,15 @@ PPUserModel参数说明：
 
 最后你需要在离开页面的之前调用stopSearch方法。 具体的实现请参考Demo中BindingDeviceActivity和ScaleWeightActivity中的代码。
 
+## 六. [版本更新说明](doc/version_update.md)
 
-----------------------------------------------------------------------------------------
+## 七. 使用的第三方库
 
-## 六.版本更新说明
+#### 1、芯片方案商提供的体脂计算库
 
-## 七. [使用的第三方库](doc/version_update.md)
+#### 2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)
 
 ## 八. [常见问题](doc/common_problem.md)
-
-1、芯片方案商提供的体脂计算库 2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)
 
 Contact Developer： Email: yanfabu-5@lefu.cc
 
