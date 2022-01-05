@@ -1,34 +1,21 @@
 package com.lefu.ppscale.ble
 
 import android.Manifest
-import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
-import com.peng.ppscale.business.device.PPUnitType
-import com.peng.ppscale.vo.PPUserGender
-import android.os.Bundle
-import com.lefu.ppscale.ble.R
-import com.peng.ppscale.business.ble.PPScale
 import android.content.Intent
-import com.lefu.ppscale.ble.function.FunctionListActivity
-import com.lefu.ppscale.ble.wififunction.WifiFunctionListActivity
-import com.lefu.ppscale.ble.activity.BindingDeviceActivity
-import com.lefu.ppscale.ble.activity.DeviceListActivity
-import android.widget.EditText
-import android.text.TextWatcher
-import android.text.Editable
-import com.peng.ppscale.util.ByteUtil
-import com.peng.ppscale.util.UnitUtil
-import com.peng.ppscale.vo.PPBodyFatModel
-import com.peng.ppscale.vo.PPUserModel
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.lefu.base.SettingManager
-import com.lefu.ppscale.ble.model.DataUtil
+import com.lefu.ppscale.ble.activity.BindingDeviceActivity
+import com.lefu.ppscale.ble.activity.DeviceListActivity
+import com.lefu.ppscale.ble.function.FunctionListActivity
 import com.lefu.ppscale.ble.userinfo.UserinfoActivity
-import com.peng.ppscale.util.PPUtil
+import com.lefu.ppscale.ble.wififunction.WifiFunctionListActivity
+import com.peng.ppscale.business.ble.PPScale
+import com.peng.ppscale.vo.PPUserModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {

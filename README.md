@@ -1,58 +1,80 @@
 [English Docs](doc/README-en.md)  |  [中文文档](README.md)
 
-#  LF蓝牙秤SDK
+# LF蓝牙秤/WiFi秤SDK
 
-注意：ppscale是蓝牙连接逻辑以及数据解析逻辑。另一个是Android层蓝牙封装库。集成SDK的开发者无需关心里面的逻辑实现。在开发者集成的时候，请采用从maven下载的库的集成方式集成。建议开发者查看README.md文档，完成集成。
+ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时候，请采用从maven下载的库的集成方式集成。建议开发者查看README.md文档，完成集成。
 
 ## 一、 蓝牙wiFi相关的文档
+
 示例module是：BleWifiScaleDemo
 [蓝牙WIFI秤文档中文](BleWifiScaleDemo/README_CN.md)    
-[Bluetooth WIFI Scale example English](BleWifiScaleDemo/README_EN.md) 
-        
+[Bluetooth WIFI Scale example English](BleWifiScaleDemo/README_EN.md)
+
 ## 二、蓝牙体脂秤示例
 
-###  Ⅰ. 集成方式
+### Ⅰ. 集成方式
 
-#####  sdk引入方式
+##### sdk引入方式
 
-在需要引入sdk的module下的build.gradle中加入
+在需要引入sdk的module下的build.gradle中加入(最新版本请查看ppscalelib的module下的libs)
 
          dependencies {
-                、、、
-                        implementation 'com.lefu.ppscale:ppscale:2.0.6'
-                        //如果包含直流秤,请引用body_sl
-                        implementation 'com.lefu.ppscale:body_sl:1.0.0'
+                    //1.aar引入
+                    implementation files('libs/ppscale-213-20220105-0327015.aar')
+                    //2.github maven引入, 需要参考Project下的build.gradle引入 maven { url "https://raw.githubusercontent.com/PPScale/ppscale-android-maven/main" }
+                    //implementation 'com.lefu.ppscale:ppscale:2.1.3-SNAPSHOT'
          }
-    
-### Ⅱ .系统蓝牙使用说明
+
+### Ⅱ .使用说明
+
 ### 1.1 蓝牙权限相关
+
 * 由于需要蓝牙连接，Demo需要真机运行。
 
-* 在Android 6.0及以上系统版本，启动扫描前，需确保开启 
-    
-    1、定位权限  
-    2、定位开关  
-    3、蓝牙开关 
-    
+* 在Android 6.0及以上系统版本，启动扫描前，需确保开启
+
+  1、定位权限  
+  2、定位开关  
+  3、蓝牙开关
+
 * 如果需要体重值以外的信息需要输入身高、年龄、性别并且光脚上秤。
-    
-* 身高的取值范围：30-220厘米；年龄的取值范围：10-99岁；单位0代表千克，1代表斤，2代表镑；性别1代表男，0代表女；用户组取值范围0-9（特定的秤需要这个值）
-    
+
 * 使用Demo过程中需要您打开蓝牙，同时给予Demo定位权限
 
-### 1.2 功能使用
+### 1.2 通用功能
 
-#### 1.2.1 蓝牙配网
-    1、蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
+#### 1.2.1 用户信息编辑
+
+    用户信息编辑 - 输入用户身高，年龄、性别以及体重单位，如果秤支持孕妇模式和运动员模式也可开启
+
+    身高的取值范围：30-220厘米；
+    年龄的取值范围：10-99岁；
+    体重单位 0代表千克，1代表斤，2代表镑；
+    性别 1代表男，0代表女；
+    用户组取值范围 0-9（特定的秤需要这个值）
+    孕妇模式 1开启 0关闭(需要秤支持)
+    和运动员模式1开启 0关闭(需要秤支持)
+
 #### 1.2.2 绑定设备
+
 	绑定设备 - 在这个控制器在被实例化后会开始扫描附近的外设，并将您的外设做一个记录。
+
 #### 1.2.3 上秤称重
+
 	上秤称重 - 这个控制器在被实例化后也会开始扫描附近的外设，通过过滤去连接已绑定过的设备。所以只有被绑定过后才能去进行上秤称重，否则无法接收到数据。
+
 #### 1.2.4 设备管理
+
     设备管理 - 这个控制器会用列表的方式展示你在“绑定设备”页面绑定的外设。你可以通过长按的方式去删除已绑定设备。
+
 #### 1.2.5 数据详情
-    在“绑定设备”和“上秤称重”页面接收到外设返回的数据后，会自动停止扫描并断开与外设的连接，然后把数据通过回调的方式传回“主页信息”更新体重一栏，具体的数据可以去“ 数据详情”页查看。
-#### 1.2.6 扫描附近设备
+
+    在“绑定设备”和“上秤称重”页面接收到外设返回的数据后，会自动跳转到数据详情页面
+
+### 1.3 蓝牙功能
+
+#### 1.3.1 扫描设备
+
 	搜索附近支持的设备ScanDeviceListActivity.java
 
 	 	//获取周围蓝牙秤设备
@@ -62,7 +84,8 @@
                ppScale.connectWithMacAddressList(models);
         }
 
-#### 1.2.7 读取历史数据
+#### 1.3.2 读取历史数据
+
 	需要先“绑定设备”然后再读取“历史数据”	ReadHistoryListActivity.java
 	 //直接读取历史数据，需要传入要读取的秤
     private void bindingDevice() {
@@ -89,8 +112,22 @@
         }
 
     }
+
+#### 1.3.3 [闭目单脚](#闭目单脚模式)
+
+<a id="anchor"></a> Anchor
+
+<a href="#anchor">Link to Anchor</a>
+
+### 1.4 WiFi功能
+
+#### 1.4.1 蓝牙配网
+
+    蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
+
+
 ### Ⅲ .PPScale在蓝牙设备的使用
-    
+
 #### 1.1 绑定或扫描指定蓝牙设备
 
         //绑定设备和扫描设备的区别在于  searchType  0绑定设备 1扫描指定设备
@@ -131,26 +168,10 @@
                }
 
 注意：如果需要自动循环扫描，需要在lockedData()后重新调用 ppScale.startSearchBluetoothScaleWithMacAddressList()
-    
+
 #### 1.2  BleOptions 蓝牙参数配置
-##### 1.2.1  设备能力选择
 
-     //配置需要扫描的秤类型 默认全部，可选为了更快的搜索你的设备，你可以选择你需要使用的设备能力
-     *                     具备的能力：
-     *                     体重秤{@link BleOptions.ScaleFeatures#FEATURES_WEIGHT}
-     *                     脂肪秤{@link BleOptions.ScaleFeatures#FEATURES_FAT}
-     *                     心率秤{@link BleOptions.ScaleFeatures#FEATURES_HEART_RATE}
-     *                     离线秤{@link BleOptions.ScaleFeatures#FEATURES_HISTORY}
-     *                     闭目单脚秤{@link BleOptions.ScaleFeatures#FEATURES_BMDJ}
-     *                     秤端计算{@link BleOptions.ScaleFeatures#FEATURES_CALCUTE_IN_SCALE}
-     *                     WIFI秤{@link BleOptions.ScaleFeatures#FEATURES_CONFIG_WIFI} 请参考{@link BleConfigWifiActivity}
-     *                     食物秤{@link BleOptions.ScaleFeatures#FEATURES_FOOD_SCALE}
-     *                     所有人体秤{@link BleOptions.ScaleFeatures#FEATURES_NORMAL}  //不包含食物秤
-     *                     所有秤{@link BleOptions.ScaleFeatures#FEATURES_ALL}
-     *                     自定义{@link BleOptions.ScaleFeatures#FEATURES_CUSTORM} //选则自定义需要设置PPScale的setDeviceList()
-    setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_NORMAL)
-
-##### 1.2.2  用户基础信息
+##### 1.2.2 用户基础信息
 
 PPUserModel参数说明：
 
@@ -160,9 +181,9 @@ PPUserModel参数说明：
         sex 0为女 1为男   
         maternityMode 0为正常 1为孕妇   
 
-#### 1.3  数据处理
+#### 1.3 数据处理
 
-##### 1.3.1  过程数据和锁定数据
+##### 1.3.1 过程数据和锁定数据
 
     //根据需求实现接口
     //监听过程数据setPPProcessDateInterface()
@@ -201,7 +222,7 @@ PPUserModel参数说明：
                 }
             });
 
-##### 1.3.2  历史数据
+##### 1.3.2 历史数据
 
             if (searchType != 0) {
                 //Do not receive offline data when binding the device， If you need to receive offline data, please implement this interface
@@ -217,7 +238,8 @@ PPUserModel参数说明：
                 });
             }
 
-#### 1.4 数据对象实例化方式 PPBodyFatModel 
+#### 1.4 数据对象实例化方式 PPBodyFatModel
+
 如果是自行解析蓝牙协议数据的，需要实例化该类，来获取对应的其他身体数据，
 
     /**
@@ -286,7 +308,6 @@ PPUserModel参数说明：
     protected PPBodyEnum.PPBodyHealthAssessment ppBodyHealthGrade;            //健康等级
     protected PPBodyEnum.PPBodyfatErrorType ppBodyfatErrorType;                //错误类型
 
-
 注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
 
 ###### 1.4.2.1 错误类型 PPBodyEnum.PPBodyfatErrorType
@@ -332,7 +353,7 @@ PPUserModel参数说明：
      7 偏胖肌肉型
      8 肌肉型偏胖
 
-#### 1.5   蓝牙状态监控回调和系统蓝牙状态回调
+#### 1.5 蓝牙状态监控回调和系统蓝牙状态回调
 
 包含两个回调方法，一个是蓝牙状态监控，一个是系统蓝牙回调
 
@@ -376,7 +397,7 @@ PPUserModel参数说明：
 ## 三 .食物秤说明
 
 ### 1.1 单位枚举类 PPUnitType
-    
+
         Unit_KG(0),//KG
     
         Unit_LB(1),//LB
@@ -395,24 +416,30 @@ PPUserModel参数说明：
     
         PPUnitMLMilk(8);//milk
 
-### 1.2  正负值问题：
-   
+### 1.2 正负值问题：
+
        PPBodyFatModel的字段里:
        int thanZero; //正负 0表示负值 1 正值
-### 1.3   切换单位调用： 
-   
+
+### 1.3 切换单位调用：
+
         PPScale.changeKitchenScaleUnit(PPUnitType unitType)
-### 1.4   食物秤归零： 
-        
+
+### 1.4 食物秤归零：
+
         PPScale.toZeroKitchenScale()
-### 1.5   使用食物秤在不需要连接时，需要手动断开连接
-   
+
+### 1.5 使用食物秤在不需要连接时，需要手动断开连接
+
        PPScale.disConnect()
+
 ## 四 .闭目单脚模式
+# 闭目单脚模式    
 
 使用PPScale的实例对象调用扫描附近设备的方法来搜索附近的闭目单脚蓝牙秤并进行连接。
 
 ### 1.1 连接闭目单脚设备
+
 ```
         ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
                 protocalFilter.setBmdjConnectInterface(new PPBMDJConnectInterface() {
@@ -445,21 +472,27 @@ PPUserModel参数说明：
 ```
 
 ### 1.2 退出闭目单脚模式并停止扫描断开连接
+
 ```
 /// 停止扫描切断开闭目单脚的设备
 -  ppScale.exitBMDJModel();
 ```
+
 ### 1.3 监听闭目单脚状态
+
 ```
 (interface)PPBMDJStatesInterface
 ```
 
 ### 1.4 发送指令使设备进入闭目单脚模式
+
 ```
 /// 闭目单脚设备进入准备状态
 - (void)enterBMDJModel()
 ```
+
 ### 1.5 在回调函数中返回闭目单脚站立的时间
+
 ```
 /// 设备退出闭目单脚状态
 - (interface)PPBMDJDataInterface;
@@ -470,31 +503,29 @@ PPUserModel参数说明：
 ### 1.1 预留蓝牙操作对象
 
      BluetoothClient client = ppScale.getBleClient();
+
 ### 1.2 停止扫描
 
        ppScale.stopSearch();
+
 ### 1.3 断开设备连接
 
         ppScale.disConnect();
-最后你需要在离开页面的之前调用stopSearch方法。
-具体的实现请参考Demo中BindingDeviceActivity和ScaleWeightActivity中的代码。
+
+最后你需要在离开页面的之前调用stopSearch方法。 具体的实现请参考Demo中BindingDeviceActivity和ScaleWeightActivity中的代码。
 
 
 ----------------------------------------------------------------------------------------
 
 ## 六.版本更新说明
 
-## 七. [使用的第三方库](doc/veision_update)
-## 八. [常见问题](doc/common_problem)
+## 七. [使用的第三方库](doc/version_update.md)
 
-1、芯片方案商提供的体脂计算库
-2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)
+## 八. [常见问题](doc/common_problem.md)
 
+1、芯片方案商提供的体脂计算库 2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)
 
-
-
-Contact Developer：
-Email: yanfabu-5@lefu.cc
+Contact Developer： Email: yanfabu-5@lefu.cc
 
    
    

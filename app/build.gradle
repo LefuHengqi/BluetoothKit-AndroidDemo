@@ -20,6 +20,8 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/proguard/coroutines.pro'
+        exclude 'com.holtek.libHTBodyfat.HTBodyfat' //This fixes a bug in FAN 5.0.1
+
     }
     buildTypes {
         release {
@@ -36,9 +38,7 @@ android {
         multiDexEnabled true
     }
 
-    packagingOptions {
-        exclude 'com.holtek.libHTBodyfat.HTBodyfat' //This fixes a bug in FAN 5.0.1
-    }
+
 
     bundle {
         density {
