@@ -115,8 +115,6 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
 
 #### 1.3.3 [闭目单脚](#闭目单脚模式)
 
-<a id="anchor"></a> Anchor
-
 <a href="#anchor">Link to Anchor</a>
 
 ### 1.4 WiFi功能
@@ -435,6 +433,7 @@ PPUserModel参数说明：
 
 ## 四 .闭目单脚模式
 # 闭目单脚模式    
+<a id="anchor"></a> Anchor
 
 使用PPScale的实例对象调用扫描附近设备的方法来搜索附近的闭目单脚蓝牙秤并进行连接。
 
