@@ -1,6 +1,6 @@
 [English Docs](README-en.md)  | [中文文档](../README.md)
 
-#  LEFU Bluetooth Scale SDK
+#  LF Bluetooth Scale SDK
 
 ## 一、Bluetooth WiFi related documents
 The example module is: BleWifiScaleDemo

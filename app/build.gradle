@@ -56,29 +56,16 @@ android {
         }
     }
 
-
-//    android.applicationVariants.all { variant ->
-//        variant.outputs.all {
-//            outputFileName = "PPScale_${variant.versionName}_${variant.name}_${releaseTime()}.apk"
-//        }
-//    }
-
+    //资源混淆冲突时开启
 //    configurations.all {
-//        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-//            def requested = details.requested
-//            if (requested.group == "com.android.support") {
-//                if (!requested.name.startsWith("multidex")) {
-//                    details.useVersion "26.+"
-//                }
-//            }
-//        }
+//        resolutionStrategy.force 'androidx.core:core:1.3.1'
+//        resolutionStrategy.force 'androidx.constraintlayout:constraintlayout:1.1.3'
 //    }
 
 }
 
 dependencies {
-//    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
@@ -87,7 +74,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.0'
+    implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -96,10 +83,8 @@ dependencies {
     implementation project(':data_db')
     implementation project(':data_range')
     implementation project(':base')
-    //如果包含直流秤,请引用body_sl
-    implementation 'com.lefu.ppscale:body_sl:1.0.0'
+    implementation project(':ppscalelib')
 
-//    implementation project(':ppscale')
-//    implementation "com.lefu.ppscale:ppscale:$ppscale_version"
+
 
 }

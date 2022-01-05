@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('ppscale-2.1.3-20220105.032701-5.aar'))

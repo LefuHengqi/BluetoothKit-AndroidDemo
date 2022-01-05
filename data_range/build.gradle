@@ -38,21 +38,14 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
-//    implementation 'com.google.android.material:material:1.3.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.0'
+//    implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6'
 
-    implementation 'com.google.android.material:material:1.3.0'
-
-//    compile 'com.lefu.ppscale:ppscale:2.1.1-SNAPSHOT'
-
-    compile project(':ppscale')
-//    implementation 'com.lefu.ppscale:ppscale:2.1.1-SNAPSHOT'
-
+    compileOnly project(':ppscalelib')
 }
