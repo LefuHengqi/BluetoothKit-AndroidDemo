@@ -39,6 +39,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
     TextView mPasswordView;
     TextView mSsidView;
     TextView mSnView;
+    Button developer_mode_id_clearSSID;
 
     private PPScale ppScale;
 
@@ -60,6 +61,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
         mPasswordView = findViewById(R.id.developer_mode_id_password);
         mSsidView = findViewById(R.id.developer_mode_id_ssid);
         mSnView = findViewById(R.id.developer_mode_id_sn);
+        developer_mode_id_clearSSID = findViewById(R.id.developer_mode_id_clearSSID);
         Button developer_mode_id_getSSID = findViewById(R.id.developer_mode_id_getSSID);
         Button developer_mode_id_modifyServerIP = findViewById(R.id.developer_mode_id_modifyServerIP);
         Button developer_mode_id_modifyServerDNS = findViewById(R.id.developer_mode_id_modifyServerDNS);
@@ -68,6 +70,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
         developer_mode_id_modifyServerIP.setOnClickListener(this);
         developer_mode_id_modifyServerDNS.setOnClickListener(this);
         reStartConnectView.setOnClickListener(this);
+        developer_mode_id_clearSSID.setOnClickListener(this);
         iv_Left.setOnClickListener(this);
 
     }
