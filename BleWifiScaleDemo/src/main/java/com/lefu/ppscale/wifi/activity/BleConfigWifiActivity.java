@@ -149,7 +149,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
 
                 Map<String, String> map = new HashMap<>();
                 map.put("sn", sn);
-                map.put("uid", SettingManager.get(BleConfigWifiActivity.this).getUid());
+                map.put("uid", SettingManager.get().getUid());
 
                 DataTask.post(NetUtil.SAVE_WIFI_GROUP, map, new RetCallBack<SaveWifiGroupBean>(SaveWifiGroupBean.class) {
 

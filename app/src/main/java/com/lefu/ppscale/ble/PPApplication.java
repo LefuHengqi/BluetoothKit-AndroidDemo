@@ -19,7 +19,5 @@ public class PPApplication extends Application {
         PPScale.setDebug(true);
         SettingManager.get(this);
     }
-
-
 }
 

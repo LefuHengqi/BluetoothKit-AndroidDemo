@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -17,6 +18,7 @@ import com.lefu.ppscale.ble.wififunction.WifiFunctionListActivity
 import com.peng.ppscale.business.ble.PPScale
 import com.peng.ppscale.vo.PPUserModel
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -33,6 +35,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         requestPower()
 
         onBtnClck()
+
+        var uid: String? = SettingManager.get().getUid() ?: ""
+        if (uid.isNullOrBlank()) {
+            SettingManager.get().setUid(UUID.randomUUID().toString())
+        }
+
     }
 
     private fun onBtnClck() {

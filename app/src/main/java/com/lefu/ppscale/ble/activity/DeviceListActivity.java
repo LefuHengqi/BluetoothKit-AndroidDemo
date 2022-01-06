@@ -99,7 +99,7 @@ public class DeviceListActivity extends AppCompatActivity {
 
     public void clearDevice(DeviceModel deviceModel) {
 
-        NetHelper.clearDevice(this, deviceModel, SettingManager.get(this).getUid());
+        NetHelper.clearDevice(this, deviceModel, SettingManager.get().getUid());
     }
 
     @Override

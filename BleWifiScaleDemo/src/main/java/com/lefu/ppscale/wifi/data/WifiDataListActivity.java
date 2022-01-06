@@ -88,7 +88,7 @@ public class WifiDataListActivity extends AppCompatActivity {
     private void initData() {
 
         Map<String, String> map = new HashMap<>();
-        map.put("uid", SettingManager.get(this).getUid());
+        map.put("uid", SettingManager.get().getUid());
 
         DataTask.get(NetUtil.GET_SCALE_WEIGHTS, map, new RetCallBack<WifiDataVo>(WifiDataVo.class) {
 
