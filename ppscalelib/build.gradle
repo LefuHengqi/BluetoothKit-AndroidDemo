@@ -34,7 +34,7 @@ android {
 
 dependencies {
     //1.aar引入
-    api files('libs/ppscale-213-20220105-0327015.aar')
+    api files('libs/ppscale-2.1.3-20220217.023024-1.aar')
     //2.github maven引入, 需要参考Project下的build.gradle引入 maven { url "https://raw.githubusercontent.com/PPScale/ppscale-android-maven/main" }
     //api 'com.lefu.ppscale:ppscale:2.1.3-SNAPSHOT'
 
