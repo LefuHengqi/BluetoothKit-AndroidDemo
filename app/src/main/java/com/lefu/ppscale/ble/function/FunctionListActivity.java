@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.activity.BindingDeviceActivity;
+import com.lefu.ppscale.ble.activity.OTAActivity;
 import com.lefu.ppscale.ble.activity.ReadHistoryListActivity;
 import com.lefu.ppscale.ble.activity.ScanDeviceListActivity;
 import com.lefu.ppscale.ble.bmdj.BMDJConnectActivity;
@@ -48,6 +49,14 @@ public class FunctionListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FunctionListActivity.this, BMDJConnectActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.otaBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FunctionListActivity.this, OTAActivity.class);
                 startActivity(intent);
             }
         });

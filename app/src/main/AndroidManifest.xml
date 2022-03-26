@@ -30,6 +30,7 @@
         <activity android:name=".function.FunctionListActivity" />
         <activity android:name="TestBleActivity" />
         <activity android:name=".userinfo.UserinfoActivity" />
+        <activity android:name=".activity.OTAActivity" />
     </application>
 
 </manifest>
