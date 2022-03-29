@@ -33,11 +33,8 @@ import java.util.List;
 public class OTAActivity extends AppCompatActivity {
 
     TextView weightTextView;
+
     PPScale ppScale;
-
-    public static final String SEARCH_TYPE = "SearchType";
-
-    private AlertDialog alertDialog;
     private OTAManager otaManager;
     private String otaAddress;
 
