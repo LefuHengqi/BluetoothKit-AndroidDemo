@@ -124,7 +124,7 @@ public class OTAActivity extends AppCompatActivity {
                 //启动扫描
                 startScanData();
             }
-        }, 2000);
+        }, 1000);
 
     }
 
