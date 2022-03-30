@@ -133,6 +133,9 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 ppScale.setBuilder(builder1);
             }
         }
+
+        //启动扫描
+        startScanData();
     }
 
     private void showDialog(final PPDeviceModel ppDeviceModel, final PPBodyFatModel bodyDataModel) {
@@ -172,14 +175,14 @@ public class BindingDeviceActivity extends AppCompatActivity {
     }
 
     /**
-     * 参数配置
+     * Connection configuration
      *
      * @return
-     * @parm unitType 单位，用于秤端切换单位
      */
     private BleOptions getBleOptions() {
         return new BleOptions.Builder()
-                .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)//直连  孕妇模式时请开启直连
+                .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)//broadcast
+//                .setSearchTag(BleOptions.SEARCH_TAG_DIRECT_CONNECT)//direct connection
                 .build();
     }
 
@@ -220,11 +223,10 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 if (deviceModel.devicePowerType == PPScaleDefine.PPDevicePowerType.PPDevicePowerTypeSolar
                         && (deviceModel.deviceFuncType & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHeartRate.getType()) == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHeartRate.getType()
                         && deviceModel.getSerialNumber().equals("20220212")) {
-
+                    disConnect();
                     Intent intent = new Intent(BindingDeviceActivity.this, OTAActivity.class);
                     intent.putExtra("otaAddress", deviceModel.getDeviceMac());
-                    startActivity(intent);
-                    finish();
+                    startActivityForResult(intent, 0x0003);
                 } else {
                     Logger.d("getSerialNumber  " + deviceModel.getSerialNumber());
                 }
@@ -338,7 +340,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
      * 延迟开始搜索
      */
     public void delayScan() {
-        new Handler(getMainLooper()).postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (isOnResume) {
@@ -352,8 +354,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         isOnResume = true;
-        //启动扫描
-        startScanData();
     }
 
     @Override
@@ -450,7 +450,13 @@ public class BindingDeviceActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0x0003) {
+            delayScan();
+        }
+    }
 }
 
 

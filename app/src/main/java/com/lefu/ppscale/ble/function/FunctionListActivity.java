@@ -53,13 +53,13 @@ public class FunctionListActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.otaBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FunctionListActivity.this, OTAActivity.class);
-                startActivity(intent);
-            }
-        });
+//        findViewById(R.id.otaBtn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(FunctionListActivity.this, OTAActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 

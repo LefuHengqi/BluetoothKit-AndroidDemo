@@ -3,6 +3,7 @@ package com.lefu.ppscale.ble.activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,6 +85,7 @@ public class OTAActivity extends AppCompatActivity {
 
             @Override
             public void onUpdateEnd() {
+                isUpgradeSuccess = false;
                 if (ppScale != null) {
                     ppScale.stopSearch();
                     ppScale.disConnect();
@@ -126,7 +128,14 @@ public class OTAActivity extends AppCompatActivity {
     }
 
     public void reStartConnect(PPDeviceModel deviceModel) {
-        ppScale.startSearchBluetoothScaleWithMacAddressList();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //启动扫描
+                ppScale.startSearchBluetoothScaleWithMacAddressList();
+            }
+        }, 1000);
+
     }
 
     /**
@@ -223,6 +232,9 @@ public class OTAActivity extends AppCompatActivity {
         public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {
             if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
                 Logger.e(getString(R.string.system_bluetooth_disconnect));
+                if (otaManager!= null) {
+                    otaManager.exitUpgrade();
+                }
                 Toast.makeText(OTAActivity.this, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show();
             } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
                 Logger.d(getString(R.string.system_blutooth_on));
@@ -242,6 +254,10 @@ public class OTAActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (otaManager != null) {
+            otaManager.exitUpgrade();
+        }
+        isUpgradeSuccess = false;
         if (ppScale != null) {
             ppScale.stopSearch();
             ppScale.disConnect();
