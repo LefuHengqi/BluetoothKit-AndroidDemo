@@ -34,6 +34,7 @@
     <string name="sport_mode_tag">0默认 1运动员模式</string>
     <string name="please_select_function">请选择功能</string>
     <string name="bmdj">闭目单脚</string>
+    <string name="ota">OTA Upgrade</string>
     <string name="measure_weight">测量体重</string>
     <string name="whether_to_save_the_">是否保存当前体重</string>
     <string name="is_this_your_data">这是您的数据么？</string>

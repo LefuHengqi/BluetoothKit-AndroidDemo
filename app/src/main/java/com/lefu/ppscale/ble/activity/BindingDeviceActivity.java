@@ -22,6 +22,7 @@ import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity;
+import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
 import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
@@ -132,6 +133,9 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 ppScale.setBuilder(builder1);
             }
         }
+
+        //启动扫描
+        startScanData();
     }
 
     private void showDialog(final PPDeviceModel ppDeviceModel, final PPBodyFatModel bodyDataModel) {
@@ -171,14 +175,14 @@ public class BindingDeviceActivity extends AppCompatActivity {
     }
 
     /**
-     * 参数配置
+     * Connection configuration
      *
      * @return
-     * @parm unitType 单位，用于秤端切换单位
      */
     private BleOptions getBleOptions() {
         return new BleOptions.Builder()
-                .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)//直连  孕妇模式时请开启直连
+                .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)//broadcast
+//                .setSearchTag(BleOptions.SEARCH_TAG_DIRECT_CONNECT)//direct connection
                 .build();
     }
 
@@ -206,6 +210,31 @@ public class BindingDeviceActivity extends AppCompatActivity {
             @Override
             public void monitorLockData(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
                 onDataLock(bodyFatModel, deviceModel);
+            }
+        });
+        protocalFilter.setDeviceInfoInterface(new PPDeviceInfoInterface() {
+            @Override
+            public void softwareRevision(PPDeviceModel deviceModel) {
+
+            }
+
+            @Override
+            public void serialNumber(PPDeviceModel deviceModel) {
+                if (deviceModel.devicePowerType == PPScaleDefine.PPDevicePowerType.PPDevicePowerTypeSolar
+                        && (deviceModel.deviceFuncType & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHeartRate.getType()) == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHeartRate.getType()
+                        && deviceModel.getSerialNumber().equals("20220212")) {
+                    disConnect();
+                    Intent intent = new Intent(BindingDeviceActivity.this, OTAActivity.class);
+                    intent.putExtra("otaAddress", deviceModel.getDeviceMac());
+                    startActivityForResult(intent, 0x0003);
+                } else {
+                    Logger.d("getSerialNumber  " + deviceModel.getSerialNumber());
+                }
+            }
+
+            @Override
+            public void batteryPower(PPDeviceModel deviceModel) {
+
             }
         });
         return protocalFilter;
@@ -237,7 +266,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
         }
     }
 
-
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
         @Override
         public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
@@ -256,7 +284,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 Logger.d(getString(R.string.writable));
                 //可写状态，可以发送指令，例如切换单位，获取历史数据等
-                sendUnitDataScale();
+                sendUnitDataScale(deviceModel);
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
@@ -284,7 +312,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
     /**
      * 切换单位指令
      */
-    private void sendUnitDataScale() {
+    private void sendUnitDataScale(final PPDeviceModel deviceModel) {
         if (ppScale != null) {
             ppScale.sendUnitDataScale(unitType);
             ppScale.setSendResultCallBack(new PPBleSendResultCallBack() {
@@ -300,7 +328,9 @@ public class BindingDeviceActivity extends AppCompatActivity {
                     } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
                         //设备未连接
                     }
-                    disConnect();
+                    if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+                        disConnect();
+                    }
                 }
             });
         }
@@ -310,7 +340,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
      * 延迟开始搜索
      */
     public void delayScan() {
-        new Handler(getMainLooper()).postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (isOnResume) {
@@ -324,8 +354,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         isOnResume = true;
-        //启动扫描
-        startScanData();
     }
 
     @Override
@@ -340,7 +368,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
         super.onDestroy();
         if (ppScale != null) {
             ppScale.stopSearch();
-//            ppScale.disConnect();
+            ppScale.disConnect();
         }
         if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.dismiss();
@@ -422,7 +450,13 @@ public class BindingDeviceActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0x0003) {
+            delayScan();
+        }
+    }
 }
 
 

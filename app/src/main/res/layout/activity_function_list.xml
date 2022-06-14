@@ -29,4 +29,12 @@
         android:layout_marginEnd="4dp"
         android:text="@string/bmdj" />
 
+    <Button
+        android:id="@+id/otaBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/ota" />
+
 </LinearLayout>
