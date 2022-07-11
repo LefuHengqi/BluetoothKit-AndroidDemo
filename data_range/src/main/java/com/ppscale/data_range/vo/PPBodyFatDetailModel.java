@@ -366,9 +366,8 @@ public class PPBodyFatDetailModel {
         bodyType.setCode(FLAG_BODY_TYPE);
         bodyType.setDataVal(StripedStand.getBodyfatType(context, bodyFat.getPpBodyType()));
         bodyType.setUnit(PPUtil.getWeightUnit(unitType));
-        int lfBodyType = bodyFat.getPpBodyType();
         bodyType.setName(context.getString(R.string.bodyType));
-        bodyType.setValue(lfBodyType);
+        bodyType.setValue(bodyFat.getPpBodyType().getType());
 //        int indexBodyType = StripedStand.visceralFatInt(lfBodyType);
 //        bodyType.setLevelIndex(indexBodyType);
 //        FatDescribeEntity weightAdviceBodyType = BodyAdviceUtil.getWeightAdvice(indexBodyType);

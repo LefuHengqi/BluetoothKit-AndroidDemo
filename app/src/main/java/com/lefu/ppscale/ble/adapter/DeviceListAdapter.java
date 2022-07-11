@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import android.hardware.display.DeviceProductInfo;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +47,15 @@ public class DeviceListAdapter extends ArrayAdapter {
             } else {
                 tv_ssid.setText(com.lefu.ppscale.wifi.R.string.to_config_the_network);
             }
+        } else if (deviceModel.getDeviceProtocolType() == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre.getType()) {
+            if (!TextUtils.isEmpty(deviceModel.getSsid())) {
+                tv_ssid.setText(deviceModel.getSsid());
+            } else {
+                tv_ssid.setText(com.lefu.ppscale.wifi.R.string.to_config_the_network);
+            }
         } else {
             tv_ssid.setVisibility(View.GONE);
-            tvSetting.setVisibility(View.GONE);
+//            tvSetting.setVisibility(View.GONE);
         }
         tvSetting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +63,7 @@ public class DeviceListAdapter extends ArrayAdapter {
                 if (onItemClickViewInsideListener != null) {
                     onItemClickViewInsideListener.onItemClickViewInside(position, v);
                 }
+
             }
         });
 

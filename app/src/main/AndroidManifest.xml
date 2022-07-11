@@ -31,6 +31,8 @@
         <activity android:name="TestBleActivity" />
         <activity android:name=".userinfo.UserinfoActivity" />
         <activity android:name=".activity.OTAActivity" />
+        <activity android:name=".torre.DeviceSetActivity" />
+        <activity android:name=".activity.FoodSclaeDeviceActivity"/>
     </application>
 
 </manifest>

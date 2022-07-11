@@ -21,10 +21,24 @@ android {
     packagingOptions {
         exclude 'META-INF/proguard/coroutines.pro'
         exclude 'com.holtek.libHTBodyfat.HTBodyfat' //This fixes a bug in FAN 5.0.1
-
+        //直流秤
+        pickFirst 'lib/armeabi-v7a/libsl.so'
+        pickFirst 'lib/arm64-v8a/libsl.so'
+        pickFirst 'lib/x86_64/libsl.so'
+        pickFirst 'lib/x86/libsl.so'
+        //交流秤
+        pickFirst 'lib/armeabi-v7a/libbhBodyCompositionTwoLegs50khz.so'
+        pickFirst 'lib/arm64-v8a/libbhBodyCompositionTwoLegs50khz.so'
+        pickFirst 'lib/x86_64/libbhBodyCompositionTwoLegs50khz.so'
+        pickFirst 'lib/x86/libbhBodyCompositionTwoLegs50khz.so'
     }
+
     buildTypes {
         release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -37,7 +51,6 @@ android {
     defaultConfig {
         multiDexEnabled true
     }
-
 
 
     bundle {

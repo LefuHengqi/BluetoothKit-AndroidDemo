@@ -5,15 +5,6 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/searchDeviceListBtn"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/scan_device" />
-
-    <Button
         android:id="@+id/eadHistoryListBtn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -36,5 +27,32 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:text="@string/ota" />
+
+    <Button
+        android:id="@+id/wificonfigBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/blutooth_distribution_net" />
+
+    <Button
+        android:id="@+id/dataListBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/data_list" />
+
+
+    <Button
+        android:id="@+id/developerBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/developer_mode" />
+
 
 </LinearLayout>

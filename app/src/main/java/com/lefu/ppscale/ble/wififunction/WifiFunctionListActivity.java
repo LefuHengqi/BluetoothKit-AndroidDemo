@@ -21,30 +21,6 @@ public class WifiFunctionListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_function_list);
 
-        Button mBtnConfigWifi = findViewById(R.id.wificonfigBtn);
-        mBtnConfigWifi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PPScale.isBluetoothOpened()) {
-                    Intent intent = new Intent(WifiFunctionListActivity.this, BleConfigWifiActivity.class);
-                    startActivity(intent);
-                } else {
-                    PPScale.openBluetooth();
-                }
-            }
-        });
-
-        Button dataListBtn = findViewById(R.id.dataListBtn);
-        dataListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WifiFunctionListActivity.this, WifiDataListActivity.class);
-                intent.putExtra("userinfo", DataUtil.util().getUserModel());
-//                intent.putExtra("unit", PPUtil.getWeightUnitNum(DataUtil.util().getUnit()));
-                startActivity(intent);
-            }
-        });
-
     }
 
 }

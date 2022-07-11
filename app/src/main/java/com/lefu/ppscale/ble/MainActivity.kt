@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import com.lefu.base.SettingManager
 import com.lefu.ppscale.ble.activity.BindingDeviceActivity
 import com.lefu.ppscale.ble.activity.DeviceListActivity
+import com.lefu.ppscale.ble.activity.FoodSclaeDeviceActivity
+import com.lefu.ppscale.ble.activity.ScanDeviceListActivity
 import com.lefu.ppscale.ble.function.FunctionListActivity
 import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.lefu.ppscale.ble.wififunction.WifiFunctionListActivity
@@ -45,11 +47,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun onBtnClck() {
         functionListBleBtn.setOnClickListener(this)
-        functionListWifiBtn.setOnClickListener(this)
         bindingDeviceBtn.setOnClickListener(this)
         scaleWeightBtn.setOnClickListener(this)
         deviceManagerBtn.setOnClickListener(this)
         userInfoBtn.setOnClickListener(this)
+        functionFoodScale.setOnClickListener(this)
     }
 
     fun requestPower() {
@@ -94,7 +96,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 //申请权限，字符串数组内是一个或多个要申请的权限，1是申请权限结果的返回参数，在onRequestPermissionsResult可以得知申请结果
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT),
+                    arrayOf(
+                        Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.BLUETOOTH_CONNECT
+                    ),
                     2
                 )
             }
@@ -139,16 +144,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     PPScale.openBluetooth()
                 }
             }
-            R.id.functionListWifiBtn -> {
+            R.id.functionListBleBtn -> {
                 if (PPScale.isBluetoothOpened()) {
-                    startActivity(Intent(this@MainActivity, WifiFunctionListActivity::class.java))
+//                    startActivity(Intent(this@MainActivity, FunctionListActivity::class.java))
+                    startActivity(Intent(this@MainActivity, ScanDeviceListActivity::class.java))
+
                 } else {
                     PPScale.openBluetooth()
                 }
             }
-            R.id.functionListBleBtn -> {
+            R.id.functionFoodScale -> {
                 if (PPScale.isBluetoothOpened()) {
-                    startActivity(Intent(this@MainActivity, FunctionListActivity::class.java))
+                    startActivity(Intent(this@MainActivity, FoodSclaeDeviceActivity::class.java))
                 } else {
                     PPScale.openBluetooth()
                 }

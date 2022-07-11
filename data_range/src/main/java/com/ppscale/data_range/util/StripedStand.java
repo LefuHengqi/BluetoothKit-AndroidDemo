@@ -3,7 +3,10 @@ package com.ppscale.data_range.util;
 import android.content.Context;
 
 import com.peng.ppscale.util.PPUtil;
+import com.peng.ppscale.vo.PPBodyType;
 import com.ppscale.data_range.R;
+
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -1029,18 +1032,6 @@ public class StripedStand {
         }
     }
 
-    public static final int HTBodyTypeThin = 0;
-    public static final int HTBodyTypeLThinMuscle = 1;
-    public static final int HTBodyTypeMuscular = 2;
-    public static final int HTBodyTypeLackofexercise = 3;
-    public static final int HTBodyTypeStandard = 4;
-    public static final int HTBodyTypeStandardMuscle = 5;
-    public static final int HTBodyTypeObesFat = 6;
-    public static final int HTBodyTypeLFatMuscle = 7;
-    public static final int HTBodyTypeMuscleFat = 8;
-    public static final int SexTypeFemale = 0;
-    public static final int SexTypeMale = 1;
-
     /**
      * 获取身体类型
      * 0 偏瘦型
@@ -1056,29 +1047,28 @@ public class StripedStand {
      * @param type
      * @return
      */
-    public static String getBodyfatType(Context mContext, int type) {
+    public static String getBodyfatType(Context mContext, PPBodyType type) {
         switch (type) {
-            case HTBodyTypeThin:            //0 偏瘦型
+            case LF_BODY_TYPE_THIN:             //0 偏瘦型
                 return mContext.getString(R.string.bodySlim);
-            case HTBodyTypeLThinMuscle:     //1 偏瘦肌肉型
+            case LF_BODY_TYPE_THIN_MUSCLE:      //1 偏瘦肌肉型
                 return mContext.getString(R.string.bodySlimMuscle);
-            case HTBodyTypeMuscular:        //2 肌肉发达型
+            case LF_BODY_TYPE_MUSCULAR:         //2 肌肉发达型
                 return mContext.getString(R.string.bodyMoreMuscle);
-            case HTBodyTypeLackofexercise:  //3 缺乏运动型
+            case LF_BODY_TYPE_LACK_EXERCISE:   //3 缺乏运动型
                 return mContext.getString(R.string.bodyLittleExercise);
-            case HTBodyTypeStandard:        //4 标准型
+            case LF_BODY_TYPE_STANDARD:         //4 标准型
                 return mContext.getString(R.string.bodyStandard);
-            case HTBodyTypeStandardMuscle:  //5 标准肌肉型
+            case LF_BODY_TYPE_STANDARD_MUSCLE:   //5 标准肌肉型
                 return mContext.getString(R.string.bodyStandardMuscle);
-            case HTBodyTypeObesFat:         //6 浮肿肥胖型
+            case LF_BODY_TYPE_OBESE_FAT:          //6 浮肿肥胖型
                 return mContext.getString(R.string.bodyMoreObsity);
-            case HTBodyTypeLFatMuscle:      //7 偏胖肌肉型
+            case LF_BODY_TYPE_FAT_MUSCLE:       //7 偏胖肌肉型
                 return mContext.getString(R.string.bodyLittleMuscle);
-            case HTBodyTypeMuscleFat:       //8 肌肉型偏胖
+            case LF_BODY_TYPE_MUSCLE_FAT:        //8 肌肉型偏胖
                 return mContext.getString(R.string.bodyFatMuscle);
-            default:
-                return mContext.getString(R.string.bodyUndefine);
         }
+        return mContext.getString(R.string.bodyUndefine);
     }
 
     /**

@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.lefu.base.SettingManager;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
+import com.lefu.ppscale.ble.function.FunctionListActivity;
+import com.lefu.ppscale.ble.torre.DeviceSetActivity;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity;
@@ -34,58 +36,64 @@ public class DeviceListActivity extends AppCompatActivity {
         list = DBManager.manager().getDeviceList();
         adapter = new DeviceListAdapter(DeviceListActivity.this, R.layout.list_view_device, list);
         ListView listView = (ListView) findViewById(R.id.list_View);
-        adapter.setOnClickInItemLisenter(new DeviceListAdapter.OnItemClickViewInsideListener() {
-            @Override
-            public void onItemClickViewInside(int position, View v) {
-                DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
-                if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
-                    Intent intent = new Intent(DeviceListActivity.this, DeveloperActivity.class);
-                    intent.putExtra(DeveloperActivity.ADDRESS, deviceModel.getDeviceMac());
-                    startActivity(intent);
-                }
-            }
-        });
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(DeviceListActivity.this);
-                builder.setMessage("确定删除?");
-                builder.setTitle("提示");
+                builder.setMessage(R.string.confirm_delete);
+                builder.setTitle(R.string.hint);
 
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DeviceModel deviceModel = list.get(position);
-                        DBManager.manager().deleteDevice(deviceModel);
-                        list.remove(position);
-                        adapter.notifyDataSetChanged();
-
-                        if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
-                            clearDevice(deviceModel);
+                        if (!list.isEmpty()) {
+                            DeviceModel deviceModel = list.get(position);
+                            DBManager.manager().deleteDevice(deviceModel);
+                            list.remove(position);
+                            if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
+                                clearDevice(deviceModel);
+                            }
                         }
+                        adapter.notifyDataSetChanged();
                     }
                 });
 
-                builder.setNegativeButton("取消", null);
+                builder.setNegativeButton(R.string.cancle, null);
                 builder.show();
                 return false;
             }
 
         });
 
+        adapter.setOnClickInItemLisenter(new DeviceListAdapter.OnItemClickViewInsideListener() {
+            @Override
+            public void onItemClickViewInside(int position, View view) {
+                if (view.getId() == R.id.tvSetting) {
+                    DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
+                    if (deviceModel.getDeviceProtocolType() == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre.getType()) {
+                        Intent intent = new Intent(DeviceListActivity.this, DeviceSetActivity.class);
+                        intent.putExtra("address", deviceModel.getDeviceMac());
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(DeviceListActivity.this, FunctionListActivity.class);
+                        intent.putExtra(DeveloperActivity.ADDRESS, deviceModel.getDeviceMac());
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
-                if (view.getId() == R.id.tvSetting) {
-                    if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
-                        Intent intent = new Intent(DeviceListActivity.this, DeveloperActivity.class);
-                        intent.putExtra(DeveloperActivity.ADDRESS, deviceModel.getDeviceMac());
+                if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
+                    if (deviceModel.getDeviceProtocolType() == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre.getType()) {
+                        Intent intent = new Intent(DeviceListActivity.this, DeviceSetActivity.class);
+                        intent.putExtra("address", deviceModel.getDeviceMac());
                         startActivity(intent);
-                    }
-                } else {
-                    if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
+                    } else {
                         Intent intent = new Intent(DeviceListActivity.this, BleConfigWifiActivity.class);
                         intent.putExtra("address", deviceModel.getDeviceMac());
                         startActivity(intent);

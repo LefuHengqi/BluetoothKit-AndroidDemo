@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/device_set_connect_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_30dp"
+        android:text="连接状态" />
+
+    <TextView
+        android:id="@+id/device_set_deviceinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimens_20dp"
+        android:text="设备信息" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/device_set_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="设置亮度" />
+
+        <Button
+            android:id="@+id/device_set_sync_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="同步日志" />
+
+        <Button
+            android:id="@+id/device_set_sync_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="同步时间" />
+
+        <Button
+            android:id="@+id/device_set_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="恢复出厂" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/device_set_sync_userinfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="同步所有用户数据" />
+
+        <Button
+            android:id="@+id/device_set_delete_userinfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="删除所有用户数据" />
+
+        <Button
+            android:id="@+id/device_set_confirm_current_userinfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="确认当前用户" />
+
+        <Button
+            android:id="@+id/device_set_get_userinfo_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="获取用户列表" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/device_set_wifi_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="读取wifi列表" />
+
+        <Button
+            android:id="@+id/device_set_startConfigWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始配网" />
+
+        <Button
+            android:id="@+id/device_set_exitConfigWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="退出配网" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/device_set_synchistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="同步历史数据" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/userNameImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray" />
+
+
+</LinearLayout>

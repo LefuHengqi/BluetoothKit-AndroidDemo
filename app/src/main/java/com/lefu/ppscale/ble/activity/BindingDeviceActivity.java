@@ -1,40 +1,39 @@
 package com.lefu.ppscale.ble.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import android.os.Handler;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.lefu.healthu.business.mine.binddevice.BindDeviceWiFiLockSelectConfigNetDialog;
-import com.lefu.ppscale.db.dao.DBManager;
-
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
+import com.lefu.ppscale.ble.torre.DeviceSetActivity;
+import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity;
-import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
-import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
+import com.peng.ppscale.business.ble.listener.PPBindDeviceInterface;
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
-import com.peng.ppscale.business.device.PPUnitType;
+import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPLockDataInterface;
 import com.peng.ppscale.business.ble.listener.PPProcessDateInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
+import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
 import com.peng.ppscale.util.Logger;
+import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.vo.PPBodyBaseModel;
 import com.peng.ppscale.vo.PPBodyFatModel;
 import com.peng.ppscale.vo.PPDeviceModel;
@@ -52,25 +51,14 @@ public class BindingDeviceActivity extends AppCompatActivity {
     TextView weightTextView;
     PPScale ppScale;
 
-//    private BindDeviceWiFiLockSelectConfigNetDialog configWifiDialog;
-
-    /**
-     * PPUnitKG = 0,
-     * PPUnitLB = 1,
-     * PPUnitST = 2,
-     * PPUnitJin = 3,
-     * PPUnitG = 4,
-     * PPUnitLBOZ = 5,
-     * PPUnitOZ = 6,
-     * PPUnitMLWater = 7,
-     * PPUnitMLMilk = 8,
-     */
-    public static final String UNIT_TYPE = "unitType";
     //0是绑定设备 1是搜索已有设备
     public static final String SEARCH_TYPE = "SearchType";
 
     private PPUnitType unitType;
     private PPUserModel userModel;
+    /**
+     * 0 is to bind the device 1 is to search for an existing device
+     */
     private int searchType;
     private AlertDialog.Builder builder;
     private AlertDialog alertDialog;
@@ -149,15 +137,13 @@ public class BindingDeviceActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                DeviceModel deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.getType());
-
-                DBManager.manager().insertDevice(deviceModel);
+                saveDevice(ppDeviceModel);
 
                 DataUtil.util().setBodyDataModel(bodyDataModel);
 
                 Intent intent = new Intent(BindingDeviceActivity.this, BodyDataDetailActivity.class);
                 startActivity(intent);
-
+                finish();
             }
         });
         builder.setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
@@ -172,6 +158,23 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 alertDialog = builder.show();
             }
         }
+    }
+
+    private void saveDevice(PPDeviceModel ppDeviceModel) {
+        DeviceModel deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.getType());
+
+        deviceModel.setDeviceProtocolType(ppDeviceModel.deviceProtocolType.getType());
+        deviceModel.setDevicePower(ppDeviceModel.getBatteryPower());
+        deviceModel.setFirmwareVersion(ppDeviceModel.getFirmwareVersion());
+        deviceModel.setSerialNumber(ppDeviceModel.getSerialNumber());
+        deviceModel.setHardwareVersion(ppDeviceModel.getHardwareVersion());
+        deviceModel.setAccuracyType(ppDeviceModel.deviceAccuracyType.getType());
+        deviceModel.setDeviceFuncType(ppDeviceModel.deviceFuncType);
+        deviceModel.setDeviceUnitType(ppDeviceModel.deviceUnitType);
+        deviceModel.setDeviceCalcuteType(ppDeviceModel.deviceCalcuteType.getType());
+        deviceModel.setDevicePowerType(ppDeviceModel.devicePowerType.getType());
+
+        DBManager.manager().insertDevice(deviceModel);
     }
 
     /**
@@ -194,29 +197,44 @@ public class BindingDeviceActivity extends AppCompatActivity {
      */
     private ProtocalFilterImpl getProtocalFilter() {
         final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
-        protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
+        if (searchType == 0) {
+            protocalFilter.setBindDeviceInterface(new PPBindDeviceInterface() {
+                @Override
+                public void onBindDevice(PPDeviceModel deviceModel) {
+                    if (deviceModel != null) {
+                        saveDevice(deviceModel);
+                        finish();
+                        startActivity(new Intent(BindingDeviceActivity.this, DeviceListActivity.class));
+                    }
+                }
+            });
+        } else {
+            protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
 
-            // 过程数据
-            @Override
-            public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
-                Logger.d("bodyBaseModel scaleName " + bodyBaseModel.getScaleName());
-                String weightStr = PPUtil.getWeight(bodyBaseModel.getUnit(), bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
-                weightTextView.setText(weightStr);
-            }
-        });
-        protocalFilter.setPPLockDataInterface(new PPLockDataInterface() {
+                // 过程数据
+                @Override
+                public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
+                    Logger.d("bodyBaseModel scaleName " + bodyBaseModel);
+                    String weightStr = PPUtil.getWeight(bodyBaseModel.getUnit(), bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                    weightTextView.setText(weightStr);
+                }
+            });
+            protocalFilter.setPPLockDataInterface(new PPLockDataInterface() {
 
-            //锁定数据
-            @Override
-            public void monitorLockData(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
-                onDataLock(bodyFatModel, deviceModel);
-            }
-        });
+                //锁定数据
+                @Override
+                public void monitorLockData(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
+                    onDataLock(bodyFatModel, deviceModel);
+                }
+
+                @Override
+                public void monitorOverWeight() {
+                    Logger.e("over weight ");
+                }
+            });
+        }
+
         protocalFilter.setDeviceInfoInterface(new PPDeviceInfoInterface() {
-            @Override
-            public void softwareRevision(PPDeviceModel deviceModel) {
-
-            }
 
             @Override
             public void serialNumber(PPDeviceModel deviceModel) {
@@ -233,8 +251,8 @@ public class BindingDeviceActivity extends AppCompatActivity {
             }
 
             @Override
-            public void batteryPower(PPDeviceModel deviceModel) {
-
+            public void readDeviceInfoComplete(PPDeviceModel deviceModel) {
+                Logger.d("DeviceInfo :  " + deviceModel.toString());
             }
         });
         return protocalFilter;
@@ -285,10 +303,15 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 Logger.d(getString(R.string.writable));
                 //可写状态，可以发送指令，例如切换单位，获取历史数据等
                 sendUnitDataScale(deviceModel);
+
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
-                ppScale.connectDevice(deviceModel);
+                if (searchType != 0 && deviceModel.isDeviceConnectAbled()) {
+                    ppScale.connectDevice(deviceModel);
+                } else {
+                    //绑定设备时不发起连接，非可连接设备，不发起连接
+                }
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
             }
@@ -315,18 +338,19 @@ public class BindingDeviceActivity extends AppCompatActivity {
     private void sendUnitDataScale(final PPDeviceModel deviceModel) {
         if (ppScale != null) {
             ppScale.sendUnitDataScale(unitType);
+            ppScale.sendData2ElectronicScale(unitType);
             ppScale.setSendResultCallBack(new PPBleSendResultCallBack() {
                 @Override
                 public void onResult(@NonNull PPScaleSendState sendState) {
                     if (sendState == PPScaleSendState.PP_SEND_FAIL) {
-                        //发送失败
+                        //Failed to send
                     } else if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                        //发送成功
+                        //sentSuccessfully
 
                     } else if (sendState == PPScaleSendState.PP_DEVICE_ERROR) {
-                        //设备错误，说明不支持该指令
+                        //Device error, indicating that the command is not supported
                     } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
-                        //设备未连接
+                        //deviceNotConnected
                     }
                     if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
                         disConnect();
@@ -398,9 +422,17 @@ public class BindingDeviceActivity extends AppCompatActivity {
 //                        UnitMatchTypeHelper.setDeviceMac(deviceModel.getDeviceMac());
 
                         if (PPScale.isBluetoothOpened()) {
-                            Intent intent = new Intent(BindingDeviceActivity.this, BleConfigWifiActivity.class);
-                            intent.putExtra("address", deviceModel.getDeviceMac());
-                            startActivity(intent);
+                            if (deviceModel.deviceProtocolType == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre) {
+                                //Torre Bluetooth Wifi Scale
+                                Intent intent = new Intent(BindingDeviceActivity.this, DeviceSetActivity.class);
+                                intent.putExtra("address", deviceModel.getDeviceMac());
+                                startActivity(intent);
+                            } else {
+                                //Ordinary Bluetooth WiFi Scale
+                                Intent intent = new Intent(BindingDeviceActivity.this, BleConfigWifiActivity.class);
+                                intent.putExtra("address", deviceModel.getDeviceMac());
+                                startActivity(intent);
+                            }
                             finish();
                         } else {
                             PPScale.openBluetooth();
@@ -436,9 +468,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
     }
 
     private void saveDeviceAndBodyFat(PPDeviceModel ppDeviceModel, PPBodyFatModel bodyDataModel) {
-        DeviceModel deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.getType());
-
-        DBManager.manager().insertDevice(deviceModel);
+        saveDevice(ppDeviceModel);
 
         DataUtil.util().setBodyDataModel(bodyDataModel);
     }

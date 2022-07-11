@@ -29,6 +29,15 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
         public final static Property Sn = new Property(4, String.class, "sn", false, "SN");
         public final static Property Ssid = new Property(5, String.class, "ssid", false, "SSID");
         public final static Property AccuracyType = new Property(6, int.class, "accuracyType", false, "ACCURACY_TYPE");
+        public final static Property DeviceProtocolType = new Property(7, int.class, "deviceProtocolType", false, "DEVICE_PROTOCOL_TYPE");
+        public final static Property DeviceCalcuteType = new Property(8, int.class, "deviceCalcuteType", false, "DEVICE_CALCUTE_TYPE");
+        public final static Property DevicePowerType = new Property(9, int.class, "devicePowerType", false, "DEVICE_POWER_TYPE");
+        public final static Property DeviceFuncType = new Property(10, int.class, "deviceFuncType", false, "DEVICE_FUNC_TYPE");
+        public final static Property DeviceUnitType = new Property(11, int.class, "deviceUnitType", false, "DEVICE_UNIT_TYPE");
+        public final static Property DevicePower = new Property(12, int.class, "devicePower", false, "DEVICE_POWER");
+        public final static Property FirmwareVersion = new Property(13, String.class, "firmwareVersion", false, "FIRMWARE_VERSION");
+        public final static Property HardwareVersion = new Property(14, String.class, "hardwareVersion", false, "HARDWARE_VERSION");
+        public final static Property SerialNumber = new Property(15, String.class, "serialNumber", false, "SERIAL_NUMBER");
     }
 
 
@@ -50,7 +59,16 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
                 "\"DEVICE_TYPE\" INTEGER NOT NULL ," + // 3: deviceType
                 "\"SN\" TEXT," + // 4: sn
                 "\"SSID\" TEXT," + // 5: ssid
-                "\"ACCURACY_TYPE\" INTEGER NOT NULL );"); // 6: accuracyType
+                "\"ACCURACY_TYPE\" INTEGER NOT NULL ," + // 6: accuracyType
+                "\"DEVICE_PROTOCOL_TYPE\" INTEGER NOT NULL ," + // 7: deviceProtocolType
+                "\"DEVICE_CALCUTE_TYPE\" INTEGER NOT NULL ," + // 8: deviceCalcuteType
+                "\"DEVICE_POWER_TYPE\" INTEGER NOT NULL ," + // 9: devicePowerType
+                "\"DEVICE_FUNC_TYPE\" INTEGER NOT NULL ," + // 10: deviceFuncType
+                "\"DEVICE_UNIT_TYPE\" INTEGER NOT NULL ," + // 11: deviceUnitType
+                "\"DEVICE_POWER\" INTEGER NOT NULL ," + // 12: devicePower
+                "\"FIRMWARE_VERSION\" TEXT," + // 13: firmwareVersion
+                "\"HARDWARE_VERSION\" TEXT," + // 14: hardwareVersion
+                "\"SERIAL_NUMBER\" TEXT);"); // 15: serialNumber
     }
 
     /** Drops the underlying database table. */
@@ -89,6 +107,27 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
             stmt.bindString(6, ssid);
         }
         stmt.bindLong(7, entity.getAccuracyType());
+        stmt.bindLong(8, entity.getDeviceProtocolType());
+        stmt.bindLong(9, entity.getDeviceCalcuteType());
+        stmt.bindLong(10, entity.getDevicePowerType());
+        stmt.bindLong(11, entity.getDeviceFuncType());
+        stmt.bindLong(12, entity.getDeviceUnitType());
+        stmt.bindLong(13, entity.getDevicePower());
+ 
+        String firmwareVersion = entity.getFirmwareVersion();
+        if (firmwareVersion != null) {
+            stmt.bindString(14, firmwareVersion);
+        }
+ 
+        String hardwareVersion = entity.getHardwareVersion();
+        if (hardwareVersion != null) {
+            stmt.bindString(15, hardwareVersion);
+        }
+ 
+        String serialNumber = entity.getSerialNumber();
+        if (serialNumber != null) {
+            stmt.bindString(16, serialNumber);
+        }
     }
 
     @Override
@@ -121,6 +160,27 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
             stmt.bindString(6, ssid);
         }
         stmt.bindLong(7, entity.getAccuracyType());
+        stmt.bindLong(8, entity.getDeviceProtocolType());
+        stmt.bindLong(9, entity.getDeviceCalcuteType());
+        stmt.bindLong(10, entity.getDevicePowerType());
+        stmt.bindLong(11, entity.getDeviceFuncType());
+        stmt.bindLong(12, entity.getDeviceUnitType());
+        stmt.bindLong(13, entity.getDevicePower());
+ 
+        String firmwareVersion = entity.getFirmwareVersion();
+        if (firmwareVersion != null) {
+            stmt.bindString(14, firmwareVersion);
+        }
+ 
+        String hardwareVersion = entity.getHardwareVersion();
+        if (hardwareVersion != null) {
+            stmt.bindString(15, hardwareVersion);
+        }
+ 
+        String serialNumber = entity.getSerialNumber();
+        if (serialNumber != null) {
+            stmt.bindString(16, serialNumber);
+        }
     }
 
     @Override
@@ -137,7 +197,16 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
             cursor.getInt(offset + 3), // deviceType
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // sn
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // ssid
-            cursor.getInt(offset + 6) // accuracyType
+            cursor.getInt(offset + 6), // accuracyType
+            cursor.getInt(offset + 7), // deviceProtocolType
+            cursor.getInt(offset + 8), // deviceCalcuteType
+            cursor.getInt(offset + 9), // devicePowerType
+            cursor.getInt(offset + 10), // deviceFuncType
+            cursor.getInt(offset + 11), // deviceUnitType
+            cursor.getInt(offset + 12), // devicePower
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // firmwareVersion
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // hardwareVersion
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15) // serialNumber
         );
         return entity;
     }
@@ -151,6 +220,15 @@ public class DeviceModelDao extends AbstractDao<DeviceModel, Long> {
         entity.setSn(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setSsid(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setAccuracyType(cursor.getInt(offset + 6));
+        entity.setDeviceProtocolType(cursor.getInt(offset + 7));
+        entity.setDeviceCalcuteType(cursor.getInt(offset + 8));
+        entity.setDevicePowerType(cursor.getInt(offset + 9));
+        entity.setDeviceFuncType(cursor.getInt(offset + 10));
+        entity.setDeviceUnitType(cursor.getInt(offset + 11));
+        entity.setDevicePower(cursor.getInt(offset + 12));
+        entity.setFirmwareVersion(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setHardwareVersion(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setSerialNumber(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
      }
     
     @Override

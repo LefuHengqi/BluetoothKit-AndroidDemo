@@ -110,15 +110,8 @@ public class ReadHistoryListActivity extends Activity {
 
         protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
 
-            /**
-             * 历史数据
-             *
-             * @param bodyFatModel
-             * @param isEnd
-             * @param dateTime
-             */
             @Override
-            public void monitorHistoryData(PPBodyFatModel bodyFatModel, boolean isEnd, String dateTime, PPDeviceModel deviceModel) {
+            public void monitorHistoryData(PPBodyFatModel bodyFatModel, boolean isEnd, String dateTime) {
                 if (bodyFatModel != null) {
                     Logger.d("ppScale_ isEnd = " + isEnd + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyFatModel.getPpWeightKg());
                 } else {
@@ -127,7 +120,9 @@ public class ReadHistoryListActivity extends Activity {
                 if (!isEnd) {
                     if (bodyFatModel != null) {
 
-                        String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                        Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
+
+                        String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
 
                         DeviceModel bodyModel = new DeviceModel(bodyFatModel.getImpedance() + "", weightStr, -1);
 
@@ -144,6 +139,12 @@ public class ReadHistoryListActivity extends Activity {
 //                        deleteHistoryData();
                 }
             }
+
+            @Override
+            public void monitorHistoryFail() {
+
+            }
+
         });
         return protocalFilter;
     }

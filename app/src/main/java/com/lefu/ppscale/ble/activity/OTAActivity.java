@@ -158,41 +158,6 @@ public class OTAActivity extends AppCompatActivity {
      */
     private ProtocalFilterImpl getProtocalFilter() {
         final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
-        protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
-
-            // 过程数据
-            @Override
-            public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
-                Logger.d("bodyBaseModel scaleName " + bodyBaseModel.getScaleName());
-//                String weightStr = PPUtil.getWeight(bodyBaseModel.getUnit(), bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
-//                weightTextView.setText(weightStr);
-            }
-        });
-        protocalFilter.setPPLockDataInterface(new PPLockDataInterface() {
-
-            //锁定数据
-            @Override
-            public void monitorLockData(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
-
-            }
-        });
-        protocalFilter.setDeviceInfoInterface(new PPDeviceInfoInterface() {
-
-            @Override
-            public void softwareRevision(PPDeviceModel deviceModel) {
-
-            }
-
-            @Override
-            public void serialNumber(PPDeviceModel deviceModel) {
-
-            }
-
-            @Override
-            public void batteryPower(PPDeviceModel deviceModel) {
-
-            }
-        });
         return protocalFilter;
     }
 

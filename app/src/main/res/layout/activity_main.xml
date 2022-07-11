@@ -50,12 +50,12 @@
             android:text="@string/function_list_ble" />
 
         <Button
-            android:id="@+id/functionListWifiBtn"
+            android:id="@+id/functionFoodScale"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/function_list_wifi" />
+            android:text="@string/function_food_scale" />
 
     </LinearLayout>
 
