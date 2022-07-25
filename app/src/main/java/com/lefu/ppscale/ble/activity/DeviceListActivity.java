@@ -35,7 +35,7 @@ public class DeviceListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_device_list);
         list = DBManager.manager().getDeviceList();
         adapter = new DeviceListAdapter(DeviceListActivity.this, R.layout.list_view_device, list);
-        ListView listView = (ListView) findViewById(R.id.list_View);
+        final ListView listView = (ListView) findViewById(R.id.list_View);
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -48,14 +48,19 @@ public class DeviceListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (!list.isEmpty()) {
+                            list = DBManager.manager().getDeviceList();
                             DeviceModel deviceModel = list.get(position);
+
                             DBManager.manager().deleteDevice(deviceModel);
+
                             list.remove(position);
+
                             if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
                                 clearDevice(deviceModel);
                             }
                         }
-                        adapter.notifyDataSetChanged();
+                        adapter.notifyAll();
+                        listView.setAdapter(adapter);
                     }
                 });
 
@@ -84,24 +89,24 @@ public class DeviceListActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
-                if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
-                    if (deviceModel.getDeviceProtocolType() == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre.getType()) {
-                        Intent intent = new Intent(DeviceListActivity.this, DeviceSetActivity.class);
-                        intent.putExtra("address", deviceModel.getDeviceMac());
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(DeviceListActivity.this, BleConfigWifiActivity.class);
-                        intent.putExtra("address", deviceModel.getDeviceMac());
-                        startActivity(intent);
-                    }
-                }
-
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
+//                if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
+//                    if (deviceModel.getDeviceProtocolType() == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre.getType()) {
+//                        Intent intent = new Intent(DeviceListActivity.this, DeviceSetActivity.class);
+//                        intent.putExtra("address", deviceModel.getDeviceMac());
+//                        startActivity(intent);
+//                    } else {
+//                        Intent intent = new Intent(DeviceListActivity.this, BleConfigWifiActivity.class);
+//                        intent.putExtra("address", deviceModel.getDeviceMac());
+//                        startActivity(intent);
+//                    }
+//                }
+//
+//            }
+//        });
 
     }
 

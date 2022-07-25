@@ -82,7 +82,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
         initPPScale();
     }
 
-
     private void startScanData() {
         ppScale.startSearchBluetoothScaleWithMacAddressList();
     }

@@ -74,6 +74,13 @@ public class DeviceListAdapter extends ArrayAdapter {
         this.onItemClickViewInsideListener = onItemClickViewInsideListener;
     }
 
+    public void setList(List<DeviceModel> deviceList) {
+
+
+
+
+    }
+
     public interface OnItemClickViewInsideListener {
         /**
          * @param position 列表项在列表中的位置
