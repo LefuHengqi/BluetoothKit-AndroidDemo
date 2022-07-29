@@ -233,8 +233,9 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
         PPUnitType type = foodScaleGeneral.getUnit();
 
         if (deviceModel.deviceAccuracyType == PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G) {
-            String num = String.valueOf(value);
+//            String num = String.valueOf(value);
             EnergyUnit unit = Energy.toG(value, type);
+            String num = unit.format01();
             String unitText = unit.unitText(FoodSclaeDeviceActivity.this);
             valueStr = num + unitText;
         } else {
