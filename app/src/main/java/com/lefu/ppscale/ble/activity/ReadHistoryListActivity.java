@@ -111,33 +111,31 @@ public class ReadHistoryListActivity extends Activity {
         protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
 
             @Override
-            public void monitorHistoryData(PPBodyFatModel bodyFatModel, boolean isEnd, String dateTime) {
+            public void monitorHistoryData(PPBodyFatModel bodyFatModel, String dateTime) {
                 if (bodyFatModel != null) {
-                    Logger.d("ppScale_ isEnd = " + isEnd + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyFatModel.getPpWeightKg());
-                } else {
-                    Logger.d("ppScale_ isEnd = " + isEnd);
+                    Logger.d("ppScale_ " + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyFatModel.getPpWeightKg());
                 }
-                if (!isEnd) {
-                    if (bodyFatModel != null) {
+                if (bodyFatModel != null) {
+                    Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
 
-                        Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
+                    String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
 
-                        String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
+                    DeviceModel bodyModel = new DeviceModel(bodyFatModel.getImpedance() + "", weightStr, -1);
 
-                        DeviceModel bodyModel = new DeviceModel(bodyFatModel.getImpedance() + "", weightStr, -1);
+                    deviceModels.add(bodyModel);
+                    adapter.notifyDataSetChanged();
+                }
+            }
 
-                        deviceModels.add(bodyModel);
-                        adapter.notifyDataSetChanged();
-                    }
+            @Override
+            public void monitorHistoryEnd(PPDeviceModel deviceModel) {
+                if (deviceModels == null || deviceModels.isEmpty()) {
+                    tv_starts.setText("没有离线数据");
                 } else {
-                    if (deviceModels == null || deviceModels.isEmpty()) {
-                        tv_starts.setText("没有离线数据");
-                    } else {
-                        tv_starts.setText("读取历史数据结束");
-                    }
-                    //历史数据结束，删除历史数据
+                    tv_starts.setText("读取历史数据结束");
+                }
+                //历史数据结束，删除历史数据
 //                        deleteHistoryData();
-                }
             }
 
             @Override

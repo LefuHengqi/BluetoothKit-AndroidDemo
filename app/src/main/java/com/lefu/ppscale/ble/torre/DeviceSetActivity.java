@@ -17,8 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
-import com.lefu.ppscale.db.dao.DBManager;
-import com.lefu.ppscale.db.dao.DeviceModel;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.configWifi.PPConfigStateMenu;
@@ -27,10 +25,11 @@ import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
-import com.peng.ppscale.business.ble.listener.PPTorreConfigWifiInterface;
+import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
 import com.peng.ppscale.business.device.PPUnitType;
+import com.peng.ppscale.business.ota.OnOTAStateListener;
 import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
 import com.peng.ppscale.util.Logger;
@@ -42,6 +41,7 @@ import com.peng.ppscale.vo.PPWifiModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DeviceSetActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,10 +51,10 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
     private PPScale.Builder builder1;
     private boolean isSendData;
     private String address;
-    private TextView device_set_deviceinfo;
+    private TextView device_set_deviceinfo, wifi_name;
     private TextView device_set_connect_state;
     private Button device_set_light, device_set_sync_log, device_set_sync_time, device_set_reset,
-            device_set_synchistory, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
+            device_set_synchistory, device_set_startOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
             device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list;
 
     @Override
@@ -78,6 +78,7 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         device_set_sync_time = findViewById(R.id.device_set_sync_time);
         device_set_reset = findViewById(R.id.device_set_reset);
         device_set_synchistory = findViewById(R.id.device_set_synchistory);
+        device_set_startOTA = findViewById(R.id.device_set_startOTA);
         device_set_sync_userinfo = findViewById(R.id.device_set_sync_userinfo);
         device_set_wifi_list = findViewById(R.id.device_set_wifi_list);
         device_set_startConfigWifi = findViewById(R.id.device_set_startConfigWifi);
@@ -85,12 +86,14 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         device_set_delete_userinfo = findViewById(R.id.device_set_delete_userinfo);
         device_set_confirm_current_userinfo = findViewById(R.id.device_set_confirm_current_userinfo);
         device_set_get_userinfo_list = findViewById(R.id.device_set_get_userinfo_list);
+        wifi_name = findViewById(R.id.wifi_name);
 
         device_set_light.setOnClickListener(this);
         device_set_sync_log.setOnClickListener(this);
         device_set_sync_time.setOnClickListener(this);
         device_set_reset.setOnClickListener(this);
         device_set_synchistory.setOnClickListener(this);
+        device_set_startOTA.setOnClickListener(this);
         device_set_sync_userinfo.setOnClickListener(this);
         device_set_wifi_list.setOnClickListener(this);
         device_set_startConfigWifi.setOnClickListener(this);
@@ -300,19 +303,25 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
             }
         });
         protocalFilter.setTorreConfigWifiInterface(new PPTorreConfigWifiInterface() {
+
             @Override
-            public void configResult(PPConfigStateMenu configStateMenu) {
+            public void configResult(PPConfigStateMenu configStateMenu, String resultCode) {
                 Logger.d(configStateMenu.toString());
             }
 
             @Override
             public void monitorWiFiListSuccess(List<PPWifiModel> wifiModels) {
                 Logger.d(wifiModels.toString());
+                if (wifiModels != null) {
+                    for (PPWifiModel wifiModel : wifiModels) {
+                        wifi_name.append(wifiModel.getSsid() + "\n");
+                    }
+                }
             }
         });
         protocalFilter.setUserInfoInterface(new PPUserInfoInterface() {
             @Override
-            public void getUserListSuccess(List<String> memberIDs) {
+            public void getUserListSuccess(List<String> userIds) {
 
             }
 
@@ -348,25 +357,22 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         });
         protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
             @Override
-            public void monitorHistoryData(PPBodyFatModel bodyFatModel, boolean isEnd, String dateTime) {
+            public void monitorHistoryData(PPBodyFatModel bodyFatModel, String dateTime) {
                 if (bodyFatModel != null) {
-                    Logger.d("ppScale_ isEnd = " + isEnd + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyFatModel.getPpWeightKg());
-                } else {
-                    Logger.d("ppScale_ isEnd = " + isEnd);
+                    Logger.d("ppScale_  dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyFatModel.getPpWeightKg());
                 }
-                if (!isEnd) {
-                    if (bodyFatModel != null) {
+                if (bodyFatModel != null) {
+                    Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
+                    String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
+                }
 
-                        Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
+            }
 
-                        String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
-
-                    }
-                } else {
-                    Logger.d("ppScale_ bodyFatModel = 历史数据读取完成");
-                    //历史数据结束，删除历史数据
+            @Override
+            public void monitorHistoryEnd(PPDeviceModel deviceModel) {
+                Logger.d("ppScale_ bodyFatModel = 历史数据读取完成");
+                //历史数据结束，删除历史数据
 //                        deleteHistoryData();
-                }
             }
 
             @Override
@@ -433,6 +439,46 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
                     break;
                 case R.id.device_set_get_userinfo_list:
                     ppScale.getTorreDeviceManager().getUserList();
+                    break;
+                case R.id.device_set_startOTA:
+                    ppScale.getTorreDeviceManager().startOTA(new OnOTAStateListener() {
+
+                        @Override
+                        public void onUpdateFail() {
+                            Toast.makeText(DeviceSetActivity.this, "升级失败", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onStartUpdate() {
+                            Toast.makeText(DeviceSetActivity.this, "开始升级", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onUpdateProgress(int progress) {
+                            device_set_startOTA.setText(String.format(Locale.CHINA, "启动WiFi升级(%d%%)", progress));
+                        }
+
+                        @Override
+                        public void onUpdateSucess() {
+                            Toast.makeText(DeviceSetActivity.this, "升级成功", Toast.LENGTH_SHORT).show();
+                            device_set_startOTA.setText("启动WiFi升级");
+                        }
+
+                        @Override
+                        public void onReadyToUpdate() {
+
+                        }
+
+                        @Override
+                        public void onUpdateEnd() {
+
+                        }
+
+                        @Override
+                        public boolean isOTA() {
+                            return false;
+                        }
+                    });
                     break;
             }
         } else {

@@ -201,9 +201,12 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 @Override
                 public void onBindDevice(PPDeviceModel deviceModel) {
                     if (deviceModel != null) {
-                        saveDevice(deviceModel);
-                        finish();
-                        startActivity(new Intent(BindingDeviceActivity.this, DeviceListActivity.class));
+                        DeviceModel device = DBManager.manager().getDevice(deviceModel.getDeviceMac());
+                        if (device == null) {
+                            saveDevice(deviceModel);
+                            finish();
+                            startActivity(new Intent(BindingDeviceActivity.this, DeviceListActivity.class));
+                        }
                     }
                 }
             });

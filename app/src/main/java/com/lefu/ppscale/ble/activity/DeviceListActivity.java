@@ -54,13 +54,13 @@ public class DeviceListActivity extends AppCompatActivity {
                             DBManager.manager().deleteDevice(deviceModel);
 
                             list.remove(position);
-
+                            adapter.remove(deviceModel);
                             if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
                                 clearDevice(deviceModel);
                             }
                         }
-                        adapter.notifyAll();
-                        listView.setAdapter(adapter);
+//                        adapter.notifyAll();
+//                        listView.setAdapter(adapter);
                     }
                 });
 
