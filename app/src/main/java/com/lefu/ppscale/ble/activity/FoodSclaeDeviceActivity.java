@@ -65,12 +65,12 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
         //赛选出本地有的食物秤，没有传null
         List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
         List<String> addressList = new ArrayList<>();
-        addressList.add("CF:E6:06:12:15:31");
-//        if (deviceList != null && !deviceList.isEmpty()) {
-//            for (DeviceModel deviceModel : deviceList) {
-//                addressList.add(deviceModel.getDeviceMac());
-//            }
-//        }
+//        addressList.add(deviceList);
+        if (deviceList != null && !deviceList.isEmpty()) {
+            for (DeviceModel deviceModel : deviceList) {
+                addressList.add(deviceModel.getDeviceMac());
+            }
+        }
 
         if (builder1 == null) {
             builder1 = new PPScale.Builder(this);

@@ -125,12 +125,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.userInfoBtn -> {
 //
-                val ppWeightKg = 54.35
-                val impedance = 812645
+                val ppWeightKg = 66.1
+                val impedance = 16069682
                 val userModel = PPUserModel.Builder()
                         .setSex(PPUserGender.PPUserGenderFemale)
-                        .setHeight(160)//158
-                        .setAge(28)
+                        .setHeight(171)//158
+                        .setAge(51)
                         .build()
                 val deviceModel = PPDeviceModel("", DeviceManager.HEARTRATE_SCALE)
 
