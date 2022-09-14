@@ -333,7 +333,7 @@ PPUserModel参数说明：
 
 注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
 
-###### 1.4.2.1 错误类型 PPBodyEnum.PPBodyfatErrorType
+###### 1.4.1.1 错误类型 PPBodyEnum.PPBodyfatErrorType
 
       PPBodyfatErrorTypeNone(0),         //!< 无错误(可读取所有参数)
       PPBodyfatErrorTypeImpedance(-1),    //!< 阻抗有误,阻抗有误时, 不计算除BMI/idealWeightKg以外参数(写0)
@@ -341,21 +341,21 @@ PPUserModel参数说明：
       PPBodyfatErrorTypeWeight(-2),       //!< 体重参数有误，需在 10  ~ 200kg(有误不计算所有参数)
       PPBodyfatErrorTypeHeight(-3);       //!< 身高参数有误，需在 90 ~ 220cm(不计算所有参数)
 
-###### 1.4.2.2 健康评估 PPBodyEnum.PPBodyfatErrorType
+###### 1.4.1.2 健康评估 PPBodyEnum.PPBodyfatErrorType
 
       PPBodyGradeThin(0),             //!< 偏瘦型
       PPBodyGradeLThinMuscle(1),      //!< 标准型
       PPBodyGradeMuscular(2),         //!< 超重型
       PPBodyGradeLackofexercise(3);   //!< 肥胖型
 
-###### 1.4.2.3 肥胖等级 PPBodyEnum.PPBodyfatErrorType
+###### 1.4.1.3 肥胖等级 PPBodyEnum.PPBodyfatErrorType
 
       PPBodyGradeFatOne(0),             //!< 肥胖1级
       PPBodyGradeLFatTwo(1),            //!< 肥胖2级
       PPBodyGradeFatThree(2),           //!< 肥胖3级
       PPBodyGradeFatFour(-1);           //!< 参数错误
 
-###### 1.4.2.4 健康等级 PPBodyEnum.PPBodyfatErrorType
+###### 1.4.1.4 健康等级 PPBodyEnum.PPBodyfatErrorType
 
       PPBodyAssessment1(0),          //!< 健康存在隐患
       PPBodyAssessment2(1),          //!< 亚健康
@@ -364,7 +364,7 @@ PPUserModel参数说明：
       PPBodyAssessment5(4),          //!< 非常好
       PPBodyAssessmentError(-1);          //!< 参数错误
 
-###### 1.4.2.5、身体类型 PPBodyFatModel.ppBodyType
+###### 1.4.1.5、身体类型 PPBodyFatModel.ppBodyType
 
      0 偏瘦型
      1 偏瘦肌肉型
@@ -448,6 +448,62 @@ PPUserModel参数说明：
      * 是否能连接
      */
     public boolean deviceConnectAbled;
+
+###### 1.4.2.1 PPScaleDefine.PPDeviceProtocolType 协议类型，具体说明
+
+    PPDeviceProtocolTypeUnknow(0), //未知协议
+    PPDeviceProtocolTypeV2(1) //使用V2.0蓝牙协议
+    PPDeviceProtocolTypeV3(2), //使用V3.0蓝牙协议
+    PPDeviceProtocolTypeTorre(3) //四电极、八电极协议
+
+###### 1.4.2.2 PPScaleDefine.PPDeviceType 设备类型具体说明
+
+    PPDeviceTypeUnknow(0), //未知
+    PPDeviceTypeCF(1), //体脂秤
+    PPDeviceTypeCE(2), //体重秤
+    PPDeviceTypeCB(3), //婴儿秤
+    PPDeviceTypeCA(4), //厨房秤
+    PPDeviceTypeCC(5); //蓝牙wifi秤
+
+###### 1.4.2.3 PPScaleDefine.PPDeviceAccuracyType 重量的精度类型具体说明
+
+    PPDeviceAccuracyTypeUnknow(0), //未知精度
+    PPDeviceAccuracyTypePoint01(1), //KG精度0.1
+    PPDeviceAccuracyTypePoint005(2), //KG精度0.05
+    PPDeviceAccuracyTypePointG(3), // 1G精度
+    PPDeviceAccuracyTypePoint01G(4); // 0.1G精度
+
+###### 1.4.2.4 PPScaleDefine.DeviceCalcuteType 体脂计算类型具体说明
+
+    PPDeviceCalcuteTypeUnknow(0), //未知
+    PPDeviceCalcuteTypeInScale(1), //秤端计算
+    PPDeviceCalcuteTypeDirect(2), //直流
+    PPDeviceCalcuteTypeAlternate(3), //交流
+    PPDeviceCalcuteTypeNeedNot(4) //不需要计算
+
+###### 1.4.2.5 PPScaleDefine.PPDevicePowerType 供电模式具体说明
+
+    PPDevicePowerTypeUnknow(0),//未知
+    PPDevicePowerTypeBattery(1),//电池供电
+    PPDevicePowerTypeSolar(2),//太阳能供电
+    PPDevicePowerTypeCharge(3);  //充电款
+
+###### 1.4.2.6 PPScaleDefine.PPDeviceFuncType 功能类型，可多功能叠加,具体说明
+
+    PPDeviceFuncTypeWeight(0x01),//体重
+    PPDeviceFuncTypeFat(0x02), //测体脂
+    PPDeviceFuncTypeHeartRate(0x04), //心率
+    PPDeviceFuncTypeHistory(0x08), //历史数据
+    PPDeviceFuncTypeSafe(0x10), //安全模式，孕妇模式
+    PPDeviceFuncTypeBMDJ(0x20);  //闭幕单脚
+
+###### 1.4.2.7 PPScaleDefine.PPDeviceUnitType 支持的单位,具体说明（暂时未启用）
+
+    PPDeviceUnitTypeKG(0x01),//kg
+    PPDeviceUnitTypeLB(0x02),//lb
+    PPDeviceUnitTypeST(0x04),//st
+    PPDeviceUnitTypeJin(0x08), //斤
+    PPDeviceUnitTypeSTLB(0x10);//st:lb
 
 
 #### 1.5 蓝牙状态监控回调和系统蓝牙状态回调

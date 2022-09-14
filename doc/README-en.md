@@ -343,7 +343,7 @@ the corresponding other body data.
 Note: When you get the object when using it, please call the corresponding get method to get the
 corresponding value
 
-###### 1.4.2.1 Error Type PPBodyEnum.PPBodyfatErrorType
+###### 1.4.1.1 Error Type PPBodyEnum.PPBodyfatErrorType
 
       PPBodyfatErrorTypeNone(0), //! <No error (all parameters can be read)
       PPBodyfatErrorTypeImpedance(-1), //!< If the impedance is wrong, when the impedance is wrong, the parameters other than BMI/idealWeightKg will not be calculated (write 0)
@@ -351,21 +351,21 @@ corresponding value
       PPBodyfatErrorTypeWeight(-2), //!< The weight parameter is wrong, it needs to be 10 ~ 200kg (if there is an error, all parameters will not be calculated)
       PPBodyfatErrorTypeHeight(-3); //!< The height parameter is wrong, it needs to be within 90 ~ 220cm (not counting all parameters)
 
-###### 1.4.2.2 Health Assessment PPBodyEnum.PPBodyfatErrorType
+###### 1.4.1.2 Health Assessment PPBodyEnum.PPBodyfatErrorType
 
       PPBodyGradeThin(0), //! <Thin type
       PPBodyGradeLThinMuscle(1), //!< Standard type
       PPBodyGradeMuscular(2), //! <Super Heavy
       PPBodyGradeLackofexercise(3); //!< Obesity
 
-###### 1.4.2.3 Obesity level PPBodyEnum.PPBodyfatErrorType
+###### 1.4.1.3 Obesity level PPBodyEnum.PPBodyfatErrorType
 
       PPBodyGradeFatOne(0), //! <Obesity Level 1
       PPBodyGradeLFatTwo(1), //! <Obesity Level 2
       PPBodyGradeFatThree(2), //! <Fatty Grade 3
       PPBodyGradeFatFour(-1); //!< parameter error
 
-###### 1.4.2.4 Health Level PPBodyEnum.PPBodyfatErrorType
+###### 1.4.1.4 Health Level PPBodyEnum.PPBodyfatErrorType
 
       PPBodyAssessment1(0), //!< There are hidden dangers to health
       PPBodyAssessment2(1), //! <Sub-health
@@ -374,7 +374,7 @@ corresponding value
       PPBodyAssessment5(4), //! <Very good
       PPBodyAssessmentError(-1); //!< parameter error
 
-###### 1.4.2.5, body type PPBodyFatModel.ppBodyType
+###### 1.4.1.5, body type PPBodyFatModel.ppBodyType
 
      0 Lean
      1 Lean muscle type
@@ -457,6 +457,62 @@ corresponding value
       * Can you connect
       */
       public boolean deviceConnectAbled;
+
+###### 1.4.2.1 PPScaleDefine.PPDeviceProtocolType Protocol type, specific description
+
+    PPDeviceProtocolTypeUnknow(0), //Unknown protocol
+    PPDeviceProtocolTypeV2(1) //Use V2.0 Bluetooth protocol
+    PPDeviceProtocolTypeV3(2), //Use V3.0 Bluetooth protocol
+    PPDeviceProtocolTypeTorre(3) //Four-electrode, eight-electrode protocol
+
+###### 1.4.2.2 PPScaleDefine.PPDeviceType Device type specific description
+
+    PPDeviceTypeUnknow(0), //unknown
+    PPDeviceTypeCF(1), //body fat scale
+    PPDeviceTypeCE(2), //Weight scale
+    PPDeviceTypeCB(3), //Baby scale
+    PPDeviceTypeCA(4), //Kitchen scale
+    PPDeviceTypeCC(5); //Bluetooth wifi scale
+
+###### 1.4.2.3 PPScaleDefine.PPDeviceAccuracyType Weight's precision type specification
+
+    PPDeviceAccuracyTypeUnknow(0), //Unknown precision
+    PPDeviceAccuracyTypePoint01(1), //KG accuracy 0.1
+    PPDeviceAccuracyTypePoint005(2), //KG accuracy 0.05
+    PPDeviceAccuracyTypePointG(3), // 1G precision
+    PPDeviceAccuracyTypePoint01G(4); // 0.1G precision
+
+###### 1.4.2.4 PPScaleDefine.DeviceCalcuteType Body fat calculation type specific description
+
+    PPDeviceCalcuteTypeUnknow(0), //unknown
+    PPDeviceCalcuteTypeInScale(1), //scale calculation
+    PPDeviceCalcuteTypeDirect(2), //DC
+    PPDeviceCalcuteTypeAlternate(3), //communication
+    PPDeviceCalcuteTypeNeedNot(4) //No need to calculate
+
+###### 1.4.2.5 PPScaleDefine.PPDevicePowerType Power supply mode specification
+
+    PPDevicePowerTypeUnknow(0), //unknown
+    PPDevicePowerTypeBattery(1), // battery powered
+    PPDevicePowerTypeSolar(2), //Solar power supply
+    PPDevicePowerTypeCharge(3); //Charging model
+
+###### 1.4.2.6 PPScaleDefine.PPDeviceFuncType Function type, which can be multi-function superimposed, detailed description
+
+    PPDeviceFuncTypeWeight(0x01), //weight
+    PPDeviceFuncTypeFat(0x02), //Measure body fat
+    PPDeviceFuncTypeHeartRate(0x04), //heart rate
+    PPDeviceFuncTypeHistory(0x08), //historical data
+    PPDeviceFuncTypeSafe(0x10), //safe mode, pregnant woman mode
+    PPDeviceFuncTypeBMDJ(0x20); //Close single pin
+
+###### 1.4.2.7 PPScaleDefine.PPDeviceUnitType Supported units, specific description (not enabled for now)
+
+    PPDeviceUnitTypeKG(0x01), //kg
+    PPDeviceUnitTypeLB(0x02), //lb
+    PPDeviceUnitTypeST(0x04), //st
+    PPDeviceUnitTypeJin(0x08), //jin
+    PPDeviceUnitTypeSTLB(0x10);//st:lb
 
 #### 1.5 Bluetooth status monitoring callback and system Bluetooth status callback
 
