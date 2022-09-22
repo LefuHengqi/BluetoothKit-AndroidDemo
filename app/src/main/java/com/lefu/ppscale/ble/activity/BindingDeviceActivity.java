@@ -339,26 +339,31 @@ public class BindingDeviceActivity extends AppCompatActivity {
      */
     private void sendUnitDataScale(final PPDeviceModel deviceModel) {
         if (ppScale != null) {
-            ppScale.sendUnitDataScale(unitType);
-            ppScale.sendData2ElectronicScale(unitType);
-            ppScale.setSendResultCallBack(new PPBleSendResultCallBack() {
-                @Override
-                public void onResult(@NonNull PPScaleSendState sendState) {
-                    if (sendState == PPScaleSendState.PP_SEND_FAIL) {
-                        //Failed to send
-                    } else if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                        //sentSuccessfully
+            if (deviceModel.getDeviceCalcuteType() == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeInScale) {
+                //秤端计算，需要发送身体详情数据给秤，发送完成后不断开（切换单位）
+                ppScale.sendData2ElectronicScale(unitType);
+            } else {
+                //切换单位
+                ppScale.sendUnitDataScale(unitType);
+                ppScale.setSendResultCallBack(new PPBleSendResultCallBack() {
+                    @Override
+                    public void onResult(@NonNull PPScaleSendState sendState) {
+                        if (sendState == PPScaleSendState.PP_SEND_FAIL) {
+                            //Failed to send
+                        } else if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                            //sentSuccessfully
 
-                    } else if (sendState == PPScaleSendState.PP_DEVICE_ERROR) {
-                        //Device error, indicating that the command is not supported
-                    } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
-                        //deviceNotConnected
+                        } else if (sendState == PPScaleSendState.PP_DEVICE_ERROR) {
+                            //Device error, indicating that the command is not supported
+                        } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
+                            //deviceNotConnected
+                        }
+                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+                            disConnect();
+                        }
                     }
-                    if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
-                        disConnect();
-                    }
-                }
-            });
+                });
+            }
         }
     }
 

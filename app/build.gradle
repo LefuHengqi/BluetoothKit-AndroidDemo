@@ -3,10 +3,6 @@ apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-static def releaseTime() {
-    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
-}
-
 android {
     compileSdkVersion 31
     defaultConfig {
@@ -20,17 +16,16 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/proguard/coroutines.pro'
-        exclude 'com.holtek.libHTBodyfat.HTBodyfat' //This fixes a bug in FAN 5.0.1
         //直流秤
         pickFirst 'lib/armeabi-v7a/libsl.so'
         pickFirst 'lib/arm64-v8a/libsl.so'
         pickFirst 'lib/x86_64/libsl.so'
         pickFirst 'lib/x86/libsl.so'
         //交流秤
-        pickFirst 'lib/armeabi-v7a/libbhBodyCompositionTwoLegs50khz.so'
-        pickFirst 'lib/arm64-v8a/libbhBodyCompositionTwoLegs50khz.so'
-        pickFirst 'lib/x86_64/libbhBodyCompositionTwoLegs50khz.so'
-        pickFirst 'lib/x86/libbhBodyCompositionTwoLegs50khz.so'
+        pickFirst 'lib/armeabi-v7a/libbhBodyComposition.so'
+        pickFirst 'lib/arm64-v8a/libbhBodyComposition.so'
+        pickFirst 'lib/x86_64/libbhBodyComposition.so'
+        pickFirst 'lib/x86/libbhBodyComposition.so'
     }
 
     buildTypes {
