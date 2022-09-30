@@ -20,6 +20,7 @@ public class DeviceModel {
     private int deviceType;
     private String sn;
     private String ssid;
+    private int rssi;
     /**
      * 精度
      *
@@ -79,18 +80,19 @@ public class DeviceModel {
         this.deviceType = deviceType;
     }
 
-    @Generated(hash = 960684195)
+    @Generated(hash = 1006604300)
     public DeviceModel(Long id, String deviceMac, String deviceName, int deviceType,
-            String sn, String ssid, int accuracyType, int deviceProtocolType,
-            int deviceCalcuteType, int devicePowerType, int deviceFuncType,
-            int deviceUnitType, int devicePower, String firmwareVersion,
-            String hardwareVersion, String serialNumber) {
+            String sn, String ssid, int rssi, int accuracyType,
+            int deviceProtocolType, int deviceCalcuteType, int devicePowerType,
+            int deviceFuncType, int deviceUnitType, int devicePower,
+            String firmwareVersion, String hardwareVersion, String serialNumber) {
         this.id = id;
         this.deviceMac = deviceMac;
         this.deviceName = deviceName;
         this.deviceType = deviceType;
         this.sn = sn;
         this.ssid = ssid;
+        this.rssi = rssi;
         this.accuracyType = accuracyType;
         this.deviceProtocolType = deviceProtocolType;
         this.deviceCalcuteType = deviceCalcuteType;
@@ -233,6 +235,14 @@ public class DeviceModel {
 
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
+    }
+
+    public int getRssi() {
+        return this.rssi;
+    }
+
+    public void setRssi(int rssi) {
+        this.rssi = rssi;
     }
 
 

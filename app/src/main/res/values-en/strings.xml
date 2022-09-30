@@ -15,7 +15,7 @@
     <string name="data_details">Data details</string>
     <string name="blutooth_distribution_net">Bluetooth distribution network</string>
     <string name="binding_device">Binding Equipment</string>
-    <string name="weigh_on_the_scale">Weighing on the scale</string>
+    <string name="weigh_on_the_scale">body fat scale</string>
     <string name="equipment_management">Device Management</string>
     <string name="unit_normal">0：KG, 1: LB
          2：ST ,3: 斤

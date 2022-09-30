@@ -7,17 +7,17 @@
     android:orientation="vertical"
     tools:context=".activity.DeviceListActivity">
 
-    <TextView
-        android:id="@+id/tv_starts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/dimens_20dp"
-        android:text="@string/bluetooth_status"
-        android:textColor="@android:color/black" />
-
     <ListView
         android:id="@+id/list_View"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/tv_starts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+
 
 </LinearLayout>

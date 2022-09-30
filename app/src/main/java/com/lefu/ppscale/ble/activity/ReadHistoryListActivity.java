@@ -63,7 +63,7 @@ public class ReadHistoryListActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device_list);
+        setContentView(R.layout.activity_hitory);
 
         tv_starts = findViewById(R.id.tv_starts);
 

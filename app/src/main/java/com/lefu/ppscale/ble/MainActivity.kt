@@ -3,9 +3,11 @@ package com.lefu.ppscale.ble
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,7 +20,6 @@ import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.business.ble.PPScale
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
-import com.peng.ppscale.util.DateUtil
 import com.peng.ppscale.vo.PPBodyFatModel
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPUserGender
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (userModel == null) {
             startActivity(Intent(this@MainActivity, UserinfoActivity::class.java))
         }
-        requestPower()
+        requestLocationPermission()
 
         onBtnClck()
 
@@ -58,87 +59,50 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         functionFoodScale.setOnClickListener(this)
     }
 
-    fun requestPower() {
-        //判断是否已经赋予权限
-        if (ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                )
-                != PackageManager.PERMISSION_GRANTED
-        ) {
-            //如果应用之前请求过此权限但用户拒绝了请求，此方法将返回 true。
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-            ) { //这里可以写个对话框之类的项向用户解释为什么要申请权限，并在对话框的确认键后续再次申请权限
+    /**
+     *   Android 31 and below only need to apply for positioning permission
+     */
+    fun requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                //The location permission is permanently denied by the user, and the user needs to go to the settings page to enable it
             } else {
-                //申请权限，字符串数组内是一个或多个要申请的权限，1是申请权限结果的返回参数，在onRequestPermissionsResult可以得知申请结果
-                ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                        1
-                )
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
             }
         }
     }
 
+    @RequiresApi(31)
     fun requestBleScalePermmision() {
-        if (ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.BLUETOOTH_SCAN
-                )
-                != PackageManager.PERMISSION_GRANTED
-        ) {
-            //如果应用之前请求过此权限但用户拒绝了请求，此方法将返回 true。
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            Manifest.permission.BLUETOOTH_SCAN
-                    )
-            ) { //这里可以写个对话框之类的项向用户解释为什么要申请权限，并在对话框的确认键后续再次申请权限
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BLUETOOTH_SCAN)) { //这里可以写个对话框之类的项向用户解释为什么要申请权限，并在对话框的确认键后续再次申请权限
+                //TODO Here you should remind the user to go to the system settings page to enable permissions
             } else {
-                //申请权限，字符串数组内是一个或多个要申请的权限，1是申请权限结果的返回参数，在onRequestPermissionsResult可以得知申请结果
-                ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(
-                                Manifest.permission.BLUETOOTH_SCAN,
-                                Manifest.permission.BLUETOOTH_CONNECT
-                        ),
-                        2
-                )
+                //Here you should remind the user to go to the system settings page to enable permissions
+                ActivityCompat.requestPermissions(this,
+                        arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT), 2)
             }
         }
     }
 
-    override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
-            requestBleScalePermmision()
+            //Here you should remind the user to go to the system settings page to enable permissions
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                requestBleScalePermmision()
+            } else {
+                //Android 31 and below only need to apply for positioning permission
+            }
+        } else if (requestCode == 2) {
+
         }
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.userInfoBtn -> {
-//
-                val ppWeightKg = 80.2
-                val impedance = 3487382
-                val userModel = PPUserModel.Builder()
-                        .setSex(PPUserGender.PPUserGenderMale)
-                        .setHeight(180)//158
-                        .setAge(18)
-                        .build()
-                val deviceModel = PPDeviceModel("", DeviceManager.HEARTRATE_SCALE)
-
-                val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
-
-                Log.d("liyp_", ppBodyFatModel.toString())
-
-//                startActivity(Intent(this@MainActivity, UserinfoActivity::class.java))
+                startActivity(Intent(this@MainActivity, UserinfoActivity::class.java))
             }
             R.id.scaleWeightBtn -> {
                 if (PPScale.isBluetoothOpened()) {
@@ -150,7 +114,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.deviceManagerBtn -> {
-
                 startActivity(Intent(this@MainActivity, DeviceListActivity::class.java))
             }
             R.id.bindingDeviceBtn -> {
@@ -166,7 +129,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 if (PPScale.isBluetoothOpened()) {
 //                    startActivity(Intent(this@MainActivity, FunctionListActivity::class.java))
                     startActivity(Intent(this@MainActivity, ScanDeviceListActivity::class.java))
-
                 } else {
                     PPScale.openBluetooth()
                 }
@@ -177,6 +139,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     PPScale.openBluetooth()
                 }
+            }
+            R.id.simulatedBodyFatCalculationBtn -> {
+                val ppWeightKg = 80.2       //weight
+                val impedance = 3487382     //impedance
+                val userModel = PPUserModel.Builder()
+                        .setSex(PPUserGender.PPUserGenderMale) //gender
+                        .setHeight(180)//height 100-220
+                        .setAge(18)//age 10-99
+                        .build()
+                val deviceModel = PPDeviceModel("", DeviceManager.HEARTRATE_SCALE)//Select the corresponding Bluetooth name according to your own device
+
+                val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
+
+                Log.d("lefu_", ppBodyFatModel.toString())
             }
         }
 
