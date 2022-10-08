@@ -15,7 +15,6 @@
     <string name="data_details">Data details</string>
     <string name="blutooth_distribution_net">Bluetooth distribution network</string>
     <string name="binding_device">Binding Equipment</string>
-    <string name="weigh_on_the_scale">body fat scale</string>
     <string name="equipment_management">Device Management</string>
     <string name="unit_normal">0：KG, 1: LB
          2：ST ,3: 斤
@@ -34,7 +33,6 @@
     <string name="is_this_your_data">This is what your data?</string>
     <string name="corfirm">determine</string>
     <string name="cancle">cancel</string>
-    <string name="current_weight">Current weight</string>
     <string name="device_connected">The device is connected</string>
     <string name="device_connecting">Device connection</string>
     <string name="device_disconnected">Device disconnected</string>
@@ -54,5 +52,11 @@
     <string name="hint">hint</string>
     <string name="simulated_body_fat_calculation">Simulated body fat calculation</string>
     <string name="bluetooth_status">Bluetooth Status: </string>
+
+    <string name="user_info_edit">User Info Edit</string>
+    <string name="function_food_scale">Food scales</string>
+    <string name="weigh_on_the_scale">Weigh on the body fat scale</string>
+    <string name="function_list_ble">Scan list of nearby devices</string>
+    <string name="current_weight">Current weight</string>
 
 </resources>

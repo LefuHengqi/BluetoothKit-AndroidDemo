@@ -14,12 +14,8 @@
     <string name="data_details">数据详情</string>
     <string name="blutooth_distribution_net">蓝牙配网</string>
     <string name="binding_device">绑定设备</string>
-    <string name="function_list_ble">扫描附近设备列表</string>
     <string name="function_list_wifi">WiFi功能列表</string>
-    <string name="function_food_scale">食物秤称重</string>
-    <string name="weigh_on_the_scale">体脂秤称重</string>
     <string name="equipment_management">设备管理</string>
-    <string name="user_info_edit">用户信息编辑</string>
     <string name="scan_device">扫描设备</string>
     <string name="eadHistoryList">读取历史数据</string>
     <string name="unit_normal">
@@ -41,7 +37,7 @@
     <string name="is_this_your_data">这是您的数据么？</string>
     <string name="corfirm">确定</string>
     <string name="cancle">取消</string>
-    <string name="current_weight">当前重量</string>
+
     <string name="device_connected">设备已连接</string>
     <string name="device_connecting">设备连接中</string>
     <string name="device_disconnected">设备已断开</string>
@@ -62,6 +58,13 @@
     <string name="hint">提示</string>
     <string name="simulated_body_fat_calculation">模拟体脂计算</string>
     <string name="bluetooth_status">蓝牙状态: </string>
+
+
+    <string name="user_info_edit">用户信息编辑</string>
+    <string name="function_food_scale">食物秤称重</string>
+    <string name="weigh_on_the_scale">体脂秤称重</string>
+    <string name="function_list_ble">扫描附近设备列表</string>
+    <string name="current_weight">当前重量</string>
 
 
 </resources>
