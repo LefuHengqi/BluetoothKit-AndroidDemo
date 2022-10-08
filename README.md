@@ -3,15 +3,7 @@
 # LF蓝牙秤/WiFi秤SDK
 
 ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时候，请采用从maven下载的库的集成方式集成。建议开发者查看README.md文档，完成集成。
-
-## 一、 蓝牙wiFi相关的文档
-
-示例module是：BleWifiScaleDemo
-[蓝牙WIFI秤文档中文](BleWifiScaleDemo/README_CN.md)    
-[Bluetooth WIFI Scale example English](BleWifiScaleDemo/README_EN.md)
-
-## 二、蓝牙体脂秤示例
-
+        
 ### Ⅰ. 集成方式
 
 ##### sdk引入方式
@@ -19,29 +11,71 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
 在需要引入sdk的module下的build.gradle中加入(最新版本请查看ppscalelib的module下的libs)
 
          dependencies {
-                    //1.aar引入
-                    implementation files('libs/ppscale-213-20220105-0327015.aar')
-                    //2.github maven引入, 需要参考Project下的build.gradle引入 maven { url "https://raw.githubusercontent.com/PPScale/ppscale-android-maven/main" }
-                    //implementation 'com.lefu.ppscale:ppscale:2.1.3-SNAPSHOT'
+                    //aar引入
+                     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
          }
 
 ### Ⅱ .使用说明
 
 ### 1.1 蓝牙权限相关
 
-* 由于需要蓝牙连接，Demo需要真机运行。
+#### 1.1.1 运行环境
 
-* 在Android 6.0及以上系统版本，启动扫描前，需确保开启
+由于需要蓝牙连接，Demo需要真机运行，Android手机6.0及以上或HarmonyOS2.0及以上
+
+#### 1.1.2 蓝牙权限相关约定
+
+使用Demo过程中需要您打开蓝牙，打开GPS开关，需确保开启和授权相关必要的权限
+
+#### 1.1.2.1 在Android 6.0及以上系统版本，
 
   1、定位权限  
   2、定位开关  
   3、蓝牙开关
+  
+* 在Android 12.0及以上系统版本，启动扫描前，需确保开启和授权相关必要的权限
 
-* 如果需要体重值以外的信息需要输入身高、年龄、性别并且光脚上秤。
+  可以查看官方蓝牙权限文档，文档地址：[https://developer.android.com/guide/topics/connectivity/bluetooth/permissions](Google开发者网站关于Bluetooth permissions说明)
+  
+   1、定位权限
+   2、定位开关  
+   3、蓝牙开关
+   4、扫描和连接附近的设备
+   
+   
+       targetSdkVersion 31
+       <manifest>
+           <!-- Request legacy Bluetooth permissions on older devices. -->
+           <uses-permission android:name="android.permission.BLUETOOTH"
+                            android:maxSdkVersion="30" />
+           <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+                            android:maxSdkVersion="30" />
+       
+           <!-- Needed only if your app looks for Bluetooth devices.
+                If your app doesn't use Bluetooth scan results to derive physical
+                location information, you can strongly assert that your app
+                doesn't derive physical location. -->
+           <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+       
+           <!-- Needed only if your app makes the device discoverable to Bluetooth
+                devices. -->
+           <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+       
+           <!-- Needed only if your app communicates with already-paired Bluetooth
+                devices. -->
+           <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+       
+           <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
+           <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+           ...
+       </manifest>
 
-* 使用Demo过程中需要您打开蓝牙，同时给予Demo定位权限
+#### 1.1.3 测量身体数据相关约定
 
-### 1.2 通用功能
+   如果需要体重值以外的信息需要输入身高、年龄、性别并且光脚上秤。
+
+
+### 1.2 主页功能说明
 
 #### 1.2.1 用户信息编辑
 
@@ -68,102 +102,37 @@ PPUserModel参数说明：
 
 #### 1.2.2 绑定设备
 
-	绑定设备 - 在这个控制器在被实例化后会开始扫描附近的外设，并将您的外设做一个记录。
+绑定设备 - 在这个控制器在被实例化后会开始扫描附近的外设，并将您的外设做一个记录。
+        - 在“绑定设备”页面绑定成功后，会自动跳转到设备管理列表页面
+        - 体脂秤和食物秤都在此绑定
 
-#### 1.2.3 上秤称重
+#### 1.2.3 体脂秤称重
 
-	上秤称重 - 这个控制器在被实例化后也会开始扫描附近的外设，通过过滤去连接已绑定过的设备。所以只有被绑定过后才能去进行上秤称重，否则无法接收到数据。
+体脂秤称重 - 这个控制器在被实例化后也会开始扫描附近的外设，通过过滤去连接已绑定过的设备。所以只有被绑定过后才能去进行上秤称重，否则无法接收到数据。
+        - 在“体脂秤称重”页面接收到锁定数据后，会自动跳转到数据详情页面
+	
+#### 1.2.3 食物秤称重	
 
+食物秤称重 - 扫描和连接已经绑定的食物秤，接收和解析重量数据的示例
+	
 #### 1.2.4 设备管理
 
-    设备管理 - 这个控制器会用列表的方式展示你在“绑定设备”页面绑定的外设。你可以通过长按的方式去删除已绑定设备。
+设备管理 - 这个控制器会用列表的方式展示你在“绑定设备”页面绑定的外设。你可以通过长按的方式去删除已绑定设备。
+    -这里面同时包含了体脂秤和食物秤
 
-#### 1.2.5 数据详情
+#### 1.2.5 模拟体脂计算
 
-    在“绑定设备”和“上秤称重”页面接收到外设返回的数据后，会自动跳转到数据详情页面
+模拟体脂计算 - 根据蓝牙协议解析出的体重、阻抗，加上用户数据的身高、年龄、性别，计算出体脂率等多项体脂参数信息。
+            
+#### 1.2.6 扫描附近设备列表
 
-### 1.3 蓝牙功能
+扫描附近设备列表 - 附近体脂秤的列表，可以设置扫描时间和过滤信号强度，可以选则某个设备进行连接和称重
+    -该功能只针对体脂秤
 
-#### 1.3.1 扫描设备
-
-	搜索附近支持的设备ScanDeviceListActivity.java
-
-	 	//获取周围蓝牙秤设备
-        ppScale.monitorSurroundDevice();
-		//连接选定设备
-		if (ppScale != null) {
-               ppScale.connectWithMacAddressList(models);
-        }
-
-#### 1.3.2 读取历史数据
-
-	需要先“绑定设备”然后再读取“历史数据”	ReadHistoryListActivity.java
-	 //直接读取历史数据，需要传入要读取的秤
-    private void bindingDevice() {
-
-        List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
-
-        if (deviceList != null && !deviceList.isEmpty()) {
-            List<String> addressList = new ArrayList<>();
-            for (DeviceModel deviceModel : deviceList) {
-                addressList.add(deviceModel.getDeviceMac());
-            }
-            ppScale = new PPScale.Builder(this)
-                    .setProtocalFilterImpl(getProtocalFilter())
-                    .setBleOptions(getBleOptions())
-                    .setDeviceList(addressList)//注意：这里是必传项
-                    .setUserModel(userModel)
-                    .setBleStateInterface(bleStateInterface)
-                    .build();
-            //获取历史数据
-            tv_starts.setText("开始读取离线数据");
-            ppScale.fetchHistoryData();
-        } else {
-            tv_starts.setText("请先绑定设备");
-        }
-
-    }
-
-#### 1.3.3 [闭目单脚](#闭目单脚模式)
-
-### 1.4 WiFi功能
-
-#### 1.4.1 注意事项
-
-默认Server域名地址是：https://api.lefuenergy.com
-
-1、确保Server正常，路由器能正常连接到Server
-2、确保WiFi环境是2.4G或2.4/5G混合模式，不支持单5G模式
-3、确保账号密码正确
-4、确保秤端使用的Server地址与App使用的Server地址对应
-
-#### 1.4.2 WiFi配网的基本流程
-蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
-
-1、首先确保已经绑定了蓝牙WiFi秤
-2、用户输入Wifi账号和密码
-3、发起连接设备，
-4、连接成功后，在可写的回调（PPBleWorkStateWritable）里面，将账号和密码发送给秤
-
-    ppScale.configWifi(ssid, password)
-
-5、在PPConfigWifiInterface的监听器里面monitorConfigState方法返回sn码，此时秤上的WiFi图标会先闪烁（连接路由器中），再常量（连接路由器成功并获取到sn），
-6、将sn传给Server验证秤是否已经完成注册
-7、Server返回成功，则配网成功，否则配网失败
-
-#### 1.4.3 数据列表
-
-数据列表 -是从Server端获取的秤存在Server端的离线数据,并非秤端存储的历史数据
-
-#### 1.4.4 设备配置
-
-在设备管理页面，如果绑定了WiFi秤，则会显示设置入口，点击设置入口可进入到设备配置页面,
-设备配置页面可以查看当前设备的SN,SSID,PASSWORD、修改秤的服务端DNS地址、清除当前秤的SSID,
-对应的代码是在DeveloperActivity.class下。
 
 ### Ⅲ .PPScale在蓝牙设备的使用
 
-#### 1.1 绑定或扫描指定蓝牙设备
+#### 1.1 PPScale初始化，以及基础约定
 
         //绑定设备和扫描设备的区别在于  searchType  0绑定设备 1扫描指定设备
         //setProtocalFilterImpl() 接收数据回调接口，过程数据、锁定数据、历史数据，
@@ -204,9 +173,9 @@ PPUserModel参数说明：
 
 注意：如果需要自动循环扫描，需要在lockedData()后重新调用 ppScale.startSearchBluetoothScaleWithMacAddressList()
 
-#### 1.3 数据处理
+#### 1.2 体脂秤
 
-##### 1.3.1 过程数据和锁定数据
+##### 1.2.1 过程数据和锁定数据
 
     //根据需求实现接口
     //监听过程数据setPPProcessDateInterface()
@@ -214,59 +183,296 @@ PPUserModel参数说明：
     //监听历史数据setPPHistoryDataInterface()
    
      ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
-            protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
-            //过程数据
-                @Override
-                public void monitorProcessData(PPBodyBaseModel bodyBaseModel) {
-                    Logger.d("bodyBaseModel scaleName " + bodyBaseModel.getScaleName());
-                    //体重
-                    String weightStr = PPUtil.getWeight(unitType, bodyBaseModel.getPpWeightKg());
-                    
-                }
-            });
-            protocalFilter.setPPLockDataInterface(new PPLockDataInterface() {
-                //监听锁定数据
-                @Override
-                public void monitorLockData(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {  
-                    if (bodyFatModel.isHeartRateEnd()) {
-                        if (bodyFatModel != null) {
-                            Logger.d("monitorLockData  bodyFatModel weightKg = " + bodyFatModel.getPpWeightKg());
-                        } else {
-                            Logger.d("monitorLockData  bodyFatModel heartRate = " + bodyFatModel.getPpHeartRate());
-                        }
-                        String weightStr = PPUtil.getWeight(unitType, bodyFatModel.getPpWeightKg());
-                        if (weightTextView != null) {
-                            weightTextView.setText(weightStr);
-                            showDialog(deviceModel, bodyFatModel);
-                        }
-                    } else {
-                        Logger.d("正在测量心率");
-                    }
-                }
-            });
+     protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
+    
+        // 过程数据
+        @Override
+        public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
+            Logger.d("bodyBaseModel scaleName " + bodyBaseModel);
+            String weightStr = PPUtil.getWeight(bodyBaseModel.getUnit(), bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+            weightTextView.setText(weightStr);
+        }
+    });
+    protocalFilter.setPPLockDataInterface(new PPLockDataInterface() {
 
-##### 1.3.2 历史数据
+        //锁定数据
+        @Override
+        public void monitorLockData(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
+            onDataLock(bodyFatModel, deviceModel);
+        }
 
-            if (searchType != 0) {
-                //Do not receive offline data when binding the device， If you need to receive offline data, please implement this interface
-                protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
-                    @Override
-                    public void monitorHistoryData(PPBodyFatModel bodyBaseModel, boolean isEnd, String dateTime) {
-                        if (bodyBaseModel != null) {
-                            Logger.d("ppScale_ isEnd = " + isEnd + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyBaseModel.getPpWeightKg());
-                        } else {
-                            Logger.d("ppScale_ isEnd = " + isEnd);
-                        }
-                    }
-                });
+        @Override
+        public void monitorOverWeight() {
+            Logger.e("over weight ");
+        }
+    });
+    
+##### 1.2.2  历史数据
+
+需要先使用“绑定设备”功能绑定对应的设备，然后再读取“历史数据”，具体参考：ReadHistoryListActivity.java
+入口是在设备管理，选则一个设备，然后会有“读取历史数据”功能，使用前请确保你的秤支持历史数据
+    	
+###### 1.2.2.1  读取历史数据
+
+     //直接读取历史数据，需要传入要读取的秤
+    private void bindingDevice() {
+        List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
+        if (deviceList != null && !deviceList.isEmpty()) {
+            List<String> addressList = new ArrayList<>();
+            for (DeviceModel deviceModel : deviceList) {
+                addressList.add(deviceModel.getDeviceMac());
             }
+            ppScale = new PPScale.Builder(this)
+                    .setProtocalFilterImpl(getProtocalFilter())
+                    .setBleOptions(getBleOptions())
+                    .setDeviceList(addressList)//注意：这里是必传项
+                    .setUserModel(userModel)
+                    .setBleStateInterface(bleStateInterface)
+                    .build();  
+            tv_starts.setText("开始读取离线数据");
+            ppScale.fetchHistoryData();//读取历史数据
+        } else {
+            tv_starts.setText("请先绑定设备");
+        }
+    }
+    
+###### 1.2.2.2  历史数据回调       
+        
+     final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
+     protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
+         @Override
+         public void monitorHistoryData(PPBodyFatModel bodyFatModel, String dateTime) {
+             if (bodyFatModel != null) {
+                 Logger.d("ppScale_ " + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyFatModel.getPpWeightKg());
+             }
+             if (bodyFatModel != null) {
+                 Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
 
-#### 1.4 数据对象实例化方式 PPBodyFatModel
+                 String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
+
+                 DeviceModel bodyModel = new DeviceModel(bodyFatModel.getImpedance() + "", weightStr, -1);
+
+                 deviceModels.add(bodyModel);
+                 adapter.notifyDataSetChanged();
+             }
+         }
+
+         @Override
+         public void monitorHistoryEnd(PPDeviceModel deviceModel) {
+             if (deviceModels == null || deviceModels.isEmpty()) {
+                 tv_starts.setText("没有离线数据");
+             } else {
+                 tv_starts.setText("读取历史数据结束");
+             }
+             //历史数据结束，删除历史数据
+        // deleteHistoryData();
+         }
+
+         @Override
+         public void monitorHistoryFail() {
+
+         }
+     });
+     
+###### 1.2.2.3  删除历史数据   
+        
+     //删除历史
+     if (ppScale != null) {
+         ppScale.deleteHistoryData();
+     }
+
+#### 1.3 食物秤
+
+##### 1.3.1  接收和解析数据
+    示例代码：FoodSclaeDeviceActivity.java
+    final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
+    protocalFilter.setFoodScaleDataProtocoInterface(new FoodScaleDataProtocoInterface() {
+        @Override
+        public void processData(LFFoodScaleGeneral foodScaleGeneral, PPDeviceModel deviceModel) {
+            textView.setText("过程数据");
+            extracted(foodScaleGeneral, deviceModel);
+        }
+
+        @Override
+        public void lockedData(LFFoodScaleGeneral foodScaleGeneral, PPDeviceModel deviceModel) {
+            textView.setText("锁定数据");
+            extracted(foodScaleGeneral, deviceModel);
+        }
+
+        @Override
+        public void historyData(LFFoodScaleGeneral foodScaleGeneral, PPDeviceModel deviceModel, String yyyyMMdd, boolean isEnd) {
+            if (foodScaleGeneral != null && !isEnd) {
+                String valueStr = getValue(foodScaleGeneral, deviceModel);
+                historyDataText.append(valueStr + "\n");
+            } else {
+                historyDataText.append("history end");
+            }
+        }
+    });
+    
+##### 1.3.2  单位转换示例：
+    
+    @NonNull
+    private String getValue(final LFFoodScaleGeneral foodScaleGeneral, PPDeviceModel deviceModel) {
+        String valueStr = "";
+
+        float value = (float) foodScaleGeneral.getLfWeightKg();
+        if (foodScaleGeneral.getThanZero() == 0) {
+            value *= -1;
+        }
+
+        PPUnitType type = foodScaleGeneral.getUnit();
+
+        if (deviceModel.deviceAccuracyType == PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G) {
+            //String num = String.valueOf(value);
+            EnergyUnit unit = Energy.toG(value, type);
+            String num = unit.format01();
+            String unitText = unit.unitText(FoodSclaeDeviceActivity.this);
+            valueStr = num + unitText;
+        } else {
+            EnergyUnit unit = Energy.toG(value, type);
+
+            if (unit instanceof EnergyUnitLbOz) {
+                String split = ":";
+                String[] values = unit.format().split(split);
+                String[] units = unit.unitText(FoodSclaeDeviceActivity.this).split(split);
+                valueStr = values[0] + split + values[1] + units[0] + split + units[1];
+            } else {
+                String num = unit.format();
+                String unitText = unit.unitText(FoodSclaeDeviceActivity.this);
+                valueStr = num + unitText;
+            }
+        }
+        return valueStr;
+    }
+    
+
+##### 1.3.3 单位枚举类 PPUnitType
+
+        Unit_KG(0),//KG 
+        Unit_LB(1),//LB
+        PPUnitST(2),//ST
+        PPUnitJin(3),//斤
+        PPUnitG(4),//g
+        PPUnitLBOZ(5),//lb:oz
+        PPUnitOZ(6),//oz
+        PPUnitMLWater(7),//ml(water)
+        PPUnitMLMilk(8);//milk
+
+##### 1.3.4 正负值问题：
+
+       PPBodyFatModel的字段里:
+       int thanZero; //正负 0表示负值 1 正值
+
+##### 1.3.5 切换单位调用：
+
+        PPScale.changeKitchenScaleUnit(PPUnitType unitType)
+
+##### 1.3.6 食物秤归零：
+
+        PPScale.toZeroKitchenScale()
+
+##### 1.3.7 使用食物秤在不需要连接时，需要手动断开连接
+
+       PPScale.disConnect()
+       
+##### 1.3.8 单位精度
+    enum class PPDeviceAccuracyType {
+        PPDeviceAccuracyTypeUnknow(0),//未知精度
+        //KG精度0.1
+        PPDeviceAccuracyTypePoint01(1),
+        //KG精度0.05
+        PPDeviceAccuracyTypePoint005(2),
+        // 1G精度
+        PPDeviceAccuracyTypePointG(3),
+        // 0.1G精度
+        PPDeviceAccuracyTypePoint01G(4);
+    }
+
+##### 1.4  食物秤与体脂秤的区别
+
+###### 1.4.1  接收数据的接口不一样
+
+ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInterface，体脂秤是由PPProcessDateInterface(过程数据)、PPLockDataInterface(锁定数据)。
+
+###### 1.4.2  接收数据的重量单位不一样
+
+体脂秤的重量值对应的单位是KG,食物秤的重量值对应的单位是g，重量值对应的单位是固定的。（这里的单位与PPScale给的单位不是同步的，PPScale给的单位是当前秤端的单位）
+
+##### 1.4.3  食物秤与体脂秤的标识
+     
+     /**
+      * 设备类型
+      */
+     enum class PPDeviceType {
+         PPDeviceTypeUnknow(0),//未知
+         PPDeviceTypeCF(1), //体脂秤
+         PPDeviceTypeCE(2), //体重秤
+         PPDeviceTypeCB(3),//婴儿秤
+         PPDeviceTypeCA(4), //厨房秤
+         PPDeviceTypeCC(5); //wifi秤
+
+#### 1.5 扫描设备列表
+
+	搜索附近支持的设备ScanDeviceListActivity.java
+
+	 	//获取周围蓝牙秤设备
+        1、ppScale.monitorSurroundDevice();
+        //您可以以毫秒为单位动态设置扫描时间
+        2、ppScale.monitorSurroundDevice(300000);  
+		//连接选定设备
+		if (ppScale != null) {
+           ppScale.connectWithMacAddressList(models);
+        }
+
+#### 1.6 [闭目单脚](#闭目单脚模式)
+
+### IV .WiFi秤
+
+#### 1.1 注意事项
+
+默认Server域名地址是：https://api.lefuenergy.com
+
+1、确保Server正常，路由器能正常连接到Server
+2、确保WiFi环境是2.4G或2.4/5G混合模式，不支持单5G模式
+3、确保账号密码正确
+4、确保秤端使用的Server地址与App使用的Server地址对应
+
+#### 1.2 WiFi配网的基本流程
+蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
+
+1、首先确保已经绑定了蓝牙WiFi秤
+2、用户输入Wifi账号和密码
+3、发起连接设备，
+4、连接成功后，在可写的回调（PPBleWorkStateWritable）里面，将账号和密码发送给秤
+
+    ppScale.configWifi(ssid, password)
+
+5、在PPConfigWifiInterface的监听器里面monitorConfigState方法返回sn码，此时秤上的WiFi图标会先闪烁（连接路由器中），再常量（连接路由器成功并获取到sn），
+6、将sn传给Server验证秤是否已经完成注册
+7、Server返回成功，则配网成功，否则配网失败
+
+#### 1.3 数据列表
+
+数据列表 -是从Server端获取的秤存在Server端的离线数据,并非秤端存储的历史数据
+
+#### 1.4 设备配置
+
+在设备管理页面，如果绑定了WiFi秤，则会显示设置入口，点击设置入口可进入到设备配置页面,
+设备配置页面可以查看当前设备的SN,SSID,PASSWORD、修改秤的服务端DNS地址、清除当前秤的SSID,
+对应的代码是在DeveloperActivity.class下。
+
+
+### V .实体类对象及具体参数说明
+
+#### 1.1 数据对象实例化方式 PPBodyFatModel
 
 如果是自行解析蓝牙协议数据的，需要实例化该类，来获取对应的其他身体数据，
 
+##### 1.1.1 数据对象PPBodyFatModel 初始化
+
     /**
-     * 单称重
+     * 称重
      *
      * @param ppWeightKg 体重 必传
      * @param scaleType  设备类型 {@link com.peng.ppscale.business.device.PPDeviceType#PPDeviceTypeBodyFat} 非必传
@@ -290,7 +496,7 @@ PPUserModel参数说明：
         super(ppWeightKg, impedance, scaleType, userModel, scaleName, PPUnitType.Unit_KG);
     }
 
-##### 1.4.1 数据对象PPBodyFatModel 参数说明
+##### 1.1.2 数据对象PPBodyFatModel 参数说明
 
     protected int impedance;                                                  //阻抗值（加密）
     //    protected float ppZTwoLegs;                                         //脚对脚阻抗值(Ω), 范围200.0 ~ 1200.0
@@ -333,7 +539,7 @@ PPUserModel参数说明：
 
 注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
 
-###### 1.4.1.1 错误类型 PPBodyEnum.PPBodyfatErrorType
+##### 1.1.3 错误类型 PPBodyEnum.PPBodyfatErrorType
 
       PPBodyfatErrorTypeNone(0),         //!< 无错误(可读取所有参数)
       PPBodyfatErrorTypeImpedance(-1),    //!< 阻抗有误,阻抗有误时, 不计算除BMI/idealWeightKg以外参数(写0)
@@ -341,21 +547,21 @@ PPUserModel参数说明：
       PPBodyfatErrorTypeWeight(-2),       //!< 体重参数有误，需在 10  ~ 200kg(有误不计算所有参数)
       PPBodyfatErrorTypeHeight(-3);       //!< 身高参数有误，需在 90 ~ 220cm(不计算所有参数)
 
-###### 1.4.1.2 健康评估 PPBodyEnum.PPBodyfatErrorType
+##### 1.1.4 健康评估 PPBodyEnum.PPBodyfatErrorType
 
       PPBodyGradeThin(0),             //!< 偏瘦型
       PPBodyGradeLThinMuscle(1),      //!< 标准型
       PPBodyGradeMuscular(2),         //!< 超重型
       PPBodyGradeLackofexercise(3);   //!< 肥胖型
 
-###### 1.4.1.3 肥胖等级 PPBodyEnum.PPBodyfatErrorType
+##### 1.1.5 肥胖等级 PPBodyEnum.PPBodyfatErrorType
 
       PPBodyGradeFatOne(0),             //!< 肥胖1级
       PPBodyGradeLFatTwo(1),            //!< 肥胖2级
       PPBodyGradeFatThree(2),           //!< 肥胖3级
       PPBodyGradeFatFour(-1);           //!< 参数错误
 
-###### 1.4.1.4 健康等级 PPBodyEnum.PPBodyfatErrorType
+##### 1.1.6 健康等级 PPBodyEnum.PPBodyfatErrorType
 
       PPBodyAssessment1(0),          //!< 健康存在隐患
       PPBodyAssessment2(1),          //!< 亚健康
@@ -364,7 +570,7 @@ PPUserModel参数说明：
       PPBodyAssessment5(4),          //!< 非常好
       PPBodyAssessmentError(-1);          //!< 参数错误
 
-###### 1.4.1.5、身体类型 PPBodyFatModel.ppBodyType
+##### 1.1.7 身体类型 PPBodyFatModel.ppBodyType
 
      0 偏瘦型
      1 偏瘦肌肉型
@@ -376,7 +582,7 @@ PPUserModel参数说明：
      7 偏胖肌肉型
      8 肌肉型偏胖
 
-##### 1.4.2 设备对象PPDeviceModel 参数说明
+#### 1.2 设备对象PPDeviceModel 参数说明
 
     String deviceMac;//设备mac
     String deviceName;//设备蓝牙名称
@@ -449,14 +655,14 @@ PPUserModel参数说明：
      */
     public boolean deviceConnectAbled;
 
-###### 1.4.2.1 PPScaleDefine.PPDeviceProtocolType 协议类型，具体说明
+##### 1.2.1 PPScaleDefine.PPDeviceProtocolType 协议类型，具体说明
 
     PPDeviceProtocolTypeUnknow(0), //未知协议
     PPDeviceProtocolTypeV2(1) //使用V2.0蓝牙协议
     PPDeviceProtocolTypeV3(2), //使用V3.0蓝牙协议
     PPDeviceProtocolTypeTorre(3) //四电极、八电极协议
 
-###### 1.4.2.2 PPScaleDefine.PPDeviceType 设备类型具体说明
+##### 1.2.2 PPScaleDefine.PPDeviceType 设备类型具体说明
 
     PPDeviceTypeUnknow(0), //未知
     PPDeviceTypeCF(1), //体脂秤
@@ -465,7 +671,7 @@ PPUserModel参数说明：
     PPDeviceTypeCA(4), //厨房秤
     PPDeviceTypeCC(5); //蓝牙wifi秤
 
-###### 1.4.2.3 PPScaleDefine.PPDeviceAccuracyType 重量的精度类型具体说明
+##### 1.2.3 PPScaleDefine.PPDeviceAccuracyType 重量的精度类型具体说明
 
     PPDeviceAccuracyTypeUnknow(0), //未知精度
     PPDeviceAccuracyTypePoint01(1), //KG精度0.1
@@ -473,7 +679,7 @@ PPUserModel参数说明：
     PPDeviceAccuracyTypePointG(3), // 1G精度
     PPDeviceAccuracyTypePoint01G(4); // 0.1G精度
 
-###### 1.4.2.4 PPScaleDefine.DeviceCalcuteType 体脂计算类型具体说明
+##### 1.2.4 PPScaleDefine.DeviceCalcuteType 体脂计算类型具体说明
 
     PPDeviceCalcuteTypeUnknow(0), //未知
     PPDeviceCalcuteTypeInScale(1), //秤端计算
@@ -481,14 +687,14 @@ PPUserModel参数说明：
     PPDeviceCalcuteTypeAlternate(3), //交流
     PPDeviceCalcuteTypeNeedNot(4) //不需要计算
 
-###### 1.4.2.5 PPScaleDefine.PPDevicePowerType 供电模式具体说明
+##### 1.2.5 PPScaleDefine.PPDevicePowerType 供电模式具体说明
 
     PPDevicePowerTypeUnknow(0),//未知
     PPDevicePowerTypeBattery(1),//电池供电
     PPDevicePowerTypeSolar(2),//太阳能供电
     PPDevicePowerTypeCharge(3);  //充电款
 
-###### 1.4.2.6 PPScaleDefine.PPDeviceFuncType 功能类型，可多功能叠加,具体说明
+##### 1.2.6 PPScaleDefine.PPDeviceFuncType 功能类型，可多功能叠加,具体说明
 
     PPDeviceFuncTypeWeight(0x01),//体重
     PPDeviceFuncTypeFat(0x02), //测体脂
@@ -497,7 +703,7 @@ PPUserModel参数说明：
     PPDeviceFuncTypeSafe(0x10), //安全模式，孕妇模式
     PPDeviceFuncTypeBMDJ(0x20);  //闭幕单脚
 
-###### 1.4.2.7 PPScaleDefine.PPDeviceUnitType 支持的单位,具体说明（暂时未启用）
+##### 1.2.7 PPScaleDefine.PPDeviceUnitType 支持的单位,具体说明（暂时未启用）
 
     PPDeviceUnitTypeKG(0x01),//kg
     PPDeviceUnitTypeLB(0x02),//lb
@@ -506,87 +712,48 @@ PPUserModel参数说明：
     PPDeviceUnitTypeSTLB(0x10);//st:lb
 
 
-#### 1.5 蓝牙状态监控回调和系统蓝牙状态回调
+### VI .蓝牙状态监控回调和系统蓝牙状态回调
 
 包含两个回调方法，一个是蓝牙状态监控，一个是系统蓝牙回调
 
      PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
-            //蓝牙状态监控
-            //deviceModel 在蓝牙处于扫描过程中，它是null
-            @Override
-            public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
-                if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
-                    Logger.d("设备已连接");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
-                    Logger.d("设备连接中");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
-                    Logger.d("设备已断开");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateStop) {
-                    Logger.d("停止扫描");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
-                    Logger.d("扫描中");
-                } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
-                    Logger.d("扫描超时");
-                } else {
-                    Logger.e("蓝牙状态异常");
-                }
+        //蓝牙状态监控
+        //deviceModel 在蓝牙处于扫描过程中，它是null
+        @Override
+        public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
+            if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
+                Logger.d("设备已连接");
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
+                Logger.d("设备连接中");
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
+                Logger.d("设备已断开");
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateStop) {
+                Logger.d("停止扫描");
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
+                Logger.d("扫描中");
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
+                Logger.d("扫描超时");
+            } else {
+                Logger.e("蓝牙状态异常");
             }
+        }
     
-            //系统蓝牙回调
-            @Override
-            public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {
-                if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
-                    Logger.e("系统蓝牙断开");
-                    Toast.makeText(BindingDeviceActivity.this, "系统蓝牙断开", Toast.LENGTH_SHORT).show();
-                } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
-                    Logger.d("系统蓝牙打开");
-                    Toast.makeText(BindingDeviceActivity.this, "系统蓝牙打开", Toast.LENGTH_SHORT).show();
-                } else {
-                    Logger.e("系统蓝牙异常");
-                }
+        //系统蓝牙回调
+        @Override
+        public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {
+            if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
+                Logger.e("系统蓝牙断开");
+                Toast.makeText(BindingDeviceActivity.this, "系统蓝牙断开", Toast.LENGTH_SHORT).show();
+            } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
+                Logger.d("系统蓝牙打开");
+                Toast.makeText(BindingDeviceActivity.this, "系统蓝牙打开", Toast.LENGTH_SHORT).show();
+            } else {
+                Logger.e("系统蓝牙异常");
             }
-        };
+        }
+    };
 
-## 三 .食物秤说明
-
-### 1.1 单位枚举类 PPUnitType
-
-        Unit_KG(0),//KG
-    
-        Unit_LB(1),//LB
-    
-        PPUnitST(2),//ST
-    
-        PPUnitJin(3),//斤
-    
-        PPUnitG(4),//g
-    
-        PPUnitLBOZ(5),//lb:oz
-    
-        PPUnitOZ(6),//oz
-    
-        PPUnitMLWater(7),//ml(water)
-    
-        PPUnitMLMilk(8);//milk
-
-### 1.2 正负值问题：
-
-       PPBodyFatModel的字段里:
-       int thanZero; //正负 0表示负值 1 正值
-
-### 1.3 切换单位调用：
-
-        PPScale.changeKitchenScaleUnit(PPUnitType unitType)
-
-### 1.4 食物秤归零：
-
-        PPScale.toZeroKitchenScale()
-
-### 1.5 使用食物秤在不需要连接时，需要手动断开连接
-
-       PPScale.disConnect()
-
-## 四 .闭目单脚模式
+### VII .闭目单脚模式
 
 ###### 闭目单脚模式
 
@@ -652,31 +819,31 @@ PPUserModel参数说明：
 - (interface)PPBMDJDataInterface;
 ```
 
-## 五 .蓝牙操作相关
+### VIII .蓝牙操作相关
 
-### 1.1 预留蓝牙操作对象
+#### 1.1 预留蓝牙操作对象
 
      BluetoothClient client = ppScale.getBleClient();
 
-### 1.2 停止扫描
+#### 1.2 停止扫描
 
        ppScale.stopSearch();
 
-### 1.3 断开设备连接
+#### 1.3 断开设备连接
 
         ppScale.disConnect();
 
 最后你需要在离开页面的之前调用stopSearch方法。 具体的实现请参考Demo中BindingDeviceActivity和ScaleWeightActivity中的代码。
 
-## 六. [版本更新说明](doc/version_update.md)
+### IX. [版本更新说明](doc/version_update.md)
 
-## 七. 使用的第三方库
+### X. 使用的第三方库
 
 #### 1、芯片方案商提供的体脂计算库
 
 #### 2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)
 
-## 八. [常见问题](doc/common_problem.md)
+### XI. [常见问题](doc/common_problem.md)
 
 Contact Developer： Email: yanfabu-5@lefu.cc
 

@@ -54,11 +54,12 @@
     <string name="system_bluetooth_disconnect">系统蓝牙断开</string>
     <string name="system_blutooth_on">系统蓝牙打开</string>
     <string name="system_bluetooth_abnormal">系统蓝牙异常</string>
+    <string name="connect">连接</string>
+
     <string name="developer_mode">开发者模式</string>
-    <string name="device_not_aupported">设备不支持</string>
+    <string name="device_not_supported">设备不支持</string>
     <string name="confirm_delete">确定删除?</string>
     <string name="hint">提示</string>
-
     <string name="simulated_body_fat_calculation">模拟体脂计算</string>
     <string name="bluetooth_status">蓝牙状态: </string>
 

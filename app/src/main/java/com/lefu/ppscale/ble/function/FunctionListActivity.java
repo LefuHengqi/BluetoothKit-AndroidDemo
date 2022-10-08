@@ -50,7 +50,7 @@ public class FunctionListActivity extends AppCompatActivity {
                         intent.putExtra("address", address);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_aupported), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_supported), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -68,7 +68,7 @@ public class FunctionListActivity extends AppCompatActivity {
                         intent.putExtra("address", address);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_aupported), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_supported), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -92,7 +92,7 @@ public class FunctionListActivity extends AppCompatActivity {
                         intent.putExtra("address", address);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_aupported), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_supported), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -113,7 +113,7 @@ public class FunctionListActivity extends AppCompatActivity {
                             PPScale.openBluetooth();
                         }
                     } else {
-                        Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_aupported), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_supported), Toast.LENGTH_SHORT).show();
                     }
                 }
 

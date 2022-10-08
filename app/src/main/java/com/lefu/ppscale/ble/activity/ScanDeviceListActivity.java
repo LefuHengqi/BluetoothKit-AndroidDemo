@@ -1,5 +1,6 @@
 package com.lefu.ppscale.ble.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -60,7 +61,6 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     ArrayList<DeviceModel> deviceModels = new ArrayList<>();
     private TextView tv_starts;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +80,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
 
         userModel = DataUtil.util().getUserModel();
 
-        adapter = new DeviceListAdapter(this, R.layout.list_view_device, deviceModels);
+        adapter = new DeviceListAdapter(this, R.layout.activity_scan_list_item, deviceModels);
         ListView listView = (ListView) findViewById(R.id.list_View);
         listView.setAdapter(adapter);
 
@@ -88,8 +88,9 @@ public class ScanDeviceListActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (deviceModels != null && !deviceModels.isEmpty()) {
-
+                DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
+                if (deviceModel != null) {
+                    startScanData(deviceModel);
                 }
             }
         });
@@ -99,17 +100,24 @@ public class ScanDeviceListActivity extends AppCompatActivity {
             public void onItemClickViewInside(int position, View view) {
                 if (view.getId() == R.id.tvSetting) {
                     DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
-                    List<String> models = new ArrayList<>();
-                    models.add(deviceModel.getDeviceMac());
-                    if (ppScale != null) {
-                        ppScale.connectWithMacAddressList(models);
-                    }
+                    startScanData(deviceModel);
                 }
             }
         });
 
-
         bindingDevice();
+    }
+
+    /**
+     * Start the page that receives the data
+     *
+     * @param deviceModel
+     */
+    private void startScanData(DeviceModel deviceModel) {
+        Intent intent = new Intent(ScanDeviceListActivity.this, BindingDeviceActivity.class);
+        intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 2);
+        intent.putExtra(BindingDeviceActivity.CONNECT_ADDRESS, deviceModel.getDeviceMac());
+        startActivity(intent);
     }
 
     /**

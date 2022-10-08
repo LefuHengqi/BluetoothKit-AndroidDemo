@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 //Android 31 and below only need to apply for positioning permission
             }
-        } else if (requestCode == 2) {
+} else if (requestCode == 2) {
 
         }
     }

@@ -5,6 +5,8 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Unique;
 
+import java.io.Serializable;
+
 @Entity
 public class DeviceModel {
     @Id(autoincrement = true)
@@ -82,10 +84,10 @@ public class DeviceModel {
 
     @Generated(hash = 1006604300)
     public DeviceModel(Long id, String deviceMac, String deviceName, int deviceType,
-            String sn, String ssid, int rssi, int accuracyType,
-            int deviceProtocolType, int deviceCalcuteType, int devicePowerType,
-            int deviceFuncType, int deviceUnitType, int devicePower,
-            String firmwareVersion, String hardwareVersion, String serialNumber) {
+                       String sn, String ssid, int rssi, int accuracyType,
+                       int deviceProtocolType, int deviceCalcuteType, int devicePowerType,
+                       int deviceFuncType, int deviceUnitType, int devicePower,
+                       String firmwareVersion, String hardwareVersion, String serialNumber) {
         this.id = id;
         this.deviceMac = deviceMac;
         this.deviceName = deviceName;

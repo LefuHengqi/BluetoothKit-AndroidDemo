@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,15 +52,19 @@ public class BindingDeviceActivity extends AppCompatActivity {
     TextView weightTextView;
     PPScale ppScale;
 
-    //0是绑定设备 1是搜索已有设备
     public static final String SEARCH_TYPE = "SearchType";
+    public static final String CONNECT_ADDRESS = "connectAddress";//Specify the connected device Address
 
     private PPUnitType unitType;
     private PPUserModel userModel;
     /**
-     * 0 is to bind the device 1 is to search for an existing device
+     * searchType
+     * 0 is to bind the device
+     * 1 is to search for an existing device
+     * 2 to connect to the specified device
      */
     private int searchType;
+    private String connectAddress;////Specify the connected device Address
     private AlertDialog.Builder builder;
     private AlertDialog alertDialog;
     boolean isOnResume = false;//页面可见时再重新发起扫描
@@ -75,6 +80,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
         unitType = DataUtil.util().getUnit();
 
         searchType = getIntent().getIntExtra(SEARCH_TYPE, 0);
+        connectAddress = getIntent().getStringExtra(CONNECT_ADDRESS);
 
         userModel = DataUtil.util().getUserModel();
 
@@ -96,6 +102,25 @@ public class BindingDeviceActivity extends AppCompatActivity {
                     .setUserModel(userModel)
                     .setBleStateInterface(bleStateInterface)
                     .build();
+        } else if (searchType == 2) {
+            if (connectAddress == null) return;
+            List<String> addressList = new ArrayList<>();
+            addressList.add(connectAddress);
+            if (builder1 == null) {
+                builder1 = new PPScale.Builder(this);
+            }
+            if (ppScale == null) {
+                ppScale = builder1.setProtocalFilterImpl(getProtocalFilter())
+                        .setBleOptions(getBleOptions())
+                        .setDeviceList(addressList)
+                        .setUserModel(userModel)
+                        .setBleStateInterface(bleStateInterface)
+                        .build();
+            }
+            if (builder1 != null) {
+                builder1.setUserModel(userModel);
+                ppScale.setBuilder(builder1);
+            }
         } else {
             //绑定已有设备
             List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
@@ -119,8 +144,8 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 builder1.setUserModel(userModel);
                 ppScale.setBuilder(builder1);
             }
-        }
 
+        }
         //启动扫描
         startScanData();
     }

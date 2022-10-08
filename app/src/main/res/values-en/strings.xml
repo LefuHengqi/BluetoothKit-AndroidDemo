@@ -46,4 +46,13 @@
     <string name="system_bluetooth_disconnect">Disconnect the Bluetooth system</string>
     <string name="system_blutooth_on">Open the Bluetooth system</string>
     <string name="system_bluetooth_abnormal">Bluetooth system abnormalities</string>
+    <string name="connect">connect</string>
+
+    <string name="developer_mode">Developer mode</string>
+    <string name="device_not_supported">Device not supported</string>
+    <string name="confirm_delete">Are you sure to delete?</string>
+    <string name="hint">hint</string>
+    <string name="simulated_body_fat_calculation">Simulated body fat calculation</string>
+    <string name="bluetooth_status">Bluetooth Status: </string>
+
 </resources>
