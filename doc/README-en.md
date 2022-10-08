@@ -33,9 +33,9 @@ In the process of using the demo, you need to turn on the bluetooth, turn on the
   2. Positioning switch
   3. Bluetooth switch
   
-* On Android 12.0 and above, make sure to enable and authorize the necessary permissions before starting the scan
+#### 1.1.2.2 On Android 12.0 and above, make sure to enable and authorize the necessary permissions before starting the scan
 
-  You can view the official Bluetooth permissions document, the document address: [Google开发者网站关于Bluetooth permissions说明](https://developer.android.com/guide/topics/connectivity/bluetooth/permissions).
+You can view the official Bluetooth permissions document, the document address: [Google开发者网站关于Bluetooth permissions说明](https://developer.android.com/guide/topics/connectivity/bluetooth/permissions).
   
   1. Positioning permission
   2. Positioning switch
@@ -43,8 +43,9 @@ In the process of using the demo, you need to turn on the bluetooth, turn on the
   4. Scan and connect to nearby devices
    
    
-    targetSdkVersion 31
+        targetSdkVersion 31
     <manifest>
+
        <!-- Request legacy Bluetooth permissions on older devices. -->
        <uses-permission android:name="android.permission.BLUETOOTH"
                         android:maxSdkVersion="30" />
@@ -67,7 +68,6 @@ In the process of using the demo, you need to turn on the bluetooth, turn on the
    
        <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-       ...
     </manifest>
 
 #### 1.1.3 Conventions related to measuring body data
@@ -362,20 +362,20 @@ The entrance is in device management, select a device, and then there will be a 
  
  ##### 1.3.4 Positive and negative values:
  
-        In the fields of PPBodyFatModel:
-        int thanZero; // positive and negative 0 means negative value 1 positive value
+    In the fields of PPBodyFatModel:
+    int thanZero; // positive and negative 0 means negative value 1 positive value
  
  ##### 1.3.5 Switch unit call:
  
-         PPScale.changeKitchenScaleUnit(PPUnitType unitType)
+    PPScale.changeKitchenScaleUnit(PPUnitType unitType)
  
  ##### 1.3.6 Zero food scale:
  
-         PPScale.toZeroKitchenScale()
+    PPScale.toZeroKitchenScale()
  
  ##### 1.3.7 When using the food scale, it needs to be disconnected manually when the connection is not required
  
-        PPScale.disConnect()
+    PPScale.disConnect()
         
  ##### 1.3.8 Unit Precision
      enum class PPDeviceAccuracyType {
@@ -417,14 +417,14 @@ The entrance is in device management, select a device, and then there will be a 
  
  Search for nearby supported devices ScanDeviceListActivity.java
  
- //Get the surrounding bluetooth scale devices
-         1. ppScale.monitorSurroundDevice();
-         // You can dynamically set the scan time in milliseconds
-         2. ppScale.monitorSurroundDevice(300000);
- //connect to the selected device
- if (ppScale != null) {
-            ppScale.connectWithMacAddressList(models);
-         }
+     //Get the surrounding bluetooth scale devices
+     1. ppScale.monitorSurroundDevice();
+     // You can dynamically set the scan time in milliseconds
+     2. ppScale.monitorSurroundDevice(300000);
+     //connect to the selected device
+     if (ppScale != null) {
+        ppScale.connectWithMacAddressList(models);
+     }
  
  #### 1.6 [closed eye one foot](#closed eye one foot mode)
  
