@@ -1,19 +1,19 @@
 [English Docs](doc/README-en.md)  |  [中文文档](README.md)
 
-# LF蓝牙秤/WiFi秤SDK
+## PPScale SDK -LF蓝牙秤/食物秤/WiFi秤
 
 ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时候，请采用从maven下载的库的集成方式集成。建议开发者查看README.md文档，完成集成。
         
 ### Ⅰ. 集成方式
 
-##### sdk引入方式
+#### sdk引入方式
 
 在需要引入sdk的module下的build.gradle中加入(最新版本请查看ppscalelib的module下的libs)
 
-         dependencies {
-                    //aar引入
-                     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-         }
+    dependencies {
+        //aar引入
+        api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    }
 
 ### Ⅱ .使用说明
 
@@ -35,40 +35,40 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
   
 * 在Android 12.0及以上系统版本，启动扫描前，需确保开启和授权相关必要的权限
 
-  可以查看官方蓝牙权限文档，文档地址：[https://developer.android.com/guide/topics/connectivity/bluetooth/permissions](Google开发者网站关于Bluetooth permissions说明)
+  可以查看官方蓝牙权限文档，文档地址：[Google开发者网站关于Bluetooth permissions说明](https://developer.android.com/guide/topics/connectivity/bluetooth/permissions).
   
-   1、定位权限
-   2、定位开关  
-   3、蓝牙开关
-   4、扫描和连接附近的设备
+  1、定位权限
+  2、定位开关  
+  3、蓝牙开关
+  4、扫描和连接附近的设备
    
    
-       targetSdkVersion 31
-       <manifest>
-           <!-- Request legacy Bluetooth permissions on older devices. -->
-           <uses-permission android:name="android.permission.BLUETOOTH"
-                            android:maxSdkVersion="30" />
-           <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
-                            android:maxSdkVersion="30" />
-       
-           <!-- Needed only if your app looks for Bluetooth devices.
-                If your app doesn't use Bluetooth scan results to derive physical
-                location information, you can strongly assert that your app
-                doesn't derive physical location. -->
-           <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-       
-           <!-- Needed only if your app makes the device discoverable to Bluetooth
-                devices. -->
-           <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-       
-           <!-- Needed only if your app communicates with already-paired Bluetooth
-                devices. -->
-           <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-       
-           <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
-           <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-           ...
-       </manifest>
+    targetSdkVersion 31
+    <manifest>
+       <!-- Request legacy Bluetooth permissions on older devices. -->
+       <uses-permission android:name="android.permission.BLUETOOTH"
+                        android:maxSdkVersion="30" />
+       <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+                        android:maxSdkVersion="30" />
+   
+       <!-- Needed only if your app looks for Bluetooth devices.
+            If your app doesn't use Bluetooth scan results to derive physical
+            location information, you can strongly assert that your app
+            doesn't derive physical location. -->
+       <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+   
+       <!-- Needed only if your app makes the device discoverable to Bluetooth
+            devices. -->
+       <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+   
+       <!-- Needed only if your app communicates with already-paired Bluetooth
+            devices. -->
+       <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+   
+       <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
+       <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+       ...
+    </manifest>
 
 #### 1.1.3 测量身体数据相关约定
 
@@ -171,7 +171,9 @@ PPUserModel参数说明：
                    ppScale.startSearchBluetoothScaleWithMacAddressList();
                }
 
-注意：如果需要自动循环扫描，需要在lockedData()后重新调用 ppScale.startSearchBluetoothScaleWithMacAddressList()
+注意：如果需要自动循环扫描，需要在lockedData()后重新调用 
+    
+    ppScale.startSearchBluetoothScaleWithMacAddressList()
 
 #### 1.2 体脂秤
 
@@ -762,34 +764,34 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 ### 1.1 连接闭目单脚设备
 
 ```
-        ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
-                protocalFilter.setBmdjConnectInterface(new PPBMDJConnectInterface() {
-                    @Override
-                    public void monitorBMDJConnectSuccess() {
-                        isAutoPush = true;
-                        Intent intent = new Intent(BMDJConnectActivity.this, BMDJIntroduceActivity.class);
-                        startActivity(intent);
-                    }
-        
-                    @Override
-                    public void monitorBMDJConnectFail() {
-        
-                    }
-                });{
-        
-                }
-                BleOptions bleOptions = new BleOptions.Builder()
-                        .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_BMDJ)
-                        .setDeviceType(PPDeviceType.Contants.FAT_AND_BMDJ)
-                        .build();
-        
-                ppScale = new PPScale.Builder(getApplicationContext())
-                        .setDeviceList(addressList)
-                        .setBleOptions(bleOptions)
-                        .setProtocalFilterImpl(protocalFilter)
-                        .build();
-        
-                ppScale.enterBMDJModel();
+ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
+        protocalFilter.setBmdjConnectInterface(new PPBMDJConnectInterface() {
+            @Override
+            public void monitorBMDJConnectSuccess() {
+                isAutoPush = true;
+                Intent intent = new Intent(BMDJConnectActivity.this, BMDJIntroduceActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void monitorBMDJConnectFail() {
+
+            }
+        });{
+
+        }
+        BleOptions bleOptions = new BleOptions.Builder()
+                .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_BMDJ)
+                .setDeviceType(PPDeviceType.Contants.FAT_AND_BMDJ)
+                .build();
+
+        ppScale = new PPScale.Builder(getApplicationContext())
+                .setDeviceList(addressList)
+                .setBleOptions(bleOptions)
+                .setProtocalFilterImpl(protocalFilter)
+                .build();
+
+        ppScale.enterBMDJModel();
 ```
 
 ### 1.2 退出闭目单脚模式并停止扫描断开连接
@@ -823,15 +825,15 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 
 #### 1.1 预留蓝牙操作对象
 
-     BluetoothClient client = ppScale.getBleClient();
+    BluetoothClient client = ppScale.getBleClient();
 
 #### 1.2 停止扫描
 
-       ppScale.stopSearch();
+    ppScale.stopSearch();
 
 #### 1.3 断开设备连接
 
-        ppScale.disConnect();
+     ppScale.disConnect();
 
 最后你需要在离开页面的之前调用stopSearch方法。 具体的实现请参考Demo中BindingDeviceActivity和ScaleWeightActivity中的代码。
 

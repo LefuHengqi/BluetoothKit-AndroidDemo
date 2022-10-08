@@ -10,10 +10,10 @@ ppscale is the bluetooth connection logic and data parsing logic. When the devel
 
 Add it to the build.gradle under the module that needs to be imported into the sdk (for the latest version, please check the libs under the module of ppscalelib)
 
-         dependencies {
-                    //aar import
-                     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-         }
+     dependencies {
+        //aar import
+         api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+     }
 
 ### Ⅱ . Instructions for use
 
@@ -35,45 +35,44 @@ In the process of using the demo, you need to turn on the bluetooth, turn on the
   
 * On Android 12.0 and above, make sure to enable and authorize the necessary permissions before starting the scan
 
-  You can view the official Bluetooth permissions document, the document address: [https://developer.android.com/guide/topics/connectivity/bluetooth/permissions] (Google developer website about Bluetooth permissions)
+  You can view the official Bluetooth permissions document, the document address: [Google开发者网站关于Bluetooth permissions说明](https://developer.android.com/guide/topics/connectivity/bluetooth/permissions).
   
-   1. Positioning permission
-   2. Positioning switch
-   3. Bluetooth switch
-   4. Scan and connect to nearby devices
+  1. Positioning permission
+  2. Positioning switch
+  3. Bluetooth switch
+  4. Scan and connect to nearby devices
    
    
-       targetSdkVersion 31
-       <manifest>
-           <!-- Request legacy Bluetooth permissions on older devices. -->
-           <uses-permission android:name="android.permission.BLUETOOTH"
-                            android:maxSdkVersion="30" />
-           <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
-                            android:maxSdkVersion="30" />
-       
-           <!-- Needed only if your app looks for Bluetooth devices.
-                If your app doesn't use Bluetooth scan results to derive physical
-                location information, you can strongly assert that your app
-                doesn't derive physical location. -->
-           <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-       
-           <!-- Needed only if your app makes the device discoverable to Bluetooth
-                devices. -->
-           <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-       
-           <!-- Needed only if your app communicates with already-paired Bluetooth
-                devices. -->
-           <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-       
-           <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
-           <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-           ...
-       </manifest>
+    targetSdkVersion 31
+    <manifest>
+       <!-- Request legacy Bluetooth permissions on older devices. -->
+       <uses-permission android:name="android.permission.BLUETOOTH"
+                        android:maxSdkVersion="30" />
+       <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+                        android:maxSdkVersion="30" />
+   
+       <!-- Needed only if your app looks for Bluetooth devices.
+            If your app doesn't use Bluetooth scan results to derive physical
+            location information, you can strongly assert that your app
+            doesn't derive physical location. -->
+       <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+   
+       <!-- Needed only if your app makes the device discoverable to Bluetooth
+            devices. -->
+       <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+   
+       <!-- Needed only if your app communicates with already-paired Bluetooth
+            devices. -->
+       <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+   
+       <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
+       <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+       ...
+    </manifest>
 
 #### 1.1.3 Conventions related to measuring body data
 
    If you need information other than weight value, you need to enter height, age, gender and bare feet on the scale.
-
 
 ### 1.2 Home page function description
 
