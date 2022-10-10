@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         deviceManagerBtn.setOnClickListener(this)
         userInfoBtn.setOnClickListener(this)
         functionFoodScale.setOnClickListener(this)
+        simulatedBodyFatCalculationBtn.setOnClickListener(this)
     }
 
     /**
@@ -141,18 +142,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.simulatedBodyFatCalculationBtn -> {
-                val ppWeightKg = 80.2       //weight
-                val impedance = 3487382     //impedance
+                val ppWeightKg = 69.7       //weight
+                val impedance = 6186090     //impedance
                 val userModel = PPUserModel.Builder()
-                        .setSex(PPUserGender.PPUserGenderMale) //gender
-                        .setHeight(180)//height 100-220
-                        .setAge(18)//age 10-99
+                        .setSex(PPUserGender.PPUserGenderFemale) //gender
+                        .setHeight(165)//height 100-220
+                        .setAge(30)//age 10-99
                         .build()
                 val deviceModel = PPDeviceModel("", DeviceManager.HEARTRATE_SCALE)//Select the corresponding Bluetooth name according to your own device
 
                 val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
 
-                Log.d("lefu_", ppBodyFatModel.toString())
+                Log.d("liyp_", ppBodyFatModel.toString())
+
             }
         }
 
