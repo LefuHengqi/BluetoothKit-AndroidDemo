@@ -27,13 +27,13 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
 
 使用Demo过程中需要您打开蓝牙，打开GPS开关，需确保开启和授权相关必要的权限
 
-#### 1.1.2.1 在Android 6.0及以上系统版本，
+##### 1.1.2.1 在Android 6.0及以上系统版本，
 
   1、定位权限  
   2、定位开关  
   3、蓝牙开关
-  
-* 在Android 12.0及以上系统版本，启动扫描前，需确保开启和授权相关必要的权限
+
+##### 1.1.2.2 在Android 12.0及以上系统版本，启动扫描前，需确保开启和授权相关必要的权限
 
   可以查看官方蓝牙权限文档，文档地址：[Google开发者网站关于Bluetooth permissions说明](https://developer.android.com/guide/topics/connectivity/bluetooth/permissions).
   

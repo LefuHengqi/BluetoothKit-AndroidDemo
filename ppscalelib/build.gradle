@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    //aar引入
+    //aar introduce
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
     //api project(':ppscale')
