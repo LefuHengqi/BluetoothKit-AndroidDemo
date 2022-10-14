@@ -39,7 +39,7 @@ public class BodyDataDetailActivity extends AppCompatActivity {
             if (bodyItems != null && !bodyItems.isEmpty()) {
                 List<BodyItem> bodyItemList = new ArrayList<>(bodyItems.values());
                 for (BodyItem bodyItem : bodyItemList) {
-//                    textView.append(bodyItem.toString() + "\n");
+                    textView.append(bodyItem.toString() + "\n");
                 }
             }
 
