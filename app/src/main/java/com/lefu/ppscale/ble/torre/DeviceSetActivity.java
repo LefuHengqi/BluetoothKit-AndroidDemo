@@ -266,6 +266,11 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
+            public void onIlluminationChange(int illumination) {
+
+            }
+
+            @Override
             public void readDeviceInfoComplete(PPDeviceModel deviceModel) {
                 Logger.d("DeviceInfo :  " + deviceModel.toString());
                 device_set_deviceinfo.setText(deviceModel.toString());

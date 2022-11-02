@@ -226,6 +226,11 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 @Override
                 public void onBindDevice(PPDeviceModel deviceModel) {
                     if (deviceModel != null) {
+
+                        //如果需要modelNumber 设备型号信息，则要主动发起连接并且见监听readDeviceInfoComplete回调里面包含ModelNumber
+//                        if (deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+//
+//                        }
                         DeviceModel device = DBManager.manager().getDevice(deviceModel.getDeviceMac());
                         if (device == null) {
                             saveDevice(deviceModel);
@@ -278,8 +283,20 @@ public class BindingDeviceActivity extends AppCompatActivity {
             }
 
             @Override
+            public void onIlluminationChange(int illumination) {
+
+            }
+
+            @Override
             public void readDeviceInfoComplete(PPDeviceModel deviceModel) {
+                //如果需要modelNumber 设备型号信息，则要主动发起连接并且见监听readDeviceInfoComplete时回调
+                Logger.d("DeviceInfo :  " + deviceModel.getModelNumber());
+//                if (deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+//
+//                        }
                 Logger.d("DeviceInfo :  " + deviceModel.toString());
+
+
             }
         });
         return protocalFilter;
@@ -330,7 +347,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 Logger.d(getString(R.string.writable));
                 //可写状态，可以发送指令，例如切换单位，获取历史数据等
                 sendUnitDataScale(deviceModel);
-
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
