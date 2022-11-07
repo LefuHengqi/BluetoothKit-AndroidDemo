@@ -66,5 +66,18 @@
     <string name="function_list_ble">扫描附近设备列表</string>
     <string name="current_weight">当前重量</string>
 
+    <string name="string_unit_kg">kg</string>
+    <string name="string_unit_g">g</string>
+    <string name="string_unit_lb">lb</string>
+    <!--  don not modify the split style  -->
+    <string name="string_unit_lb_oz">lb:oz</string>
+    <string name="string_unit_fl_oz_water">fl.oz(water)</string>
+    <string name="string_unit_fl_oz_milk">fl.oz(milk)</string>
+    <string name="string_unit_ml">ml</string>
+    <string name="string_unit_oz">oz</string>
+    <string name="string_unit_water">water</string>
+    <string name="string_unit_water_ml">ml(water)</string>
+    <string name="string_unit_milk">milk</string>
+    <string name="string_unit_milk_ml">ml(milk)</string>
 
 </resources>

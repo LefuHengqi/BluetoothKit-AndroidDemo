@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
+import com.lefu.ppscale.ble.UnitUtil;
 import com.lefu.ppscale.ble.model.DataUtil;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
@@ -224,7 +225,6 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
 //                dismissSelf();
     }
 
-    @NonNull
     private String getValue(final LFFoodScaleGeneral foodScaleGeneral, PPDeviceModel deviceModel) {
         String valueStr = "";
 
@@ -239,7 +239,7 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
 //            String num = String.valueOf(value);
             EnergyUnit unit = Energy.toG(value, type);
             String num = unit.format01();
-            String unitText = unit.unitText(FoodSclaeDeviceActivity.this);
+            String unitText = UnitUtil.INSTANCE.unitText(FoodSclaeDeviceActivity.this, type);
             valueStr = num + unitText;
         } else {
             EnergyUnit unit = Energy.toG(value, type);
@@ -247,11 +247,12 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
             if (unit instanceof EnergyUnitLbOz) {
                 String split = ":";
                 String[] values = unit.format().split(split);
-                String[] units = unit.unitText(FoodSclaeDeviceActivity.this).split(split);
+                String unitText = UnitUtil.INSTANCE.unitText(FoodSclaeDeviceActivity.this, type);
+                String[] units = unitText.split(split);
                 valueStr = values[0] + split + values[1] + units[0] + split + units[1];
             } else {
                 String num = unit.format();
-                String unitText = unit.unitText(FoodSclaeDeviceActivity.this);
+                String unitText = UnitUtil.INSTANCE.unitText(FoodSclaeDeviceActivity.this, type);
                 valueStr = num + unitText;
             }
         }
@@ -264,12 +265,12 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
         finish();
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         dismissSelf();
     }
+
 }
 
 
