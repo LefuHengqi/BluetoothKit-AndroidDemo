@@ -44,7 +44,7 @@ public class FunctionListActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(address)) {
                     DeviceModel device = DBManager.manager().getDevice(address);
                     if (device != null &&
-                            (device.getDeviceType() & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
+                            (device.deviceFuncType & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
                                     == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType()) {
                         Intent intent = new Intent(FunctionListActivity.this, ReadHistoryListActivity.class);
                         intent.putExtra("address", address);
