@@ -142,12 +142,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.simulatedBodyFatCalculationBtn -> {
-                val ppWeightKg = 50.1       //weight
-                val impedance = 12391709     //impedance
+                val ppWeightKg = 63.4       //weight
+                val impedance = 9909305     //impedance
                 val userModel = PPUserModel.Builder()
-                        .setSex(PPUserGender.PPUserGenderFemale) //gender
-                        .setHeight(180)//height 100-220
-                        .setAge(28)//age 10-99
+                        .setSex(PPUserGender.PPUserGenderMale) //gender
+                        .setHeight(170)//height 100-220
+                        .setAge(26)//age 10-99
                         .build()
                 val deviceModel = PPDeviceModel("", DeviceManager.HEARTRATE_SCALE)//Select the corresponding Bluetooth name according to your own device
 
