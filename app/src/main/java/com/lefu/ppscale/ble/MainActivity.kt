@@ -142,14 +142,43 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.simulatedBodyFatCalculationBtn -> {
-                val ppWeightKg = 63.4       //weight
-                val impedance = 9909305     //impedance
+
+                //{id=null, uid='dea1bd38-1bef-45b6-87ce-8adbbfd0838d',
+                // infoId='13876d9d-bc9b-4bf4-9948-858980eeb142',
+                // fat=5.300000190734863,
+                // muscleKg=46.86000061035156,
+                // visceralfat=1.0,
+                // metabolize=1438,
+                // watercontent=68.30000305175781,
+                // boneKg=2.4600000381469727,
+                // protein=21.5,
+                // nofatWeightKg=49.380001068115234,
+                // obsLevel=1,
+                // subFat=4.900000095367432,
+                // bodyAge=34,
+                // bodyScore=0,
+                // bodyType=2,
+                // standardWeightKg=68.9127,
+                // weightKg=52.15,
+                // sex=1,
+                // height=178.0,
+                // age=31,
+                // impedance=492,
+                // flag=0, timeStamp=1670314227000,
+                // scaleType='260H',
+                // scaleName='260H',
+                // bmi=16.459411690443126,
+                // standTime=0, heartRate=0,
+                // dataType=0}
+
+                val ppWeightKg = 52.15       //weight
+                val impedance = 492     //impedance
                 val userModel = PPUserModel.Builder()
                         .setSex(PPUserGender.PPUserGenderMale) //gender
-                        .setHeight(170)//height 100-220
-                        .setAge(26)//age 10-99
+                        .setHeight(178)//height 100-220
+                        .setAge(31)//age 10-99
                         .build()
-                val deviceModel = PPDeviceModel("", DeviceManager.HEARTRATE_SCALE)//Select the corresponding Bluetooth name according to your own device
+                val deviceModel = PPDeviceModel("", DeviceManager.FD_Scale260H)//Select the corresponding Bluetooth name according to your own device
 
                 val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
 
