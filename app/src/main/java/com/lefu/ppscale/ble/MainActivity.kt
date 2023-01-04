@@ -171,12 +171,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 // standTime=0, heartRate=0,
                 // dataType=0}
 
-                val ppWeightKg = 54.55       //weight
-                val impedance = 6551804     //impedance
+                val ppWeightKg = 54.60       //weight
+                val impedance = 13107456     //impedance
                 val userModel = PPUserModel.Builder()
                         .setSex(PPUserGender.PPUserGenderMale) //gender
-                        .setHeight(173)//height 100-220
-                        .setAge(24)//age 10-99
+                        .setHeight(170)//height 100-220
+                        .setAge(34)//age 10-99
                         .build()
                 val deviceModel = PPDeviceModel("", DeviceManager.ADORE_SCALE1)//Select the corresponding Bluetooth name according to your own device
 
