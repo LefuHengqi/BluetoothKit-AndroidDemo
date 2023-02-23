@@ -1,6 +1,9 @@
 [English Docs](doc/README-en.md)  |  [中文文档](README.md)
+## [PPScale iOS SDK](https://gitee.com/pengsiyuan777/ppscale-demo-ios)
 
-## PPScale SDK -LF蓝牙秤/食物秤/WiFi秤
+# PPScale Android SDK 
+
+## -LF蓝牙秤/食物秤/WiFi秤
 
 ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时候，请采用从maven下载的库的集成方式集成。建议开发者查看README.md文档，完成集成。
         
