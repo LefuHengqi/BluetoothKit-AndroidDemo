@@ -10,31 +10,29 @@ import java.util.List;
  * projectName:NewWeill
  */
 public class BodyItem implements Serializable {
-
     //id
     private int id;
     //flag
     private String code;
-    //类型名称
+    //类型名称 Type name
     private String name;
-    //数值
+    //数值 numerical value
     private String dataVal;
-    //具体数值,带单位转换
+    //具体数值,带单位转换 Specific value with unit conversion
     private float value;
-    //当前范围名称
+    //当前范围名称 Current scope name
     private String level;
-    //当前范围
+    //当前范围 Current scope
     private int levelIndex;
-    //单位
+    //单位 unit
     private String unit;
-    //描述
+    //描述 describe
     private String describe;
-    //标准描述
+    //标准描述 Standard description
     public String side;
-    //妙招
+    //妙招 Clever move
     public String advice;
-
-    //范围列表
+    //范围列表 Scope list
     private List<FatLevelEntity> levelEntitys;
 
     public int getId() {
