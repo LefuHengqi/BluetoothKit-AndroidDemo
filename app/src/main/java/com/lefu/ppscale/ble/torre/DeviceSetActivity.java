@@ -1,5 +1,6 @@
 package com.lefu.ppscale.ble.torre;
 
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,6 +26,7 @@ import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
+import com.peng.ppscale.business.torre.dfu.OnDFUStateListener;
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
@@ -39,6 +41,11 @@ import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPUserModel;
 import com.peng.ppscale.vo.PPWifiModel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -55,7 +62,9 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
     private TextView device_set_connect_state;
     private Button device_set_light, device_set_sync_log, device_set_sync_time, device_set_reset,
             device_set_synchistory, device_set_startOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
-            device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list;
+            device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list, device_set_startDFU;
+    private String dfuFilePath;
+    private boolean isCopyEnd;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -86,6 +95,7 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         device_set_delete_userinfo = findViewById(R.id.device_set_delete_userinfo);
         device_set_confirm_current_userinfo = findViewById(R.id.device_set_confirm_current_userinfo);
         device_set_get_userinfo_list = findViewById(R.id.device_set_get_userinfo_list);
+        device_set_startDFU = findViewById(R.id.device_set_startDFU);
         wifi_name = findViewById(R.id.wifi_name);
 
         device_set_light.setOnClickListener(this);
@@ -101,9 +111,13 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         device_set_delete_userinfo.setOnClickListener(this);
         device_set_confirm_current_userinfo.setOnClickListener(this);
         device_set_get_userinfo_list.setOnClickListener(this);
+        device_set_startDFU.setOnClickListener(this);
 
+        dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
+        moveDFUFile();
         //初始化PPSCale
         initPPScale();
+
 
 //        initBitmap();
     }
@@ -485,6 +499,49 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
                         }
                     });
                     break;
+                case R.id.device_set_startDFU:
+
+
+                    String dfuFilePath = this.dfuFilePath;//文件地址，统一放到包路径下的files/dfu/目录下getFilesDir().getAbsolutePath() + "/dfu/"
+
+                    ppScale.getTorreDeviceManager().startDFU(dfuFilePath, new OnDFUStateListener() {
+
+                        @Override
+                        public void onUpdateFail() {
+
+                        }
+
+                        @Override
+                        public void onStartUpdate() {
+
+                        }
+
+                        @Override
+                        public void onUpdateProgress(int progress) {
+
+                        }
+
+                        @Override
+                        public void onUpdateSucess() {
+
+                        }
+
+                        @Override
+                        public void onReadyToUpdate() {
+
+                        }
+
+                        @Override
+                        public void onUpdateEnd() {
+
+                        }
+
+                        @Override
+                        public boolean isOTA() {
+                            return false;
+                        }
+                    });
+                    break;
             }
         } else {
             Toast.makeText(this, "设备未连接", Toast.LENGTH_SHORT).show();
@@ -500,4 +557,47 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
             ppScale.disConnect();
         }
     }
+
+    //把assets目录下的db文件复制到dbpath下
+    public void moveDFUFile() {
+        isCopyEnd = false;
+        File filesPath = new File(dfuFilePath);
+        if (!filesPath.exists()) {
+            filesPath.getParentFile().mkdirs();
+//            try {
+////                filePath.createNewFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+        }
+        try {
+            AssetManager assetManager = getAssets();
+            String[] filesPathList = assetManager.list("Torre_ALL_OTA_V009.002.002_20230320");
+
+            if (filesPathList == null || filesPathList.length <= 0) return;
+
+            for (int i = 0; i < filesPathList.length; i++) {
+
+                String filePath = filesPathList[i];
+                Logger.d(" 开始copy filePath: " + filePath);
+                FileOutputStream out = new FileOutputStream(filePath);
+
+                FileInputStream in = new FileInputStream(filePath);
+
+                byte[] buffer = new byte[1024];
+                int readBytes = 0;
+                while ((readBytes = in.read(buffer)) != -1)
+                    out.write(buffer, 0, readBytes);
+                in.close();
+                out.flush();
+                out.close();
+                Logger.d(" copy filePath: " + filePath + " 结束");
+            }
+            isCopyEnd = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

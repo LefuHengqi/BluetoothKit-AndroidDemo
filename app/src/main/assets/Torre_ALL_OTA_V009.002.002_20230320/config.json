@@ -1,0 +1,25 @@
+{
+	"buildTime": 202303200959,
+	"deviceSource": "torre",
+	"language": "zh,en,es,ru,it,fr,de,id,pl,in,th,vi,uk",
+	"languageFamily": 1,
+	"packageName": "torre(202303200959)",
+	"packageVersion": "V009.002.002",
+	"packages": {
+		"mcu": {
+			"flag": 1,
+			"filename": "Torre_MCU_OTA_V009_20230222.bin",
+			"version": "009"
+		},
+		"ble": {
+			"flag": 2,
+			"filename": "Torre_BLE_FACTORY_V002_20230222.bin",
+			"version": "002"
+		},
+		"res": {
+			"flag": 3,
+			"filename": "Torre_RES_FACTORY_V2_20230222.bin",
+			"version": "002"
+		}
+	}
+}
