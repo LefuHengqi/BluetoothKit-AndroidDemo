@@ -130,9 +130,9 @@ public class ReadHistoryListActivity extends Activity {
             @Override
             public void monitorHistoryEnd(PPDeviceModel deviceModel) {
                 if (deviceModels == null || deviceModels.isEmpty()) {
-                    tv_starts.setText("没有离线数据");
+                    tv_starts.setText("No offline data");//没有离线数据
                 } else {
-                    tv_starts.setText("读取历史数据结束");
+                    tv_starts.setText("End of reading historical data");//读取历史数据结束
                 }
                 //历史数据结束，删除历史数据
 //                        deleteHistoryData();

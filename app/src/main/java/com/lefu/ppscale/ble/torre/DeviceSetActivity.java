@@ -500,47 +500,39 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
                     });
                     break;
                 case R.id.device_set_startDFU:
+                    if (isCopyEnd) {
+                        String dfuFilePath = this.dfuFilePath;//文件地址，统一放到包路径下的files/dfu/目录下getFilesDir().getAbsolutePath() + "/dfu/"
+                        wifi_name.append("DFU 启动DFU" + "\n");
+                        ppScale.getTorreDeviceManager().startDFU(dfuFilePath, new OnDFUStateListener() {
 
+                            @Override
+                            public void onDfuFail(String errorType) {
+                                wifi_name.append("DFU 错误码：" + errorType + "\n");
+                            }
 
-                    String dfuFilePath = this.dfuFilePath;//文件地址，统一放到包路径下的files/dfu/目录下getFilesDir().getAbsolutePath() + "/dfu/"
+                            @Override
+                            public void onInfoOout(String outInfo) {
+                                wifi_name.append("DFU " + outInfo + "\n");
+                            }
 
-                    ppScale.getTorreDeviceManager().startDFU(dfuFilePath, new OnDFUStateListener() {
+                            @Override
+                            public void onStartSendDfuData() {
+                                wifi_name.append("DFU 开始发送文件数据" + "\n");
+                            }
 
-                        @Override
-                        public void onUpdateFail() {
+                            @Override
+                            public void onDfuProgress(int progress) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onStartUpdate() {
-
-                        }
-
-                        @Override
-                        public void onUpdateProgress(int progress) {
-
-                        }
-
-                        @Override
-                        public void onUpdateSucess() {
-
-                        }
-
-                        @Override
-                        public void onReadyToUpdate() {
-
-                        }
-
-                        @Override
-                        public void onUpdateEnd() {
-
-                        }
-
-                        @Override
-                        public boolean isOTA() {
-                            return false;
-                        }
-                    });
+                            @Override
+                            public void onDfuSucess() {
+                                wifi_name.append("DFU 所有文件发送成功" + "\n");
+                            }
+                        });
+                    } else {
+                        Toast.makeText(this, "请等待文件复制结束", Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         } else {
@@ -572,17 +564,30 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         }
         try {
             AssetManager assetManager = getAssets();
-            String[] filesPathList = assetManager.list("Torre_ALL_OTA_V009.002.002_20230320");
+
+            String parentFileName = "Torre_ALL_OTA_V009.002.002_20230323";
+
+            String[] filesPathList = assetManager.list(parentFileName);
 
             if (filesPathList == null || filesPathList.length <= 0) return;
 
             for (int i = 0; i < filesPathList.length; i++) {
+                String inputFile = filesPathList[i];
+                String outFilePath = dfuFilePath + inputFile;
+                File outFile = new File(outFilePath);
+                if (outFile.exists()) {
+                    outFile.delete();
+                }
+                outFile.getParentFile().mkdirs();
+                try {
+                    outFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Logger.d(" 开始copy filePath: " + inputFile + " outFile：" + outFile);
+                FileOutputStream out = new FileOutputStream(outFile);
 
-                String filePath = filesPathList[i];
-                Logger.d(" 开始copy filePath: " + filePath);
-                FileOutputStream out = new FileOutputStream(filePath);
-
-                FileInputStream in = new FileInputStream(filePath);
+                InputStream in = assetManager.open(parentFileName + File.separator + inputFile);
 
                 byte[] buffer = new byte[1024];
                 int readBytes = 0;
@@ -591,7 +596,7 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
                 in.close();
                 out.flush();
                 out.close();
-                Logger.d(" copy filePath: " + filePath + " 结束");
+                Logger.d(" copy inputFile: " + inputFile + " 结束");
             }
             isCopyEnd = true;
         } catch (IOException e) {
