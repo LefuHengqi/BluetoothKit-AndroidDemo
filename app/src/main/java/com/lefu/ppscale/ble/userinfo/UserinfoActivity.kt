@@ -1,37 +1,22 @@
 package com.lefu.ppscale.ble.userinfo
 
-import android.Manifest
-import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
-import com.peng.ppscale.business.device.PPUnitType
-import com.peng.ppscale.vo.PPUserGender
+import android.app.Activity
 import android.os.Bundle
-import com.lefu.ppscale.ble.R
-import com.peng.ppscale.business.ble.PPScale
-import android.content.Intent
-import com.lefu.ppscale.ble.function.FunctionListActivity
-import com.lefu.ppscale.ble.wififunction.WifiFunctionListActivity
-import com.lefu.ppscale.ble.activity.BindingDeviceActivity
-import com.lefu.ppscale.ble.activity.DeviceListActivity
-import android.widget.EditText
-import android.text.TextWatcher
 import android.text.Editable
-import com.peng.ppscale.util.ByteUtil
-import com.peng.ppscale.util.UnitUtil
-import com.peng.ppscale.vo.PPBodyFatModel
-import com.peng.ppscale.vo.PPUserModel
-import android.content.pm.PackageManager
-import android.os.UserManager
+import android.text.TextWatcher
 import android.view.View
-import android.widget.Button
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import android.widget.EditText
+import com.lefu.ppscale.ble.R
 import com.lefu.ppscale.ble.model.DataUtil
+import com.peng.ppscale.business.device.PPUnitType
+import com.peng.ppscale.util.ByteUtil
 import com.peng.ppscale.util.PPUtil
+import com.peng.ppscale.util.UnitUtil
 import com.peng.ppscale.util.UserUtil
-import kotlinx.android.synthetic.main.activity_main.*
+import com.peng.ppscale.vo.PPUserGender
+import com.peng.ppscale.vo.PPUserModel
 
-class UserinfoActivity : AppCompatActivity() {
+class UserinfoActivity : Activity() {
     var height = 180
     var age = 18
     var maternityMode = 0 //孕妇模式1  默认0
@@ -39,6 +24,8 @@ class UserinfoActivity : AppCompatActivity() {
     var unit = PPUnitType.Unit_KG
     var sex = PPUserGender.PPUserGenderMale
     var group = 0
+    var impedance = 0;
+    var weightKg = 0.0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_userinfo)
@@ -55,6 +42,8 @@ class UserinfoActivity : AppCompatActivity() {
             maternityMode = if (userModel.isPregnantMode) 1 else 0
         }
         unit = DataUtil.util().unit
+        impedance = DataUtil.util().impedance
+        weightKg = DataUtil.util().weightKg
 
         // 身高
         val heightET = findViewById<EditText>(R.id.editText3)
@@ -163,6 +152,35 @@ class UserinfoActivity : AppCompatActivity() {
                 }
             }
         })
+
+        //阻抗
+        val editTextImp = findViewById<EditText>(R.id.editTextImp)
+        editTextImp.setText(impedance.toString())
+        editTextImp.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                val number = s.toString()
+                if (number.length > 0) {
+                    val impedance = number.toInt()
+                    this@UserinfoActivity.impedance = impedance
+                }
+            }
+        })
+        val editTextWeightKg = findViewById<EditText>(R.id.editTextWeightKg)
+        editTextWeightKg.setText(weightKg.toString())
+        editTextWeightKg.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                val number = s.toString()
+                if (number.length > 0) {
+                    val weightKg = number.toDouble()
+                    this@UserinfoActivity.weightKg = weightKg
+                }
+            }
+        })
+
     }
 
     private fun onBtnClck() {
@@ -181,6 +199,8 @@ class UserinfoActivity : AppCompatActivity() {
             .build()
         DataUtil.util().userModel = userModel
         DataUtil.util().unit = unit
+        DataUtil.util().impedance = impedance
+        DataUtil.util().weightKg = weightKg
     }
 
     fun onSave(view: View) {
