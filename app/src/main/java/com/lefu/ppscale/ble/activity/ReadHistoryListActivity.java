@@ -134,7 +134,7 @@ public class ReadHistoryListActivity extends Activity {
                 } else {
                     tv_starts.setText("End of reading historical data");//读取历史数据结束
                 }
-                //历史数据结束，删除历史数据
+                //End of historical data, delete historical data 历史数据结束，删除历史数据
 //                        deleteHistoryData();
             }
 
