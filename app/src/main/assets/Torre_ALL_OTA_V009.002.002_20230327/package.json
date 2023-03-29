@@ -1,0 +1,19 @@
+{
+	"buildTime": 202303270959,
+	"deviceSource": "Torre",
+	"packageVersion": "V009.002.002",
+	"packages": {
+		"mcu": {
+			"filename": "Torre_MCU_OTA_V009_20230222.bin",
+			"version": "009"
+		},
+		"ble": {
+			"filename": "Torre_BLE_FACTORY_V002_20230222.bin",
+			"version": "002"
+		},
+		"res": {
+			"filename": "Torre_RES_FACTORY_V2_20230222.bin",
+			"version": "002"
+		}
+	}
+}

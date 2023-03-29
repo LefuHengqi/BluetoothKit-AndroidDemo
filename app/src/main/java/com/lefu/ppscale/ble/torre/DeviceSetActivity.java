@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
+import com.peng.ppscale.business.torre.dfu.DfuHelper;
 import com.peng.ppscale.business.torre.dfu.OnDFUStateListener;
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface;
@@ -70,6 +72,8 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.device_set_layout);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         unitType = DataUtil.util().getUnit();
 
@@ -503,6 +507,9 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
                     if (isCopyEnd) {
                         String dfuFilePath = this.dfuFilePath;//文件地址，统一放到包路径下的files/dfu/目录下getFilesDir().getAbsolutePath() + "/dfu/"
                         wifi_name.append("DFU 启动DFU" + "\n");
+
+//                        List<DfuHelper.DataVo> dataVos = DfuHelper.getDfuFileByte(dfuFilePath);
+
                         ppScale.getTorreDeviceManager().startDFU(dfuFilePath, new OnDFUStateListener() {
 
                             @Override
@@ -565,7 +572,7 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         try {
             AssetManager assetManager = getAssets();
 
-            String parentFileName = "Torre_ALL_OTA_V009.002.002_20230323";
+            String parentFileName = "Torre_ALL_OTA_V009.002.002_20230327";
 
             String[] filesPathList = assetManager.list(parentFileName);
 
