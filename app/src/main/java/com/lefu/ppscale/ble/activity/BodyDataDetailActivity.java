@@ -1,9 +1,9 @@
 package com.lefu.ppscale.ble.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BodyDataDetailActivity extends AppCompatActivity {
+public class BodyDataDetailActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,7 @@
 package com.lefu.ppscale.ble
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -8,26 +9,23 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.lefu.base.SettingManager
-import com.lefu.ppscale.ble.activity.BindingDeviceActivity
-import com.lefu.ppscale.ble.activity.DeviceListActivity
-import com.lefu.ppscale.ble.activity.FoodSclaeDeviceActivity
-import com.lefu.ppscale.ble.activity.ScanDeviceListActivity
+import com.lefu.ppscale.ble.activity.*
+import com.lefu.ppscale.ble.model.DataUtil
 import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.business.ble.PPScale
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
+import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyFatModel
 import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPUserGender
 import com.peng.ppscale.vo.PPUserModel
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : Activity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -197,18 +195,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 // standTime=0, heartRate=0,
                 // dataType=0}
 
-                val ppWeightKg = 59.9       //weight
-                val impedance = 503     //impedance
+                val ppWeightKg = DataUtil.util().weightKg       //weight
+                val impedance = DataUtil.util().impedance
+
+                val kgtost2Point2 = PPUtil.kgToSt2_Point2(130.1)
+
+                val userModel1 = SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
+
+                //impedance
                 val userModel = PPUserModel.Builder()
-                    .setSex(PPUserGender.PPUserGenderFemale) //gender
-                    .setHeight(158)//height 100-220
-                    .setAge(28)//age 10-99
+                    .setSex(userModel1.sex) //gender
+                    .setHeight(userModel1.userHeight)//height 100-220
+                    .setAge(userModel1.age)//age 10-99
                     .build()
                 val deviceModel = PPDeviceModel("", DeviceManager.LF_SMART_SCALE_CF539)//Select the corresponding Bluetooth name according to your own device
-
                 val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
 
+                DataUtil.util().bodyDataModel = ppBodyFatModel
                 Log.d("liyp_", ppBodyFatModel.toString())
+
+                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
+                startActivity(intent)
 
             }
         }
