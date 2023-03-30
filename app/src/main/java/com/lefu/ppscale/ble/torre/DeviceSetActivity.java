@@ -1,11 +1,15 @@
 package com.lefu.ppscale.ble.torre;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
@@ -51,8 +54,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
-public class DeviceSetActivity extends AppCompatActivity implements View.OnClickListener {
+public class DeviceSetActivity extends Activity implements View.OnClickListener {
 
     private PPUnitType unitType;
     private PPUserModel userModel;
@@ -64,7 +69,8 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
     private TextView device_set_connect_state;
     private Button device_set_light, device_set_sync_log, device_set_sync_time, device_set_reset,
             device_set_synchistory, device_set_startOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
-            device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list, device_set_startDFU;
+            device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list,
+            device_set_startDFU, device_set_getFilePath;
     private String dfuFilePath;
     private boolean isCopyEnd;
 
@@ -84,6 +90,7 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
 
         address = getIntent().getStringExtra("address");
 
+        device_set_getFilePath = findViewById(R.id.device_set_getFilePath);
         device_set_deviceinfo = findViewById(R.id.device_set_deviceinfo);
         device_set_connect_state = findViewById(R.id.device_set_connect_state);
         device_set_light = findViewById(R.id.device_set_light);
@@ -116,9 +123,10 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         device_set_confirm_current_userinfo.setOnClickListener(this);
         device_set_get_userinfo_list.setOnClickListener(this);
         device_set_startDFU.setOnClickListener(this);
+        device_set_getFilePath.setOnClickListener(this);
 
         dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
-        moveDFUFile();
+//        moveDFUFile(dfuFilePath);
         //初始化PPSCale
         initPPScale();
 
@@ -541,6 +549,9 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
                         Toast.makeText(this, "请等待文件复制结束", Toast.LENGTH_SHORT).show();
                     }
                     break;
+                case R.id.device_set_getFilePath:
+                    performFileSearch();
+                    break;
             }
         } else {
             Toast.makeText(this, "设备未连接", Toast.LENGTH_SHORT).show();
@@ -558,13 +569,13 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
     }
 
     //把assets目录下的db文件复制到dbpath下
-    public void moveDFUFile() {
+    public void moveDFUFile(String dfuFilePath) {
         isCopyEnd = false;
         File filesPath = new File(dfuFilePath);
         if (!filesPath.exists()) {
             filesPath.getParentFile().mkdirs();
 //            try {
-////                filePath.createNewFile();
+//                filePath.createNewFile();
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
@@ -611,5 +622,55 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                //当单选选了一个文件后返回
+                if (data.getData() != null) {
+                    handleSingleDocument(data);
+                } else {
+                    //多选
+                    ClipData clipData = data.getClipData();
+                    if (clipData != null) {
+                        Uri[] uris = new Uri[clipData.getItemCount()];
+                        for (int i = 0; i < clipData.getItemCount(); i++) {
+                            uris[i] = clipData.getItemAt(i).getUri();
+                        }
+                    }
+                }
+            }
 
+        }
+    }
+
+    //选择文件
+    private void performFileSearch() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        //允许多选 长按多选
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.putExtra(Intent.EXTRA_ALARM_COUNT, true);
+        //不限制选取类型
+        intent.setType("*/*");
+//        startActivityForResult(intent, -1);
+        startActivityForResult(Intent.createChooser(intent, "选择DFU文件"), 1);
+    }
+
+    private void handleSingleDocument(Intent data) {
+        Uri uri = data.getData();
+        String filePath = FileUtils.getRealPath(this, uri);
+        wifi_name.append("DFU 升级文件路径：" + filePath + "\n");
+        if (filePath.endsWith(".zip")) {
+            unZip(filePath, dfuFilePath);
+            wifi_name.append("DFU 文件解压完成：" + dfuFilePath + "\n");
+        } else {
+            moveDFUFile(filePath);
+        }
+    }
+
+    private void unZip(String zipFielPath, String dfuFilePath) {
+        ZipFileUtil.unZip(zipFielPath, dfuFilePath);
+    }
 }

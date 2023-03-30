@@ -127,6 +127,18 @@
             android:layout_height="wrap_content"
             android:text="启动WiFi升级" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/device_set_getFilePath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选则DFU文件" />
+
         <Button
             android:id="@+id/device_set_startDFU"
             android:layout_width="wrap_content"
