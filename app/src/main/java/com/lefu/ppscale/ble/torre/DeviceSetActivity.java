@@ -1,8 +1,10 @@
 package com.lefu.ppscale.ble.torre;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,7 +12,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.lefu.ppscale.ble.R;
@@ -54,10 +60,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 
 public class DeviceSetActivity extends Activity implements View.OnClickListener {
+
+    private static final int REQUEST_CODE = 1024;
 
     private PPUnitType unitType;
     private PPUserModel userModel;
@@ -550,13 +559,36 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                     }
                     break;
                 case R.id.device_set_getFilePath:
-                    performFileSearch();
+                    requestPermission();
                     break;
             }
         } else {
             Toast.makeText(this, "设备未连接", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 先判断有没有权限
+            if (Environment.isExternalStorageManager()) {
+                performFileSearch();
+            } else {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + this.getPackageName()));
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        } else {
+            int permission_read = ContextCompat.checkSelfPermission(DeviceSetActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (permission_read != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(DeviceSetActivity.this, new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, REQUEST_CODE);
+            } else {
+                performFileSearch();
+            }
+        }
     }
 
     @Override
@@ -625,23 +657,27 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (resultCode == Activity.RESULT_OK && data != null) {
-                //当单选选了一个文件后返回
-                if (data.getData() != null) {
-                    handleSingleDocument(data);
-                } else {
-                    //多选
-                    ClipData clipData = data.getClipData();
-                    if (clipData != null) {
-                        Uri[] uris = new Uri[clipData.getItemCount()];
-                        for (int i = 0; i < clipData.getItemCount(); i++) {
-                            uris[i] = clipData.getItemAt(i).getUri();
-                        }
+        if (requestCode == 2 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                performFileSearch();
+            } else {
+                Toast.makeText(DeviceSetActivity.this, "存储权限获取失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            //当单选选了一个文件后返回
+            if (data.getData() != null) {
+                handleSingleDocument(data);
+            } else {
+                //多选
+                ClipData clipData = data.getClipData();
+                if (clipData != null) {
+                    Uri[] uris = new Uri[clipData.getItemCount()];
+                    for (int i = 0; i < clipData.getItemCount(); i++) {
+                        uris[i] = clipData.getItemAt(i).getUri();
                     }
                 }
             }
-
         }
     }
 
@@ -671,6 +707,21 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     }
 
     private void unZip(String zipFielPath, String dfuFilePath) {
-        ZipFileUtil.unZip(zipFielPath, dfuFilePath);
+        ZipFileUtil.unZip(this, zipFielPath, dfuFilePath);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                performFileSearch();
+            } else {
+                Toast.makeText(DeviceSetActivity.this, "存储权限获取失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
     }
 }

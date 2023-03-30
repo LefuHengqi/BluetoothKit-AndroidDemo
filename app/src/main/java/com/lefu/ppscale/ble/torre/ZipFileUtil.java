@@ -1,6 +1,7 @@
 package com.lefu.ppscale.ble.torre;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -85,11 +86,17 @@ public class ZipFileUtil {
         Log.d("", "压缩完成");
     }
 
-    public static void unZip(String zipFilePath, String outFilePath) {
+    public static void unZip(Context mContext, String zipFilePath, String outFilePath) {
 //        String PATH = "/data/data/" + getPackageName() + "/file/unzip/";
 //        File FILE = new File("/data/data/" + getPackageName() + "/file/res.zip");
         Log.d("", "zipFilePath : " + zipFilePath);
         Log.d("", "outFilePath : " + outFilePath);
+
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            Toast.makeText(mContext, "SD卡不可用~", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String PATH = outFilePath;
         File FILE = new File(zipFilePath);
         try {
