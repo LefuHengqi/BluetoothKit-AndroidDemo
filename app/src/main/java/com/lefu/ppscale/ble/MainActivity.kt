@@ -18,6 +18,7 @@ import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.business.ble.PPScale
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
+import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyFatModel
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPUserModel
@@ -170,6 +171,8 @@ class MainActivity : Activity(), View.OnClickListener {
 
                 val ppWeightKg = DataUtil.util().weightKg       //weight
                 val impedance = DataUtil.util().impedance
+
+                val kgtost2Point2 = PPUtil.kgToSt2_Point2(130.1)
 
                 val userModel1 = SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
 
