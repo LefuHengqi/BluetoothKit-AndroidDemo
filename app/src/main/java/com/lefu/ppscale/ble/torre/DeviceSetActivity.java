@@ -600,59 +600,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         }
     }
 
-    //把assets目录下的db文件复制到dbpath下
-    public void moveDFUFile(String dfuFilePath) {
-        isCopyEnd = false;
-        File filesPath = new File(dfuFilePath);
-        if (!filesPath.exists()) {
-            filesPath.getParentFile().mkdirs();
-//            try {
-//                filePath.createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-        }
-        try {
-            AssetManager assetManager = getAssets();
-
-            String parentFileName = "Torre_ALL_OTA_V009.002.002_20230327";
-
-            String[] filesPathList = assetManager.list(parentFileName);
-
-            if (filesPathList == null || filesPathList.length <= 0) return;
-
-            for (int i = 0; i < filesPathList.length; i++) {
-                String inputFile = filesPathList[i];
-                String outFilePath = dfuFilePath + inputFile;
-                File outFile = new File(outFilePath);
-                if (outFile.exists()) {
-                    outFile.delete();
-                }
-                outFile.getParentFile().mkdirs();
-                try {
-                    outFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Logger.d(" 开始copy filePath: " + inputFile + " outFile：" + outFile);
-                FileOutputStream out = new FileOutputStream(outFile);
-
-                InputStream in = assetManager.open(parentFileName + File.separator + inputFile);
-
-                byte[] buffer = new byte[1024];
-                int readBytes = 0;
-                while ((readBytes = in.read(buffer)) != -1)
-                    out.write(buffer, 0, readBytes);
-                in.close();
-                out.flush();
-                out.close();
-                Logger.d(" copy inputFile: " + inputFile + " 结束");
-            }
-            isCopyEnd = true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -663,8 +610,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             } else {
                 Toast.makeText(DeviceSetActivity.this, "存储权限获取失败", Toast.LENGTH_SHORT).show();
             }
-        }
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        } else if (resultCode == Activity.RESULT_OK && data != null) {
             //当单选选了一个文件后返回
             if (data.getData() != null) {
                 handleSingleDocument(data);
@@ -699,15 +645,18 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         String filePath = FileUtils.getRealPath(this, uri);
         wifi_name.append("DFU 升级文件路径：" + filePath + "\n");
         if (filePath.endsWith(".zip")) {
-            unZip(filePath, dfuFilePath);
+            String dfuFileName = unZip(filePath, dfuFilePath);
+            dfuFilePath = dfuFilePath + dfuFileName.replace(".zip", "") + File.separator;
             wifi_name.append("DFU 文件解压完成：" + dfuFilePath + "\n");
         } else {
-            moveDFUFile(filePath);
+            isCopyEnd = false;
+            FileUtils.moveDFUFile(this, filePath);
+            isCopyEnd = true;
         }
     }
 
-    private void unZip(String zipFielPath, String dfuFilePath) {
-        ZipFileUtil.unZip(this, zipFielPath, dfuFilePath);
+    private String unZip(String zipFielPath, String dfuFilePath) {
+        return ZipFileUtil.unZip(this, zipFielPath, dfuFilePath);
     }
 
     @Override

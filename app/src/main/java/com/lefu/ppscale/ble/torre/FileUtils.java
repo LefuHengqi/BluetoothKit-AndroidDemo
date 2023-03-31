@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -11,9 +12,67 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import com.peng.ppscale.util.Logger;
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class FileUtils {
+
+    //把assets目录下的db文件复制到dbpath下
+    public static void moveDFUFile(Context context, String dfuFilePath) {
+
+        File filesPath = new File(dfuFilePath);
+        if (!filesPath.exists()) {
+            filesPath.getParentFile().mkdirs();
+//            try {
+//                filePath.createNewFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+        }
+        try {
+            AssetManager assetManager = context.getAssets();
+
+            String parentFileName = "Torre_ALL_OTA_V009.002.002_20230327";
+
+            String[] filesPathList = assetManager.list(parentFileName);
+
+            if (filesPathList == null || filesPathList.length <= 0) return;
+
+            for (int i = 0; i < filesPathList.length; i++) {
+                String inputFile = filesPathList[i];
+                String outFilePath = dfuFilePath + inputFile;
+                File outFile = new File(outFilePath);
+                if (outFile.exists()) {
+                    outFile.delete();
+                }
+                outFile.getParentFile().mkdirs();
+                try {
+                    outFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Logger.d(" 开始copy filePath: " + inputFile + " outFile：" + outFile);
+                FileOutputStream out = new FileOutputStream(outFile);
+
+                InputStream in = assetManager.open(parentFileName + File.separator + inputFile);
+
+                byte[] buffer = new byte[1024];
+                int readBytes = 0;
+                while ((readBytes = in.read(buffer)) != -1)
+                    out.write(buffer, 0, readBytes);
+                in.close();
+                out.flush();
+                out.close();
+                Logger.d(" copy inputFile: " + inputFile + " 结束");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static String getRealPath(Context context, Uri fileUri) {
         String realPath;

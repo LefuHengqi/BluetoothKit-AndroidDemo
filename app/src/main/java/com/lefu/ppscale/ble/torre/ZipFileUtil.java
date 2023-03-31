@@ -86,7 +86,7 @@ public class ZipFileUtil {
         Log.d("", "压缩完成");
     }
 
-    public static void unZip(Context mContext, String zipFilePath, String outFilePath) {
+    public static String unZip(Context mContext, String zipFilePath, String outFilePath) {
 //        String PATH = "/data/data/" + getPackageName() + "/file/unzip/";
 //        File FILE = new File("/data/data/" + getPackageName() + "/file/res.zip");
         Log.d("", "zipFilePath : " + zipFilePath);
@@ -94,17 +94,41 @@ public class ZipFileUtil {
 
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             Toast.makeText(mContext, "SD卡不可用~", Toast.LENGTH_SHORT).show();
-            return;
+            return "";
         }
 
         String PATH = outFilePath;
         File FILE = new File(zipFilePath);
+        File outFile = new File(outFilePath);
+        deleteFile(outFile);
+        if (!outFile.exists()) {
+            outFile.mkdirs();
+        }
         try {
             upZipFile(FILE, PATH);
         } catch (IOException e) {
             e.printStackTrace();
         }
         Log.d("", "解压完成");
+        return FILE.getName();
+    }
+
+    private static void deleteFile(File outFile) {
+        if (outFile.exists()) {
+            if (outFile.isFile()) {
+                outFile.delete();
+            } else if (outFile.isDirectory()) {
+                File[] files = outFile.listFiles();
+                if (files == null || files.length == 0) {
+                    outFile.delete();
+                } else {
+                    for (File file : files) {
+                        deleteFile(file);
+                    }
+                    deleteFile(outFile);
+                }
+            }
+        }
     }
 
     private static void zip(ZipOutputStream zipOutputStream, String name, File fileSrc) throws IOException {
