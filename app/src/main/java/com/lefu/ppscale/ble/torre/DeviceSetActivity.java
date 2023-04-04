@@ -644,10 +644,13 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         Uri uri = data.getData();
         String filePath = FileUtils.getRealPath(this, uri);
         wifi_name.append("DFU 升级文件路径：" + filePath + "\n");
+        isCopyEnd = false;
         if (filePath.endsWith(".zip")) {
+            dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
             String dfuFileName = unZip(filePath, dfuFilePath);
             dfuFilePath = dfuFilePath + dfuFileName.replace(".zip", "") + File.separator;
             wifi_name.append("DFU 文件解压完成：" + dfuFilePath + "\n");
+            isCopyEnd = true;
         } else {
             isCopyEnd = false;
             FileUtils.moveDFUFile(this, filePath);

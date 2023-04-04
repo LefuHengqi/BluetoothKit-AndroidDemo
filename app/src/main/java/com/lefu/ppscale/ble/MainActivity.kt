@@ -45,7 +45,6 @@ class MainActivity : Activity(), View.OnClickListener {
         if (uid.isNullOrBlank()) {
             SettingManager.get().setUid(UUID.randomUUID().toString())
         }
-
     }
 
     private fun onBtnClck() {
