@@ -32,7 +32,7 @@ class MainActivity : Activity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         val userModel =
-                SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
+            SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
 
         if (userModel == null) {
             startActivity(Intent(this@MainActivity, UserinfoActivity::class.java))
@@ -45,7 +45,6 @@ class MainActivity : Activity(), View.OnClickListener {
         if (uid.isNullOrBlank()) {
             SettingManager.get().setUid(UUID.randomUUID().toString())
         }
-
     }
 
     private fun onBtnClck() {
@@ -66,7 +65,11 @@ class MainActivity : Activity(), View.OnClickListener {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 //The location permission is permanently denied by the user, and the user needs to go to the settings page to enable it
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ), 1
+                )
             }
         }
     }
@@ -78,8 +81,10 @@ class MainActivity : Activity(), View.OnClickListener {
                 //TODO Here you should remind the user to go to the system settings page to enable permissions
             } else {
                 //Here you should remind the user to go to the system settings page to enable permissions
-                ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT), 2)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT), 2
+                )
             }
         }
     }
@@ -93,7 +98,7 @@ class MainActivity : Activity(), View.OnClickListener {
             } else {
                 //Android 31 and below only need to apply for positioning permission
             }
-} else if (requestCode == 2) {
+        } else if (requestCode == 2) {
 
         }
     }
@@ -178,10 +183,10 @@ class MainActivity : Activity(), View.OnClickListener {
 
                 //impedance
                 val userModel = PPUserModel.Builder()
-                        .setSex(userModel1.sex) //gender
-                        .setHeight(userModel1.userHeight)//height 100-220
-                        .setAge(userModel1.age)//age 10-99
-                        .build()
+                    .setSex(userModel1.sex) //gender
+                    .setHeight(userModel1.userHeight)//height 100-220
+                    .setAge(userModel1.age)//age 10-99
+                    .build()
                 val deviceModel = PPDeviceModel("", DeviceManager.LF_SMART_SCALE_CF539)//Select the corresponding Bluetooth name according to your own device
                 val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
 

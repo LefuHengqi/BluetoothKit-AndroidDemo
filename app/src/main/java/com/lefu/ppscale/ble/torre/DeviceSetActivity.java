@@ -1,19 +1,30 @@
 package com.lefu.ppscale.ble.torre;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
@@ -25,6 +36,8 @@ import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
+import com.peng.ppscale.business.torre.dfu.DfuHelper;
+import com.peng.ppscale.business.torre.dfu.OnDFUStateListener;
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
@@ -39,11 +52,21 @@ import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPUserModel;
 import com.peng.ppscale.vo.PPWifiModel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class DeviceSetActivity extends AppCompatActivity implements View.OnClickListener {
+import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+
+public class DeviceSetActivity extends Activity implements View.OnClickListener {
+
+    private static final int REQUEST_CODE = 1024;
 
     private PPUnitType unitType;
     private PPUserModel userModel;
@@ -55,12 +78,17 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
     private TextView device_set_connect_state;
     private Button device_set_light, device_set_sync_log, device_set_sync_time, device_set_reset,
             device_set_synchistory, device_set_startOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
-            device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list;
+            device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list,
+            device_set_startDFU, device_set_getFilePath;
+    private String dfuFilePath;
+    private boolean isCopyEnd;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.device_set_layout);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         unitType = DataUtil.util().getUnit();
 
@@ -71,6 +99,7 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
 
         address = getIntent().getStringExtra("address");
 
+        device_set_getFilePath = findViewById(R.id.device_set_getFilePath);
         device_set_deviceinfo = findViewById(R.id.device_set_deviceinfo);
         device_set_connect_state = findViewById(R.id.device_set_connect_state);
         device_set_light = findViewById(R.id.device_set_light);
@@ -86,6 +115,7 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         device_set_delete_userinfo = findViewById(R.id.device_set_delete_userinfo);
         device_set_confirm_current_userinfo = findViewById(R.id.device_set_confirm_current_userinfo);
         device_set_get_userinfo_list = findViewById(R.id.device_set_get_userinfo_list);
+        device_set_startDFU = findViewById(R.id.device_set_startDFU);
         wifi_name = findViewById(R.id.wifi_name);
 
         device_set_light.setOnClickListener(this);
@@ -101,9 +131,14 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
         device_set_delete_userinfo.setOnClickListener(this);
         device_set_confirm_current_userinfo.setOnClickListener(this);
         device_set_get_userinfo_list.setOnClickListener(this);
+        device_set_startDFU.setOnClickListener(this);
+        device_set_getFilePath.setOnClickListener(this);
 
+        dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
+//        moveDFUFile(dfuFilePath);
         //初始化PPSCale
         initPPScale();
+
 
 //        initBitmap();
     }
@@ -485,11 +520,75 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
                         }
                     });
                     break;
+                case R.id.device_set_startDFU:
+                    if (isCopyEnd) {
+                        String dfuFilePath = this.dfuFilePath;//文件地址，统一放到包路径下的files/dfu/目录下getFilesDir().getAbsolutePath() + "/dfu/"
+                        wifi_name.append("DFU 启动DFU" + "\n");
+
+//                        List<DfuHelper.DataVo> dataVos = DfuHelper.getDfuFileByte(dfuFilePath);
+
+                        ppScale.getTorreDeviceManager().startDFU(dfuFilePath, new OnDFUStateListener() {
+
+                            @Override
+                            public void onDfuFail(String errorType) {
+                                wifi_name.append("DFU 错误码：" + errorType + "\n");
+                            }
+
+                            @Override
+                            public void onInfoOout(String outInfo) {
+                                wifi_name.append("DFU " + outInfo + "\n");
+                            }
+
+                            @Override
+                            public void onStartSendDfuData() {
+                                wifi_name.append("DFU 开始发送文件数据" + "\n");
+                            }
+
+                            @Override
+                            public void onDfuProgress(int progress) {
+
+                            }
+
+                            @Override
+                            public void onDfuSucess() {
+                                wifi_name.append("DFU 所有文件发送成功" + "\n");
+                            }
+                        });
+                    } else {
+                        Toast.makeText(this, "请等待文件复制结束", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case R.id.device_set_getFilePath:
+                    requestPermission();
+                    break;
             }
         } else {
             Toast.makeText(this, "设备未连接", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 先判断有没有权限
+            if (Environment.isExternalStorageManager()) {
+                performFileSearch();
+            } else {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + this.getPackageName()));
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        } else {
+            int permission_read = ContextCompat.checkSelfPermission(DeviceSetActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (permission_read != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(DeviceSetActivity.this, new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, REQUEST_CODE);
+            } else {
+                performFileSearch();
+            }
+        }
     }
 
     @Override
@@ -499,5 +598,82 @@ public class DeviceSetActivity extends AppCompatActivity implements View.OnClick
             ppScale.stopSearch();
             ppScale.disConnect();
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                performFileSearch();
+            } else {
+                Toast.makeText(DeviceSetActivity.this, "存储权限获取失败", Toast.LENGTH_SHORT).show();
+            }
+        } else if (resultCode == Activity.RESULT_OK && data != null) {
+            //当单选选了一个文件后返回
+            if (data.getData() != null) {
+                handleSingleDocument(data);
+            } else {
+                //多选
+                ClipData clipData = data.getClipData();
+                if (clipData != null) {
+                    Uri[] uris = new Uri[clipData.getItemCount()];
+                    for (int i = 0; i < clipData.getItemCount(); i++) {
+                        uris[i] = clipData.getItemAt(i).getUri();
+                    }
+                }
+            }
+        }
+    }
+
+    //选择文件
+    private void performFileSearch() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        //允许多选 长按多选
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.putExtra(Intent.EXTRA_ALARM_COUNT, true);
+        //不限制选取类型
+        intent.setType("*/*");
+//        startActivityForResult(intent, -1);
+        startActivityForResult(Intent.createChooser(intent, "选择DFU文件"), 1);
+    }
+
+    private void handleSingleDocument(Intent data) {
+        Uri uri = data.getData();
+        String filePath = FileUtils.getRealPath(this, uri);
+        wifi_name.append("DFU 升级文件路径：" + filePath + "\n");
+        isCopyEnd = false;
+        if (filePath.endsWith(".zip")) {
+            dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
+            String dfuFileName = unZip(filePath, dfuFilePath);
+            dfuFilePath = dfuFilePath + dfuFileName.replace(".zip", "") + File.separator;
+            wifi_name.append("DFU 文件解压完成：" + dfuFilePath + "\n");
+            isCopyEnd = true;
+        } else {
+            isCopyEnd = false;
+            FileUtils.moveDFUFile(this, filePath);
+            isCopyEnd = true;
+        }
+    }
+
+    private String unZip(String zipFielPath, String dfuFilePath) {
+        return ZipFileUtil.unZip(this, zipFielPath, dfuFilePath);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                performFileSearch();
+            } else {
+                Toast.makeText(DeviceSetActivity.this, "存储权限获取失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
     }
 }

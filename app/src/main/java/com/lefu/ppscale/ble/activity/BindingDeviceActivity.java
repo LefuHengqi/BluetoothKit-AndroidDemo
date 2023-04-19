@@ -94,7 +94,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
 
     private void initPPScale() {
         if (searchType == 0) {
-            //绑定新设备
+            //绑定新设备 Bind new device
             ppScale = new PPScale.Builder(this)
                     .setProtocalFilterImpl(getProtocalFilter())
                     .setBleOptions(getBleOptions())
@@ -122,7 +122,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 ppScale.setBuilder(builder1);
             }
         } else {
-            //绑定已有设备
+            //绑定已有设备  Binding an existing device
             List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
             List<String> addressList = new ArrayList<>();
             for (DeviceModel deviceModel : deviceList) {
