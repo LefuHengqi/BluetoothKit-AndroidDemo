@@ -143,6 +143,11 @@ public class ReadHistoryListActivity extends Activity {
 
             }
 
+            @Override
+            public void monitorAllHistoryData(PPBodyFatModel bodyFatModel, String time) {
+
+            }
+
         });
         return protocalFilter;
     }

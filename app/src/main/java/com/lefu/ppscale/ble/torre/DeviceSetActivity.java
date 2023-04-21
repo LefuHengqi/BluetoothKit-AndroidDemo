@@ -66,6 +66,9 @@ import androidx.core.app.ActivityCompat;
 
 public class DeviceSetActivity extends Activity implements View.OnClickListener {
 
+    public static final String TouristUID = "0000000000000000000000000000000000000000000000000000000000000000";
+
+
     private static final int REQUEST_CODE = 1024;
 
     private PPUnitType unitType;
@@ -93,8 +96,10 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         unitType = DataUtil.util().getUnit();
 
         userModel = DataUtil.util().getUserModel();
-        userModel.userID = "1006451068@qq.com";
-        userModel.memberID = "4C2D82A7-AA9B-46F2-99BB-8B82A1F63626";
+//        userModel.userID = "1006451068@qq.com";
+        userModel.userID = TouristUID;
+//        userModel.memberID = "4C2D82A7-AA9B-46F2-99BB-8B82A1F63626";
+        userModel.memberID = TouristUID;
         userModel.userName = "AB";
 
         address = getIntent().getStringExtra("address");
@@ -418,6 +423,11 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             @Override
             public void monitorHistoryFail() {
                 Logger.e("ppScale_ bodyFatModel = 历史数据读取失败");
+            }
+
+            @Override
+            public void monitorAllHistoryData(PPBodyFatModel bodyFatModel, String time) {
+
             }
         });
         return protocalFilter;
