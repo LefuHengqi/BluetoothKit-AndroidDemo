@@ -134,7 +134,7 @@ public class PPBodyFatDetailModel {
         BodyItem fat = new BodyItem();
         fat.setCode(FLAG_BODYFAT_PERCENTAGE);
         double lfFat = bodyFat.getPpBodyfatPercentage();
-        fat.setName(context.getString(R.string.bmi));
+        fat.setName(context.getString(R.string.bodyFat));
         int indexFat = StripedStand.bftInt(sex, age, lfFat);
         fat.setLevelIndex(indexFat);
         fat.setDataVal(String.format(Locale.US, "%.1f", lfFat));
@@ -152,7 +152,7 @@ public class PPBodyFatDetailModel {
         BodyItem muscle = new BodyItem();
         muscle.setCode(FLAG_MUSCLE_KG);
         muscle.setUnit("kg");
-        muscle.setName(context.getString(R.string.weight));
+        muscle.setName(context.getString(R.string.muscleMass));
         muscle.setCode(FLAG_WEIGHTKG);
         int indexMuscle = StripedStand.muscleString(sex, height, bodyFat.getPpMuscleKg());
         muscle.setLevelIndex(indexMuscle);
@@ -173,7 +173,7 @@ public class PPBodyFatDetailModel {
         water.setCode(FLAG_WATER_PERCENTAGE);
         water.setUnit("%");
         double lfWater = bodyFat.getPpWaterPercentage();
-        water.setName(context.getString(R.string.bmi));
+        water.setName(context.getString(R.string.BodyMoistureRate));
         int indexWater = StripedStand.water(sex, lfWater);
         water.setLevelIndex(indexWater);
         water.setDataVal(String.format(Locale.US, "%.1f", lfFat));
@@ -290,7 +290,7 @@ public class PPBodyFatDetailModel {
         subFat.setUnit("%");
         double lfSubFat = bodyFat.getPpVFPercentage();
         subFat.setDataVal(String.format(Locale.UK, "%.1f", lfSubFat));
-        subFat.setName(context.getString(R.string.obesityLevels));
+        subFat.setName(context.getString(R.string.subcutaneousFat));
         subFat.setValue(PPUtil.getWeightValue(unitType, lfSubFat));
         int indexObeSubFat = StripedStand.subFatInt(sex, lfSubFat);
         subFat.setLevelIndex(indexObeSubFat);
