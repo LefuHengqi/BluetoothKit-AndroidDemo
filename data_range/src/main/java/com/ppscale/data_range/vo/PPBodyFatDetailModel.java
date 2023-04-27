@@ -346,7 +346,7 @@ public class PPBodyFatDetailModel {
         noFatWeight.setCode(FLAG_LOSE_FAT_WEIGHT_KG);
         noFatWeight.setDataVal(PPUtil.getWeight(unitType, bodyFat.getPpBodyScore()));
         noFatWeight.setUnit(PPUtil.getWeightUnit(unitType));
-        double lfNoFatWeight = bodyFat.getPpBodyScore();
+        double lfNoFatWeight = bodyFat.getPpLoseFatWeightKg();
         noFatWeight.setName(context.getString(R.string.leanBodyMass));
         noFatWeight.setValue(PPUtil.getWeightValue(unitType, lfNoFatWeight));
         noFatWeight.setDescribe(context.getString(R.string.noFatWeight_describe));
