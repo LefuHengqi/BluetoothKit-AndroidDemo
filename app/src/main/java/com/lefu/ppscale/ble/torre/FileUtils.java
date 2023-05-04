@@ -1,6 +1,7 @@
 package com.lefu.ppscale.ble.torre;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -11,6 +12,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.peng.ppscale.util.Logger;
 
@@ -128,7 +131,10 @@ public class FileUtils {
     public static String getRealPathFromURI_API19(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-
+        String pathFromUri = getPathFromUri(context, uri);
+        if (pathFromUri != null && !TextUtils.isEmpty(pathFromUri)) {
+            return pathFromUri;
+        }
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
@@ -152,11 +158,10 @@ public class FileUtils {
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
-                String fileName = getFilePath(context, uri);
+                String fileName = getPathFromUri(context, uri);
                 if (fileName != null) {
                     return Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
                 }
-
                 String id = DocumentsContract.getDocumentId(uri);
                 if (id.startsWith("raw:")) {
                     id = id.replaceFirst("raw:", "");
@@ -286,6 +291,109 @@ public class FileUtils {
     }
 
 
+    public static String getPathFromUri(Context context, Uri uri) {
+        String path = null;
+        if (DocumentsContract.isDocumentUri(context, uri)) {
+            //如果是document类型的Uri，通过document id处理，内部会调用Uri.decode(docId)进行解码
+            String docId = DocumentsContract.getDocumentId(uri);
+            //primary:Azbtrace.txt
+            //video:A1283522
+            String[] splits = docId.split(":");
+            String type = null, id = null;
+            if (splits.length == 2) {
+                type = splits[0];
+                id = splits[1];
+            }
+            switch (uri.getAuthority()) {
+                case "com.android.externalstorage.documents":
+                    if ("primary".equals(type)) {
+                        path = Environment.getExternalStorageDirectory() + File.separator + id;
+                    }
+                    break;
+                case "com.android.providers.downloads.documents":
+                    if ("raw".equals(type)) {
+                        path = id;
+                    } else {
+                        Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                        path = getMediaPathFromUri(context, contentUri, null, null);
+                    }
+                    break;
+                case "com.android.providers.media.documents":
+                    Uri externalUri = null;
+                    switch (type) {
+                        case "image":
+                            externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                            break;
+                        case "video":
+                            externalUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                            break;
+                        case "audio":
+                            externalUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                            break;
+                        case "document":
+                            externalUri = MediaStore.Files.getContentUri("external");
+                            break;
+                    }
+                    if (externalUri != null) {
+                        String selection = "_id=?";
+                        String[] selectionArgs = new String[]{id};
+                        path = getMediaPathFromUri(context, externalUri, selection, selectionArgs);
+                    }
+                    break;
+            }
+        } else if (ContentResolver.SCHEME_CONTENT.equalsIgnoreCase(uri.getScheme())) {
+            path = getMediaPathFromUri(context, uri, null, null);
+        } else if (ContentResolver.SCHEME_FILE.equalsIgnoreCase(uri.getScheme())) {
+            //如果是file类型的Uri(uri.fromFile)，直接获取图片路径即可
+            path = uri.getPath();
+        }
+        //确保如果返回路径，则路径合法
+        return path == null ? null : (new File(path).exists() ? path : null);
+    }
+
+    private static String getMediaPathFromUri(Context context, Uri uri, String selection, String[] selectionArgs) {
+        String path;
+        String authroity = uri.getAuthority();
+        path = uri.getPath();
+        String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        if (!path.startsWith(sdPath)) {
+            int sepIndex = path.indexOf(File.separator, 1);
+            if (sepIndex == -1) path = null;
+            else {
+                path = getSDPath() + path.substring(sepIndex);
+            }
+        }
+
+        if (path == null || !new File(path).exists()) {
+            ContentResolver resolver = context.getContentResolver();
+            String[] projection = new String[]{MediaStore.MediaColumns.DATA};
+            Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    try {
+                        int index = cursor.getColumnIndexOrThrow(projection[0]);
+                        if (index != -1) path = cursor.getString(index);
+                        Log.i("FileUtils: ", "getMediaPathFromUri query " + path);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        path = null;
+                    } finally {
+                        cursor.close();
+                    }
+                }
+            }
+        }
+        return path;
+    }
+
+    public static String getSDPath() {
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);// 判断sd卡是否存在
+        if (sdCardExist) {
+            sdDir = Environment.getExternalStorageDirectory();// 获取跟目录
+        }
+        return sdDir.toString();
+    }
 
 
 }

@@ -659,7 +659,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
             String dfuFileName = unZip(filePath, dfuFilePath);
             dfuFilePath = dfuFilePath + dfuFileName.replace(".zip", "") + File.separator;
-            wifi_name.append("DFU 文件解压完成：" + dfuFilePath + "\n");
+            wifi_name.append("DFU 文件解压路径：" + dfuFilePath + "\n");
             isCopyEnd = true;
         } else {
             isCopyEnd = false;

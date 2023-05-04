@@ -11,13 +11,6 @@
         android:layout_marginTop="@dimen/dimens_30dp"
         android:text="连接状态" />
 
-    <TextView
-        android:id="@+id/device_set_deviceinfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimens_20dp"
-        android:text="设备信息" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -157,11 +150,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/wifi_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimens_20dp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/device_set_deviceinfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimens_20dp"
+                android:text="设备信息" />
+
+            <TextView
+                android:id="@+id/wifi_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens_20dp" />
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
