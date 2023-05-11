@@ -115,10 +115,16 @@
             android:text="同步历史数据" />
 
         <Button
+            android:id="@+id/device_set_startLocalOTA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="启动本地升级" />
+
+        <Button
             android:id="@+id/device_set_startOTA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="启动WiFi升级" />
+            android:text="启动用户升级" />
 
     </LinearLayout>
 
@@ -139,6 +145,11 @@
             android:text="启动DFU升级" />
 
     </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ImageView
         android:id="@+id/userNameImage"

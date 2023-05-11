@@ -80,7 +80,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     private TextView device_set_deviceinfo, wifi_name;
     private TextView device_set_connect_state;
     private Button device_set_light, device_set_sync_log, device_set_sync_time, device_set_reset,
-            device_set_synchistory, device_set_startOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
+            device_set_synchistory, device_set_startOTA, device_set_startLocalOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
             device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list,
             device_set_startDFU, device_set_getFilePath;
     private String dfuFilePath;
@@ -122,6 +122,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         device_set_get_userinfo_list = findViewById(R.id.device_set_get_userinfo_list);
         device_set_startDFU = findViewById(R.id.device_set_startDFU);
         wifi_name = findViewById(R.id.wifi_name);
+        device_set_startLocalOTA = findViewById(R.id.device_set_startLocalOTA);
 
         device_set_light.setOnClickListener(this);
         device_set_sync_log.setOnClickListener(this);
@@ -129,6 +130,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         device_set_reset.setOnClickListener(this);
         device_set_synchistory.setOnClickListener(this);
         device_set_startOTA.setOnClickListener(this);
+        device_set_startLocalOTA.setOnClickListener(this);
         device_set_sync_userinfo.setOnClickListener(this);
         device_set_wifi_list.setOnClickListener(this);
         device_set_startConfigWifi.setOnClickListener(this);
@@ -381,12 +383,12 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             }
 
             @Override
-            public void deleteUserInfoSuccess() {
+            public void deleteUserInfoSuccess(PPUserModel userModel) {
                 Toast.makeText(DeviceSetActivity.this, "删除用户信息成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void deleteUserInfoFail() {
+            public void deleteUserInfoFail(PPUserModel userModel) {
 
             }
 
@@ -408,7 +410,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                 }
                 if (bodyFatModel != null) {
                     Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
-                    String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
+                    String weightStr = PPUtil.getWeight(bodyFatModel.bluetoothScaleBaseModel.unit, bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
                 }
 
             }
@@ -425,10 +427,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                 Logger.e("ppScale_ bodyFatModel = 历史数据读取失败");
             }
 
-            @Override
-            public void monitorAllHistoryData(PPBodyFatModel bodyFatModel, String time) {
-
-            }
         });
         return protocalFilter;
     }
@@ -482,7 +480,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                     ppScale.getTorreDeviceManager().exitConfigWifi();
                     break;
                 case R.id.device_set_delete_userinfo:
-                    ppScale.getTorreDeviceManager().deleteAllUserInfo();
+                    ppScale.getTorreDeviceManager().deleteAllUserInfo(userModel);
                     break;
                 case R.id.device_set_confirm_current_userinfo:
                     ppScale.getTorreDeviceManager().confirmCurrentUser();
@@ -490,45 +488,11 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                 case R.id.device_set_get_userinfo_list:
                     ppScale.getTorreDeviceManager().getUserList();
                     break;
+                case R.id.device_set_startLocalOTA:
+                    ppScale.getTorreDeviceManager().startLocalOTA(onOTAStateListener);
+                    break;
                 case R.id.device_set_startOTA:
-                    ppScale.getTorreDeviceManager().startOTA(new OnOTAStateListener() {
-
-                        @Override
-                        public void onUpdateFail() {
-                            Toast.makeText(DeviceSetActivity.this, "升级失败", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onStartUpdate() {
-                            Toast.makeText(DeviceSetActivity.this, "开始升级", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onUpdateProgress(int progress) {
-                            device_set_startOTA.setText(String.format(Locale.CHINA, "启动WiFi升级(%d%%)", progress));
-                        }
-
-                        @Override
-                        public void onUpdateSucess() {
-                            Toast.makeText(DeviceSetActivity.this, "升级成功", Toast.LENGTH_SHORT).show();
-                            device_set_startOTA.setText("启动WiFi升级");
-                        }
-
-                        @Override
-                        public void onReadyToUpdate() {
-
-                        }
-
-                        @Override
-                        public void onUpdateEnd() {
-
-                        }
-
-                        @Override
-                        public boolean isOTA() {
-                            return false;
-                        }
-                    });
+                    ppScale.getTorreDeviceManager().startUserOTA(onOTAStateListener);
                     break;
                 case R.id.device_set_startDFU:
                     if (isCopyEnd) {
@@ -683,7 +647,46 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                 Toast.makeText(DeviceSetActivity.this, "存储权限获取失败", Toast.LENGTH_SHORT).show();
             }
         }
-
-
     }
+
+    OnOTAStateListener onOTAStateListener = new OnOTAStateListener() {
+
+        @Override
+        public void onUpdateFail() {
+            Toast.makeText(DeviceSetActivity.this, "升级失败", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onStartUpdate() {
+            Toast.makeText(DeviceSetActivity.this, "开始升级", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onUpdateProgress(int progress) {
+            device_set_startOTA.setText(String.format(Locale.CHINA, "启动WiFi升级(%d%%)", progress));
+        }
+
+        @Override
+        public void onUpdateSucess() {
+            Toast.makeText(DeviceSetActivity.this, "升级成功", Toast.LENGTH_SHORT).show();
+            device_set_startOTA.setText("启动WiFi升级");
+        }
+
+        @Override
+        public void onReadyToUpdate() {
+
+        }
+
+        @Override
+        public void onUpdateEnd() {
+
+        }
+
+        @Override
+        public boolean isOTA() {
+            return false;
+        }
+    };
+
+
 }

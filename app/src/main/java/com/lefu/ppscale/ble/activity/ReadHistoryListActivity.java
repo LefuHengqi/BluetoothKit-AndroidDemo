@@ -118,9 +118,9 @@ public class ReadHistoryListActivity extends Activity {
                 if (bodyFatModel != null) {
                     Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
 
-                    String weightStr = PPUtil.getWeight(bodyFatModel.getUnit(), bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
+                    String weightStr = PPUtil.getWeight(bodyFatModel.bluetoothScaleBaseModel.unit, bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
 
-                    DeviceModel bodyModel = new DeviceModel(bodyFatModel.getImpedance() + "", weightStr, -1);
+                    DeviceModel bodyModel = new DeviceModel(bodyFatModel.bluetoothScaleBaseModel.impedance + "", weightStr, -1);
 
                     deviceModels.add(bodyModel);
                     adapter.notifyDataSetChanged();
@@ -136,16 +136,6 @@ public class ReadHistoryListActivity extends Activity {
                 }
                 //End of historical data, delete historical data 历史数据结束，删除历史数据
 //                        deleteHistoryData();
-            }
-
-            @Override
-            public void monitorHistoryFail() {
-
-            }
-
-            @Override
-            public void monitorAllHistoryData(PPBodyFatModel bodyFatModel, String time) {
-
             }
 
         });
