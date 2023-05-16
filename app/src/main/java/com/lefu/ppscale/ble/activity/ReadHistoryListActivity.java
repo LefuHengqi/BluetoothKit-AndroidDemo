@@ -118,9 +118,9 @@ public class ReadHistoryListActivity extends Activity {
                 if (bodyFatModel != null) {
                     Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
 
-                    String weightStr = PPUtil.getWeight(bodyFatModel.bluetoothScaleBaseModel.unit, bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
+                    String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
 
-                    DeviceModel bodyModel = new DeviceModel(bodyFatModel.bluetoothScaleBaseModel.impedance + "", weightStr, -1);
+                    DeviceModel bodyModel = new DeviceModel(bodyFatModel.scaleBaseModel.impedance + "", weightStr, -1);
 
                     deviceModels.add(bodyModel);
                     adapter.notifyDataSetChanged();

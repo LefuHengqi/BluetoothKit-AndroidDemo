@@ -97,10 +97,10 @@ public class PPBodyFatDetailModel {
         heartRate.setId(16);
         heartRate.setName(context.getString(R.string.heart_name));
         heartRate.setCode(FLAG_HEARTRATE);
-        int indexHeartRate = StripedStand.heartRateLevelInt(bodyFat.bluetoothScaleBaseModel.heartRate);
+        int indexHeartRate = StripedStand.heartRateLevelInt(bodyFat.scaleBaseModel.heartRate);
         heartRate.setLevelIndex(indexHeartRate);
-        heartRate.setDataVal(String.valueOf(bodyFat.bluetoothScaleBaseModel.heartRate));
-        heartRate.setValue(bodyFat.bluetoothScaleBaseModel.heartRate);
+        heartRate.setDataVal(String.valueOf(bodyFat.scaleBaseModel.heartRate));
+        heartRate.setValue(bodyFat.scaleBaseModel.heartRate);
         heartRate.setUnit("");
         FatDescribeEntity weightAdviceHeartRate = BodyAdviceUtil.getHeartAdvice(indexHeartRate);
         heartRate.setSide(context.getString(weightAdviceHeartRate.side));

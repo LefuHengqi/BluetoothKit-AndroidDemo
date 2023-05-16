@@ -151,7 +151,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
     }
 
     private void showDialog(final PPDeviceModel ppDeviceModel, final PPBodyFatModel bodyDataModel) {
-        String content = getString(R.string.whether_to_save_the_) + PPUtil.getWeight(bodyDataModel.bluetoothScaleBaseModel.unit, bodyDataModel.getPpWeightKg(), ppDeviceModel.deviceAccuracyType.getType());
+        String content = getString(R.string.whether_to_save_the_) + PPUtil.getWeight(bodyDataModel.scaleBaseModel.unit, bodyDataModel.getPpWeightKg(), ppDeviceModel.deviceAccuracyType.getType());
         if (builder == null) {
             builder = new AlertDialog.Builder(BindingDeviceActivity.this);
         }
@@ -246,7 +246,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 // 过程数据
                 @Override
                 public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
-                    String weightStr = PPUtil.getWeight(bodyBaseModel.bluetoothScaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                    String weightStr = PPUtil.getWeight(bodyBaseModel.scaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                     weightTextView.setText(weightStr);
                 }
             });
@@ -303,13 +303,13 @@ public class BindingDeviceActivity extends AppCompatActivity {
 
     private void onDataLock(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
         if (bodyFatModel != null) {
-            if (!bodyFatModel.bluetoothScaleBaseModel.isHeartRating) {
+            if (!bodyFatModel.scaleBaseModel.isHeartRating) {
                 Logger.d("monitorLockData  bodyFatModel weightKg = " + bodyFatModel.toString());
 
                 if (ppScale != null) {
                     ppScale.stopSearch();
                 }
-                String weightStr = PPUtil.getWeight(bodyFatModel.bluetoothScaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                 if (weightTextView != null) {
                     weightTextView.setText(weightStr);
 //                    showDialog(deviceModel, bodyFatModel);
@@ -454,7 +454,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
         }
         try {
             Bundle bundle = new Bundle();
-            String weightStr = PPUtil.getWeight(bodyFatModel.bluetoothScaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+            String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
             bundle.putString("content", weightStr);
             configWifiDialog.setArguments(bundle);
 

@@ -410,7 +410,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                 }
                 if (bodyFatModel != null) {
                     Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
-                    String weightStr = PPUtil.getWeight(bodyFatModel.bluetoothScaleBaseModel.unit, bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
+                    String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
                 }
 
             }
