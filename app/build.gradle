@@ -16,7 +16,6 @@ android {
         versionCode LIB_VERSION_CODE as int
         versionName LIB_VERSION
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-
     }
     packagingOptions {
         exclude 'res/values/values.xml'

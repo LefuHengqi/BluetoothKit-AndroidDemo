@@ -36,8 +36,12 @@ import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface;
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
+import com.peng.ppscale.business.ble.listener.PPLockDataInterface;
+import com.peng.ppscale.business.ble.listener.PPProcessDateInterface;
+import com.peng.ppscale.business.torre.TorreDeviceManager;
 import com.peng.ppscale.business.torre.dfu.DfuHelper;
 import com.peng.ppscale.business.torre.dfu.OnDFUStateListener;
+import com.peng.ppscale.business.torre.listener.PPClearDataInterface;
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
@@ -47,6 +51,7 @@ import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
 import com.peng.ppscale.util.Logger;
 import com.peng.ppscale.util.PPUtil;
+import com.peng.ppscale.vo.PPBodyBaseModel;
 import com.peng.ppscale.vo.PPBodyFatModel;
 import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPUserModel;
@@ -68,7 +73,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
     public static final String TouristUID = "0000000000000000000000000000000000000000000000000000000000000000";
 
-
     private static final int REQUEST_CODE = 1024;
 
     private PPUnitType unitType;
@@ -78,11 +82,11 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     private boolean isSendData;
     private String address;
     private TextView device_set_deviceinfo, wifi_name;
-    private TextView device_set_connect_state;
+    private TextView device_set_connect_state, weightTextView;
     private Button device_set_light, device_set_sync_log, device_set_sync_time, device_set_reset,
             device_set_synchistory, device_set_startOTA, device_set_startLocalOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
             device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list,
-            device_set_startDFU, device_set_getFilePath;
+            device_set_startDFU, device_set_getFilePath, startMeasureBtn, pregnancyMode, closePregnancyMode, getWifiSSID, device_set_clearUser;
     private String dfuFilePath;
     private boolean isCopyEnd;
 
@@ -96,14 +100,15 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         unitType = DataUtil.util().getUnit();
 
         userModel = DataUtil.util().getUserModel();
-//        userModel.userID = "1006451068@qq.com";
-        userModel.userID = TouristUID;
-//        userModel.memberID = "4C2D82A7-AA9B-46F2-99BB-8B82A1F63626";
-        userModel.memberID = TouristUID;
+        userModel.userID = "1006451068@qq.com";
+//        userModel.userID = TouristUID;
+        userModel.memberID = "4C2D82A7-AA9B-46F2-99BB-8B82A1F63626";
+//        userModel.memberID = TouristUID;
         userModel.userName = "AB";
 
         address = getIntent().getStringExtra("address");
 
+        weightTextView = findViewById(R.id.weightTextView);
         device_set_getFilePath = findViewById(R.id.device_set_getFilePath);
         device_set_deviceinfo = findViewById(R.id.device_set_deviceinfo);
         device_set_connect_state = findViewById(R.id.device_set_connect_state);
@@ -123,6 +128,11 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         device_set_startDFU = findViewById(R.id.device_set_startDFU);
         wifi_name = findViewById(R.id.wifi_name);
         device_set_startLocalOTA = findViewById(R.id.device_set_startLocalOTA);
+        startMeasureBtn = findViewById(R.id.startMeasureBtn);
+        pregnancyMode = findViewById(R.id.pregnancyMode);
+        closePregnancyMode = findViewById(R.id.closePregnancyMode);
+        getWifiSSID = findViewById(R.id.getWifiSSID);
+        device_set_clearUser = findViewById(R.id.device_set_clearUser);
 
         device_set_light.setOnClickListener(this);
         device_set_sync_log.setOnClickListener(this);
@@ -140,6 +150,11 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         device_set_get_userinfo_list.setOnClickListener(this);
         device_set_startDFU.setOnClickListener(this);
         device_set_getFilePath.setOnClickListener(this);
+        startMeasureBtn.setOnClickListener(this);
+        pregnancyMode.setOnClickListener(this);
+        closePregnancyMode.setOnClickListener(this);
+        getWifiSSID.setOnClickListener(this);
+        device_set_clearUser.setOnClickListener(this);
 
         dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
 //        moveDFUFile(dfuFilePath);
@@ -194,7 +209,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     }
 
     private void initPPScale() {
-
         List<String> addressList = new ArrayList<>();
         addressList.add(address);
         if (builder1 == null) {
@@ -219,7 +233,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     }
 
     private void initLitener() {
-
         ppScale.getTorreDeviceManager().setTorreDeviceLogInterface(new PPDeviceLogInterface() {
             @Override
             public void syncLogStart() {
@@ -301,6 +314,27 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
      */
     private ProtocalFilterImpl getProtocalFilter() {
         final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
+
+        protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
+            @Override
+            public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
+                String weightStr = PPUtil.getWeight(bodyBaseModel.scaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                weightTextView.setText("ProcessWeight:" + weightStr);
+            }
+        });
+
+        protocalFilter.setPPLockDataInterface(new PPLockDataInterface() {
+            @Override
+            public void monitorLockData(PPBodyFatModel bodyBaseModel, PPDeviceModel deviceModel) {
+                String weightStr = PPUtil.getWeight(bodyBaseModel.scaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                weightTextView.setText("LockWeight:" + weightStr);
+            }
+
+            @Override
+            public void monitorOverWeight() {
+                weightTextView.setText("OverWeight");
+            }
+        });
         protocalFilter.setDeviceInfoInterface(new PPDeviceInfoInterface() {
 
             @Override
@@ -309,7 +343,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
             @Override
             public void onIlluminationChange(int illumination) {
-
             }
 
             @Override
@@ -480,6 +513,8 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                     ppScale.getTorreDeviceManager().exitConfigWifi();
                     break;
                 case R.id.device_set_delete_userinfo:
+                    userModel.userID = "";
+                    userModel.memberID = "";
                     ppScale.getTorreDeviceManager().deleteAllUserInfo(userModel);
                     break;
                 case R.id.device_set_confirm_current_userinfo:
@@ -535,6 +570,34 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                 case R.id.device_set_getFilePath:
                     requestPermission();
                     break;
+
+                case R.id.startMeasureBtn:
+                    ppScale.getTorreDeviceManager().startMeasure();
+                    break;
+                case R.id.pregnancyMode:
+                    //0打开 1关闭
+                    ppScale.getTorreDeviceManager().controlImpendance(0);
+                    break;
+                case R.id.closePregnancyMode:
+                    ppScale.getTorreDeviceManager().controlImpendance(1);
+                    break;
+                case R.id.getWifiSSID:
+                    ppScale.getTorreDeviceManager().getWifiSSID();
+                    break;
+                case R.id.device_set_clearUser:
+                    ppScale.getTorreDeviceManager().clearDeviceUserInfo(new PPClearDataInterface() {
+                        @Override
+                        public void onClearSuccess() {
+
+                        }
+
+                        @Override
+                        public void onClearFail() {
+
+                        }
+                    });
+                    break;
+
             }
         } else {
             Toast.makeText(this, "设备未连接", Toast.LENGTH_SHORT).show();
