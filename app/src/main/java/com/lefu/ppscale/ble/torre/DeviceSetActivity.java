@@ -528,37 +528,40 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                         wifi_name.append("DFU 启动DFU" + "\n");
 
 //                        List<DfuHelper.DataVo> dataVos = DfuHelper.getDfuFileByte(dfuFilePath);
+                        if (!ppScale.getTorreDeviceManager().isDFU()) {
+                            ppScale.getTorreDeviceManager().startDFU(dfuFilePath, new OnDFUStateListener() {
 
-                        ppScale.getTorreDeviceManager().startDFU(dfuFilePath, new OnDFUStateListener() {
+                                @Override
+                                public void onDfuFail(String errorType) {
+                                    wifi_name.append("DFU 错误码：" + errorType + "\n");
+                                }
 
-                            @Override
-                            public void onDfuFail(String errorType) {
-                                wifi_name.append("DFU 错误码：" + errorType + "\n");
-                            }
+                                @Override
+                                public void onInfoOout(String outInfo) {
+                                    wifi_name.append("DFU " + outInfo + "\n");
+                                }
 
-                            @Override
-                            public void onInfoOout(String outInfo) {
-                                wifi_name.append("DFU " + outInfo + "\n");
-                            }
+                                @Override
+                                public void onStartSendDfuData() {
+                                    wifi_name.append("DFU 开始发送文件数据" + "\n");
+                                }
 
-                            @Override
-                            public void onStartSendDfuData() {
-                                wifi_name.append("DFU 开始发送文件数据" + "\n");
-                            }
+                                @Override
+                                public void onDfuProgress(int progress) {
+                                    weightTextView.setText(progress + "%");
+                                }
 
-                            @Override
-                            public void onDfuProgress(int progress) {
-
-                            }
-
-                            @Override
-                            public void onDfuSucess() {
-                                wifi_name.append("DFU 所有文件发送成功" + "\n");
-                            }
-                        });
-                    } else {
-                        Toast.makeText(this, "请等待文件复制结束", Toast.LENGTH_SHORT).show();
+                                @Override
+                                public void onDfuSucess() {
+                                    wifi_name.append("DFU 所有文件发送成功" + "\n");
+                                }
+                            });
+                        } else {
+                            Toast.makeText(this, "请等待文件复制结束", Toast.LENGTH_SHORT).show();
+                        }
                     }
+
+
                     break;
                 case R.id.device_set_getFilePath:
                     requestPermission();
@@ -625,6 +628,9 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     protected void onDestroy() {
         super.onDestroy();
         if (ppScale != null) {
+            if (ppScale.getTorreDeviceManager() != null) {
+                ppScale.getTorreDeviceManager().stopDFU();
+            }
             ppScale.stopSearch();
             ppScale.disConnect();
         }

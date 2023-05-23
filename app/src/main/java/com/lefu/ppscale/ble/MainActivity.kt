@@ -2,6 +2,7 @@ package com.lefu.ppscale.ble
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -12,16 +13,19 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.lefu.base.SettingManager
+import com.lefu.ppscale.ble.UnitUtil.unitText
 import com.lefu.ppscale.ble.activity.*
 import com.lefu.ppscale.ble.model.DataUtil
 import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.business.ble.PPScale
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
-import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.PPBodyFatModel
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPUserModel
+import com.peng.ppscale.util.DeviceType
+import com.peng.ppscale.util.DeviceType.deviceType
+import com.peng.ppscale.util.DeviceUtil
+import com.peng.ppscale.util.Energy.toG
+import com.peng.ppscale.util.EnergyUnitLbOz
+import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -174,28 +178,67 @@ class MainActivity : Activity(), View.OnClickListener {
                 // standTime=0, heartRate=0,
                 // dataType=0}
 
-                val ppWeightKg = DataUtil.util().weightKg       //weight
-                val impedance = DataUtil.util().impedance
+//                val ppWeightKg = DataUtil.util().weightKg       //weight
+//                val impedance = DataUtil.util().impedance
+//
+//                val userModel1 = SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
+//
+//                //impedance
+//                val userModel = PPUserModel.Builder()
+//                    .setSex(userModel1.sex) //gender
+//                    .setHeight(userModel1.userHeight)//height 100-220
+//                    .setAge(userModel1.age)//age 10-99
+//                    .build()
+//                val deviceModel = PPDeviceModel("", DeviceManager.LF_SMART_SCALE_CF539)//Select the corresponding Bluetooth name according to your own device
+//                val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
+//
+//                DataUtil.util().bodyDataModel = ppBodyFatModel
+//                Log.d("liyp_", ppBodyFatModel.toString())
+//
+//                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
+//                startActivity(intent)
 
-                val userModel1 = SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
+                val deviceModel = PPDeviceModel("", DeviceManager.KITCHEN_SCALE)
+                deviceModel.deviceAccuracyType = PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePointG
 
-                //impedance
-                val userModel = PPUserModel.Builder()
-                    .setSex(userModel1.sex) //gender
-                    .setHeight(userModel1.userHeight)//height 100-220
-                    .setAge(userModel1.age)//age 10-99
-                    .build()
-                val deviceModel = PPDeviceModel("", DeviceManager.LF_SMART_SCALE_CF539)//Select the corresponding Bluetooth name according to your own device
-                val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
 
-                DataUtil.util().bodyDataModel = ppBodyFatModel
-                Log.d("liyp_", ppBodyFatModel.toString())
-
-                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
-                startActivity(intent)
-
+                val value = getValue(this@MainActivity, 228.0f, PPUnitType.PPUnitFL_OZ_WATER, deviceModel)
+                Log.d("liyp_", value)
             }
         }
 
     }
+
+    private fun getValue(context: Context, weightG: Float, unit: PPUnitType, deviceModel: PPDeviceModel): String {
+        DeviceType.deviceType = DeviceUtil.getDeviceType(deviceModel.getDeviceName())
+        var valueStr = ""
+        var value = weightG
+//        if (foodScaleGeneral.thanZero == 0) {
+//            value *= -1f
+//        }
+        val type =unit
+        valueStr = if (deviceModel.deviceAccuracyType === PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G) {
+            //            String num = String.valueOf(value);
+            val unit = toG(value, type)
+            val num = unit.format01()
+            val unitText = unitText(context, type)
+            num + unitText
+        } else {
+            val unit = toG(value, type)
+            if (unit is EnergyUnitLbOz) {
+                val split = ":"
+                val values = unit.format().split(split.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val unitText = unitText(context, type)
+                val units = unitText.split(split.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                values[0] + split + values[1] + units[0] + split + units[1]
+            } else {
+                val num = unit.format()
+                val unitText = unitText(context, type)
+                num + unitText
+            }
+        }
+        return valueStr
+    }
+
+
 }
