@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -38,9 +37,7 @@ import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
 import com.peng.ppscale.business.ble.listener.PPLockDataInterface;
 import com.peng.ppscale.business.ble.listener.PPProcessDateInterface;
-import com.peng.ppscale.business.torre.TorreDeviceManager;
-import com.peng.ppscale.business.torre.dfu.DfuHelper;
-import com.peng.ppscale.business.torre.dfu.OnDFUStateListener;
+import com.peng.ppscale.business.torre.listener.OnDFUStateListener;
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface;
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface;
@@ -58,10 +55,6 @@ import com.peng.ppscale.vo.PPUserModel;
 import com.peng.ppscale.vo.PPWifiModel;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -679,23 +672,28 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
     private void handleSingleDocument(Intent data) {
         Uri uri = data.getData();
-        String filePath = FileUtils.getRealPath(this, uri);
-        wifi_name.append("DFU 升级文件路径：" + filePath + "\n");
-        isCopyEnd = false;
-        if (filePath.endsWith(".zip")) {
-            dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
-            String dfuFileName = unZip(filePath, dfuFilePath);
-            dfuFilePath = dfuFilePath + dfuFileName.replace(".zip", "") + File.separator;
-            wifi_name.append("DFU 文件解压路径：" + dfuFilePath + "\n");
-            isCopyEnd = true;
-        } else {
-            isCopyEnd = false;
-            FileUtils.moveDFUFile(this, filePath);
-            isCopyEnd = true;
-        }
+        isCopyEnd = true;
+        dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
+        dfuFilePath = ZipFileUtil.zipUriToLocalFile(this, uri, dfuFilePath);
+        isCopyEnd = true;
+
+//        String filePath = FileUtils.getRealPath(this, uri);
+//        wifi_name.append("DFU 升级文件路径：" + filePath + "\n");
+//        isCopyEnd = true;    isCopyEnd = true;
+//        if (filePath.endsWith(".zip")) {
+//            String dfuFileName = unZip(filePath, dfuFilePath);
+//            dfuFilePath = dfuFilePath + dfuFileName.replace(".zip", "") + File.separator;
+//            wifi_name.append("DFU 文件解压路径：" + dfuFilePath + "\n");
+//            isCopyEnd = true;
+//        } else {
+//            isCopyEnd = false;
+//            FileUtils.moveDFUFile(this, filePath);
+//            isCopyEnd = true;
+//        }
     }
 
     private String unZip(String zipFielPath, String dfuFilePath) {
+//        return ZipFileUtil.unZip(this, zipFielPath, dfuFilePath);
         return ZipFileUtil.unZip(this, zipFielPath, dfuFilePath);
     }
 
