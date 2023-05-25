@@ -43,7 +43,8 @@ public class DataUtil {
     public PPUserModel getUserModel() {
         userModel = SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel.class);
         if (userModel == null) {
-            userModel = new PPUserModel.Builder().setAge(18)
+            userModel = new PPUserModel.Builder()
+                    .setAge(18)
                     .setHeight(180)
                     .setSex(PPUserGender.PPUserGenderMale)
                     .setGroupNum(0)
