@@ -202,7 +202,7 @@ class MainActivity : Activity(), View.OnClickListener {
                 deviceModel.deviceAccuracyType = PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePointG
 
 
-                val value = getValue(this@MainActivity, 100.0f, PPUnitType.PPUnitLBOZ, deviceModel)
+                val value = getValue(this@MainActivity, 151.0f, PPUnitType.PPUnitMLMilk, deviceModel)
                 Log.d("liyp_", value)
             }
         }
