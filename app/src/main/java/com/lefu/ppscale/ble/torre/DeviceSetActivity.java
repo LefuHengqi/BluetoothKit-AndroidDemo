@@ -75,7 +75,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     private boolean isSendData;
     private String address;
     private TextView device_set_deviceinfo, wifi_name;
-    private TextView device_set_connect_state, weightTextView;
+    private TextView device_set_connect_state, weightTextView, functinonTypeTvState;
     private Button device_set_light, device_set_sync_log, device_set_sync_time, device_set_reset,
             device_set_synchistory, device_set_startOTA, device_set_startLocalOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
             device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list,
@@ -102,6 +102,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         address = getIntent().getStringExtra("address");
 
         weightTextView = findViewById(R.id.weightTextView);
+        functinonTypeTvState = findViewById(R.id.functinonTypeTvState);
         device_set_getFilePath = findViewById(R.id.device_set_getFilePath);
         device_set_deviceinfo = findViewById(R.id.device_set_deviceinfo);
         device_set_connect_state = findViewById(R.id.device_set_connect_state);
@@ -153,7 +154,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 //        moveDFUFile(dfuFilePath);
         //初始化PPSCale
         initPPScale();
-
 
 //        initBitmap();
     }
@@ -526,13 +526,14 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                     if (isCopyEnd) {
                         String dfuFilePath = this.dfuFilePath;//文件地址，统一放到包路径下的files/dfu/目录下getFilesDir().getAbsolutePath() + "/dfu/"
                         wifi_name.append("DFU 启动DFU" + "\n");
-
+                        functinonTypeTvState.setText("DFU状态");
 //                        List<DfuHelper.DataVo> dataVos = DfuHelper.getDfuFileByte(dfuFilePath);
                         if (!ppScale.getTorreDeviceManager().isDFU()) {
                             ppScale.getTorreDeviceManager().startDFU(dfuFilePath, new OnDFUStateListener() {
 
                                 @Override
                                 public void onDfuFail(String errorType) {
+                                    weightTextView.setText("DFU错误码：" + errorType);
                                     wifi_name.append("DFU 错误码：" + errorType + "\n");
                                 }
 
@@ -553,6 +554,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
                                 @Override
                                 public void onDfuSucess() {
+                                    weightTextView.setText("DFU成功");
                                     wifi_name.append("DFU 所有文件发送成功" + "\n");
                                 }
                             });
@@ -560,13 +562,10 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                             Toast.makeText(this, "请等待文件复制结束", Toast.LENGTH_SHORT).show();
                         }
                     }
-
-
                     break;
                 case R.id.device_set_getFilePath:
                     requestPermission();
                     break;
-
                 case R.id.startMeasureBtn:
                     ppScale.getTorreDeviceManager().startMeasure();
                     break;
@@ -678,13 +677,16 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
     private void handleSingleDocument(Intent data) {
         Uri uri = data.getData();
-        isCopyEnd = true;
         dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/";
-        dfuFilePath = ZipFileUtil.zipUriToLocalFile(this, uri, dfuFilePath);
+        dfuFilePath = ZipFileUtil.zipUriToLocalFile(this, uri, dfuFilePath, new ZipFileUtil.ZipFileCallBack() {
+            @Override
+            public void onFilePath(String filePath) {
+                wifi_name.append("DFU 升级文件路径：" + filePath + "\n");
+            }
+        });
+        wifi_name.append("DFU 文件解压路径：" + dfuFilePath + "\n");
         isCopyEnd = true;
-
 //        String filePath = FileUtils.getRealPath(this, uri);
-//        wifi_name.append("DFU 升级文件路径：" + filePath + "\n");
 //        isCopyEnd = true;    isCopyEnd = true;
 //        if (filePath.endsWith(".zip")) {
 //            String dfuFileName = unZip(filePath, dfuFilePath);

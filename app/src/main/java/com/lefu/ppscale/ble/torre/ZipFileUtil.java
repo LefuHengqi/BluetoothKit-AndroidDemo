@@ -203,7 +203,7 @@ public class ZipFileUtil {
         zfile.close();
     }
 
-    public static String zipUriToLocalFile(Context context, Uri uri, String outFilePath) {
+    public static String zipUriToLocalFile(Context context, Uri uri, String outFilePath, ZipFileCallBack zipFileCallBack) {
         ZipInputStream zipInputStream = null;
         try {
             File outFile = new File(outFilePath);
@@ -218,7 +218,9 @@ public class ZipFileUtil {
                 // 处理每一个zip文件条目
                 String entryName = zipEntry.getName();
                 long entrySize = zipEntry.getSize();
-
+                if (zipFileCallBack != null) {
+                    zipFileCallBack.onFilePath(entryName);
+                }
                 String[] split = entryName.split("/");
                 zipFileName = split[0];
                 byte[] buffer = new byte[1024];
@@ -306,6 +308,12 @@ public class ZipFileUtil {
             return ret;
         }
         return ret;
+    }
+
+    public interface ZipFileCallBack {
+
+        void onFilePath(String filePath);
+
     }
 
 }
