@@ -18,9 +18,11 @@ import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -80,6 +82,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             device_set_synchistory, device_set_startOTA, device_set_startLocalOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
             device_set_exitConfigWifi, device_set_delete_userinfo, device_set_confirm_current_userinfo, device_set_get_userinfo_list,
             device_set_startDFU, device_set_getFilePath, startMeasureBtn, pregnancyMode, closePregnancyMode, getWifiSSID, device_set_clearUser;
+    private ToggleButton whetherFullyDFUToggleBtn;//控制是否全量升级，true开启全量
     private String dfuFilePath;
     private boolean isCopyEnd;
 
@@ -127,6 +130,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         closePregnancyMode = findViewById(R.id.closePregnancyMode);
         getWifiSSID = findViewById(R.id.getWifiSSID);
         device_set_clearUser = findViewById(R.id.device_set_clearUser);
+        whetherFullyDFUToggleBtn = findViewById(R.id.whetherFullyDFUToggleBtn);
 
         device_set_light.setOnClickListener(this);
         device_set_sync_log.setOnClickListener(this);
@@ -154,6 +158,13 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 //        moveDFUFile(dfuFilePath);
         //初始化PPSCale
         initPPScale();
+
+        whetherFullyDFUToggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
 
 //        initBitmap();
     }
@@ -529,7 +540,11 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                         functinonTypeTvState.setText("DFU状态");
 //                        List<DfuHelper.DataVo> dataVos = DfuHelper.getDfuFileByte(dfuFilePath);
                         if (!ppScale.getTorreDeviceManager().isDFU()) {
-                            ppScale.getTorreDeviceManager().startDFU(dfuFilePath, new OnDFUStateListener() {
+
+                            boolean isFullyDFUState = whetherFullyDFUToggleBtn.isChecked();//是否全量升级
+
+
+                            ppScale.getTorreDeviceManager().startDFU(isFullyDFUState, dfuFilePath, new OnDFUStateListener() {
 
                                 @Override
                                 public void onDfuFail(String errorType) {

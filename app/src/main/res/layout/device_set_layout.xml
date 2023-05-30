@@ -125,13 +125,19 @@
             android:id="@+id/device_set_startLocalOTA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="启动本地升级" />
+            android:text="本地升级" />
 
         <Button
             android:id="@+id/device_set_startOTA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="启动用户升级" />
+            android:text="用户升级" />
+
+        <Button
+            android:id="@+id/device_set_clearUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清除用户" />
 
     </LinearLayout>
 
@@ -163,7 +169,6 @@
             android:layout_height="wrap_content"
             android:text="获取单位" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -182,11 +187,19 @@
             android:layout_height="wrap_content"
             android:text="启动DFU升级" />
 
-        <Button
-            android:id="@+id/device_set_clearUser"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="清除用户" />
+            android:text="是否全量升级" />
+
+        <ToggleButton
+            android:id="@+id/whetherFullyDFUToggleBtn"
+            android:layout_width="@dimen/size_dp58"
+            android:layout_height="@dimen/size_dp30"
+            android:background="@drawable/tone_switch_selector"
+            android:checked="true"
+            android:textOff=""
+            android:textOn="" />
 
     </LinearLayout>
 
