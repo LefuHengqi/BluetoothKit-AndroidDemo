@@ -398,9 +398,9 @@ public class BindingDeviceActivity extends AppCompatActivity {
                         } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
                             //deviceNotConnected
                         }
-                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
-                            disConnect();
-                        }
+//                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+//                            disConnect();
+//                        }
                     }
                 });
             }
