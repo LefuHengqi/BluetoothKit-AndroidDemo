@@ -188,7 +188,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
         DeviceModel deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.getType());
 
         deviceModel.setDeviceProtocolType(ppDeviceModel.deviceProtocolType.getType());
-        deviceModel.setDevicePower(ppDeviceModel.getBatteryPower());
+        deviceModel.setDevicePower(ppDeviceModel.getDevicePower());
         deviceModel.setFirmwareVersion(ppDeviceModel.getFirmwareVersion());
         deviceModel.setSerialNumber(ppDeviceModel.getSerialNumber());
         deviceModel.setHardwareVersion(ppDeviceModel.getHardwareVersion());
