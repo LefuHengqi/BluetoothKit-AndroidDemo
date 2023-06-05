@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -39,6 +40,7 @@ import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
 import com.peng.ppscale.business.ble.listener.PPLockDataInterface;
 import com.peng.ppscale.business.ble.listener.PPProcessDateInterface;
+import com.peng.ppscale.business.ble.listener.PPTorreDeviceModeChangeInterface;
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener;
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface;
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface;
@@ -234,6 +236,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         initLitener();
 
         startConnectDevice(address);
+
     }
 
     private void initLitener() {
@@ -592,7 +595,10 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                     ppScale.getTorreDeviceManager().controlImpendance(1);
                     break;
                 case R.id.getWifiSSID:
-                    ppScale.getTorreDeviceManager().getWifiSSID();
+                    //设置设备模式切换监听
+                    ppScale.getTorreDeviceManager().setPPTorreDeviceModeChangeInterface(modeChangeInterface);
+//                    ppScale.getTorreDeviceManager().getWifiSSID();//获取WiFi SSID
+                    ppScale.getTorreDeviceManager().getWifiMac();//获取WIFI MAC
                     break;
                 case R.id.device_set_clearUser:
                     ppScale.getTorreDeviceManager().clearDeviceUserInfo(new PPClearDataInterface() {
@@ -732,6 +738,28 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             }
         }
     }
+
+    PPTorreDeviceModeChangeInterface modeChangeInterface = new PPTorreDeviceModeChangeInterface() {
+
+        @Override
+        public void readDeviceSsidCallBack(String ssid) {
+            if (TextUtils.isEmpty(ssid)) {
+                weightTextView.setText("未配网");
+            } else {
+                weightTextView.setText("ssid:" + ssid);
+            }
+
+        }
+
+        @Override
+        public void readDeviceWifiMacCallBack(String wifiMac) {
+            if (TextUtils.isEmpty(wifiMac)) {
+                weightTextView.setText("未获取到wifiMac");
+            } else {
+                weightTextView.setText("wifiMac:" + wifiMac);
+            }
+        }
+    };
 
     OnOTAStateListener onOTAStateListener = new OnOTAStateListener() {
 
