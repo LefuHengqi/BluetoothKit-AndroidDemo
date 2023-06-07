@@ -149,7 +149,7 @@ public class StripedStand {
         } else if (fatPercent <= critical_point4) {
             return 3;  //胖
         } else {
-            return 4;//超重
+            return 3;//超重
         }
     }
 
