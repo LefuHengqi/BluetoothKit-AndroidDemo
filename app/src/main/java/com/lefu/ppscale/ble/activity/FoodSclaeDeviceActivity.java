@@ -184,9 +184,8 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
                 Logger.d(getString(R.string.writable));
                 //可写状态，可以发送指令，例如切换单位，获取历史数据等
                 weightTextView.setText(getString(R.string.writable));
-
                 //切换单位
-                ppScale.sendUnitDataScale(unitType);
+                ppScale.sendUnitDataScale(unitType, null);
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据

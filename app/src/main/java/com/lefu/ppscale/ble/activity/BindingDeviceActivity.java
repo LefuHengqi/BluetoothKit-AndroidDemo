@@ -329,7 +329,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
         @Override
-        public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
+        public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, final PPDeviceModel deviceModel) {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 Logger.d(getString(R.string.device_connected));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
@@ -337,15 +337,32 @@ public class BindingDeviceActivity extends AppCompatActivity {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
                 Logger.d(getString(R.string.device_disconnected));
             } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
-                Logger.d(getString(R.string.stop_scanning));
+                Logger.d(getString(R.string.stop_scanning));//主动取消扫描
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
-                Logger.d(getString(R.string.scan_timeout));
+                Logger.d(getString(R.string.scan_timeout));//可以在这里重启扫描
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 Logger.d(getString(R.string.scanning));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 Logger.d(getString(R.string.writable));
                 //可写状态，可以发送指令，例如切换单位，获取历史数据等
-                sendUnitDataScale(deviceModel);
+                sendUnitDataScale(deviceModel, new PPBleSendResultCallBack() {
+                    @Override
+                    public void onResult(@NonNull PPScaleSendState sendState) {
+                        if (sendState == PPScaleSendState.PP_SEND_FAIL) {
+                            //Failed to send
+                        } else if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                            //sentSuccessfully
+
+                        } else if (sendState == PPScaleSendState.PP_DEVICE_ERROR) {
+                            //Device error, indicating that the command is not supported
+                        } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
+                            //deviceNotConnected
+                        }
+                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+                            disConnect();
+                        }
+                    }
+                });
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
@@ -377,32 +394,14 @@ public class BindingDeviceActivity extends AppCompatActivity {
     /**
      * 切换单位指令
      */
-    private void sendUnitDataScale(final PPDeviceModel deviceModel) {
+    private void sendUnitDataScale(final PPDeviceModel deviceModel, PPBleSendResultCallBack sendResultCallBack) {
         if (ppScale != null) {
             if (deviceModel.getDeviceCalcuteType() == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeInScale) {
                 //秤端计算，需要发送身体详情数据给秤，发送完成后不断开（切换单位）
-                ppScale.sendData2ElectronicScale(unitType);
+                ppScale.sendData2ElectronicScale(unitType, sendResultCallBack);
             } else {
                 //切换单位
-                ppScale.sendUnitDataScale(unitType);
-                ppScale.setSendResultCallBack(new PPBleSendResultCallBack() {
-                    @Override
-                    public void onResult(@NonNull PPScaleSendState sendState) {
-                        if (sendState == PPScaleSendState.PP_SEND_FAIL) {
-                            //Failed to send
-                        } else if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                            //sentSuccessfully
-
-                        } else if (sendState == PPScaleSendState.PP_DEVICE_ERROR) {
-                            //Device error, indicating that the command is not supported
-                        } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
-                            //deviceNotConnected
-                        }
-                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
-                            disConnect();
-                        }
-                    }
-                });
+                ppScale.sendUnitDataScale(unitType, sendResultCallBack);
             }
         }
     }

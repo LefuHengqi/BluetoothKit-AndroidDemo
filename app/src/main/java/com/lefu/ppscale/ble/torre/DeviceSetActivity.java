@@ -253,7 +253,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
             @Override
             public void syncLogEnd(String logFilePath) {
-                Logger.d("sync log path :" + logFilePath);
+                Logger.w("sync log path :" + logFilePath);
                 Toast.makeText(DeviceSetActivity.this, "日志同步完成", Toast.LENGTH_SHORT).show();
             }
         });
@@ -335,6 +335,8 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             public void monitorLockData(PPBodyFatModel bodyBaseModel, PPDeviceModel deviceModel) {
                 String weightStr = PPUtil.getWeight(bodyBaseModel.scaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                 weightTextView.setText("LockWeight:" + weightStr);
+                Logger.d("bodyBaseModel:" + bodyBaseModel.toString());
+                device_set_deviceinfo.setText(bodyBaseModel.toString());
             }
 
             @Override
@@ -499,7 +501,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                     ppScale.sendResetDevice();
                     break;
                 case R.id.device_set_sync_time:
-                    ppScale.sendSyncTimeDataAdoreScale();
+                    ppScale.sendSyncTimeDataAdoreScale(null);
                     break;
                 case R.id.device_set_synchistory:
                     ppScale.getTorreDeviceManager().syncHistory(userModel);
@@ -585,7 +587,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                     requestPermission();
                     break;
                 case R.id.startMeasureBtn:
-                    ppScale.getTorreDeviceManager().startMeasure();
+                    ppScale.getTorreDeviceManager().startMeasure(null);
                     break;
                 case R.id.pregnancyMode:
                     //0打开 1关闭

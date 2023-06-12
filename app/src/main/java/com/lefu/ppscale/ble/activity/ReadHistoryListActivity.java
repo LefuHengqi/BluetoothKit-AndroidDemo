@@ -15,6 +15,7 @@ import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
 import com.lefu.ppscale.ble.model.DataUtil;
 import com.lefu.ppscale.db.dao.DeviceModel;
+import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack;
 import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
@@ -30,6 +31,7 @@ import com.peng.ppscale.vo.PPUserModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * 读取历史数据，必须先绑定设备
@@ -80,9 +82,9 @@ public class ReadHistoryListActivity extends Activity {
     /**
      * 获取历史数据
      */
-    private void fetchHistoryData() {
+    private void fetchHistoryData(PPBleSendResultCallBack sendResultCallBack) {
         if (ppScale != null) {
-            ppScale.fetchHistoryData();
+            ppScale.fetchHistoryData(sendResultCallBack);
         }
     }
 
@@ -153,9 +155,7 @@ public class ReadHistoryListActivity extends Activity {
 
     //直接读取历史数据，需要传入要读取的秤
     private void initPPScaleAndConnectDevice() {
-
         List<DeviceModel> deviceList = DBManager.manager().getDeviceList();
-
         if (deviceList != null && !deviceList.isEmpty()) {
             ppScale = new PPScale.Builder(this)
                     .setProtocalFilterImpl(getProtocalFilter())
@@ -169,7 +169,6 @@ public class ReadHistoryListActivity extends Activity {
         } else {
             tv_starts.setText("请先绑定设备");
         }
-
     }
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
@@ -189,7 +188,7 @@ public class ReadHistoryListActivity extends Activity {
                 Logger.d(getString(R.string.scanning));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 Logger.d(getString(R.string.writable));
-                fetchHistoryData();
+                fetchHistoryData(null);
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
             }

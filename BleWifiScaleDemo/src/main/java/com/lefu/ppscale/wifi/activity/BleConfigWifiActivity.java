@@ -29,6 +29,7 @@ import com.lefu.ppscale.wifi.util.WifiUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInterface;
+import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
 import com.peng.ppscale.business.state.PPBleSwitchState;
@@ -214,7 +215,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                 Logger.d(getString(R.string.scanning));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 Logger.d(getString(R.string.Writable));
-                startConfiWifi();
+                startConfiWifi(null);
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
             }
@@ -237,11 +238,11 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     /**
      * 绑定时请确保WIFI是2.4G，并且账号密码正确
      */
-    private void startConfiWifi() {
+    private void startConfiWifi(PPBleSendResultCallBack sendResultCallBack) {
         ssid = etWifiName.getText().toString();
         String password = etWifiKey.getText().toString();
         if (ppScale != null) {
-            ppScale.configWifi(ssid, password);
+            ppScale.configWifi(ssid, password, sendResultCallBack);
         }
     }
 
