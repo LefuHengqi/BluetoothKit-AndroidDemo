@@ -2,7 +2,6 @@ package com.lefu.ppscale.ble
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -13,18 +12,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.lefu.base.SettingManager
-import com.lefu.ppscale.ble.UnitUtil.unitText
 import com.lefu.ppscale.ble.activity.*
 import com.lefu.ppscale.ble.model.DataUtil
 import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.business.ble.PPScale
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
-import com.peng.ppscale.util.DeviceType
-import com.peng.ppscale.util.DeviceType.deviceType
-import com.peng.ppscale.util.DeviceUtil
-import com.peng.ppscale.util.Energy.toG
-import com.peng.ppscale.util.EnergyUnitLbOz
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -189,7 +182,7 @@ class MainActivity : Activity(), View.OnClickListener {
                     .setHeight(userModel1.userHeight)//height 100-220
                     .setAge(userModel1.age)//age 10-99
                     .build()
-                val deviceModel = PPDeviceModel("", DeviceManager.LF_SMART_SCALE_CF539)//Select the corresponding Bluetooth name according to your own device
+                val deviceModel = PPDeviceModel("", DeviceManager.CF568_TM_315)//Select the corresponding Bluetooth name according to your own device
                 val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
 
                 DataUtil.util().bodyDataModel = ppBodyFatModel

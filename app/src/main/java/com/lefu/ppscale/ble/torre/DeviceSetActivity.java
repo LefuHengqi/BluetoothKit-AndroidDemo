@@ -522,12 +522,15 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                     ppScale.getTorreDeviceManager().exitConfigWifi();
                     break;
                 case R.id.device_set_delete_userinfo:
-                    userModel.userID = "";
-                    userModel.memberID = "";
+                    userModel.userID = "1006451068@qq.com";
+                    userModel.memberID = "4C2D82A7-AA9B-46F2-99BB-8B82A1F63626";
+                    userModel.userName = "AB";
                     ppScale.getTorreDeviceManager().deleteAllUserInfo(userModel);
                     break;
                 case R.id.device_set_confirm_current_userinfo:
-                    ppScale.getTorreDeviceManager().confirmCurrentUser();
+                    userModel.userID = "";
+                    userModel.memberID = "";
+                    ppScale.getTorreDeviceManager().confirmCurrentUser(userModel);
                     break;
                 case R.id.device_set_get_userinfo_list:
                     ppScale.getTorreDeviceManager().getUserList();
