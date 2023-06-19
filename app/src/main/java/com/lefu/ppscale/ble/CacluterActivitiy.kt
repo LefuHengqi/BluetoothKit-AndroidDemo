@@ -1,10 +1,8 @@
 package com.lefu.ppscale.ble
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.lefu.ppscale.ble.activity.BodyDataDetailActivity
 import com.lefu.ppscale.ble.model.DataUtil
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
