@@ -15,7 +15,7 @@ import com.peng.ppscale.vo.PPBodyFatModel
  *    desc   : 身体数据指标工具类
  */
 object BodyFatIndexUtils {
-    
+
     /**
      * 获取所有的指标数据
      * @param bodyFat 测量后给出的结果
