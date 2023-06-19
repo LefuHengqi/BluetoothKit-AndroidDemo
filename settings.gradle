@@ -6,4 +6,6 @@ include ':data_range'
 include ':data_db'
 include ':base'
 include ':ppscalelib'
-//include ':bluetoothkit'
+include ':body_index_data'
+include ':bodyindex'
+
