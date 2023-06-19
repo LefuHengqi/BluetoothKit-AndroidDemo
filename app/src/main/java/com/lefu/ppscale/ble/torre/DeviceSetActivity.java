@@ -27,6 +27,8 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.model.DataUtil;
@@ -41,15 +43,15 @@ import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface;
 import com.peng.ppscale.business.ble.listener.PPLockDataInterface;
 import com.peng.ppscale.business.ble.listener.PPProcessDateInterface;
 import com.peng.ppscale.business.ble.listener.PPTorreDeviceModeChangeInterface;
-import com.peng.ppscale.business.torre.listener.OnDFUStateListener;
-import com.peng.ppscale.business.torre.listener.PPClearDataInterface;
-import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.business.ota.OnOTAStateListener;
 import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
+import com.peng.ppscale.business.torre.listener.OnDFUStateListener;
+import com.peng.ppscale.business.torre.listener.PPClearDataInterface;
+import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface;
 import com.peng.ppscale.util.Logger;
 import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.vo.PPBodyBaseModel;
@@ -58,13 +60,9 @@ import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPUserModel;
 import com.peng.ppscale.vo.PPWifiModel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.core.content.ContextCompat;
-import androidx.core.app.ActivityCompat;
 
 public class DeviceSetActivity extends Activity implements View.OnClickListener {
 
@@ -289,6 +287,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 //                sendUnitDataScale(deviceModel);
                 isSendData = true;
                 device_set_connect_state.setText("已连接");
+                ppScale.getTorreDeviceManager().startKeepAlive();
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
@@ -546,12 +545,8 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                         String dfuFilePath = this.dfuFilePath;//文件地址，统一放到包路径下的files/dfu/目录下getFilesDir().getAbsolutePath() + "/dfu/"
                         wifi_name.append("DFU 启动DFU" + "\n");
                         functinonTypeTvState.setText("DFU状态");
-//                        List<DfuHelper.DataVo> dataVos = DfuHelper.getDfuFileByte(dfuFilePath);
                         if (!ppScale.getTorreDeviceManager().isDFU()) {
-
                             boolean isFullyDFUState = whetherFullyDFUToggleBtn.isChecked();//是否全量升级
-
-
                             ppScale.getTorreDeviceManager().startDFU(isFullyDFUState, dfuFilePath, new OnDFUStateListener() {
 
                                 @Override
@@ -660,7 +655,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             ppScale.disConnect();
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

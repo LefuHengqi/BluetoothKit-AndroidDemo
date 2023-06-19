@@ -26,10 +26,7 @@ class CacluterActivitiy : Activity() {
             .build()
 
         val deviceModel = PPDeviceModel("", DeviceManager.CF568_TM_315)//Select the corresponding Bluetooth name according to your own device
-
         deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal)
-        deviceModel.set(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal)
-
         val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
 
         DataUtil.util().bodyDataModel = ppBodyFatModel

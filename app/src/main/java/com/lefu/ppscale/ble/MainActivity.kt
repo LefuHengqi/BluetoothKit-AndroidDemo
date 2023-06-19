@@ -182,7 +182,7 @@ class MainActivity : Activity(), View.OnClickListener {
                     .setHeight(userModel1.userHeight)//height 100-220
                     .setAge(userModel1.age)//age 10-99
                     .build()
-                val deviceModel = PPDeviceModel("", DeviceManager.CF568_TM_315)//Select the corresponding Bluetooth name according to your own device
+                val deviceModel = PPDeviceModel("", DeviceManager.CF568)//Select the corresponding Bluetooth name according to your own device
                 val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
 
                 DataUtil.util().bodyDataModel = ppBodyFatModel
