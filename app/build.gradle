@@ -136,7 +136,5 @@ dependencies {
     implementation project(':data_range')
     implementation project(':base')
     implementation project(':ppscalelib')
-    implementation project(':bodyindex')
-
 
 }

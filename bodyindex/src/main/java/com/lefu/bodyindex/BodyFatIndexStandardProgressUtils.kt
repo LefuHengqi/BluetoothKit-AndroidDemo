@@ -304,7 +304,7 @@ object BodyFatIndexStandardProgressUtils {
      * 2,计算落在哪一格上
      * 3,计算出该数值在该格上的比例
      */
-    fun getBodyItemProgress(level: Int, currentValue: Double, rangValue: List<Double>): Int {
+    fun getBodyItemProgress(level: Int, currentValue: Double, rangValue: List<Float>): Int {
         var progress = 0
         when (rangValue.size - 1) {
             2 -> {//进度条分的块数-格
