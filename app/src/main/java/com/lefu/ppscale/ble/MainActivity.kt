@@ -12,12 +12,14 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.lefu.base.SettingManager
+import com.lefu.bodyindex.BodyFatIndexUtils
 import com.lefu.ppscale.ble.activity.*
 import com.lefu.ppscale.ble.model.DataUtil
 import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.business.ble.PPScale
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
+import com.peng.ppscale.data.PPBodyDetailModel
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -58,8 +60,16 @@ class MainActivity : Activity(), View.OnClickListener {
      *   Android 31 and below only need to apply for positioning permission
      */
     fun requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
                 //The location permission is permanently denied by the user, and the user needs to go to the settings page to enable it
             } else {
                 ActivityCompat.requestPermissions(
@@ -73,20 +83,35 @@ class MainActivity : Activity(), View.OnClickListener {
 
     @RequiresApi(31)
     fun requestBleScalePermmision() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BLUETOOTH_SCAN)) { //这里可以写个对话框之类的项向用户解释为什么要申请权限，并在对话框的确认键后续再次申请权限
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_SCAN
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.BLUETOOTH_SCAN
+                )
+            ) { //这里可以写个对话框之类的项向用户解释为什么要申请权限，并在对话框的确认键后续再次申请权限
                 //TODO Here you should remind the user to go to the system settings page to enable permissions
             } else {
                 //Here you should remind the user to go to the system settings page to enable permissions
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT), 2
+                    arrayOf(
+                        Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.BLUETOOTH_CONNECT
+                    ), 2
                 )
             }
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             //Here you should remind the user to go to the system settings page to enable permissions
@@ -171,10 +196,13 @@ class MainActivity : Activity(), View.OnClickListener {
                 // standTime=0, heartRate=0,
                 // dataType=0}
 
+                PPBodyDetailModel.context = this
+
                 val ppWeightKg = DataUtil.util().weightKg       //weight
                 val impedance = DataUtil.util().impedance
 
-                val userModel1 = SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
+                val userModel1 = SettingManager.get()
+                    .getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
 //
                 //impedance
                 val userModel = PPUserModel.Builder()
@@ -182,19 +210,36 @@ class MainActivity : Activity(), View.OnClickListener {
                     .setHeight(userModel1.userHeight)//height 100-220
                     .setAge(userModel1.age)//age 10-99
                     .build()
-                val deviceModel = PPDeviceModel("", DeviceManager.CF568)//Select the corresponding Bluetooth name according to your own device
-                val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
+                val deviceModel = PPDeviceModel(
+                    "",
+                    DeviceManager.CF568
+                )//Select the corresponding Bluetooth name according to your own device
+                val ppBodyFatModel = PPBodyFatModel(
+                    ppWeightKg,
+                    impedance,
+                    userModel,
+                    deviceModel,
+                    PPUnitType.Unit_KG
+                )
 
                 DataUtil.util().bodyDataModel = ppBodyFatModel
                 Log.d("liyp_", ppBodyFatModel.toString())
 
-                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
-                startActivity(intent)
+//                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
+//                startActivity(intent)
+
+                val bodyIndex = BodyFatIndexUtils.getBodyIndex(
+                    ppBodyFatModel, PPUnitType.Unit_KG, 2,
+                    "kg", "岁",
+                    "分"
+                )
+                Log.d("liyp_", bodyIndex.toString())
+
+
             }
         }
 
     }
-
 
 
 }

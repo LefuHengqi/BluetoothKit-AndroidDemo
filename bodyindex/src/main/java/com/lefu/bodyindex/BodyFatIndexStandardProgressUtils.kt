@@ -306,6 +306,9 @@ object BodyFatIndexStandardProgressUtils {
      */
     fun getBodyItemProgress(level: Int, currentValue: Double, rangValue: List<Float>): Int {
         var progress = 0
+        if (currentValue - rangValue[0] < 0){
+            return 4
+        }
         when (rangValue.size - 1) {
             2 -> {//进度条分的块数-格
                 when (level) {

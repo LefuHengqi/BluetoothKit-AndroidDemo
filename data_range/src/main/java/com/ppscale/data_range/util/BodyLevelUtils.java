@@ -2,7 +2,6 @@ package com.ppscale.data_range.util;
 
 import android.content.Context;
 
-
 import com.peng.ppscale.util.PPUtil;
 import com.ppscale.data_range.R;
 import com.ppscale.data_range.vo.FatLevelEntity;
