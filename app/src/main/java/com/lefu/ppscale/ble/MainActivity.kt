@@ -18,10 +18,7 @@ import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.business.ble.PPScale
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
-import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.PPBodyFatModel
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPUserModel
+import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -178,14 +175,14 @@ class MainActivity : Activity(), View.OnClickListener {
                 val impedance = DataUtil.util().impedance
 
                 val userModel1 = SettingManager.get().getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
-
+//
                 //impedance
                 val userModel = PPUserModel.Builder()
                     .setSex(userModel1.sex) //gender
                     .setHeight(userModel1.userHeight)//height 100-220
                     .setAge(userModel1.age)//age 10-99
                     .build()
-                val deviceModel = PPDeviceModel("", DeviceManager.LF_SMART_SCALE_CF539)//Select the corresponding Bluetooth name according to your own device
+                val deviceModel = PPDeviceModel("", DeviceManager.CF568)//Select the corresponding Bluetooth name according to your own device
                 val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
 
                 DataUtil.util().bodyDataModel = ppBodyFatModel
@@ -193,9 +190,11 @@ class MainActivity : Activity(), View.OnClickListener {
 
                 val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
                 startActivity(intent)
-
             }
         }
 
     }
+
+
+
 }

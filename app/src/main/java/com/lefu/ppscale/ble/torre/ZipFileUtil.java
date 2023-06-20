@@ -1,13 +1,17 @@
 package com.lefu.ppscale.ble.torre;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.peng.ppscale.util.Logger;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,6 +24,7 @@ import java.util.zip.CRC32;
 import java.util.zip.CheckedOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class ZipFileUtil {
@@ -96,7 +101,6 @@ public class ZipFileUtil {
             Toast.makeText(mContext, "SD卡不可用~", Toast.LENGTH_SHORT).show();
             return "";
         }
-
         String PATH = outFilePath;
         File FILE = new File(zipFilePath);
         File outFile = new File(outFilePath);
@@ -199,6 +203,74 @@ public class ZipFileUtil {
         zfile.close();
     }
 
+    public static String zipUriToLocalFile(Context context, Uri uri, String outFilePath, ZipFileCallBack zipFileCallBack) {
+        ZipInputStream zipInputStream = null;
+        try {
+            File outFile = new File(outFilePath);
+            deleteFile(outFile);
+            if (!outFile.exists()) {
+                outFile.mkdirs();
+            }
+            zipInputStream = new ZipInputStream(context.getContentResolver().openInputStream(uri));
+            ZipEntry zipEntry;
+            String zipFileName = "";
+            while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+                // 处理每一个zip文件条目
+                String entryName = zipEntry.getName();
+                long entrySize = zipEntry.getSize();
+                if (zipFileCallBack != null) {
+                    zipFileCallBack.onFilePath(entryName);
+                }
+                String[] split = entryName.split("/");
+                zipFileName = split[0];
+                byte[] buffer = new byte[1024];
+                int count;
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                while ((count = zipInputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, count);
+                }
+                byte[] data = outputStream.toByteArray();
+                FileOutputStream fileOutputStream = null;
+                try {
+                    File baseFile = new File(outFilePath + zipFileName + "/");
+                    if (!baseFile.exists()) {
+                        baseFile.mkdirs();
+                    }
+                    fileOutputStream = new FileOutputStream(outFilePath + entryName);
+                    fileOutputStream.write(data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (fileOutputStream != null) {
+                        try {
+                            fileOutputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+            }
+            String filePath = outFilePath + zipFileName + "/";
+            Logger.d("filePath:" + filePath);
+            return filePath;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (zipInputStream != null) {
+                try {
+                    zipInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return "";
+
+
+    }
+
+
     /**
      * 给定根目录，返回一个相对路径所对应的实际文件名.
      *
@@ -236,6 +308,12 @@ public class ZipFileUtil {
             return ret;
         }
         return ret;
+    }
+
+    public interface ZipFileCallBack {
+
+        void onFilePath(String filePath);
+
     }
 
 }

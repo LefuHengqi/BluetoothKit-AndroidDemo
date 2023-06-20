@@ -16,7 +16,7 @@ public class PPApplication extends Application {
         super.onCreate();
         mApp = this;
         DBManager.initGreenDao(this);
-        PPScale.setDebug(true);
+        PPScale.setDebug(BuildConfig.DEBUG);
         SettingManager.get(this);
     }
 }

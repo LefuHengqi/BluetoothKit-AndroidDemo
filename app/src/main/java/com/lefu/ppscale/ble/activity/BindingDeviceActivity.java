@@ -151,7 +151,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
     }
 
     private void showDialog(final PPDeviceModel ppDeviceModel, final PPBodyFatModel bodyDataModel) {
-        String content = getString(R.string.whether_to_save_the_) + PPUtil.getWeight(bodyDataModel.bluetoothScaleBaseModel.unit, bodyDataModel.getPpWeightKg(), ppDeviceModel.deviceAccuracyType.getType());
+        String content = getString(R.string.whether_to_save_the_) + PPUtil.getWeight(bodyDataModel.scaleBaseModel.unit, bodyDataModel.getPpWeightKg(), ppDeviceModel.deviceAccuracyType.getType());
         if (builder == null) {
             builder = new AlertDialog.Builder(BindingDeviceActivity.this);
         }
@@ -188,7 +188,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
         DeviceModel deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.getType());
 
         deviceModel.setDeviceProtocolType(ppDeviceModel.deviceProtocolType.getType());
-        deviceModel.setDevicePower(ppDeviceModel.getBatteryPower());
+        deviceModel.setDevicePower(ppDeviceModel.getDevicePower());
         deviceModel.setFirmwareVersion(ppDeviceModel.getFirmwareVersion());
         deviceModel.setSerialNumber(ppDeviceModel.getSerialNumber());
         deviceModel.setHardwareVersion(ppDeviceModel.getHardwareVersion());
@@ -246,7 +246,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 // 过程数据
                 @Override
                 public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
-                    String weightStr = PPUtil.getWeight(bodyBaseModel.bluetoothScaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                    String weightStr = PPUtil.getWeight(bodyBaseModel.scaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                     weightTextView.setText(weightStr);
                 }
             });
@@ -303,13 +303,13 @@ public class BindingDeviceActivity extends AppCompatActivity {
 
     private void onDataLock(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
         if (bodyFatModel != null) {
-            if (!bodyFatModel.bluetoothScaleBaseModel.isHeartRating) {
+            if (!bodyFatModel.scaleBaseModel.isHeartRating) {
                 Logger.d("monitorLockData  bodyFatModel weightKg = " + bodyFatModel.toString());
 
                 if (ppScale != null) {
                     ppScale.stopSearch();
                 }
-                String weightStr = PPUtil.getWeight(bodyFatModel.bluetoothScaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                 if (weightTextView != null) {
                     weightTextView.setText(weightStr);
 //                    showDialog(deviceModel, bodyFatModel);
@@ -329,7 +329,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
         @Override
-        public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
+        public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, final PPDeviceModel deviceModel) {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 Logger.d(getString(R.string.device_connected));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
@@ -337,15 +337,32 @@ public class BindingDeviceActivity extends AppCompatActivity {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
                 Logger.d(getString(R.string.device_disconnected));
             } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
-                Logger.d(getString(R.string.stop_scanning));
+                Logger.d(getString(R.string.stop_scanning));//主动取消扫描
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
-                Logger.d(getString(R.string.scan_timeout));
+                Logger.d(getString(R.string.scan_timeout));//可以在这里重启扫描
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 Logger.d(getString(R.string.scanning));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 Logger.d(getString(R.string.writable));
                 //可写状态，可以发送指令，例如切换单位，获取历史数据等
-                sendUnitDataScale(deviceModel);
+                sendUnitDataScale(deviceModel, new PPBleSendResultCallBack() {
+                    @Override
+                    public void onResult(@NonNull PPScaleSendState sendState) {
+                        if (sendState == PPScaleSendState.PP_SEND_FAIL) {
+                            //Failed to send
+                        } else if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                            //sentSuccessfully
+
+                        } else if (sendState == PPScaleSendState.PP_DEVICE_ERROR) {
+                            //Device error, indicating that the command is not supported
+                        } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
+                            //deviceNotConnected
+                        }
+                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+                            disConnect();
+                        }
+                    }
+                });
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
@@ -377,32 +394,14 @@ public class BindingDeviceActivity extends AppCompatActivity {
     /**
      * 切换单位指令
      */
-    private void sendUnitDataScale(final PPDeviceModel deviceModel) {
+    private void sendUnitDataScale(final PPDeviceModel deviceModel, PPBleSendResultCallBack sendResultCallBack) {
         if (ppScale != null) {
             if (deviceModel.getDeviceCalcuteType() == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeInScale) {
                 //秤端计算，需要发送身体详情数据给秤，发送完成后不断开（切换单位）
-                ppScale.sendData2ElectronicScale(unitType);
+                ppScale.sendData2ElectronicScale(unitType, sendResultCallBack);
             } else {
                 //切换单位
-                ppScale.sendUnitDataScale(unitType);
-                ppScale.setSendResultCallBack(new PPBleSendResultCallBack() {
-                    @Override
-                    public void onResult(@NonNull PPScaleSendState sendState) {
-                        if (sendState == PPScaleSendState.PP_SEND_FAIL) {
-                            //Failed to send
-                        } else if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                            //sentSuccessfully
-
-                        } else if (sendState == PPScaleSendState.PP_DEVICE_ERROR) {
-                            //Device error, indicating that the command is not supported
-                        } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
-                            //deviceNotConnected
-                        }
-//                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
-//                            disConnect();
-//                        }
-                    }
-                });
+                ppScale.sendUnitDataScale(unitType, sendResultCallBack);
             }
         }
     }
@@ -454,7 +453,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
         }
         try {
             Bundle bundle = new Bundle();
-            String weightStr = PPUtil.getWeight(bodyFatModel.bluetoothScaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+            String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
             bundle.putString("content", weightStr);
             configWifiDialog.setArguments(bundle);
 

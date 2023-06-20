@@ -102,6 +102,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="退出配网" />
+
+        <Button
+            android:id="@+id/getWifiSSID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取SSID" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -118,13 +125,49 @@
             android:id="@+id/device_set_startLocalOTA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="启动本地升级" />
+            android:text="本地升级" />
 
         <Button
             android:id="@+id/device_set_startOTA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="启动用户升级" />
+            android:text="用户升级" />
+
+        <Button
+            android:id="@+id/device_set_clearUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清除用户" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/startMeasureBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="启动测量" />
+
+        <Button
+            android:id="@+id/pregnancyMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开启孕妇" />
+
+        <Button
+            android:id="@+id/closePregnancyMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关闭孕妇" />
+
+        <Button
+            android:id="@+id/getUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取单位" />
 
     </LinearLayout>
 
@@ -144,12 +187,42 @@
             android:layout_height="wrap_content"
             android:text="启动DFU升级" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="是否全量升级" />
+
+        <ToggleButton
+            android:id="@+id/whetherFullyDFUToggleBtn"
+            android:layout_width="@dimen/size_dp58"
+            android:layout_height="@dimen/size_dp30"
+            android:background="@drawable/tone_switch_selector"
+            android:checked="true"
+            android:textOff=""
+            android:textOn="" />
+
     </LinearLayout>
 
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/functinonTypeTvState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="@string/current_weight" />
+
+    <TextView
+        android:id="@+id/weightTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:text="TextView" />
 
     <ImageView
         android:id="@+id/userNameImage"

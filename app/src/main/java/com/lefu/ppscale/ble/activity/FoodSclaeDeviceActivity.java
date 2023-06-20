@@ -2,6 +2,7 @@ package com.lefu.ppscale.ble.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.lefu.ppscale.db.dao.DeviceModel;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.FoodScaleDataProtocoInterface;
+import com.peng.ppscale.business.device.DeviceManager;
 import com.peng.ppscale.vo.LFFoodScaleGeneral;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
@@ -56,6 +58,14 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
 
         //初始化PPSCale
         initPPScale();
+
+
+        PPDeviceModel deviceModel = new PPDeviceModel("", DeviceManager.KITCHEN_SCALE);
+        deviceModel.deviceAccuracyType = PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePointG;
+
+        String value = FoodScaleCacluteHelper.getValue(textView.getContext(), 151.0f, PPUnitType.PPUnitMLMilk, deviceModel);
+        Log.d("liyp_", value);
+
     }
 
     private void startScanData() {
@@ -174,9 +184,8 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
                 Logger.d(getString(R.string.writable));
                 //可写状态，可以发送指令，例如切换单位，获取历史数据等
                 weightTextView.setText(getString(R.string.writable));
-
                 //切换单位
-                ppScale.sendUnitDataScale(unitType);
+                ppScale.sendUnitDataScale(unitType, null);
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
@@ -270,6 +279,7 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
         super.onDestroy();
         dismissSelf();
     }
+
 
 }
 
