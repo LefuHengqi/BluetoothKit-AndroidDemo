@@ -137,4 +137,6 @@ dependencies {
     implementation project(':base')
     implementation project(':ppscalelib')
 
+    //    api project(':bodyindex')
+
 }
