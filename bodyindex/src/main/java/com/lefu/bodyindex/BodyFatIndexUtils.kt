@@ -40,7 +40,7 @@ object BodyFatIndexUtils {
         weight.indexIconId = R.drawable.pic_icon_data_tizhong_n
         weight.indexGradeCircularBg = R.drawable.bg_progress_3_end_bad
         weight.valueUnit = weightUnitStr
-        weight.bodyFat = bodyFat
+        weight.bodyFat = ppbodyparamWeight
         if (ppbodyparamWeight != null) {
             buildBodyDetailParamWeight(weight, ppbodyparamWeight, ppUnitType, accuracyType)
         }
@@ -55,8 +55,8 @@ object BodyFatIndexUtils {
         }
         fat.valueUnit = "%"
         fat.indexIconId = R.drawable.pic_icon_data_zhifanglv_n
-        fat.indexGradeCircularBg = R.drawable.bg_progress_4_end_bad
-        fat.bodyFat = bodyFat
+        fat.indexGradeCircularBg = R.drawable.bg_progress_5_end_bad
+        fat.bodyFat = ppbodyparamBodyfat
         bodyItemList.add(fat)
 
         //1 bmi
@@ -69,7 +69,7 @@ object BodyFatIndexUtils {
         bmi.valueUnit = ""
         bmi.indexIconId = R.drawable.pic_icon_data_bmi_n
         bmi.indexGradeCircularBg = R.drawable.bg_progress_4_end_bad
-        bmi.bodyFat = bodyFat
+        bmi.bodyFat = ppbodyparamBodyBMI
         bodyItemList.add(bmi)
 
         //3.肌肉含量kg
@@ -82,7 +82,7 @@ object BodyFatIndexUtils {
         muscle.valueUnit = weightUnitStr
         muscle.indexIconId = R.drawable.pic_icon_data_jirouliang_n
         muscle.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
-        muscle.bodyFat = bodyFat
+        muscle.bodyFat = ppbodyparamBodyMus
         bodyItemList.add(muscle)
 
         //7.BMR(基础代谢)
@@ -95,7 +95,7 @@ object BodyFatIndexUtils {
         bmr.valueUnit = "Kcal"
         bmr.indexIconId = R.drawable.pic_icon_data_bmr_n
         bmr.indexGradeCircularBg = R.drawable.bg_progress_2_end_good
-        bmr.bodyFat = bodyFat
+        bmr.bodyFat = ppbodyparamBodyBMR
         bodyItemList.add(bmr)
 
         //28.輸出參數-全身体组成:建议卡路里摄入量 Kcal/day
@@ -107,7 +107,7 @@ object BodyFatIndexUtils {
         }
         dCI.valueUnit = "kcal"
         dCI.indexIconId = R.drawable.pic_icon_data_kalulisheruliang_n
-        dCI.bodyFat = bodyFat
+        dCI.bodyFat = ppbodyparamDci
         bodyItemList.add(dCI)
 
         //16心率
@@ -119,8 +119,8 @@ object BodyFatIndexUtils {
         }
         heartRate.valueUnit = "bpm"
         heartRate.indexIconId = R.drawable.pic_icon_data_xinlv_n
-        heartRate.indexGradeCircularBg = R.drawable.bg_progress_5_end_bad
-        heartRate.bodyFat = bodyFat
+        heartRate.indexGradeCircularBg = R.drawable.bg_progress_5_end_heart
+        heartRate.bodyFat = ppbodyparamHeart
         bodyItemList.add(heartRate)
 
         //4.水分率
@@ -133,7 +133,7 @@ object BodyFatIndexUtils {
         water.valueUnit = "%"
         water.indexIconId = R.drawable.pic_icon_data_shuifenlv_n
         water.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
-        water.bodyFat = bodyFat
+        water.bodyFat = ppbodyparamWater
         bodyItemList.add(water)
 
         //8.蛋白质率
@@ -146,7 +146,7 @@ object BodyFatIndexUtils {
         protein.valueUnit = "%"
         protein.indexIconId = R.drawable.pic_icon_data_danbaizhi_n
         protein.indexGradeCircularBg = R.drawable.bg_progress_3_end_bad
-        protein.bodyFat = bodyFat
+        protein.bodyFat = ppbodyparamProteinpercentage
         bodyItemList.add(protein)
 
         //24.輸出參數-全身体组成:水分量(Kg)
@@ -158,7 +158,7 @@ object BodyFatIndexUtils {
         }
         waterKg.valueUnit = weightUnitStr
         waterKg.indexIconId = R.drawable.pic_icon_data_shuifenliang_n
-        waterKg.bodyFat = bodyFat
+        waterKg.bodyFat = ppbodyparamWaterkg
         bodyItemList.add(waterKg)
 
         //25.輸出參數-全身体组成:蛋白质量(Kg)
@@ -170,7 +170,7 @@ object BodyFatIndexUtils {
         }
         proteinKg.valueUnit = weightUnitStr
         proteinKg.indexIconId = R.drawable.pic_icon_data_danbaizhiliang_n
-        proteinKg.bodyFat = bodyFat
+        proteinKg.bodyFat = ppbodyparamProteinkg
         bodyItemList.add(proteinKg)
 
         //23.脂肪量
@@ -182,8 +182,8 @@ object BodyFatIndexUtils {
         }
         bodyFatKg.valueUnit = weightUnitStr
         bodyFatKg.indexIconId = R.drawable.pic_icon_data_zhifangliang_n
-        bodyFatKg.indexGradeCircularBg = R.drawable.bg_progress_4_end_bad
-        bodyFatKg.bodyFat = bodyFat
+        bodyFatKg.indexGradeCircularBg = R.drawable.bg_progress_5_end_bad
+        bodyFatKg.bodyFat = ppbodyparamBodyfatkg
         bodyItemList.add(bodyFatKg)
 
         //13.去脂体重
@@ -195,7 +195,7 @@ object BodyFatIndexUtils {
         }
         noFatWeight.valueUnit = weightUnitStr
         noFatWeight.indexIconId = R.drawable.pic_icon_data_quzhitizhong_n
-        noFatWeight.bodyFat = bodyFat
+        noFatWeight.bodyFat = ppbodyparamBodylbw
         bodyItemList.add(noFatWeight)
 
         //10.皮下脂肪率
@@ -208,7 +208,7 @@ object BodyFatIndexUtils {
         subFat.valueUnit = "%"
         subFat.indexIconId = R.drawable.pic_icon_data_pixiazhifanglv_n
         subFat.indexGradeCircularBg = R.drawable.bg_progress_4_end_bad
-        subFat.bodyFat = bodyFat
+        subFat.bodyFat = ppbodyparamBodysubcutaneousfat
         bodyItemList.add(subFat)
 
         //18.骨骼肌率
@@ -221,7 +221,7 @@ object BodyFatIndexUtils {
         bodySkeletal.valueUnit = "%"
         bodySkeletal.indexIconId = R.drawable.pic_icon_data_gugejilv_n
         bodySkeletal.indexGradeCircularBg = R.drawable.bg_progress_3_end_bad
-        bodySkeletal.bodyFat = bodyFat
+        bodySkeletal.bodyFat = ppbodyparamBodyskeletal
         bodyItemList.add(bodySkeletal)
 
         //5.内脏脂肪等级
@@ -234,7 +234,7 @@ object BodyFatIndexUtils {
         vfal.valueUnit = ""
         vfal.indexIconId = R.drawable.pic_icon_data_neizangzhifangdengji_n
         vfal.indexGradeCircularBg = R.drawable.bg_progress_3_start_good
-        vfal.bodyFat = bodyFat
+        vfal.bodyFat = ppbodyparamVisfat
         bodyItemList.add(vfal)
 
         //6.骨量
@@ -247,7 +247,7 @@ object BodyFatIndexUtils {
         bone.valueUnit = weightUnitStr
         bone.indexIconId = R.drawable.pic_icon_data_guliang_n
         bone.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
-        bone.bodyFat = bodyFat
+        bone.bodyFat = ppbodyparamBone
         bodyItemList.add(bone)
 
         //26.輸出參數-全身体组成:皮下脂肪量(Kg)
@@ -264,7 +264,7 @@ object BodyFatIndexUtils {
         }
         bodyFatSubCutKg.valueUnit = weightUnitStr
         bodyFatSubCutKg.indexIconId = R.drawable.pic_icon_data_pixiazifangliang_n
-        bodyFatSubCutKg.bodyFat = bodyFat
+        bodyFatSubCutKg.bodyFat = ppbodyparamBodyfatsubcutkg
         bodyItemList.add(bodyFatSubCutKg)
 
         //22.肌肉率
@@ -277,7 +277,7 @@ object BodyFatIndexUtils {
         musclePercentage.valueUnit = "%"
         musclePercentage.indexIconId = R.drawable.pic_icon_data_jiroulv_n
         musclePercentage.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
-        musclePercentage.bodyFat = bodyFat
+        musclePercentage.bodyFat = ppbodyparamMusrate
         bodyItemList.add(musclePercentage)
 
         //37.//左手脂肪率(%), 分辨率0.1
@@ -289,7 +289,7 @@ object BodyFatIndexUtils {
         }
         bodyFatRateLeftArm.valueUnit = "%"
         bodyFatRateLeftArm.indexIconId = R.drawable.pic_icon_data_zuoshouzifanglv_n
-        bodyFatRateLeftArm.bodyFat = bodyFat
+        bodyFatRateLeftArm.bodyFat = ppbodyparamBodyfatrateleftarm
         bodyItemList.add(bodyFatRateLeftArm)
 
         //27.輸出參數-全身体组成:身体细胞量(Kg)
@@ -301,7 +301,7 @@ object BodyFatIndexUtils {
         }
         cellMassKg.valueUnit = weightUnitStr
         cellMassKg.indexIconId = R.drawable.pic_icon_data_shentixibaoliang_n
-        cellMassKg.bodyFat = bodyFat
+        cellMassKg.bodyFat = ppbodyparamCellmasskg
         bodyItemList.add(cellMassKg)
 
         //39.//右手脂肪率(%), 分辨率0.1
@@ -313,7 +313,7 @@ object BodyFatIndexUtils {
         }
         bodyFatRateRightArm.valueUnit = "%"
         bodyFatRateRightArm.indexIconId = R.drawable.pic_icon_data_youshouzifanglv_n
-        bodyFatRateRightArm.bodyFat = bodyFat
+        bodyFatRateRightArm.bodyFat = ppbodyparamBodyfatraterightarm
         bodyItemList.add(bodyFatRateRightArm)
 
         //32.//輸出參數-全身体组成:细胞内水量(kg)
@@ -325,7 +325,7 @@ object BodyFatIndexUtils {
         }
         waterICWKg.valueUnit = weightUnitStr
         waterICWKg.indexIconId = R.drawable.pic_icon_data_xibaoneishuiliang_n
-        waterICWKg.bodyFat = bodyFat
+        waterICWKg.bodyFat = ppbodyparamWatericwkg
         bodyItemList.add(waterICWKg)
 
         //41.//躯干脂肪率(%), 分辨率0.1
@@ -337,7 +337,7 @@ object BodyFatIndexUtils {
         }
         bodyFatRateTrunk.valueUnit = "%"
         bodyFatRateTrunk.indexIconId = R.drawable.pic_icon_data_quganzifanglv_n
-        bodyFatRateTrunk.bodyFat = bodyFat
+        bodyFatRateTrunk.bodyFat = ppbodyparamBodyfatratetrunk
         bodyItemList.add(bodyFatRateTrunk)
 
         //31.輸出參數-全身体组成:细胞外水量(kg)
@@ -349,7 +349,7 @@ object BodyFatIndexUtils {
         }
         waterECWKg.valueUnit = weightUnitStr
         waterECWKg.indexIconId = R.drawable.pic_icon_data_xibaowaishuiliang_n
-        waterECWKg.bodyFat = bodyFat
+        waterECWKg.bodyFat = ppbodyparamWaterecwkg
         bodyItemList.add(waterECWKg)
 
         //38.//左脚脂肪率(%), 分辨率0.1
@@ -361,7 +361,7 @@ object BodyFatIndexUtils {
         }
         bodyFatRateLeftLeg.valueUnit = "%"
         bodyFatRateLeftLeg.indexIconId = R.drawable.pic_icon_data_zuojiaozifanglv_n
-        bodyFatRateLeftLeg.bodyFat = bodyFat
+        bodyFatRateLeftLeg.bodyFat = ppbodyparamBodyfatrateleftleg
         bodyItemList.add(bodyFatRateLeftLeg)
 
         //29.輸出參數-全身体组成:无机盐量(Kg)
@@ -373,7 +373,7 @@ object BodyFatIndexUtils {
         }
         mineralKg.valueUnit = weightUnitStr
         mineralKg.indexIconId = R.drawable.pic_icon_data_wujiyanliang_n
-        mineralKg.bodyFat = bodyFat
+        mineralKg.bodyFat = ppbodyparamMineralkg
         bodyItemList.add(mineralKg)
 
         //40.//右脚脂肪率(%), 分辨率0.1
@@ -385,7 +385,7 @@ object BodyFatIndexUtils {
         }
         bodyFatRateRightLeg.valueUnit = "%"
         bodyFatRateRightLeg.indexIconId = R.drawable.pic_icon_data_youjiaozifanglv_n
-        bodyFatRateRightLeg.bodyFat = bodyFat
+        bodyFatRateRightLeg.bodyFat = ppbodyparamBodyfatraterightleg
         bodyItemList.add(bodyFatRateRightLeg)
 
         //42.//左手肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
@@ -402,7 +402,7 @@ object BodyFatIndexUtils {
         }
         muscleKgLeftArm.valueUnit = weightUnitStr
         muscleKgLeftArm.indexIconId = R.drawable.pic_icon_data_zuoshoujirouliang_n
-        muscleKgLeftArm.bodyFat = bodyFat
+        muscleKgLeftArm.bodyFat = ppbodyparamMusclekgleftarm
         bodyItemList.add(muscleKgLeftArm)
 
 
@@ -420,7 +420,7 @@ object BodyFatIndexUtils {
         }
         bodyFatKgLeftArm.valueUnit = "%"
         bodyFatKgLeftArm.indexIconId = R.drawable.pic_icon_data_zuoshouzhifangliang_n
-        bodyFatKgLeftArm.bodyFat = bodyFat
+        bodyFatKgLeftArm.bodyFat = ppbodyparamBodyfatkgleftarm
         bodyItemList.add(bodyFatKgLeftArm)
 
         //44.//右手肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
@@ -437,7 +437,7 @@ object BodyFatIndexUtils {
         }
         muscleKgRightArm.valueUnit = weightUnitStr
         muscleKgRightArm.indexIconId = R.drawable.pic_icon_data_youshoujirouliang_n
-        muscleKgRightArm.bodyFat = bodyFat
+        muscleKgRightArm.bodyFat = ppbodyparamMusclekgrightarm
         bodyItemList.add(muscleKgRightArm)
 
         //35.//右手脂肪量(kg), 分辨率0.1
@@ -454,7 +454,7 @@ object BodyFatIndexUtils {
         }
         bodyFatKgRightArm.valueUnit = weightUnitStr
         bodyFatKgRightArm.indexIconId = R.drawable.pic_icon_data_youshouzhifangliang_n
-        bodyFatKgRightArm.bodyFat = bodyFat
+        bodyFatKgRightArm.bodyFat = ppbodyparamBodyfatkgrightarm
         bodyItemList.add(bodyFatKgRightArm)
 
         //46.//躯干肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
@@ -471,7 +471,7 @@ object BodyFatIndexUtils {
         }
         muscleKgTrunk.valueUnit = weightUnitStr
         muscleKgTrunk.indexIconId = R.drawable.pic_icon_data_quganjirouliang_n
-        muscleKgTrunk.bodyFat = bodyFat
+        muscleKgTrunk.bodyFat = ppbodyparamMusclekgtrunk
         bodyItemList.add(muscleKgTrunk)
 
         //37.//躯干脂肪量(kg), 分辨率0.1
@@ -488,7 +488,7 @@ object BodyFatIndexUtils {
         }
         bodyFatKgTrunk.valueUnit = weightUnitStr
         bodyFatKgTrunk.indexIconId = R.drawable.pic_icon_data_quganzhifangliang_n
-        bodyFatKgTrunk.bodyFat = bodyFat
+        bodyFatKgTrunk.bodyFat = ppbodyparamBodyfatkgtrunk
         bodyItemList.add(bodyFatKgTrunk)
 
         //43.//左脚肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
@@ -505,7 +505,7 @@ object BodyFatIndexUtils {
         }
         muscleKgLeftLeg.valueUnit = weightUnitStr
         muscleKgLeftLeg.indexIconId = R.drawable.pic_icon_data_zuojiaojirouliang_n
-        muscleKgLeftLeg.bodyFat = bodyFat
+        muscleKgLeftLeg.bodyFat = ppbodyparamMusclekgleftleg
         bodyItemList.add(muscleKgLeftLeg)
 
         //34.//左脚脂肪量(kg), 分辨率0.1
@@ -522,7 +522,7 @@ object BodyFatIndexUtils {
         }
         bodyFatKgLeftLeg.valueUnit = weightUnitStr
         bodyFatKgLeftLeg.indexIconId = R.drawable.pic_icon_data_zuojiaozhifangliang_n
-        bodyFatKgLeftLeg.bodyFat = bodyFat
+        bodyFatKgLeftLeg.bodyFat = ppbodyparamBodyfatkgleftleg
         bodyItemList.add(bodyFatKgLeftLeg)
 
         //45.//右脚肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
@@ -539,7 +539,7 @@ object BodyFatIndexUtils {
         }
         muscleKgRightLeg.valueUnit = weightUnitStr
         muscleKgRightLeg.indexIconId = R.drawable.pic_icon_data_youjiaojirouliang_n
-        muscleKgRightLeg.bodyFat = bodyFat
+        muscleKgRightLeg.bodyFat = ppbodyparamMusclekgrightleg
         bodyItemList.add(muscleKgRightLeg)
 
         //36.//右脚脂肪量(kg), 分辨率0.1
@@ -556,7 +556,7 @@ object BodyFatIndexUtils {
         }
         bodyFatKgRightLeg.valueUnit = weightUnitStr
         bodyFatKgRightLeg.indexIconId = R.drawable.pic_icon_data_youjiaozhifangliang_n
-        bodyFatKgRightLeg.bodyFat = bodyFat
+        bodyFatKgRightLeg.bodyFat = ppbodyparamBodyfatkgrightleg
         bodyItemList.add(bodyFatKgRightLeg)
 
         //21.肌肉控制量
@@ -573,7 +573,7 @@ object BodyFatIndexUtils {
         }
         bodyMuscleControl.valueUnit = weightUnitStr
         bodyMuscleControl.indexIconId = R.drawable.pic_icon_data_jiroukongzhiliang_n
-        bodyMuscleControl.bodyFat = bodyFat
+        bodyMuscleControl.bodyFat = ppbodyparamMusclecontrol
         bodyItemList.add(bodyMuscleControl)
 
         //20.脂肪控制量
@@ -590,7 +590,7 @@ object BodyFatIndexUtils {
         }
         fatControlKg.valueUnit = weightUnitStr
         fatControlKg.indexIconId = R.drawable.pic_icon_data_zhifangkongzhiliang_n
-        fatControlKg.bodyFat = bodyFat
+        fatControlKg.bodyFat = ppbodyparamBodycontrolliang
         bodyItemList.add(fatControlKg)
 
         //15.标准体重
@@ -602,7 +602,7 @@ object BodyFatIndexUtils {
         }
         idealWeight.valueUnit = weightUnitStr
         idealWeight.indexIconId = R.drawable.pic_icon_data_biaozhuntizhong_n
-        idealWeight.bodyFat = bodyFat
+        idealWeight.bodyFat = ppbodyparamBodystandard
         bodyItemList.add(idealWeight)
 
         //19.体重控制
@@ -619,7 +619,7 @@ object BodyFatIndexUtils {
         }
         controlWeightKg.valueUnit = weightUnitStr
         controlWeightKg.indexIconId = R.drawable.pic_icon_data_kongzhitizhong_n
-        controlWeightKg.bodyFat = bodyFat
+        controlWeightKg.bodyFat = ppbodyparamBodycontrol
         bodyItemList.add(controlWeightKg)
 
         //30.輸出參數-评价建议: 肥胖度(%)
@@ -631,7 +631,7 @@ object BodyFatIndexUtils {
         }
         obesity.valueUnit = "%"
         obesity.indexIconId = R.drawable.pic_icon_data_feipangdu_n
-        obesity.bodyFat = bodyFat
+        obesity.bodyFat = ppbodyparamObesity
         bodyItemList.add(obesity)
 
         //14.身体类型
@@ -643,7 +643,7 @@ object BodyFatIndexUtils {
         }
         bodyType.valueUnit = ""
         bodyType.indexIconId = R.drawable.pic_icon_data_shentileixing_n
-        bodyType.bodyFat = bodyFat
+        bodyType.bodyFat = ppbodyparamBodytype
         bodyItemList.add(bodyType)
 
         //9.肥胖等级
@@ -656,7 +656,7 @@ object BodyFatIndexUtils {
         obeLevel.valueUnit = ""
         obeLevel.indexIconId = R.drawable.pic_icon_data_feipangdengji_n
         obeLevel.indexGradeCircularBg = R.drawable.bg_progress_6_end_bad
-        obeLevel.bodyFat = bodyFat
+        obeLevel.bodyFat = ppbodyparamFatgrade
         bodyItemList.add(obeLevel)
 
         //17.健康评估
@@ -668,7 +668,7 @@ object BodyFatIndexUtils {
         }
         bodyHealth.valueUnit = ""
         bodyHealth.indexIconId = R.drawable.pic_icon_data_jiankangpinggu_n
-        bodyHealth.bodyFat = bodyFat
+        bodyHealth.bodyFat = ppbodyparamBodyhealth
         bodyItemList.add(bodyHealth)
 
         //11.身体年龄
@@ -681,7 +681,7 @@ object BodyFatIndexUtils {
         bodyAge.valueUnit = bodyAgeUnitString
         bodyAge.indexIconId = R.drawable.pic_icon_data_shentinianling_n
         bodyAge.indexGradeCircularBg = R.drawable.bg_progress_2_end_bad
-        bodyAge.bodyFat = bodyFat
+        bodyAge.bodyFat = ppbodyparamPhysicalagevalue
         bodyItemList.add(bodyAge)
 
         //12.身体得分
@@ -694,7 +694,7 @@ object BodyFatIndexUtils {
         bodyGrade.valueUnit = bodyScoreUnitString
         bodyGrade.indexIconId = R.drawable.pic_icon_data_shentidefen_n
         bodyGrade.indexGradeCircularBg = R.drawable.bg_progress_4_end_good
-        bodyGrade.bodyFat = bodyFat
+        bodyGrade.bodyFat = ppbodyparamBodyscore
         bodyItemList.add(bodyGrade)
         return bodyItemList.toMutableList()
     }
@@ -837,7 +837,7 @@ object BodyFatIndexUtils {
         weight.value = "0"
         weight.valueUnit = weightUnitStr
         weight.indexIconId = R.drawable.pic_icon_data_tizhong_n
-        weight.bodyFat = PPBodyFatModel(PPBluetoothScaleBaseModel())
+        weight.bodyFat = null
         bodyItemList.add(weight)
 
         //2.脂肪率
@@ -848,7 +848,7 @@ object BodyFatIndexUtils {
         fat.value = "0"
         fat.valueUnit = "%"
         fat.indexIconId = R.drawable.pic_icon_data_zhifanglv_n
-        fat.bodyFat = PPBodyFatModel(PPBluetoothScaleBaseModel())
+        fat.bodyFat = null
         bodyItemList.add(fat)
         return bodyItemList
     }

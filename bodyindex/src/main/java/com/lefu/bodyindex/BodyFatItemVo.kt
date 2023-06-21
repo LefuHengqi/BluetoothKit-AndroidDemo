@@ -1,5 +1,7 @@
 package com.lefu.bodyindex
 
+import com.peng.ppscale.data.PPBodyDetailInfoModel
+import com.peng.ppscale.data.PPBodyDetailModel
 import com.peng.ppscale.vo.PPBluetoothScaleBaseModel
 import com.peng.ppscale.vo.PPBodyBaseModel
 import com.peng.ppscale.vo.PPBodyFatModel
@@ -21,12 +23,12 @@ data class BodyFatItemVo(
     var indexGradeStr: String = "", //指标的等级,标准等
     var progress: Int = 0, //进度
     var indexGradeColor16Str: String = "", //指标的等级的颜色
-    var indexType: Int = BodyFatItemType.WEIGHT.type,//默认体重
+    var indexType: Int = 0,//默认体重
     var indexIntroduction:String = "",//指标的介绍说明
     var indexEevaluation:String = "",//指标的评价说明
     var indexSuggestion:String = "",//指标的建议
     var viewType: Int = -1, //viewType的类型,用来多类型item使用
-    var bodyFat: PPBodyFatModel = PPBodyFatModel(PPBluetoothScaleBaseModel())
+    var bodyFat: PPBodyDetailInfoModel? = null
 ) : java.io.Serializable
 
 /**
