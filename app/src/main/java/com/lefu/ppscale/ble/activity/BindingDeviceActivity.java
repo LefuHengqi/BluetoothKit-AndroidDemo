@@ -358,15 +358,16 @@ public class BindingDeviceActivity extends AppCompatActivity {
                         } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
                             //deviceNotConnected
                         }
-                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
-                            disConnect();
-                        }
+//                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+//                            disConnect();
+//                        }
                     }
                 });
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
                 if (searchType != 0 && deviceModel.isDeviceConnectAbled()) {
+                    ppScale.stopSearch();
                     ppScale.connectDevice(deviceModel);
                 } else {
                     //绑定设备时不发起连接，非可连接设备，不发起连接
