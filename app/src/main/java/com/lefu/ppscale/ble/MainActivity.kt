@@ -214,28 +214,26 @@ class MainActivity : Activity(), View.OnClickListener {
                     "",
                     DeviceManager.CF568
                 )//Select the corresponding Bluetooth name according to your own device
-                val ppBodyFatModel = PPBodyFatModel(
-                    ppWeightKg,
-                    impedance,
-                    userModel,
-                    deviceModel,
-                    PPUnitType.Unit_KG
-                )
+                val bodyBaseModel = PPBodyBaseModel()
+                bodyBaseModel.impedance = impedance
+                bodyBaseModel.weight = (ppWeightKg * 100).toInt()
+                bodyBaseModel.deviceModel = deviceModel
+                bodyBaseModel.userModel = userModel
 
-                DataUtil.util().bodyDataModel = ppBodyFatModel
-                Log.d("liyp_", ppBodyFatModel.toString())
+                val fatModel = PPBodyFatModel(bodyBaseModel)
+
+                DataUtil.util().bodyDataModel = fatModel
+                Log.d("liyp_", fatModel.toString())
 
 //                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
 //                startActivity(intent)
 
                 val bodyIndex = BodyFatIndexUtils.getBodyIndex(
-                    ppBodyFatModel, PPUnitType.Unit_KG, 2,
+                    fatModel, PPUnitType.Unit_KG, 2,
                     "kg", "岁",
                     "分"
                 )
                 Log.d("liyp_", bodyIndex.toString())
-
-
             }
         }
 

@@ -1,6 +1,6 @@
 package com.lefu.bodyindex
 
-import com.lefu.bodyindex.UtilTooth.keep1Point1
+import com.peng.ppscale.util.PPUtil
 
 /**
  *    author : whs
@@ -32,9 +32,9 @@ object BodyFatIndexStandardProgressUtils {
      */
     fun getWaterRangValue(gender: Int): DoubleArray {
         return if (gender == 1) {//男
-            doubleArrayOf(0.0,55.0,65.0,100.0)
+            doubleArrayOf(0.0, 55.0, 65.0, 100.0)
         } else {
-            doubleArrayOf(0.0,45.0,60.0,100.0)
+            doubleArrayOf(0.0, 45.0, 60.0, 100.0)
         }
     }
 
@@ -45,7 +45,7 @@ object BodyFatIndexStandardProgressUtils {
      * 100-180偏高
      */
     fun getHeartRangValue(): DoubleArray {
-        return doubleArrayOf(0.0, 40.0,60.0, 100.0, 160.0,180.0)
+        return doubleArrayOf(0.0, 40.0, 60.0, 100.0, 160.0, 180.0)
     }
 
     /**
@@ -74,21 +74,21 @@ object BodyFatIndexStandardProgressUtils {
         var critical_point1 = 1261f
         if (age <= 29) {
             if (gender == 1) {
-                critical_point1 = keep1Point1(weight * 24.0f)
+                critical_point1 = PPUtil.keepPoint1(weight * 24.0f)
             } else {
-                critical_point1 = keep1Point1(weight * 23.6f)
+                critical_point1 = PPUtil.keepPoint1(weight * 23.6f)
             }
         } else if (age <= 49) {
             if (gender == 1) {
-                critical_point1 = keep1Point1(weight * 22.3f)
+                critical_point1 = PPUtil.keepPoint1(weight * 22.3f)
             } else {
-                critical_point1 = keep1Point1(weight * 21.7f)
+                critical_point1 = PPUtil.keepPoint1(weight * 21.7f)
             }
         } else {
             if (gender == 1) {
-                critical_point1 = keep1Point1(weight * 21.5f)
+                critical_point1 = PPUtil.keepPoint1(weight * 21.5f)
             } else {
-                critical_point1 = keep1Point1(weight * 20.7f)
+                critical_point1 = PPUtil.keepPoint1(weight * 20.7f)
             }
         }
         return critical_point1
@@ -267,7 +267,7 @@ object BodyFatIndexStandardProgressUtils {
     /**
      * 获取身体年龄的标准
      */
-    fun getAgeRangValue(age :Int): DoubleArray {
+    fun getAgeRangValue(age: Int): DoubleArray {
         return doubleArrayOf(0.0, age.toDouble(), (age + 10).toDouble())
     }
 
@@ -275,14 +275,14 @@ object BodyFatIndexStandardProgressUtils {
      * 获取身体得分的标准
      */
     fun getBodyScoreRangValue(): DoubleArray {
-        return doubleArrayOf(0.0, 70.0, 80.0,90.0,100.0)
+        return doubleArrayOf(0.0, 70.0, 80.0, 90.0, 100.0)
     }
 
     /**
      * 获取健康评估的标准
      */
     fun getBodyHealthRangValue(): DoubleArray {
-        return doubleArrayOf(0.0,0.8,1.6,2.4,3.2,4.0)
+        return doubleArrayOf(0.0, 0.8, 1.6, 2.4, 3.2, 4.0)
     }
 
     /**
@@ -297,28 +297,27 @@ object BodyFatIndexStandardProgressUtils {
     }
 
 
-
     /**
      * 计算公式
      * 1,先计算有都是格:分母
      * 2,计算落在哪一格上
      * 3,计算出该数值在该格上的比例
      */
-    fun getBodyItemProgress(level: Int, currentValue: Double, rangValue: List<Float>): Int {
+    fun getBodyItemProgress(level: Int, currentValue: Float, rangValue: List<Float>): Int {
         var progress = 0
-        if (rangValue.isEmpty()){
+        if (rangValue.isEmpty()) {
             return 0
         }
-        if (currentValue - rangValue[0] < 0){
+        if (currentValue - rangValue[0] < 0) {
             return 4
         }
         when (rangValue.size - 1) {
             2 -> {//进度条分的块数-格
                 when (level) {
-                    1 -> {
+                    0 -> {
                         progress = ((currentValue / rangValue[1]) * 100 / 2).toInt()
                     }
-                    2 -> {
+                    1 -> {
                         progress =
                             ((((currentValue - rangValue[1]) / (rangValue[2] - rangValue[1])) + 1) * 100 / 2).toInt()
                     }
@@ -326,14 +325,14 @@ object BodyFatIndexStandardProgressUtils {
             }
             3 -> {
                 when (level) {
-                    1 -> {
+                    0 -> {
                         progress = ((currentValue / rangValue[1]) * 100 / 3).toInt()
                     }
-                    2 -> {
+                    1 -> {
                         progress =
                             ((((currentValue - rangValue[1]) / (rangValue[2] - rangValue[1])) + 1) * 100 / 3).toInt()
                     }
-                    3 -> {
+                    2 -> {
                         progress =
                             ((((currentValue - rangValue[2]) / (rangValue[3] - rangValue[2])) + 2) * 100 / 3).toInt()
                     }
@@ -341,18 +340,18 @@ object BodyFatIndexStandardProgressUtils {
             }
             4 -> {
                 when (level) {
-                    1 -> {
+                    0 -> {
                         progress = ((currentValue / rangValue[1]) * 100 / 4).toInt()
                     }
-                    2 -> {
+                    1 -> {
                         progress =
                             ((((currentValue - rangValue[1]) / (rangValue[2] - rangValue[1])) + 1) * 100 / 4).toInt()
                     }
-                    3 -> {
+                    2 -> {
                         progress =
                             ((((currentValue - rangValue[2]) / (rangValue[3] - rangValue[2])) + 2) * 100 / 4).toInt()
                     }
-                    4 -> {
+                    3 -> {
                         progress =
                             ((((currentValue - rangValue[3]) / (rangValue[4] - rangValue[3])) + 3) * 100 / 4).toInt()
                     }
@@ -360,22 +359,22 @@ object BodyFatIndexStandardProgressUtils {
             }
             5 -> {
                 when (level) {
-                    1 -> {
+                    0 -> {
                         progress = ((currentValue / rangValue[1]) * 100 / 5).toInt()
                     }
-                    2 -> {
+                    1 -> {
                         progress =
                             ((((currentValue - rangValue[1]) / (rangValue[2] - rangValue[1])) + 1) * 100 / 5).toInt()
                     }
-                    3 -> {
+                    2 -> {
                         progress =
                             ((((currentValue - rangValue[2]) / (rangValue[3] - rangValue[2])) + 2) * 100 / 5).toInt()
                     }
-                    4 -> {
+                    3 -> {
                         progress =
                             ((((currentValue - rangValue[3]) / (rangValue[4] - rangValue[3])) + 3) * 100 / 5).toInt()
                     }
-                    5 -> {
+                    4 -> {
                         progress =
                             ((((currentValue - rangValue[4]) / (rangValue[5] - rangValue[4])) + 4) * 100 / 5).toInt()
                     }
@@ -383,26 +382,26 @@ object BodyFatIndexStandardProgressUtils {
             }
             6 -> {
                 when (level) {
-                    1 -> {
+                    0 -> {
                         progress = ((currentValue / rangValue[1]) * 100 / 6).toInt()
                     }
-                    2 -> {
+                    1 -> {
                         progress =
                             ((((currentValue - rangValue[1]) / (rangValue[2] - rangValue[1])) + 1) * 100 / 6).toInt()
                     }
-                    3 -> {
+                    2 -> {
                         progress =
                             ((((currentValue - rangValue[2]) / (rangValue[3] - rangValue[2])) + 2) * 100 / 6).toInt()
                     }
-                    4 -> {
+                    3 -> {
                         progress =
                             ((((currentValue - rangValue[3]) / (rangValue[4] - rangValue[3])) + 3) * 100 / 6).toInt()
                     }
-                    5 -> {
+                    4 -> {
                         progress =
                             ((((currentValue - rangValue[4]) / (rangValue[5] - rangValue[4])) + 4) * 100 / 6).toInt()
                     }
-                    6 -> {
+                    5 -> {
                         progress =
                             ((((currentValue - rangValue[5]) / (rangValue[6] - rangValue[5])) + 5) * 100 / 6).toInt()
                     }

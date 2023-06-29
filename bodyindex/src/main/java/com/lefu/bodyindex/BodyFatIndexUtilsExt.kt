@@ -1,7 +1,6 @@
 package com.lefu.bodyindex
 
 import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.util.UnitUtil
 import com.peng.ppscale.vo.PPScaleDefine
 
 
@@ -539,21 +538,21 @@ fun bmrLevel(gender: Int, age: Int, weight: Double, bmr: Float): MutableList<Str
     val critical_point1: Float
     critical_point1 = if (age <= 29) {
         if (gender == 1) {
-            UtilTooth.keep1Point1(weight * 24.0f)
+            PPUtil.keepPoint1(weight * 24.0f)
         } else {
-            UtilTooth.keep1Point1(weight * 23.6f)
+            PPUtil.keepPoint1(weight * 23.6f)
         }
     } else if (age in 30..49) {
         if (gender == 1) {
-            UtilTooth.keep1Point1(weight * 22.3f)
+            PPUtil.keepPoint1(weight * 22.3f)
         } else {
-            UtilTooth.keep1Point1(weight * 21.7f)
+            PPUtil.keepPoint1(weight * 21.7f)
         }
     } else {
         if (gender == 1) {
-            UtilTooth.keep1Point1(weight * 21.5f)
+            PPUtil.keepPoint1(weight * 21.5f)
         } else {
-            UtilTooth.keep1Point1(weight * 20.7f)
+            PPUtil.keepPoint1(weight * 20.7f)
         }
     }
     return if (bmr <= critical_point1) {

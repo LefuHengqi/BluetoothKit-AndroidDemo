@@ -1,11 +1,9 @@
 package com.lefu.bodyindex
 
-
-import com.lefu.bodyindex.UtilTooth.keep1Point1
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.data.PPBodyDetailInfoModel
+import com.peng.ppscale.data.PPBodyDetailModel
 import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.PPBluetoothScaleBaseModel
 import com.peng.ppscale.vo.PPBodyFatModel
 
 /**
@@ -29,13 +27,51 @@ object BodyFatIndexUtils {
         accuracyType: Int = 2,
         weightUnitStr: String,
         bodyAgeUnitString: String,
-        bodyScoreUnitString:String
+        bodyScoreUnitString: String
     ): MutableList<BodyFatItemVo?> {
         val bodyItemList: ArrayList<BodyFatItemVo?> = ArrayList()
-        val bodyDetailModel = bodyFat.bodyDetailModel
+        val bodyDetailModel: PPBodyDetailModel? = bodyFat.bodyDetailModel
+        //48项数据
+        if (bodyFat.ppSDKVersion?.contains("HT_8") == true) {
+            getBodyIndex48(
+                bodyDetailModel,
+                weightUnitStr,
+                ppUnitType,
+                accuracyType,
+                bodyItemList,
+                bodyAgeUnitString,
+                bodyScoreUnitString
+            )
+        } else {//24项数据
+            getBodyIndex24(
+                bodyDetailModel,
+                weightUnitStr,
+                ppUnitType,
+                accuracyType,
+                bodyItemList,
+                bodyAgeUnitString,
+                bodyScoreUnitString
+            )
+        }
+
+        return bodyItemList.toMutableList()
+    }
+
+    /**
+     * 24项数据
+     */
+    private fun getBodyIndex24(
+        bodyDetailModel: PPBodyDetailModel?,
+        weightUnitStr: String,
+        ppUnitType: PPUnitType,
+        accuracyType: Int,
+        bodyItemList: ArrayList<BodyFatItemVo?>,
+        bodyAgeUnitString: String,
+        bodyScoreUnitString: String
+    ) {
         //0.体重
         val weight = BodyFatItemVo()
-        val ppbodyparamWeight = bodyDetailModel.PPBodyParam_Weight
+        val ppbodyparamWeight = bodyDetailModel?.PPBodyParam_Weight
         weight.indexType = BodyFatItemType.WEIGHT.type
         weight.indexIconId = R.drawable.pic_icon_data_tizhong_n
         weight.indexGradeCircularBg = R.drawable.bg_progress_3_end_bad
@@ -49,9 +85,15 @@ object BodyFatIndexUtils {
         //2.脂肪率
         val fat = BodyFatItemVo()
         fat.indexType = BodyFatItemType.FAT.type
-        val ppbodyparamBodyfat = bodyDetailModel.PPBodyParam_BodyFat
+        val ppbodyparamBodyfat = bodyDetailModel?.PPBodyParam_BodyFat
         if (ppbodyparamBodyfat != null) {
             buildBodyDetailParamPercent(fat, ppbodyparamBodyfat)
+            if (ppbodyparamBodyfat.currentStandard == 4 && ppbodyparamBodyfat.standardTitle.equals("Bodyfat_leve1_name")) {
+                fat.indexGradeStr = "Bodyfat_leve5_name"
+                fat.indexSuggestion = "Bodyfat_leve5_suggestion"
+                fat.indexEevaluation = "Bodyfat_leve5_evaluation"
+                fat.indexGradeColor16Str = "#8F251D"
+            }
         }
         fat.valueUnit = "%"
         fat.indexIconId = R.drawable.pic_icon_data_zhifanglv_n
@@ -62,7 +104,7 @@ object BodyFatIndexUtils {
         //1 bmi
         val bmi = BodyFatItemVo()
         bmi.indexType = BodyFatItemType.BMI.type
-        val ppbodyparamBodyBMI = bodyDetailModel.PPBodyParam_BMI
+        val ppbodyparamBodyBMI = bodyDetailModel?.PPBodyParam_BMI
         if (ppbodyparamBodyBMI != null) {
             buildBodyDetailParamPercent(bmi, ppbodyparamBodyBMI)
         }
@@ -75,7 +117,7 @@ object BodyFatIndexUtils {
         //3.肌肉含量kg
         val muscle = BodyFatItemVo()
         muscle.indexType = BodyFatItemType.MUSCLE.type
-        val ppbodyparamBodyMus = bodyDetailModel.PPBodyParam_Mus
+        val ppbodyparamBodyMus = bodyDetailModel?.PPBodyParam_Mus
         if (ppbodyparamBodyMus != null) {
             buildBodyDetailParamKg(muscle, ppbodyparamBodyMus, ppUnitType, accuracyType)
         }
@@ -88,7 +130,350 @@ object BodyFatIndexUtils {
         //7.BMR(基础代谢)
         val bmr = BodyFatItemVo()
         bmr.indexType = BodyFatItemType.BMR.type
-        val ppbodyparamBodyBMR = bodyDetailModel.PPBodyParam_BMR
+        val ppbodyparamBodyBMR = bodyDetailModel?.PPBodyParam_BMR
+        if (ppbodyparamBodyBMR != null) {
+            buildBodyDetailParamPercent(bmr, ppbodyparamBodyBMR)
+        }
+        bmr.valueUnit = "Kcal"
+        bmr.indexIconId = R.drawable.pic_icon_data_bmr_n
+        bmr.indexGradeCircularBg = R.drawable.bg_progress_2_end_good
+        bmr.bodyFat = ppbodyparamBodyBMR
+        bodyItemList.add(bmr)
+
+        //4.水分率
+        val water = BodyFatItemVo()
+        water.indexType = BodyFatItemType.WATER.type
+        val ppbodyparamWater = bodyDetailModel?.PPBodyParam_Water
+        if (ppbodyparamWater != null) {
+            buildBodyDetailParamPercent(water, ppbodyparamWater)
+        }
+        water.valueUnit = "%"
+        water.indexIconId = R.drawable.pic_icon_data_shuifenlv_n
+        water.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
+        water.bodyFat = ppbodyparamWater
+        bodyItemList.add(water)
+
+        //16心率
+        val heartRate = BodyFatItemVo()
+        heartRate.indexType = BodyFatItemType.HEART_RATE.type
+        val ppbodyparamHeart = bodyDetailModel?.PPBodyParam_heart
+        if (ppbodyparamHeart != null) {
+            buildBodyDetailParamPercent(heartRate, ppbodyparamHeart)
+        }
+        heartRate.valueUnit = "bpm"
+        heartRate.indexIconId = R.drawable.pic_icon_data_xinlv_n
+        heartRate.indexGradeCircularBg = R.drawable.bg_progress_5_end_heart
+        heartRate.bodyFat = ppbodyparamHeart
+        bodyItemList.add(heartRate)
+
+        //23.脂肪量
+        val bodyFatKg = BodyFatItemVo()
+        bodyFatKg.indexType = BodyFatItemType.BODY_FAT_KG.type
+        val ppbodyparamBodyfatkg = bodyDetailModel?.PPBodyParam_BodyFatKg
+        if (ppbodyparamBodyfatkg != null) {
+            buildBodyDetailParamKg(bodyFatKg, ppbodyparamBodyfatkg, ppUnitType, accuracyType)
+            //预防出问题
+            if (ppbodyparamBodyfatkg.currentStandard == 4 && ppbodyparamBodyfatkg.standardTitle.equals(
+                    "BodyFatKg_leve1_name"
+                )
+            ) {
+                bodyFatKg.indexGradeStr = "BodyFatKg_leve5_name"
+                bodyFatKg.indexSuggestion = "BodyFatKg_leve5_suggestion"
+                bodyFatKg.indexEevaluation = "BodyFatKg_leve5_evaluation"
+                bodyFatKg.indexGradeColor16Str = "#8F251D"
+            }
+        }
+        bodyFatKg.valueUnit = weightUnitStr
+        bodyFatKg.indexIconId = R.drawable.pic_icon_data_zhifangliang_n
+        bodyFatKg.indexGradeCircularBg = R.drawable.bg_progress_5_end_bad
+        bodyFatKg.bodyFat = ppbodyparamBodyfatkg
+        bodyItemList.add(bodyFatKg)
+
+        //8.蛋白质率
+        val protein = BodyFatItemVo()
+        protein.indexType = BodyFatItemType.PROTEIN.type
+        val ppbodyparamProteinpercentage = bodyDetailModel?.PPBodyParam_proteinPercentage
+        if (ppbodyparamProteinpercentage != null) {
+            buildBodyDetailParamPercent(protein, ppbodyparamProteinpercentage)
+        }
+        protein.valueUnit = "%"
+        protein.indexIconId = R.drawable.pic_icon_data_danbaizhi_n
+        protein.indexGradeCircularBg = R.drawable.bg_progress_3_end_bad
+        protein.bodyFat = ppbodyparamProteinpercentage
+        bodyItemList.add(protein)
+
+        //13.去脂体重
+        val noFatWeight = BodyFatItemVo()
+        noFatWeight.indexType = BodyFatItemType.NO_FAT_WEIGHT.type
+        val ppbodyparamBodylbw = bodyDetailModel?.PPBodyParam_BodyLBW
+        if (ppbodyparamBodylbw != null) {
+            buildBodyDetailParamKg(noFatWeight, ppbodyparamBodylbw, ppUnitType, accuracyType)
+        }
+        noFatWeight.valueUnit = weightUnitStr
+        noFatWeight.indexIconId = R.drawable.pic_icon_data_quzhitizhong_n
+        noFatWeight.bodyFat = ppbodyparamBodylbw
+        bodyItemList.add(noFatWeight)
+
+        //10.皮下脂肪率
+        val subFat = BodyFatItemVo()
+        subFat.indexType = BodyFatItemType.SUB_FAT.type
+        val ppbodyparamBodysubcutaneousfat = bodyDetailModel?.PPBodyParam_BodySubcutaneousFat
+        if (ppbodyparamBodysubcutaneousfat != null) {
+            buildBodyDetailParamPercent(subFat, ppbodyparamBodysubcutaneousfat)
+        }
+        subFat.valueUnit = "%"
+        subFat.indexIconId = R.drawable.pic_icon_data_pixiazhifanglv_n
+        subFat.indexGradeCircularBg = R.drawable.bg_progress_3_end_bad
+        subFat.bodyFat = ppbodyparamBodysubcutaneousfat
+        bodyItemList.add(subFat)
+
+        //18.骨骼肌率
+        val bodySkeletal = BodyFatItemVo()
+        bodySkeletal.indexType = BodyFatItemType.BODY_SKELETAL.type
+        val ppbodyparamBodyskeletal = bodyDetailModel?.PPBodyParam_BodySkeletal
+        if (ppbodyparamBodyskeletal != null) {
+            buildBodyDetailParamPercent(bodySkeletal, ppbodyparamBodyskeletal)
+        }
+        bodySkeletal.valueUnit = "%"
+        bodySkeletal.indexIconId = R.drawable.pic_icon_data_gugejilv_n
+        bodySkeletal.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
+        bodySkeletal.bodyFat = ppbodyparamBodyskeletal
+        bodyItemList.add(bodySkeletal)
+
+        //5.内脏脂肪等级
+        val vfal = BodyFatItemVo()
+        vfal.indexType = BodyFatItemType.VFAL.type
+        val ppbodyparamVisfat = bodyDetailModel?.PPBodyParam_VisFat
+        if (ppbodyparamVisfat != null) {
+            buildBodyDetailParamPercent(vfal, ppbodyparamVisfat)
+        }
+        vfal.valueUnit = ""
+        vfal.indexIconId = R.drawable.pic_icon_data_neizangzhifangdengji_n
+        vfal.indexGradeCircularBg = R.drawable.bg_progress_3_start_good
+        vfal.bodyFat = ppbodyparamVisfat
+        bodyItemList.add(vfal)
+
+        //22.肌肉率
+        val musclePercentage = BodyFatItemVo()
+        musclePercentage.indexType = BodyFatItemType.MUSCLE_RATE.type
+        val ppbodyparamMusrate = bodyDetailModel?.PPBodyParam_MusRate
+        if (ppbodyparamMusrate != null) {
+            buildBodyDetailParamPercent(musclePercentage, ppbodyparamMusrate)
+        }
+        musclePercentage.valueUnit = "%"
+        musclePercentage.indexIconId = R.drawable.pic_icon_data_jiroulv_n
+        musclePercentage.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
+        musclePercentage.bodyFat = ppbodyparamMusrate
+        bodyItemList.add(musclePercentage)
+
+        //21.肌肉控制量
+        val bodyMuscleControl = BodyFatItemVo()
+        bodyMuscleControl.indexType = BodyFatItemType.MUSCLE_CONTROL.type
+        val ppbodyparamMusclecontrol = bodyDetailModel?.PPBodyParam_MuscleControl
+        if (ppbodyparamMusclecontrol != null) {
+            buildBodyDetailParamKg(
+                bodyMuscleControl,
+                ppbodyparamMusclecontrol,
+                ppUnitType,
+                accuracyType
+            )
+        }
+        bodyMuscleControl.valueUnit = weightUnitStr
+        bodyMuscleControl.indexIconId = R.drawable.pic_icon_data_jiroukongzhiliang_n
+        bodyMuscleControl.bodyFat = ppbodyparamMusclecontrol
+        bodyItemList.add(bodyMuscleControl)
+
+        //20.脂肪控制量
+        val fatControlKg = BodyFatItemVo()
+        fatControlKg.indexType = BodyFatItemType.FAT_CONTROL_KG.type
+        val ppbodyparamBodycontrolliang = bodyDetailModel?.PPBodyParam_BodyControlLiang
+        if (ppbodyparamBodycontrolliang != null) {
+            buildBodyDetailParamKg(
+                fatControlKg,
+                ppbodyparamBodycontrolliang,
+                ppUnitType,
+                accuracyType
+            )
+        }
+        fatControlKg.valueUnit = weightUnitStr
+        fatControlKg.indexIconId = R.drawable.pic_icon_data_zhifangkongzhiliang_n
+        fatControlKg.bodyFat = ppbodyparamBodycontrolliang
+        bodyItemList.add(fatControlKg)
+
+        //15.标准体重
+        val idealWeight = BodyFatItemVo()
+        idealWeight.indexType = BodyFatItemType.IDEAL_WEIGHT.type
+        val ppbodyparamBodystandard = bodyDetailModel?.PPBodyParam_Bodystandard
+        if (ppbodyparamBodystandard != null) {
+            buildBodyDetailParamKg(idealWeight, ppbodyparamBodystandard, ppUnitType, accuracyType)
+        }
+        idealWeight.valueUnit = weightUnitStr
+        idealWeight.indexIconId = R.drawable.pic_icon_data_biaozhuntizhong_n
+        idealWeight.bodyFat = ppbodyparamBodystandard
+        bodyItemList.add(idealWeight)
+
+        //19.体重控制
+        val controlWeightKg = BodyFatItemVo()
+        controlWeightKg.indexType = BodyFatItemType.CONTROL_WEIGHT.type
+        val ppbodyparamBodycontrol = bodyDetailModel?.PPBodyParam_BodyControl
+        if (ppbodyparamBodycontrol != null) {
+            buildBodyDetailParamKg(
+                controlWeightKg,
+                ppbodyparamBodycontrol,
+                ppUnitType,
+                accuracyType
+            )
+        }
+        controlWeightKg.valueUnit = weightUnitStr
+        controlWeightKg.indexIconId = R.drawable.pic_icon_data_kongzhitizhong_n
+        controlWeightKg.bodyFat = ppbodyparamBodycontrol
+        bodyItemList.add(controlWeightKg)
+
+        //6.骨量
+        val bone = BodyFatItemVo()
+        bone.indexType = BodyFatItemType.BONE.type
+        val ppbodyparamBone = bodyDetailModel?.PPBodyParam_Bone
+        if (ppbodyparamBone != null) {
+            buildBodyDetailParamKg(bone, ppbodyparamBone, ppUnitType, accuracyType)
+        }
+        bone.valueUnit = weightUnitStr
+        bone.indexIconId = R.drawable.pic_icon_data_guliang_n
+        bone.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
+        bone.bodyFat = ppbodyparamBone
+        bodyItemList.add(bone)
+
+        //14.身体类型
+        val bodyType = BodyFatItemVo()
+        bodyType.indexType = BodyFatItemType.BODY_TYPE.type
+        val ppbodyparamBodytype = bodyDetailModel?.PPBodyParam_BodyType
+        if (ppbodyparamBodytype != null) {
+            buildBodyDetailBodyType(bodyType, ppbodyparamBodytype)
+        }
+        bodyType.valueUnit = ""
+        bodyType.indexIconId = R.drawable.pic_icon_data_shentileixing_n
+        bodyType.bodyFat = ppbodyparamBodytype
+        bodyItemList.add(bodyType)
+
+        //9.肥胖等级
+        val obeLevel = BodyFatItemVo()
+        obeLevel.indexType = BodyFatItemType.OBE_LEVEL.type
+        val ppbodyparamFatgrade = bodyDetailModel?.PPBodyParam_FatGrade
+        if (ppbodyparamFatgrade != null) {
+            buildBodyDetailParamPercent(obeLevel, ppbodyparamFatgrade)
+        }
+        obeLevel.valueUnit = ""
+        obeLevel.indexIconId = R.drawable.pic_icon_data_feipangdengji_n
+        obeLevel.indexGradeCircularBg = R.drawable.bg_progress_6_end_bad
+        obeLevel.bodyFat = ppbodyparamFatgrade
+        bodyItemList.add(obeLevel)
+
+        //17.健康评估
+        val bodyHealth = BodyFatItemVo()
+        bodyHealth.indexType = BodyFatItemType.BODY_HEALTH.type
+        val ppbodyparamBodyhealth = bodyDetailModel?.PPBodyParam_BodyHealth
+        if (ppbodyparamBodyhealth != null) {
+            buildBodyDetailBodyHealth(bodyHealth, ppbodyparamBodyhealth)
+        }
+        bodyHealth.valueUnit = ""
+        bodyHealth.indexIconId = R.drawable.pic_icon_data_jiankangpinggu_n
+        bodyHealth.bodyFat = ppbodyparamBodyhealth
+        bodyItemList.add(bodyHealth)
+
+        //11.身体年龄
+        val bodyAge = BodyFatItemVo()
+        bodyAge.indexType = BodyFatItemType.BODY_AGE.type
+        val ppbodyparamPhysicalagevalue = bodyDetailModel?.PPBodyParam_physicalAgeValue
+        if (ppbodyparamPhysicalagevalue != null) {
+            buildBodyDetailParamPercent(bodyAge, ppbodyparamPhysicalagevalue)
+        }
+        bodyAge.valueUnit = bodyAgeUnitString
+        bodyAge.indexIconId = R.drawable.pic_icon_data_shentinianling_n
+        bodyAge.indexGradeCircularBg = R.drawable.bg_progress_2_end_bad
+        bodyAge.bodyFat = ppbodyparamPhysicalagevalue
+        bodyItemList.add(bodyAge)
+
+        //12.身体得分
+        val bodyGrade = BodyFatItemVo()
+        bodyGrade.indexType = BodyFatItemType.BODY_GRADE.type
+        val ppbodyparamBodyscore = bodyDetailModel?.PPBodyParam_BodyScore
+        if (ppbodyparamBodyscore != null) {
+            buildBodyDetailParamPercent(bodyGrade, ppbodyparamBodyscore)
+        }
+        bodyGrade.valueUnit = bodyScoreUnitString
+        bodyGrade.indexIconId = R.drawable.pic_icon_data_shentidefen_n
+        bodyGrade.indexGradeCircularBg = R.drawable.bg_progress_4_end_good
+        bodyGrade.bodyFat = ppbodyparamBodyscore
+        bodyItemList.add(bodyGrade)
+    }
+
+    /**
+     * 48项数据
+     */
+    private fun getBodyIndex48(
+        bodyDetailModel: PPBodyDetailModel?,
+        weightUnitStr: String,
+        ppUnitType: PPUnitType,
+        accuracyType: Int,
+        bodyItemList: ArrayList<BodyFatItemVo?>,
+        bodyAgeUnitString: String,
+        bodyScoreUnitString: String
+    ) {
+        //0.体重
+        val weight = BodyFatItemVo()
+        val ppbodyparamWeight = bodyDetailModel?.PPBodyParam_Weight
+        weight.indexType = BodyFatItemType.WEIGHT.type
+        weight.indexIconId = R.drawable.pic_icon_data_tizhong_n
+        weight.indexGradeCircularBg = R.drawable.bg_progress_3_end_bad
+        weight.valueUnit = weightUnitStr
+        weight.bodyFat = ppbodyparamWeight
+        if (ppbodyparamWeight != null) {
+            buildBodyDetailParamWeight(weight, ppbodyparamWeight, ppUnitType, accuracyType)
+        }
+        bodyItemList.add(weight)
+
+        //2.脂肪率
+        val fat = BodyFatItemVo()
+        fat.indexType = BodyFatItemType.FAT.type
+        val ppbodyparamBodyfat = bodyDetailModel?.PPBodyParam_BodyFat
+        if (ppbodyparamBodyfat != null) {
+            buildBodyDetailParamPercent(fat, ppbodyparamBodyfat)
+        }
+        fat.valueUnit = "%"
+        fat.indexIconId = R.drawable.pic_icon_data_zhifanglv_n
+        fat.indexGradeCircularBg = R.drawable.bg_progress_5_end_bad
+        fat.bodyFat = ppbodyparamBodyfat
+        bodyItemList.add(fat)
+
+        //1 bmi
+        val bmi = BodyFatItemVo()
+        bmi.indexType = BodyFatItemType.BMI.type
+        val ppbodyparamBodyBMI = bodyDetailModel?.PPBodyParam_BMI
+        if (ppbodyparamBodyBMI != null) {
+            buildBodyDetailParamPercent(bmi, ppbodyparamBodyBMI)
+        }
+        bmi.valueUnit = ""
+        bmi.indexIconId = R.drawable.pic_icon_data_bmi_n
+        bmi.indexGradeCircularBg = R.drawable.bg_progress_4_end_bad
+        bmi.bodyFat = ppbodyparamBodyBMI
+        bodyItemList.add(bmi)
+
+        //3.肌肉含量kg
+        val muscle = BodyFatItemVo()
+        muscle.indexType = BodyFatItemType.MUSCLE.type
+        val ppbodyparamBodyMus = bodyDetailModel?.PPBodyParam_Mus
+        if (ppbodyparamBodyMus != null) {
+            buildBodyDetailParamKg(muscle, ppbodyparamBodyMus, ppUnitType, accuracyType)
+        }
+        muscle.valueUnit = weightUnitStr
+        muscle.indexIconId = R.drawable.pic_icon_data_jirouliang_n
+        muscle.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
+        muscle.bodyFat = ppbodyparamBodyMus
+        bodyItemList.add(muscle)
+
+        //7.BMR(基础代谢)
+        val bmr = BodyFatItemVo()
+        bmr.indexType = BodyFatItemType.BMR.type
+        val ppbodyparamBodyBMR = bodyDetailModel?.PPBodyParam_BMR
         if (ppbodyparamBodyBMR != null) {
             buildBodyDetailParamPercent(bmr, ppbodyparamBodyBMR)
         }
@@ -101,7 +486,7 @@ object BodyFatIndexUtils {
         //28.輸出參數-全身体组成:建议卡路里摄入量 Kcal/day
         val dCI = BodyFatItemVo()
         dCI.indexType = BodyFatItemType.DCI.type
-        val ppbodyparamDci = bodyDetailModel.PPBodyParam_dCI
+        val ppbodyparamDci = bodyDetailModel?.PPBodyParam_dCI
         if (ppbodyparamDci != null) {
             buildNoStandard(dCI, ppbodyparamDci)
         }
@@ -113,7 +498,7 @@ object BodyFatIndexUtils {
         //16心率
         val heartRate = BodyFatItemVo()
         heartRate.indexType = BodyFatItemType.HEART_RATE.type
-        val ppbodyparamHeart = bodyDetailModel.PPBodyParam_heart
+        val ppbodyparamHeart = bodyDetailModel?.PPBodyParam_heart
         if (ppbodyparamHeart != null) {
             buildBodyDetailParamPercent(heartRate, ppbodyparamHeart)
         }
@@ -126,7 +511,7 @@ object BodyFatIndexUtils {
         //4.水分率
         val water = BodyFatItemVo()
         water.indexType = BodyFatItemType.WATER.type
-        val ppbodyparamWater = bodyDetailModel.PPBodyParam_Water
+        val ppbodyparamWater = bodyDetailModel?.PPBodyParam_Water
         if (ppbodyparamWater != null) {
             buildBodyDetailParamPercent(water, ppbodyparamWater)
         }
@@ -139,7 +524,7 @@ object BodyFatIndexUtils {
         //8.蛋白质率
         val protein = BodyFatItemVo()
         protein.indexType = BodyFatItemType.PROTEIN.type
-        val ppbodyparamProteinpercentage = bodyDetailModel.PPBodyParam_proteinPercentage
+        val ppbodyparamProteinpercentage = bodyDetailModel?.PPBodyParam_proteinPercentage
         if (ppbodyparamProteinpercentage != null) {
             buildBodyDetailParamPercent(protein, ppbodyparamProteinpercentage)
         }
@@ -152,7 +537,7 @@ object BodyFatIndexUtils {
         //24.輸出參數-全身体组成:水分量(Kg)
         val waterKg = BodyFatItemVo()
         waterKg.indexType = BodyFatItemType.WATER_KG.type
-        val ppbodyparamWaterkg = bodyDetailModel.PPBodyParam_waterKg
+        val ppbodyparamWaterkg = bodyDetailModel?.PPBodyParam_waterKg
         if (ppbodyparamWaterkg != null) {
             buildBodyDetailParamKg(waterKg, ppbodyparamWaterkg, ppUnitType, accuracyType)
         }
@@ -161,10 +546,11 @@ object BodyFatIndexUtils {
         waterKg.bodyFat = ppbodyparamWaterkg
         bodyItemList.add(waterKg)
 
+
         //25.輸出參數-全身体组成:蛋白质量(Kg)
         val proteinKg = BodyFatItemVo()
         proteinKg.indexType = BodyFatItemType.PROTEIN_KG.type
-        val ppbodyparamProteinkg = bodyDetailModel.PPBodyParam_proteinKg
+        val ppbodyparamProteinkg = bodyDetailModel?.PPBodyParam_proteinKg
         if (ppbodyparamProteinkg != null) {
             buildBodyDetailParamKg(proteinKg, ppbodyparamProteinkg, ppUnitType, accuracyType)
         }
@@ -176,9 +562,19 @@ object BodyFatIndexUtils {
         //23.脂肪量
         val bodyFatKg = BodyFatItemVo()
         bodyFatKg.indexType = BodyFatItemType.BODY_FAT_KG.type
-        val ppbodyparamBodyfatkg = bodyDetailModel.PPBodyParam_BodyFatKg
+        val ppbodyparamBodyfatkg = bodyDetailModel?.PPBodyParam_BodyFatKg
         if (ppbodyparamBodyfatkg != null) {
             buildBodyDetailParamKg(bodyFatKg, ppbodyparamBodyfatkg, ppUnitType, accuracyType)
+            //预防出问题
+            if (ppbodyparamBodyfatkg.currentStandard == 4 && ppbodyparamBodyfatkg.standardTitle.equals(
+                    "BodyFatKg_leve1_name"
+                )
+            ) {
+                bodyFatKg.indexGradeStr = "BodyFatKg_leve5_name"
+                bodyFatKg.indexSuggestion = "BodyFatKg_leve5_suggestion"
+                bodyFatKg.indexEevaluation = "BodyFatKg_leve5_evaluation"
+                bodyFatKg.indexGradeColor16Str = "#8F251D"
+            }
         }
         bodyFatKg.valueUnit = weightUnitStr
         bodyFatKg.indexIconId = R.drawable.pic_icon_data_zhifangliang_n
@@ -186,10 +582,11 @@ object BodyFatIndexUtils {
         bodyFatKg.bodyFat = ppbodyparamBodyfatkg
         bodyItemList.add(bodyFatKg)
 
+
         //13.去脂体重
         val noFatWeight = BodyFatItemVo()
         noFatWeight.indexType = BodyFatItemType.NO_FAT_WEIGHT.type
-        val ppbodyparamBodylbw = bodyDetailModel.PPBodyParam_BodyLBW
+        val ppbodyparamBodylbw = bodyDetailModel?.PPBodyParam_BodyLBW
         if (ppbodyparamBodylbw != null) {
             buildBodyDetailParamKg(noFatWeight, ppbodyparamBodylbw, ppUnitType, accuracyType)
         }
@@ -201,33 +598,33 @@ object BodyFatIndexUtils {
         //10.皮下脂肪率
         val subFat = BodyFatItemVo()
         subFat.indexType = BodyFatItemType.SUB_FAT.type
-        val ppbodyparamBodysubcutaneousfat = bodyDetailModel.PPBodyParam_BodySubcutaneousFat
+        val ppbodyparamBodysubcutaneousfat = bodyDetailModel?.PPBodyParam_BodySubcutaneousFat
         if (ppbodyparamBodysubcutaneousfat != null) {
             buildBodyDetailParamPercent(subFat, ppbodyparamBodysubcutaneousfat)
         }
         subFat.valueUnit = "%"
         subFat.indexIconId = R.drawable.pic_icon_data_pixiazhifanglv_n
-        subFat.indexGradeCircularBg = R.drawable.bg_progress_4_end_bad
+        subFat.indexGradeCircularBg = R.drawable.bg_progress_3_end_bad
         subFat.bodyFat = ppbodyparamBodysubcutaneousfat
         bodyItemList.add(subFat)
 
         //18.骨骼肌率
         val bodySkeletal = BodyFatItemVo()
         bodySkeletal.indexType = BodyFatItemType.BODY_SKELETAL.type
-        val ppbodyparamBodyskeletal = bodyDetailModel.PPBodyParam_BodySkeletal
+        val ppbodyparamBodyskeletal = bodyDetailModel?.PPBodyParam_BodySkeletal
         if (ppbodyparamBodyskeletal != null) {
             buildBodyDetailParamPercent(bodySkeletal, ppbodyparamBodyskeletal)
         }
         bodySkeletal.valueUnit = "%"
         bodySkeletal.indexIconId = R.drawable.pic_icon_data_gugejilv_n
-        bodySkeletal.indexGradeCircularBg = R.drawable.bg_progress_3_end_bad
+        bodySkeletal.indexGradeCircularBg = R.drawable.bg_progress_3_end_good
         bodySkeletal.bodyFat = ppbodyparamBodyskeletal
         bodyItemList.add(bodySkeletal)
 
         //5.内脏脂肪等级
         val vfal = BodyFatItemVo()
         vfal.indexType = BodyFatItemType.VFAL.type
-        val ppbodyparamVisfat = bodyDetailModel.PPBodyParam_VisFat
+        val ppbodyparamVisfat = bodyDetailModel?.PPBodyParam_VisFat
         if (ppbodyparamVisfat != null) {
             buildBodyDetailParamPercent(vfal, ppbodyparamVisfat)
         }
@@ -240,7 +637,7 @@ object BodyFatIndexUtils {
         //6.骨量
         val bone = BodyFatItemVo()
         bone.indexType = BodyFatItemType.BONE.type
-        val ppbodyparamBone = bodyDetailModel.PPBodyParam_Bone
+        val ppbodyparamBone = bodyDetailModel?.PPBodyParam_Bone
         if (ppbodyparamBone != null) {
             buildBodyDetailParamKg(bone, ppbodyparamBone, ppUnitType, accuracyType)
         }
@@ -253,7 +650,7 @@ object BodyFatIndexUtils {
         //26.輸出參數-全身体组成:皮下脂肪量(Kg)
         val bodyFatSubCutKg = BodyFatItemVo()
         bodyFatSubCutKg.indexType = BodyFatItemType.BODY_FAT_SUBCUT_KG.type
-        val ppbodyparamBodyfatsubcutkg = bodyDetailModel.PPBodyParam_bodyFatSubCutKg
+        val ppbodyparamBodyfatsubcutkg = bodyDetailModel?.PPBodyParam_bodyFatSubCutKg
         if (ppbodyparamBodyfatsubcutkg != null) {
             buildBodyDetailParamKg(
                 bodyFatSubCutKg,
@@ -270,7 +667,7 @@ object BodyFatIndexUtils {
         //22.肌肉率
         val musclePercentage = BodyFatItemVo()
         musclePercentage.indexType = BodyFatItemType.MUSCLE_RATE.type
-        val ppbodyparamMusrate = bodyDetailModel.PPBodyParam_MusRate
+        val ppbodyparamMusrate = bodyDetailModel?.PPBodyParam_MusRate
         if (ppbodyparamMusrate != null) {
             buildBodyDetailParamPercent(musclePercentage, ppbodyparamMusrate)
         }
@@ -283,7 +680,7 @@ object BodyFatIndexUtils {
         //37.//左手脂肪率(%), 分辨率0.1
         val bodyFatRateLeftArm = BodyFatItemVo()
         bodyFatRateLeftArm.indexType = BodyFatItemType.BODY_FAT_RATE_LEFT_ARM.type
-        val ppbodyparamBodyfatrateleftarm = bodyDetailModel.PPBodyParam_bodyFatRateLeftArm
+        val ppbodyparamBodyfatrateleftarm = bodyDetailModel?.PPBodyParam_bodyFatRateLeftArm
         if (ppbodyparamBodyfatrateleftarm != null) {
             buildBodyDetailParamPercent(bodyFatRateLeftArm, ppbodyparamBodyfatrateleftarm)
         }
@@ -295,7 +692,7 @@ object BodyFatIndexUtils {
         //27.輸出參數-全身体组成:身体细胞量(Kg)
         val cellMassKg = BodyFatItemVo()
         cellMassKg.indexType = BodyFatItemType.CELL_MASS_KG.type
-        val ppbodyparamCellmasskg = bodyDetailModel.PPBodyParam_cellMassKg
+        val ppbodyparamCellmasskg = bodyDetailModel?.PPBodyParam_cellMassKg
         if (ppbodyparamCellmasskg != null) {
             buildBodyDetailParamKg(cellMassKg, ppbodyparamCellmasskg, ppUnitType, accuracyType)
         }
@@ -307,7 +704,7 @@ object BodyFatIndexUtils {
         //39.//右手脂肪率(%), 分辨率0.1
         val bodyFatRateRightArm = BodyFatItemVo()
         bodyFatRateRightArm.indexType = BodyFatItemType.BODY_FAT_RATE_RIGHT_ARM.type
-        val ppbodyparamBodyfatraterightarm = bodyDetailModel.PPBodyParam_bodyFatRateRightArm
+        val ppbodyparamBodyfatraterightarm = bodyDetailModel?.PPBodyParam_bodyFatRateRightArm
         if (ppbodyparamBodyfatraterightarm != null) {
             buildBodyDetailParamPercent(bodyFatRateRightArm, ppbodyparamBodyfatraterightarm)
         }
@@ -319,7 +716,7 @@ object BodyFatIndexUtils {
         //32.//輸出參數-全身体组成:细胞内水量(kg)
         val waterICWKg = BodyFatItemVo()
         waterICWKg.indexType = BodyFatItemType.WATER_ICW_KG.type
-        val ppbodyparamWatericwkg = bodyDetailModel.PPBodyParam_waterICWKg
+        val ppbodyparamWatericwkg = bodyDetailModel?.PPBodyParam_waterICWKg
         if (ppbodyparamWatericwkg != null) {
             buildBodyDetailParamKg(waterICWKg, ppbodyparamWatericwkg, ppUnitType, accuracyType)
         }
@@ -331,7 +728,7 @@ object BodyFatIndexUtils {
         //41.//躯干脂肪率(%), 分辨率0.1
         val bodyFatRateTrunk = BodyFatItemVo()
         bodyFatRateTrunk.indexType = BodyFatItemType.BODY_FAT_RATE_TRUNK.type
-        val ppbodyparamBodyfatratetrunk = bodyDetailModel.PPBodyParam_bodyFatRateTrunk
+        val ppbodyparamBodyfatratetrunk = bodyDetailModel?.PPBodyParam_bodyFatRateTrunk
         if (ppbodyparamBodyfatratetrunk != null) {
             buildBodyDetailParamPercent(bodyFatRateTrunk, ppbodyparamBodyfatratetrunk)
         }
@@ -343,7 +740,7 @@ object BodyFatIndexUtils {
         //31.輸出參數-全身体组成:细胞外水量(kg)
         val waterECWKg = BodyFatItemVo()
         waterECWKg.indexType = BodyFatItemType.WATER_ECW_KG.type
-        val ppbodyparamWaterecwkg = bodyDetailModel.PPBodyParam_waterECWKg
+        val ppbodyparamWaterecwkg = bodyDetailModel?.PPBodyParam_waterECWKg
         if (ppbodyparamWaterecwkg != null) {
             buildBodyDetailParamKg(waterECWKg, ppbodyparamWaterecwkg, ppUnitType, accuracyType)
         }
@@ -355,7 +752,7 @@ object BodyFatIndexUtils {
         //38.//左脚脂肪率(%), 分辨率0.1
         val bodyFatRateLeftLeg = BodyFatItemVo()
         bodyFatRateLeftLeg.indexType = BodyFatItemType.BODY_FAT_RATE_LEFT_LEG.type
-        val ppbodyparamBodyfatrateleftleg = bodyDetailModel.PPBodyParam_bodyFatRateLeftLeg
+        val ppbodyparamBodyfatrateleftleg = bodyDetailModel?.PPBodyParam_bodyFatRateLeftLeg
         if (ppbodyparamBodyfatrateleftleg != null) {
             buildBodyDetailParamPercent(bodyFatRateLeftLeg, ppbodyparamBodyfatrateleftleg)
         }
@@ -367,7 +764,7 @@ object BodyFatIndexUtils {
         //29.輸出參數-全身体组成:无机盐量(Kg)
         val mineralKg = BodyFatItemVo()
         mineralKg.indexType = BodyFatItemType.MINERAL_KG.type
-        val ppbodyparamMineralkg = bodyDetailModel.PPBodyParam_mineralKg
+        val ppbodyparamMineralkg = bodyDetailModel?.PPBodyParam_mineralKg
         if (ppbodyparamMineralkg != null) {
             buildBodyDetailParamKg(mineralKg, ppbodyparamMineralkg, ppUnitType, accuracyType)
         }
@@ -379,7 +776,7 @@ object BodyFatIndexUtils {
         //40.//右脚脂肪率(%), 分辨率0.1
         val bodyFatRateRightLeg = BodyFatItemVo()
         bodyFatRateRightLeg.indexType = BodyFatItemType.BODY_FAT_RATE_RIGHT_LEG.type
-        val ppbodyparamBodyfatraterightleg = bodyDetailModel.PPBodyParam_bodyFatRateRightLeg
+        val ppbodyparamBodyfatraterightleg = bodyDetailModel?.PPBodyParam_bodyFatRateRightLeg
         if (ppbodyparamBodyfatraterightleg != null) {
             buildBodyDetailParamPercent(bodyFatRateRightLeg, ppbodyparamBodyfatraterightleg)
         }
@@ -391,7 +788,7 @@ object BodyFatIndexUtils {
         //42.//左手肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
         val muscleKgLeftArm = BodyFatItemVo()
         muscleKgLeftArm.indexType = BodyFatItemType.MUSCLE_KG_LEFT_ARM.type
-        val ppbodyparamMusclekgleftarm = bodyDetailModel.PPBodyParam_muscleKgLeftArm
+        val ppbodyparamMusclekgleftarm = bodyDetailModel?.PPBodyParam_muscleKgLeftArm
         if (ppbodyparamMusclekgleftarm != null) {
             buildBodyDetailParamKg(
                 muscleKgLeftArm,
@@ -409,7 +806,7 @@ object BodyFatIndexUtils {
         //33.//左手脂肪量(kg), 分辨率0.1
         val bodyFatKgLeftArm = BodyFatItemVo()
         bodyFatKgLeftArm.indexType = BodyFatItemType.BODY_FAT_KG_LEFT_ARM.type
-        val ppbodyparamBodyfatkgleftarm = bodyDetailModel.PPBodyParam_bodyFatKgLeftArm
+        val ppbodyparamBodyfatkgleftarm = bodyDetailModel?.PPBodyParam_bodyFatKgLeftArm
         if (ppbodyparamBodyfatkgleftarm != null) {
             buildBodyDetailParamKg(
                 bodyFatKgLeftArm,
@@ -426,7 +823,7 @@ object BodyFatIndexUtils {
         //44.//右手肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
         val muscleKgRightArm = BodyFatItemVo()
         muscleKgRightArm.indexType = BodyFatItemType.MUSCLE_KG_RIGHT_ARM.type
-        val ppbodyparamMusclekgrightarm = bodyDetailModel.PPBodyParam_muscleKgRightArm
+        val ppbodyparamMusclekgrightarm = bodyDetailModel?.PPBodyParam_muscleKgRightArm
         if (ppbodyparamMusclekgrightarm != null) {
             buildBodyDetailParamKg(
                 muscleKgRightArm,
@@ -443,7 +840,7 @@ object BodyFatIndexUtils {
         //35.//右手脂肪量(kg), 分辨率0.1
         val bodyFatKgRightArm = BodyFatItemVo()
         bodyFatKgRightArm.indexType = BodyFatItemType.BODY_FAT_KG_RIGHT_ARM.type
-        val ppbodyparamBodyfatkgrightarm = bodyDetailModel.PPBodyParam_bodyFatKgRightArm
+        val ppbodyparamBodyfatkgrightarm = bodyDetailModel?.PPBodyParam_bodyFatKgRightArm
         if (ppbodyparamBodyfatkgrightarm != null) {
             buildBodyDetailParamKg(
                 bodyFatKgRightArm,
@@ -460,7 +857,7 @@ object BodyFatIndexUtils {
         //46.//躯干肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
         val muscleKgTrunk = BodyFatItemVo()
         muscleKgTrunk.indexType = BodyFatItemType.MUSCLE_KG_TRUNK.type
-        val ppbodyparamMusclekgtrunk = bodyDetailModel.PPBodyParam_muscleKgTrunk
+        val ppbodyparamMusclekgtrunk = bodyDetailModel?.PPBodyParam_muscleKgTrunk
         if (ppbodyparamMusclekgtrunk != null) {
             buildBodyDetailParamKg(
                 muscleKgTrunk,
@@ -477,7 +874,7 @@ object BodyFatIndexUtils {
         //37.//躯干脂肪量(kg), 分辨率0.1
         val bodyFatKgTrunk = BodyFatItemVo()
         bodyFatKgTrunk.indexType = BodyFatItemType.BODY_FAT_KG_TRUNK.type
-        val ppbodyparamBodyfatkgtrunk = bodyDetailModel.PPBodyParam_bodyFatKgTrunk
+        val ppbodyparamBodyfatkgtrunk = bodyDetailModel?.PPBodyParam_bodyFatKgTrunk
         if (ppbodyparamBodyfatkgtrunk != null) {
             buildBodyDetailParamKg(
                 bodyFatKgTrunk,
@@ -494,7 +891,7 @@ object BodyFatIndexUtils {
         //43.//左脚肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
         val muscleKgLeftLeg = BodyFatItemVo()
         muscleKgLeftLeg.indexType = BodyFatItemType.MUSCLE_KG_LEFT_LEG.type
-        val ppbodyparamMusclekgleftleg = bodyDetailModel.PPBodyParam_muscleKgLeftLeg
+        val ppbodyparamMusclekgleftleg = bodyDetailModel?.PPBodyParam_muscleKgLeftLeg
         if (ppbodyparamMusclekgleftleg != null) {
             buildBodyDetailParamKg(
                 muscleKgLeftLeg,
@@ -511,7 +908,7 @@ object BodyFatIndexUtils {
         //34.//左脚脂肪量(kg), 分辨率0.1
         val bodyFatKgLeftLeg = BodyFatItemVo()
         bodyFatKgLeftLeg.indexType = BodyFatItemType.BODY_FAT_KG_LEFT_LEG.type
-        val ppbodyparamBodyfatkgleftleg = bodyDetailModel.PPBodyParam_bodyFatKgLeftLeg
+        val ppbodyparamBodyfatkgleftleg = bodyDetailModel?.PPBodyParam_bodyFatKgLeftLeg
         if (ppbodyparamBodyfatkgleftleg != null) {
             buildBodyDetailParamKg(
                 bodyFatKgLeftLeg,
@@ -528,7 +925,7 @@ object BodyFatIndexUtils {
         //45.//右脚肌肉量(kg), 分辨率0.1, 范围0.0 ~ 200kg
         val muscleKgRightLeg = BodyFatItemVo()
         muscleKgRightLeg.indexType = BodyFatItemType.MUSCLE_KG_RIGHT_LEG.type
-        val ppbodyparamMusclekgrightleg = bodyDetailModel.PPBodyParam_muscleKgRightLeg
+        val ppbodyparamMusclekgrightleg = bodyDetailModel?.PPBodyParam_muscleKgRightLeg
         if (ppbodyparamMusclekgrightleg != null) {
             buildBodyDetailParamKg(
                 muscleKgRightLeg,
@@ -545,7 +942,7 @@ object BodyFatIndexUtils {
         //36.//右脚脂肪量(kg), 分辨率0.1
         val bodyFatKgRightLeg = BodyFatItemVo()
         bodyFatKgRightLeg.indexType = BodyFatItemType.BODY_FAT_KG_RIGHT_LEG.type
-        val ppbodyparamBodyfatkgrightleg = bodyDetailModel.PPBodyParam_bodyFatKgRightLeg
+        val ppbodyparamBodyfatkgrightleg = bodyDetailModel?.PPBodyParam_bodyFatKgRightLeg
         if (ppbodyparamBodyfatkgrightleg != null) {
             buildBodyDetailParamKg(
                 bodyFatKgRightLeg,
@@ -562,7 +959,7 @@ object BodyFatIndexUtils {
         //21.肌肉控制量
         val bodyMuscleControl = BodyFatItemVo()
         bodyMuscleControl.indexType = BodyFatItemType.MUSCLE_CONTROL.type
-        val ppbodyparamMusclecontrol = bodyDetailModel.PPBodyParam_MuscleControl
+        val ppbodyparamMusclecontrol = bodyDetailModel?.PPBodyParam_MuscleControl
         if (ppbodyparamMusclecontrol != null) {
             buildBodyDetailParamKg(
                 bodyMuscleControl,
@@ -579,7 +976,7 @@ object BodyFatIndexUtils {
         //20.脂肪控制量
         val fatControlKg = BodyFatItemVo()
         fatControlKg.indexType = BodyFatItemType.FAT_CONTROL_KG.type
-        val ppbodyparamBodycontrolliang = bodyDetailModel.PPBodyParam_BodyControlLiang
+        val ppbodyparamBodycontrolliang = bodyDetailModel?.PPBodyParam_BodyControlLiang
         if (ppbodyparamBodycontrolliang != null) {
             buildBodyDetailParamKg(
                 fatControlKg,
@@ -596,7 +993,7 @@ object BodyFatIndexUtils {
         //15.标准体重
         val idealWeight = BodyFatItemVo()
         idealWeight.indexType = BodyFatItemType.IDEAL_WEIGHT.type
-        val ppbodyparamBodystandard = bodyDetailModel.PPBodyParam_Bodystandard
+        val ppbodyparamBodystandard = bodyDetailModel?.PPBodyParam_Bodystandard
         if (ppbodyparamBodystandard != null) {
             buildBodyDetailParamKg(idealWeight, ppbodyparamBodystandard, ppUnitType, accuracyType)
         }
@@ -608,7 +1005,7 @@ object BodyFatIndexUtils {
         //19.体重控制
         val controlWeightKg = BodyFatItemVo()
         controlWeightKg.indexType = BodyFatItemType.CONTROL_WEIGHT.type
-        val ppbodyparamBodycontrol = bodyDetailModel.PPBodyParam_BodyControl
+        val ppbodyparamBodycontrol = bodyDetailModel?.PPBodyParam_BodyControl
         if (ppbodyparamBodycontrol != null) {
             buildBodyDetailParamKg(
                 controlWeightKg,
@@ -622,10 +1019,11 @@ object BodyFatIndexUtils {
         controlWeightKg.bodyFat = ppbodyparamBodycontrol
         bodyItemList.add(controlWeightKg)
 
+
         //30.輸出參數-评价建议: 肥胖度(%)
         val obesity = BodyFatItemVo()
         obesity.indexType = BodyFatItemType.OBESITY.type
-        val ppbodyparamObesity = bodyDetailModel.PPBodyParam_obesity
+        val ppbodyparamObesity = bodyDetailModel?.PPBodyParam_obesity
         if (ppbodyparamObesity != null) {
             buildBodyDetailParamPercent(obesity, ppbodyparamObesity)
         }
@@ -634,10 +1032,11 @@ object BodyFatIndexUtils {
         obesity.bodyFat = ppbodyparamObesity
         bodyItemList.add(obesity)
 
+
         //14.身体类型
         val bodyType = BodyFatItemVo()
         bodyType.indexType = BodyFatItemType.BODY_TYPE.type
-        val ppbodyparamBodytype = bodyDetailModel.PPBodyParam_BodyType
+        val ppbodyparamBodytype = bodyDetailModel?.PPBodyParam_BodyType
         if (ppbodyparamBodytype != null) {
             buildBodyDetailBodyType(bodyType, ppbodyparamBodytype)
         }
@@ -649,7 +1048,7 @@ object BodyFatIndexUtils {
         //9.肥胖等级
         val obeLevel = BodyFatItemVo()
         obeLevel.indexType = BodyFatItemType.OBE_LEVEL.type
-        val ppbodyparamFatgrade = bodyDetailModel.PPBodyParam_FatGrade
+        val ppbodyparamFatgrade = bodyDetailModel?.PPBodyParam_FatGrade
         if (ppbodyparamFatgrade != null) {
             buildBodyDetailParamPercent(obeLevel, ppbodyparamFatgrade)
         }
@@ -662,7 +1061,7 @@ object BodyFatIndexUtils {
         //17.健康评估
         val bodyHealth = BodyFatItemVo()
         bodyHealth.indexType = BodyFatItemType.BODY_HEALTH.type
-        val ppbodyparamBodyhealth = bodyDetailModel.PPBodyParam_BodyHealth
+        val ppbodyparamBodyhealth = bodyDetailModel?.PPBodyParam_BodyHealth
         if (ppbodyparamBodyhealth != null) {
             buildBodyDetailBodyHealth(bodyHealth, ppbodyparamBodyhealth)
         }
@@ -674,7 +1073,7 @@ object BodyFatIndexUtils {
         //11.身体年龄
         val bodyAge = BodyFatItemVo()
         bodyAge.indexType = BodyFatItemType.BODY_AGE.type
-        val ppbodyparamPhysicalagevalue = bodyDetailModel.PPBodyParam_physicalAgeValue
+        val ppbodyparamPhysicalagevalue = bodyDetailModel?.PPBodyParam_physicalAgeValue
         if (ppbodyparamPhysicalagevalue != null) {
             buildBodyDetailParamPercent(bodyAge, ppbodyparamPhysicalagevalue)
         }
@@ -687,7 +1086,7 @@ object BodyFatIndexUtils {
         //12.身体得分
         val bodyGrade = BodyFatItemVo()
         bodyGrade.indexType = BodyFatItemType.BODY_GRADE.type
-        val ppbodyparamBodyscore = bodyDetailModel.PPBodyParam_BodyScore
+        val ppbodyparamBodyscore = bodyDetailModel?.PPBodyParam_BodyScore
         if (ppbodyparamBodyscore != null) {
             buildBodyDetailParamPercent(bodyGrade, ppbodyparamBodyscore)
         }
@@ -696,7 +1095,6 @@ object BodyFatIndexUtils {
         bodyGrade.indexGradeCircularBg = R.drawable.bg_progress_4_end_good
         bodyGrade.bodyFat = ppbodyparamBodyscore
         bodyItemList.add(bodyGrade)
-        return bodyItemList.toMutableList()
     }
 
     /**
@@ -708,7 +1106,7 @@ object BodyFatIndexUtils {
     ) {
         dCI.indexName = ppbodyparamDci.bodyParamNameString
         dCI.indexIntroduction = ppbodyparamDci.introductionString
-        dCI.value = "${keep1Point1(ppbodyparamDci.currentValue)}"
+        dCI.value = "${PPUtil.keepPoint1(ppbodyparamDci.currentValue.toDouble())}"
     }
 
     /**
@@ -728,16 +1126,16 @@ object BodyFatIndexUtils {
         bodyFatItemVo.indexSuggestion = ppbodyparam.standSuggestion
         bodyFatItemVo.indexIntroduction = ppbodyparam.introductionString
         val weightValueD =
-            PPUtil.getWeightValueD(ppUnitType, ppbodyparam.currentValue, accuracyType)
+            PPUtil.getWeightValueD(ppUnitType, ppbodyparam.currentValue.toDouble(), accuracyType)
         if (weightValueD.contains(":")) {
             bodyFatItemVo.value = "$weightValueD"
         } else {
-            bodyFatItemVo.value = "${UtilTooth.keep1Point1(Math.abs(weightValueD.toDouble()))}"
+            bodyFatItemVo.value = "${PPUtil.keepPoint1(Math.abs(weightValueD.toDouble()))}"
         }
         val bodyItemProgress = BodyFatIndexStandardProgressUtils.getBodyItemProgress(
             ppbodyparam.currentStandard,
             ppbodyparam.currentValue,
-            ppbodyparam.standardArray
+            ppbodyparam.standardArray ?: listOf()
         )
         bodyFatItemVo.progress = bodyItemProgress
     }
@@ -759,11 +1157,11 @@ object BodyFatIndexUtils {
         bodyFatItemVo.indexSuggestion = ppbodyparam.standSuggestion
         bodyFatItemVo.indexIntroduction = ppbodyparam.introductionString
         bodyFatItemVo.value =
-            PPUtil.getWeightValueD(ppUnitType, ppbodyparam.currentValue, accuracyType)
+            PPUtil.getWeightValueD(ppUnitType, ppbodyparam.currentValue.toDouble(), accuracyType)
         val bodyItemProgress = BodyFatIndexStandardProgressUtils.getBodyItemProgress(
             ppbodyparam.currentStandard,
             ppbodyparam.currentValue,
-            ppbodyparam.standardArray
+            ppbodyparam.standardArray ?: listOf()
         )
         bodyFatItemVo.progress = bodyItemProgress
     }
@@ -782,11 +1180,11 @@ object BodyFatIndexUtils {
         bodyFatItemVo.indexEevaluation = ppbodyparam.standeEvaluation
         bodyFatItemVo.indexSuggestion = ppbodyparam.standSuggestion
         bodyFatItemVo.indexIntroduction = ppbodyparam.introductionString
-        bodyFatItemVo.value = "${UtilTooth.keep1Point1(ppbodyparam.currentValue)}"
+        bodyFatItemVo.value = "${PPUtil.keepPoint1(ppbodyparam.currentValue.toDouble())}"
         val bodyItemProgress = BodyFatIndexStandardProgressUtils.getBodyItemProgress(
             ppbodyparam.currentStandard,
             ppbodyparam.currentValue,
-            ppbodyparam.standardArray
+            ppbodyparam.standardArray?: listOf()
         )
         bodyFatItemVo.progress = bodyItemProgress
     }
@@ -817,7 +1215,7 @@ object BodyFatIndexUtils {
         ppbodyparam: PPBodyDetailInfoModel
     ) {
         bodyFatItemVo.indexName = ppbodyparam.bodyParamNameString
-        bodyFatItemVo.indexGradeStr = ""
+        bodyFatItemVo.indexGradeStr = ppbodyparam.standardTitle
         bodyFatItemVo.indexEevaluation = ppbodyparam.standeEvaluation
         bodyFatItemVo.indexSuggestion = ppbodyparam.standSuggestion
         bodyFatItemVo.indexIntroduction = ppbodyparam.introductionString

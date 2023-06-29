@@ -324,15 +324,15 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         protocalFilter.setPPProcessDateInterface(new PPProcessDateInterface() {
             @Override
             public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
-                String weightStr = PPUtil.getWeight(bodyBaseModel.scaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                String weightStr = PPUtil.getWeight(bodyBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                 weightTextView.setText("ProcessWeight:" + weightStr);
             }
         });
 
         protocalFilter.setPPLockDataInterface(new PPLockDataInterface() {
             @Override
-            public void monitorLockData(PPBodyFatModel bodyBaseModel, PPDeviceModel deviceModel) {
-                String weightStr = PPUtil.getWeight(bodyBaseModel.scaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+            public void monitorLockData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
+                String weightStr = PPUtil.getWeight(bodyBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                 weightTextView.setText("LockWeight:" + weightStr);
                 Logger.d("bodyBaseModel:" + bodyBaseModel.toString());
                 device_set_deviceinfo.setText(bodyBaseModel.toString());
@@ -445,15 +445,14 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         });
         protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
             @Override
-            public void monitorHistoryData(PPBodyFatModel bodyFatModel, String dateTime) {
+            public void monitorHistoryData(PPBodyBaseModel bodyFatModel, String dateTime) {
                 if (bodyFatModel != null) {
                     Logger.d("ppScale_  dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyFatModel.getPpWeightKg());
                 }
                 if (bodyFatModel != null) {
                     Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
-                    String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
+                    String weightStr = PPUtil.getWeight(bodyFatModel.unit, bodyFatModel.getPpWeightKg(), bodyFatModel.deviceModel.deviceAccuracyType.getType());
                 }
-
             }
 
             @Override

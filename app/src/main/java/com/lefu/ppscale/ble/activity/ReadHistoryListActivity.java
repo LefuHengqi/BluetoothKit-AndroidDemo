@@ -25,7 +25,7 @@ import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
 import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
 import com.peng.ppscale.util.Logger;
-import com.peng.ppscale.vo.PPBodyFatModel;
+import com.peng.ppscale.vo.PPBodyBaseModel;
 import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPUserModel;
 
@@ -113,17 +113,11 @@ public class ReadHistoryListActivity extends Activity {
         protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
 
             @Override
-            public void monitorHistoryData(PPBodyFatModel bodyFatModel, String dateTime) {
-                if (bodyFatModel != null) {
-                    Logger.d("ppScale_ " + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyFatModel.getPpWeightKg());
-                }
-                if (bodyFatModel != null) {
-                    Logger.d("ppScale_ bodyFatModel = " + bodyFatModel.toString());
-
-                    String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), bodyFatModel.getDeviceModel().deviceAccuracyType.getType());
-
-                    DeviceModel bodyModel = new DeviceModel(bodyFatModel.scaleBaseModel.impedance + "", weightStr, -1);
-
+            public void monitorHistoryData(PPBodyBaseModel bodyBaseModel, String dateTime) {
+                if (bodyBaseModel != null) {
+                    Logger.d("ppScale_ " + " dateTime = " + dateTime + " bodyBaseModel weight kg = " + bodyBaseModel.getPpWeightKg());
+                    String weightStr = PPUtil.getWeight(bodyBaseModel.unit, bodyBaseModel.getPpWeightKg(), bodyBaseModel.deviceModel.deviceAccuracyType.getType());
+                    DeviceModel bodyModel = new DeviceModel(bodyBaseModel.impedance + "", weightStr, -1);
                     deviceModels.add(bodyModel);
                     adapter.notifyDataSetChanged();
                 }
