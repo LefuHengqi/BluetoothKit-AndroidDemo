@@ -9,3 +9,4 @@ include ':ppscalelib'
 include ':body_index_data'
 include ':bodyindex'
 
+include ':test260h'

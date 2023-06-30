@@ -335,7 +335,10 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                 String weightStr = PPUtil.getWeight(bodyBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                 weightTextView.setText("LockWeight:" + weightStr);
                 Logger.d("bodyBaseModel:" + bodyBaseModel.toString());
-                device_set_deviceinfo.setText(bodyBaseModel.toString());
+//                device_set_deviceinfo.setText(bodyBaseModel.toString());
+                PPBodyFatModel ppBodyFatModel = new PPBodyFatModel(bodyBaseModel);
+                device_set_deviceinfo.setText(ppBodyFatModel.toString());
+
             }
 
             @Override
