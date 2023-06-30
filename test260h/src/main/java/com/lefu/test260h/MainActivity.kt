@@ -140,12 +140,13 @@ class MainActivity : FragmentActivity() {
                     devcieItem.count = devcieItem.count?.plus(1)
                     deviceAdapter.setData(index, devcieItem)
                 }
-
                 val data = deviceAdapter.data
-
                 val newData = data.sortedByDescending { it.rssi }
-
-                deviceAdapter.replaceData(newData)
+                if (newData.size > 3) {
+                    deviceAdapter.replaceData(newData.subList(0, 3))
+                } else {
+                    deviceAdapter.replaceData(newData)
+                }
             }
         }
 
