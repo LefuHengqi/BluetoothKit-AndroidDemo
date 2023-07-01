@@ -6,11 +6,11 @@ plugins {
 
 android {
 //    namespace 'com.lefu.bodyindex'
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -33,7 +33,7 @@ android {
 
 dependencies {
 //    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.core:core-ktx:1.3.0'
     implementation(project(":ppscale"))
 }
 
