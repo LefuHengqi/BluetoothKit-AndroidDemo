@@ -34,7 +34,7 @@ android {
 dependencies {
 //    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'androidx.core:core-ktx:1.3.0'
-    implementation(project(":ppscale"))
+    implementation(project(":ppscalelib"))
 }
 
 uploadArchives {

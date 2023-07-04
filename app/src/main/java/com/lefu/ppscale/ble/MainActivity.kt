@@ -205,18 +205,24 @@ class MainActivity : Activity(), View.OnClickListener {
                     .getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
 //
                 //impedance
+//                val userModel = PPUserModel.Builder()
+//                    .setSex(userModel1.sex) //gender
+//                    .setHeight(userModel1.userHeight)//height 100-220
+//                    .setAge(userModel1.age)//age 10-99
+//                    .build()
                 val userModel = PPUserModel.Builder()
-                    .setSex(userModel1.sex) //gender
-                    .setHeight(userModel1.userHeight)//height 100-220
-                    .setAge(userModel1.age)//age 10-99
+                    .setSex(PPUserGender.PPUserGenderFemale) //gender
+                    .setHeight(168)//height 100-220
+                    .setAge(18)//age 10-99
                     .build()
                 val deviceModel = PPDeviceModel(
                     "",
-                    DeviceManager.CF568
+                    ""
                 )//Select the corresponding Bluetooth name according to your own device
+                deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal
                 val bodyBaseModel = PPBodyBaseModel()
-                bodyBaseModel.impedance = impedance
-                bodyBaseModel.weight = (ppWeightKg * 100).toInt()
+                bodyBaseModel.impedance = 3609627
+                bodyBaseModel.weight = (80.15 * 100).toInt()
                 bodyBaseModel.deviceModel = deviceModel
                 bodyBaseModel.userModel = userModel
 
