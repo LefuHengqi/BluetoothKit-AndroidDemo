@@ -55,7 +55,17 @@
             android:layout_marginStart="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginEnd="40dp"
-            android:text="刷新" />
+            android:text="启动搜索" />
+
+        <Button
+            android:id="@+id/stopSearchBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="40dp"
+            android:text="停止搜索" />
 
     </LinearLayout>
 

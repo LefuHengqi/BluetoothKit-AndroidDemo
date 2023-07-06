@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.widget.Toast
 
-fun MainActivity.checkPermission() {
+fun MainActivity.checkBlePermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         Permissions.request(this, permissions31, object : Permissions.Apply<Boolean> {
             override fun apply(aBoolean: Boolean) {

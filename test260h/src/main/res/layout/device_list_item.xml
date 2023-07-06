@@ -44,13 +44,33 @@
             android:id="@+id/rssiTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="rsss:0" />
+            android:text="rssi:0" />
 
         <TextView
             android:id="@+id/countTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="count:0" />
+            android:text="process:0" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/countLockTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lock:0" />
 
     </LinearLayout>
 

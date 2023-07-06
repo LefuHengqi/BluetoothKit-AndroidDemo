@@ -39,7 +39,7 @@ class SettingActivity : AppCompatActivity() {
         var rssi = inputRssiEt?.text?.toString()
 
         if (time?.isEmpty() ?: true) {
-            SettingManager.get().setTime(10000L)
+            SettingManager.get().setTime(-1)
         } else {
             SettingManager.get().setTime(time?.toLong()?.times(1000L))
         }
@@ -49,7 +49,7 @@ class SettingActivity : AppCompatActivity() {
             SettingManager.get().setCount(count?.toInt() ?: 20)
         }
         if (deviceName?.isEmpty() ?: true) {
-//            SettingManager.get().setDeviceName(deviceName)
+            SettingManager.get().setDeviceName("")
         } else {
             SettingManager.get().setDeviceName(deviceName)
         }

@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
-            android:layout_marginTop="80dp">
+            android:layout_marginTop="30dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,9 +36,10 @@
             <EditText
                 android:id="@+id/inputTimeEt"
                 android:layout_width="180dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:hint="时长"
                 android:inputType="number"
+                android:minHeight="50dp"
                 android:text="10" />
 
         </LinearLayout>
@@ -57,10 +58,11 @@
             <EditText
                 android:id="@+id/inputNumberEt"
                 android:layout_width="180dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:hint="输入控制次数阈值"
                 android:inputType="number"
                 android:lines="1"
+                android:minHeight="50dp"
                 android:text="20" />
         </LinearLayout>
 
@@ -78,9 +80,11 @@
             <EditText
                 android:id="@+id/inputBleNameEt"
                 android:layout_width="180dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:hint="蓝牙名称"
                 android:lines="1"
+                android:maxLines="1"
+                android:minHeight="50dp"
                 android:text="260H" />
 
         </LinearLayout>
@@ -99,9 +103,10 @@
             <EditText
                 android:id="@+id/inputRssiEt"
                 android:layout_width="180dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:hint="Rssi"
                 android:lines="1"
+                android:minHeight="50dp"
                 android:text="70" />
 
         </LinearLayout>

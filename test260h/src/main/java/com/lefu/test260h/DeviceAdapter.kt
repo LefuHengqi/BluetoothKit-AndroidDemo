@@ -17,15 +17,18 @@ class DeviceAdapter() : BaseQuickAdapter<Devcie, BaseViewHolder>(R.layout.device
         val deviceMacTV = helper.getView<TextView>(R.id.deviceMacTV)
         val rssiTv = helper.getView<TextView>(R.id.rssiTv)
         val countTv = helper.getView<TextView>(R.id.countTv)
+        val countLockTv = helper.getView<TextView>(R.id.countLockTv)
         val item_layout = helper.getView<LinearLayout>(R.id.item_layout)
 
         deviceNameTV.text = item.name
         deviceMacTV.text = item.mac
 
         rssiTv.text = "rssi:${item.rssi}"
-        countTv.text = "count:${item.count}"
+        countTv.text = "count:${item.countProcess}"
 
-        if (item.count ?: 0 < count) {//红色
+        countLockTv.text = "lock:${item.countLock}"
+
+        if ((item.countProcess?.plus(item.countLock ?: 0) ?: 0) < count) {//红色
             item_layout.setBackgroundColor(Color.RED)
         } else {
             item_layout.setBackgroundColor(Color.GREEN)

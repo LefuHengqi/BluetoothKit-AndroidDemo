@@ -10,8 +10,12 @@ class CountDownTimer(private var totalTime: Long, private val interval: Long) {
     private var timer: java.util.Timer? = null
     private var listener: Listener? = null
 
-    fun setTime(totalTime:Long) {
-        this.totalTime = totalTime
+    fun setTime(totalTime: Long) {
+        if (totalTime <= 0) {
+            this.totalTime = 30 * 60 * 1000L
+        } else {
+            this.totalTime = totalTime
+        }
     }
 
     fun start() {
