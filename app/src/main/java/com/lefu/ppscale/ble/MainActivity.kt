@@ -20,6 +20,7 @@ import com.peng.ppscale.business.ble.PPScale
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.data.PPBodyDetailModel
+import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -222,7 +223,7 @@ class MainActivity : Activity(), View.OnClickListener {
                 deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal
                 val bodyBaseModel = PPBodyBaseModel()
                 bodyBaseModel.impedance = 3609627
-                bodyBaseModel.weight = (80.15 * 100).toInt()
+                bodyBaseModel.weight = ((79.85 + 0.005) * 100).toInt()
                 bodyBaseModel.deviceModel = deviceModel
                 bodyBaseModel.userModel = userModel
 
@@ -240,10 +241,9 @@ class MainActivity : Activity(), View.OnClickListener {
                     "分"
                 )
                 Log.d("liyp_", bodyIndex.toString())
+                PPUtil.kgToSt2LB_Point2D(33.7, 0.05)
+                PPUtil.kgToSt2LB_(33.7)
             }
         }
-
     }
-
-
 }
