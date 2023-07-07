@@ -165,38 +165,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
             }
         });
-
-//        initBitmap();
-    }
-
-    private void initBitmap() {
-
-
-        ImageView userNameImage = findViewById(R.id.userNameImage);
-
-        Bitmap bitmap = Bitmap.createBitmap(104, 32, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        canvas.drawColor(Color.WHITE);
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
-//            canvas.drawColor(Color.WHITE);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setColor(Color.BLACK);
-        int sp = 20;
-        paint.setTextSize(sp);
-        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
-        Rect rect = new Rect(0, 0, 104, 32);
-
-        int textWidth = getTextWidth(paint, "123");
-
-        int baseline = (int) ((rect.bottom - rect.top) / 2
-                + (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom);
-
-        canvas.drawText("123", Math.abs((rect.width() - textWidth) / 2), baseline, paint);
-
-        userNameImage.setImageBitmap(bitmap);
-
     }
 
     public int getTextWidth(Paint paint, String content) {
@@ -230,11 +198,8 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             builder1.setUserModel(userModel);
             ppScale.setBuilder(builder1);
         }
-
         initLitener();
-
         startConnectDevice(address);
-
     }
 
     private void initLitener() {
@@ -287,7 +252,8 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 //                sendUnitDataScale(deviceModel);
                 isSendData = true;
                 device_set_connect_state.setText("已连接");
-                ppScale.getTorreDeviceManager().startKeepAlive();
+//                ppScale.getTorreDeviceManager().startKeepAlive();
+                ppScale.getTorreDeviceManager().readDeviceInfoFromCharacter(deviceInfoInterface);
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
@@ -346,22 +312,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                 weightTextView.setText("OverWeight");
             }
         });
-        protocalFilter.setDeviceInfoInterface(new PPDeviceInfoInterface() {
-
-            @Override
-            public void serialNumber(PPDeviceModel deviceModel) {
-            }
-
-            @Override
-            public void onIlluminationChange(int illumination) {
-            }
-
-            @Override
-            public void readDeviceInfoComplete(PPDeviceModel deviceModel) {
-                Logger.d("DeviceInfo :  " + deviceModel.toString());
-                device_set_deviceinfo.setText(deviceModel.toString());
-            }
-        });
+        protocalFilter.setDeviceInfoInterface(deviceInfoInterface);
         protocalFilter.setDeviceSetInfoInterface(new PPDeviceSetInfoInterface() {
             @Override
             public void monitorResetStateSuccess() {
@@ -798,6 +749,31 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         @Override
         public boolean isOTA() {
             return false;
+        }
+    };
+
+    PPDeviceInfoInterface deviceInfoInterface = new PPDeviceInfoInterface() {
+
+        @Override
+        public void serialNumber(PPDeviceModel deviceModel) {
+        }
+
+        @Override
+        public void onIlluminationChange(int illumination) {
+        }
+
+        @Override
+        public void readDeviceInfoComplete(PPDeviceModel deviceModel) {
+            if (ppScale != null) {
+                ppScale.getTorreDeviceManager().readDeviceBattery(this);
+            }
+            Logger.d("DeviceInfo :  " + deviceModel.toString());
+            device_set_deviceinfo.setText(deviceModel.toString());
+        }
+
+        @Override
+        public void readDevicePower(int power) {
+            device_set_deviceinfo.append("power:" + power);
         }
     };
 

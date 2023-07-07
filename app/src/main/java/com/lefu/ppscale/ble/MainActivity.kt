@@ -168,53 +168,19 @@ class MainActivity : Activity(), View.OnClickListener {
                 }
             }
             R.id.simulatedBodyFatCalculationBtn -> {
-
-                //{id=null, uid='dea1bd38-1bef-45b6-87ce-8adbbfd0838d',
-                // infoId='13876d9d-bc9b-4bf4-9948-858980eeb142',
-                // fat=5.300000190734863,
-                // muscleKg=46.86000061035156,
-                // visceralfat=1.0,
-                // metabolize=1438,
-                // watercontent=68.30000305175781,
-                // boneKg=2.4600000381469727,
-                // protein=21.5,
-                // nofatWeightKg=49.380001068115234,
-                // obsLevel=1,
-                // subFat=4.900000095367432,
-                // bodyAge=34,
-                // bodyScore=0,
-                // bodyType=2,
-                // standardWeightKg=68.9127,
-                // weightKg=52.15,
-                // sex=1,
-                // height=178.0,
-                // age=31,
-                // impedance=492,
-                // flag=0, timeStamp=1670314227000,
-                // scaleType='260H',
-                // scaleName='260H',
-                // bmi=16.459411690443126,
-                // standTime=0, heartRate=0,
-                // dataType=0}
-
                 PPBodyDetailModel.context = this
 
                 val ppWeightKg = DataUtil.util().weightKg       //weight
-                val impedance = DataUtil.util().impedance
+                val impedance = DataUtil.util().impedance       //3609627
 
                 val userModel1 = SettingManager.get()
                     .getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
-//
+
                 //impedance
-//                val userModel = PPUserModel.Builder()
-//                    .setSex(userModel1.sex) //gender
-//                    .setHeight(userModel1.userHeight)//height 100-220
-//                    .setAge(userModel1.age)//age 10-99
-//                    .build()
                 val userModel = PPUserModel.Builder()
-                    .setSex(PPUserGender.PPUserGenderFemale) //gender
-                    .setHeight(168)//height 100-220
-                    .setAge(18)//age 10-99
+                    .setSex(userModel1.sex) //gender
+                    .setHeight(userModel1.userHeight)//height 100-220
+                    .setAge(userModel1.age)//age 10-99
                     .build()
                 val deviceModel = PPDeviceModel(
                     "",
@@ -222,8 +188,8 @@ class MainActivity : Activity(), View.OnClickListener {
                 )//Select the corresponding Bluetooth name according to your own device
                 deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal
                 val bodyBaseModel = PPBodyBaseModel()
-                bodyBaseModel.impedance = 3609627
-                bodyBaseModel.weight = ((79.85 + 0.005) * 100).toInt()
+                bodyBaseModel.impedance = impedance
+                bodyBaseModel.weight = UnitUtil.getWeight(ppWeightKg)
                 bodyBaseModel.deviceModel = deviceModel
                 bodyBaseModel.userModel = userModel
 
@@ -232,17 +198,15 @@ class MainActivity : Activity(), View.OnClickListener {
                 DataUtil.util().bodyDataModel = fatModel
                 Log.d("liyp_", fatModel.toString())
 
-//                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
-//                startActivity(intent)
+                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
+                startActivity(intent)
 
-                val bodyIndex = BodyFatIndexUtils.getBodyIndex(
-                    fatModel, PPUnitType.Unit_KG, 2,
-                    "kg", "岁",
-                    "分"
-                )
-                Log.d("liyp_", bodyIndex.toString())
-//                PPUtil.kgToSt2LB_Point2D(33.7, 0.05)
-                PPUtil.kgToSt2LB_(29.65)
+//                val bodyIndex = BodyFatIndexUtils.getBodyIndex(
+//                    fatModel, PPUnitType.Unit_KG, 2,
+//                    "kg", "岁",
+//                    "分"
+//                )
+//                Log.d("liyp_", bodyIndex.toString())
             }
         }
     }

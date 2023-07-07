@@ -19,5 +19,13 @@ object UnitUtil {
         }
     }
 
+    /**
+     * 处理精度问题
+     */
+    @JvmStatic
+    fun getWeight(double: Double): Int {
+        return ((double + 0.005) * 100).toInt()
+    }
+
 
 }

@@ -8,11 +8,19 @@ import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.vo.*
 
-class CacluterActivitiy : Activity() {
+
+/**
+ * 2.x 连接 apple
+ * 2.x 广播 banana
+ * 3.x 连接 coconat
+ * 秤端计算 durain
+ * Torre torre
+ */
+class CalculateActivitiy : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_calculate)
 
         val ppWeightKg = 70.0       //weight
         val impedance = 2420004L     //impedance
@@ -31,7 +39,7 @@ class CacluterActivitiy : Activity() {
         bodyBaseModel.deviceModel = deviceModel
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
-        bodyBaseModel.weight = (ppWeightKg * 100).toInt()
+        bodyBaseModel.weight = UnitUtil.getWeight(ppWeightKg)
 
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
 
