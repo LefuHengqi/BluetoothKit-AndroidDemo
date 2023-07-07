@@ -241,8 +241,8 @@ class MainActivity : Activity(), View.OnClickListener {
                     "分"
                 )
                 Log.d("liyp_", bodyIndex.toString())
-                PPUtil.kgToSt2LB_Point2D(33.7, 0.05)
-                PPUtil.kgToSt2LB_(33.7)
+//                PPUtil.kgToSt2LB_Point2D(33.7, 0.05)
+                PPUtil.kgToSt2LB_(29.65)
             }
         }
     }
