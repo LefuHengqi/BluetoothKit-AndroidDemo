@@ -21,7 +21,7 @@ object FoodScaleCacluteHelper {
 //            value *= -1f
 //        }
         val type = unit
-        valueStr = if (deviceModel.deviceAccuracyType === PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G) {
+        valueStr = if (deviceModel.deviceAccuracyType == PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G) {
             //            String num = String.valueOf(value);
             val unit = Energy.toG(value, type)
             val num = unit.format01()

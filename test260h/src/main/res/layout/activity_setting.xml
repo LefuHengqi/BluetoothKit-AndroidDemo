@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:minHeight="56dp"
+        android:text="设置"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTv"
+        android:layout_marginTop="@dimen/dp_40"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="时长:   " />
+
+            <EditText
+                android:id="@+id/inputTimeEt"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:hint="时长"
+                android:inputType="number"
+                android:minHeight="50dp"
+                android:text="10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="次数:   " />
+
+            <EditText
+                android:id="@+id/inputNumberEt"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:hint="输入控制次数阈值"
+                android:inputType="number"
+                android:lines="1"
+                android:minHeight="50dp"
+                android:text="20" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="名称:   " />
+
+            <EditText
+                android:id="@+id/inputBleNameEt"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:hint="蓝牙名称"
+                android:lines="1"
+                android:maxLines="1"
+                android:minHeight="50dp"
+                android:text="260H" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rssi:   -" />
+
+            <EditText
+                android:id="@+id/inputRssiEt"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:hint="Rssi"
+                android:lines="1"
+                android:minHeight="50dp"
+                android:text="70" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

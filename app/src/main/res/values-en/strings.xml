@@ -58,5 +58,6 @@
     <string name="weigh_on_the_scale">Weigh on the body fat scale</string>
     <string name="function_list_ble">Scan list of nearby devices</string>
     <string name="current_weight">Current weight</string>
+    <string name="save">Save</string>
 
 </resources>

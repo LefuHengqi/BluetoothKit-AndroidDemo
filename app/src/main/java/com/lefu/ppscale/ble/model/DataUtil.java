@@ -14,7 +14,7 @@ public class DataUtil {
     private PPDeviceModel deviceModel;
     PPUnitType unit = PPUnitType.Unit_KG;
 
-    public int impedance = 0;
+    public long impedance = 0L;
     public double weightKg = 0;
 
     public static DataUtil util() {

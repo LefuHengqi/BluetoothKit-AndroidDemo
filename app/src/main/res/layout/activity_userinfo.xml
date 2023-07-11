@@ -266,5 +266,4 @@
         android:paddingBottom="@dimen/dimens_10dp"
         android:text="@string/save" />
 
-
 </LinearLayout>
