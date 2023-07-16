@@ -39,6 +39,4 @@ dependencies {
 
 //    api project(':ppscale')
 //    api project(':bodyindex')
-
->>>>>>> origin/data_dev
 }
