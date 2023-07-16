@@ -12,15 +12,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.lefu.base.SettingManager
-import com.lefu.bodyindex.BodyFatIndexUtils
 import com.lefu.ppscale.ble.activity.*
 import com.lefu.ppscale.ble.model.DataUtil
 import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.business.ble.PPScale
-import com.peng.ppscale.business.device.DeviceManager
-import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.data.PPBodyDetailModel
-import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -186,7 +182,7 @@ class MainActivity : Activity(), View.OnClickListener {
                     "",
                     ""
                 )//Select the corresponding Bluetooth name according to your own device
-                deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal
+                deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
                 val bodyBaseModel = PPBodyBaseModel()
                 bodyBaseModel.impedance = impedance
                 bodyBaseModel.weight = UnitUtil.getWeight(ppWeightKg)
