@@ -150,8 +150,8 @@ public class BindingDeviceActivity extends AppCompatActivity {
         startScanData();
     }
 
-    private void showDialog(final PPDeviceModel ppDeviceModel, final PPBodyFatModel bodyDataModel) {
-        String content = getString(R.string.whether_to_save_the_) + PPUtil.getWeight(bodyDataModel.scaleBaseModel.unit, bodyDataModel.getPpWeightKg(), ppDeviceModel.deviceAccuracyType.getType());
+    private void showDialog(final PPDeviceModel ppDeviceModel, final PPBodyBaseModel bodyDataModel) {
+        String content = getString(R.string.whether_to_save_the_) + PPUtil.getWeight(bodyDataModel.unit, bodyDataModel.getPpWeightKg(), ppDeviceModel.deviceAccuracyType.getType());
         if (builder == null) {
             builder = new AlertDialog.Builder(BindingDeviceActivity.this);
         }
@@ -160,10 +160,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.corfirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                saveDevice(ppDeviceModel);
-
-                DataUtil.util().setBodyDataModel(bodyDataModel);
+                saveDeviceAndBodyFat(ppDeviceModel, bodyDataModel);
 
                 Intent intent = new Intent(BindingDeviceActivity.this, BodyDataDetailActivity.class);
                 startActivity(intent);
@@ -226,11 +223,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 @Override
                 public void onBindDevice(PPDeviceModel deviceModel) {
                     if (deviceModel != null) {
-
                         //如果需要modelNumber 设备型号信息，则要主动发起连接并且见监听readDeviceInfoComplete回调里面包含ModelNumber
-//                        if (deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
-//
-//                        }
                         DeviceModel device = DBManager.manager().getDevice(deviceModel.getDeviceMac());
                         if (device == null) {
                             saveDevice(deviceModel);
@@ -246,7 +239,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 // 过程数据
                 @Override
                 public void monitorProcessData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
-                    String weightStr = PPUtil.getWeight(bodyBaseModel.scaleBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                    String weightStr = PPUtil.getWeight(bodyBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                     weightTextView.setText(weightStr);
                 }
             });
@@ -254,7 +247,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
 
                 //锁定数据
                 @Override
-                public void monitorLockData(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
+                public void monitorLockData(PPBodyBaseModel bodyFatModel, PPDeviceModel deviceModel) {
                     onDataLock(bodyFatModel, deviceModel);
                 }
 
@@ -301,25 +294,25 @@ public class BindingDeviceActivity extends AppCompatActivity {
         return protocalFilter;
     }
 
-    private void onDataLock(PPBodyFatModel bodyFatModel, PPDeviceModel deviceModel) {
-        if (bodyFatModel != null) {
-            if (!bodyFatModel.scaleBaseModel.isHeartRating) {
-                Logger.d("monitorLockData  bodyFatModel weightKg = " + bodyFatModel.toString());
+    private void onDataLock(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
+        if (bodyBaseModel != null) {
+            if (!bodyBaseModel.isHeartRating) {
+                Logger.d("monitorLockData  bodyFatModel weightKg = " + bodyBaseModel.toString());
 
                 if (ppScale != null) {
                     ppScale.stopSearch();
                 }
-                String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+                String weightStr = PPUtil.getWeight(bodyBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                 if (weightTextView != null) {
                     weightTextView.setText(weightStr);
 //                    showDialog(deviceModel, bodyFatModel);
                 }
                 if (deviceModel.deviceType == PPScaleDefine.PPDeviceType.PPDeviceTypeCC) {
                     //Bluetooth WiFi scale
-                    showWiFiConfigDialog(bodyFatModel, deviceModel);
+                    showWiFiConfigDialog(bodyBaseModel, deviceModel);
                 } else {
                     //Ordinary bluetooth scale
-                    showDialog(deviceModel, bodyFatModel);
+                    showDialog(deviceModel, bodyBaseModel);
                 }
             } else {
                 Logger.d("正在测量心率");
@@ -358,15 +351,16 @@ public class BindingDeviceActivity extends AppCompatActivity {
                         } else if (sendState == PPScaleSendState.PP_DEVICE_NO_CONNECT) {
                             //deviceNotConnected
                         }
-                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
-                            disConnect();
-                        }
+//                        if (deviceModel != null && deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+//                            disConnect();
+//                        }
                     }
                 });
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
                 if (searchType != 0 && deviceModel.isDeviceConnectAbled()) {
+                    ppScale.stopSearch();
                     ppScale.connectDevice(deviceModel);
                 } else {
                     //绑定设备时不发起连接，非可连接设备，不发起连接
@@ -447,62 +441,58 @@ public class BindingDeviceActivity extends AppCompatActivity {
         }
     }
 
-    private void showWiFiConfigDialog(final PPBodyFatModel bodyFatModel, final PPDeviceModel deviceModel) {
+    private void showWiFiConfigDialog(final PPBodyBaseModel bodyBaseModel, final PPDeviceModel deviceModel) {
         if (configWifiDialog == null) {
             configWifiDialog = new BindDeviceWiFiLockSelectConfigNetDialog();
         }
-        try {
-            Bundle bundle = new Bundle();
-            String weightStr = PPUtil.getWeight(bodyFatModel.scaleBaseModel.unit, bodyFatModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
-            bundle.putString("content", weightStr);
-            configWifiDialog.setArguments(bundle);
 
-            if (!configWifiDialog.isAdded() && !configWifiDialog.isVisible() && !configWifiDialog.isRemoving()) {
-                configWifiDialog.show(getSupportFragmentManager(), "BUNDLE_FRAGMENTS_KEY");
-                configWifiDialog.setOnSelectListener(new BindDeviceWiFiLockSelectConfigNetDialog.OnSelectListener() {
+        Bundle bundle = new Bundle();
+        String weightStr = PPUtil.getWeight(bodyBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
+        bundle.putString("content", weightStr);
+        configWifiDialog.setArguments(bundle);
 
-                    @Override
-                    public void onGoToConfigWiFi(@NotNull DialogFragment dialog) {
-                        dialog.dismiss();
-                        saveDeviceAndBodyFat(deviceModel, bodyFatModel);
+        if (!configWifiDialog.isAdded() && !configWifiDialog.isVisible() && !configWifiDialog.isRemoving()) {
+            configWifiDialog.show(getSupportFragmentManager(), "BUNDLE_FRAGMENTS_KEY");
+            configWifiDialog.setOnSelectListener(new BindDeviceWiFiLockSelectConfigNetDialog.OnSelectListener() {
+
+                @Override
+                public void onGoToConfigWiFi(@NotNull DialogFragment dialog) {
+                    dialog.dismiss();
+                    saveDeviceAndBodyFat(deviceModel, bodyBaseModel);
 //                        UnitMatchTypeHelper.setDeviceMac(deviceModel.getDeviceMac());
 
-                        if (PPScale.isBluetoothOpened()) {
-                            if (deviceModel.deviceProtocolType == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre) {
-                                //Torre Bluetooth Wifi Scale
-                                Intent intent = new Intent(BindingDeviceActivity.this, DeviceSetActivity.class);
-                                intent.putExtra("address", deviceModel.getDeviceMac());
-                                startActivity(intent);
-                            } else {
-                                //Ordinary Bluetooth WiFi Scale
-                                Intent intent = new Intent(BindingDeviceActivity.this, BleConfigWifiActivity.class);
-                                intent.putExtra("address", deviceModel.getDeviceMac());
-                                startActivity(intent);
-                            }
-                            finish();
+                    if (PPScale.isBluetoothOpened()) {
+                        if (deviceModel.deviceProtocolType == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre) {
+                            //Torre Bluetooth Wifi Scale
+                            Intent intent = new Intent(BindingDeviceActivity.this, DeviceSetActivity.class);
+                            intent.putExtra("address", deviceModel.getDeviceMac());
+                            startActivity(intent);
                         } else {
-                            PPScale.openBluetooth();
+                            //Ordinary Bluetooth WiFi Scale
+                            Intent intent = new Intent(BindingDeviceActivity.this, BleConfigWifiActivity.class);
+                            intent.putExtra("address", deviceModel.getDeviceMac());
+                            startActivity(intent);
                         }
-                    }
-
-                    @Override
-                    public void onCorfirm(@NotNull DialogFragment dialog) {
-                        saveDeviceAndBodyFat(deviceModel, bodyFatModel);
-                        dialog.dismiss();
                         finish();
+                    } else {
+                        PPScale.openBluetooth();
                     }
+                }
 
-                    @Override
-                    public void onCancle(@NotNull DialogFragment dialog) {
-                        startSearchDevice();
-                        dialog.dismiss();
-                    }
+                @Override
+                public void onCorfirm(@NotNull DialogFragment dialog) {
+                    saveDeviceAndBodyFat(deviceModel, bodyBaseModel);
+                    dialog.dismiss();
+                    finish();
+                }
 
-                });
-            }
+                @Override
+                public void onCancle(@NotNull DialogFragment dialog) {
+                    startSearchDevice();
+                    dialog.dismiss();
+                }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            });
         }
     }
 
@@ -513,10 +503,14 @@ public class BindingDeviceActivity extends AppCompatActivity {
         }
     }
 
-    private void saveDeviceAndBodyFat(PPDeviceModel ppDeviceModel, PPBodyFatModel bodyDataModel) {
+    private void saveDeviceAndBodyFat(PPDeviceModel ppDeviceModel, PPBodyBaseModel bodyBaseModel) {
         saveDevice(ppDeviceModel);
-
-        DataUtil.util().setBodyDataModel(bodyDataModel);
+        //计算体脂
+        PPUserModel userModel = DataUtil.util().getUserModel();
+        bodyBaseModel.userModel = userModel;
+        bodyBaseModel.deviceModel = ppDeviceModel;
+        PPBodyFatModel bodyFatModel = new PPBodyFatModel(bodyBaseModel);
+        DataUtil.util().setBodyDataModel(bodyFatModel);
     }
 
     private void disConnect() {

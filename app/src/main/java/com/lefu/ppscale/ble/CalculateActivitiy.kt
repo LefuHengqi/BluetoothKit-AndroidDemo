@@ -8,14 +8,22 @@ import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.vo.*
 
-class CacluterActivitiy : Activity() {
+
+/**
+ * 2.x 连接 apple
+ * 2.x 广播 banana
+ * 3.x 连接 coconat
+ * 秤端计算 durain
+ * Torre torre
+ */
+class CalculateActivitiy : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_calculate)
 
         val ppWeightKg = 70.0       //weight
-        val impedance = 2420004     //impedance
+        val impedance = 2420004L     //impedance
 
         val userModel = PPUserModel.Builder()
             .setSex(PPUserGender.PPUserGenderMale) //gender
@@ -25,7 +33,15 @@ class CacluterActivitiy : Activity() {
 
         val deviceModel = PPDeviceModel("", DeviceManager.CF568_TM_315)//Select the corresponding Bluetooth name according to your own device
         deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal)
-        val ppBodyFatModel = PPBodyFatModel(ppWeightKg, impedance, userModel, deviceModel, PPUnitType.Unit_KG)
+
+        val bodyBaseModel = PPBodyBaseModel()
+        bodyBaseModel.impedance = impedance
+        bodyBaseModel.deviceModel = deviceModel
+        bodyBaseModel.userModel = userModel
+        bodyBaseModel.unit = PPUnitType.Unit_KG
+        bodyBaseModel.weight = UnitUtil.getWeight(ppWeightKg)
+
+        val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
 
         DataUtil.util().bodyDataModel = ppBodyFatModel
         Log.d("liyp_", ppBodyFatModel.toString())

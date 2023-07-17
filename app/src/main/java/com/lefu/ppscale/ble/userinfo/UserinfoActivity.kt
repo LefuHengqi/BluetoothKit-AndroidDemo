@@ -24,7 +24,7 @@ class UserinfoActivity : Activity() {
     var unit = PPUnitType.Unit_KG
     var sex = PPUserGender.PPUserGenderMale
     var group = 0
-    var impedance = 0;
+    var impedance = 0L;
     var weightKg = 0.0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,7 +162,7 @@ class UserinfoActivity : Activity() {
             override fun afterTextChanged(s: Editable) {
                 val number = s.toString()
                 if (number.length > 0) {
-                    val impedance = number.toInt()
+                    val impedance = number.toLong()
                     this@UserinfoActivity.impedance = impedance
                 }
             }

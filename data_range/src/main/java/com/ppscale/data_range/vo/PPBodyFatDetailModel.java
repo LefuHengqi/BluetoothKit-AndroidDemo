@@ -286,7 +286,7 @@ public class PPBodyFatDetailModel {
         BodyItem subFat = new BodyItem();
         subFat.setCode(FLAG_VF_PERCENTAGE);
         subFat.setUnit("%");
-        double lfSubFat = bodyFat.getPpVFPercentage();
+        double lfSubFat = bodyFat.ppVFPercentage;
         subFat.setDataVal(String.format(Locale.UK, "%.1f", lfSubFat));
         subFat.setName(context.getString(R.string.subcutaneousFat));
         subFat.setValue(PPUtil.getWeightValue(unitType, lfSubFat));

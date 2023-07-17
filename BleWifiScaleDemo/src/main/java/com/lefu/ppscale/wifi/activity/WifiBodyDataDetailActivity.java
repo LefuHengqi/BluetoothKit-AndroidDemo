@@ -10,6 +10,7 @@ import com.lefu.ppscale.wifi.data.BodyFataDataModel;
 import com.lefu.ppscale.wifi.data.WifiDataBean;
 import com.peng.ppscale.business.device.DeviceManager;
 import com.peng.ppscale.business.device.PPUnitType;
+import com.peng.ppscale.vo.PPBodyBaseModel;
 import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPUserModel;
 
@@ -31,11 +32,14 @@ public class WifiBodyDataDetailActivity extends AppCompatActivity {
         if (wifiDataBean != null) {
             PPDeviceModel deviceModel = new PPDeviceModel(wifiDataBean.getMac(), DeviceManager.HEALTH_SCALE6);
 
-            BodyFataDataModel bodyFataDataModel = new BodyFataDataModel(wifiDataBean.getWeight(),
-                    wifiDataBean.getImpedance(),
-                    userModel,
-                    deviceModel,
-                    PPUnitType.Unit_KG);
+            PPBodyBaseModel bodyBaseModel = new PPBodyBaseModel();
+            bodyBaseModel.impedance = wifiDataBean.getImpedance();
+            bodyBaseModel.deviceModel = deviceModel;
+            bodyBaseModel.userModel = userModel;
+            bodyBaseModel.unit = PPUnitType.Unit_KG;
+            bodyBaseModel.weight = (int) (wifiDataBean.getWeight() * 100);
+
+            BodyFataDataModel bodyFataDataModel = new BodyFataDataModel(bodyBaseModel);
 
             textView.setText(bodyFataDataModel.toString());
         }

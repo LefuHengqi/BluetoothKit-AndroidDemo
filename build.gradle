@@ -6,12 +6,19 @@ buildscript {
     }
 
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+
+        maven { url "https://jitpack.io" }
+
         google()
         mavenCentral()
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.1'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // add plugin
 
@@ -22,9 +29,14 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+
+        maven { url "https://jitpack.io" }
         google()
         mavenCentral()
-//        maven { url "https://raw.githubusercontent.com/PPScale/body_sl-android-maven/master" }
     }
 }
 

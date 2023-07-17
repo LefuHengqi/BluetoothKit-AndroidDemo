@@ -79,5 +79,7 @@
     <string name="string_unit_water_ml">ml(water)</string>
     <string name="string_unit_milk">milk</string>
     <string name="string_unit_milk_ml">ml(milk)</string>
+    <string name="save">保存</string>
+    <string name="confirm">确定</string>
 
 </resources>

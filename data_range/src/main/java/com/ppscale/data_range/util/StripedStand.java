@@ -3,10 +3,8 @@ package com.ppscale.data_range.util;
 import android.content.Context;
 
 import com.peng.ppscale.util.PPUtil;
-import com.peng.ppscale.vo.PPBodyType;
+import com.peng.ppscale.vo.PPBodyDetailType;
 import com.ppscale.data_range.R;
-
-import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -1047,7 +1045,7 @@ public class StripedStand {
      * @param type
      * @return
      */
-    public static String getBodyfatType(Context mContext, PPBodyType type) {
+    public static String getBodyfatType(Context mContext, PPBodyDetailType type) {
         switch (type) {
             case LF_BODY_TYPE_THIN:             //0 偏瘦型
                 return mContext.getString(R.string.bodySlim);
