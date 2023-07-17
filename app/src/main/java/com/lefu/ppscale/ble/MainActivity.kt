@@ -174,20 +174,33 @@ class MainActivity : Activity(), View.OnClickListener {
 
                 //impedance
                 val userModel = PPUserModel.Builder()
-                    .setSex(userModel1.sex) //gender
-                    .setHeight(userModel1.userHeight)//height 100-220
-                    .setAge(userModel1.age)//age 10-99
+                    .setSex(PPUserGender.PPUserGenderFemale) //gender
+//                    .setHeight(userModel1.userHeight)//height 100-220
+                    .setHeight(165)//height 100-220
+                    .setAge(35)//age 10-99
                     .build()
                 val deviceModel = PPDeviceModel(
                     "",
                     ""
                 )//Select the corresponding Bluetooth name according to your own device
-                deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
+                deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
                 val bodyBaseModel = PPBodyBaseModel()
-                bodyBaseModel.impedance = impedance
-                bodyBaseModel.weight = UnitUtil.getWeight(ppWeightKg)
+//                bodyBaseModel.impedance = impedance
+//                bodyBaseModel.weight = UnitUtil.getWeight(ppWeightKg)
+                bodyBaseModel.weight = 6060
                 bodyBaseModel.deviceModel = deviceModel
                 bodyBaseModel.userModel = userModel
+
+                bodyBaseModel.z100KhzLeftArmEnCode = 1370792950;
+                bodyBaseModel.z100KhzLeftLegEnCode = 275323610;
+                bodyBaseModel.z100KhzRightArmEnCode = 301658366;
+                bodyBaseModel.z100KhzRightLegEnCode = 1369483720;
+                bodyBaseModel.z100KhzTrunkEnCode = 547492319;
+                bodyBaseModel.z20KhzLeftArmEnCode = 1353587352;
+                bodyBaseModel.z20KhzLeftLegEnCode = 1373944131;
+                bodyBaseModel.z20KhzRightArmEnCode = 1343035392;
+                bodyBaseModel.z20KhzRightLegEnCode = 815402052;
+                bodyBaseModel.z20KhzTrunkEnCode = 1893033481;
 
                 val fatModel = PPBodyFatModel(bodyBaseModel)
 
