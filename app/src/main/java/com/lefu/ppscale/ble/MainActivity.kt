@@ -172,35 +172,80 @@ class MainActivity : Activity(), View.OnClickListener {
                 val userModel1 = SettingManager.get()
                     .getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
 
+                //PPBodyBaseModel(weight=8195,
+//                impedance=0,
+//                ppZTwoLegs=0,
+//                deviceModel=PPDeviceModel{deviceMac=CF:E7:04:10:00:13
+//                , deviceName=CF577
+//                , scaleType=null
+//                , devicePower=64
+//                , rssi=-60
+//                , firmwareVersion=115.133.007.417
+//                , hardwareVersion=V1.1
+//                , serialNumber=CFE704100013
+//                , modelNumber=null
+//                , deviceType=PPDeviceTypeCF
+//                , deviceProtocolType=PPDeviceProtocolTypeTorre
+//                , deviceCalcuteType=PPDeviceCalcuteTypeAlternate8
+//                , deviceAccuracyType=PPDeviceAccuracyTypePoint005
+//                , devicePowerType=PPDevicePowerTypeCharge
+//                , deviceConnectType=PPDeviceConnectTypeDirect
+//                , deviceFuncType=223
+//                , deviceUnitType=0
+//                , deviceConnectAbled=true
+//                , mtu=241
+//                , illumination=-1
+//                },
+//                userModel=PPUserModel{userHeight=168, age=18, sex=PPUserGenderFemale, groupNum=0, isAthleteMode=false, isPregnantMode=false, userID='b49c484c-3f21-4f6b-86ac-23d22af802f3', memberID='b753771f-1cf3-4984-8a15-9c3262b3643f', userName='哈哈', deviceHeaderIndex=0, weightKg=0.0, targetWeight=61.3872, ideaWeight=58.8, userWeightArray=null, userWeightTimeArray=null},
+//                isHeartRating=true,
+//                isFatting=false,
+//                isEnd=true, unit=Unit_KG,
+//                heartRate=0,
+//                isOverload=false,
+//                isPlus=true,
+//                dateStr='',
+//                memberId='',
+//                z100KhzLeftArmEnCode=1349413211,
+//                z100KhzLeftLegEnCode=537517742,
+//                z100KhzRightArmEnCode=1346231752,
+//                z100KhzRightLegEnCode=1088034268,
+//                z100KhzTrunkEnCode=1075909621,
+//                z20KhzLeftArmEnCode=545129035,
+//                z20KhzLeftLegEnCode=553605803,
+//                z20KhzRightArmEnCode=853251,
+//                z20KhzRightLegEnCode=837067472,
+//                z20KhzTrunkEnCode=14200485)
+
                 //impedance
                 val userModel = PPUserModel.Builder()
                     .setSex(PPUserGender.PPUserGenderFemale) //gender
 //                    .setHeight(userModel1.userHeight)//height 100-220
-                    .setHeight(165)//height 100-220
-                    .setAge(35)//age 10-99
+                    .setHeight(168)//height 100-220
+                    .setAthleteMode(false)//height 100-220
+                    .setAge(18)//age 10-99
                     .build()
                 val deviceModel = PPDeviceModel(
                     "",
-                    ""
+                    "CF577"
                 )//Select the corresponding Bluetooth name according to your own device
                 deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
                 val bodyBaseModel = PPBodyBaseModel()
 //                bodyBaseModel.impedance = impedance
 //                bodyBaseModel.weight = UnitUtil.getWeight(ppWeightKg)
-                bodyBaseModel.weight = 6060
+                bodyBaseModel.weight = 8195
                 bodyBaseModel.deviceModel = deviceModel
                 bodyBaseModel.userModel = userModel
 
-                bodyBaseModel.z100KhzLeftArmEnCode = 1370792950;
-                bodyBaseModel.z100KhzLeftLegEnCode = 275323610;
-                bodyBaseModel.z100KhzRightArmEnCode = 301658366;
-                bodyBaseModel.z100KhzRightLegEnCode = 1369483720;
-                bodyBaseModel.z100KhzTrunkEnCode = 547492319;
-                bodyBaseModel.z20KhzLeftArmEnCode = 1353587352;
-                bodyBaseModel.z20KhzLeftLegEnCode = 1373944131;
-                bodyBaseModel.z20KhzRightArmEnCode = 1343035392;
-                bodyBaseModel.z20KhzRightLegEnCode = 815402052;
-                bodyBaseModel.z20KhzTrunkEnCode = 1893033481;
+                bodyBaseModel.z100KhzLeftArmEnCode = 1349413211;
+                bodyBaseModel.z100KhzLeftLegEnCode = 537517742;
+                bodyBaseModel.z100KhzRightArmEnCode = 1346231752;
+                bodyBaseModel.z100KhzRightLegEnCode = 1088034268;
+                bodyBaseModel.z100KhzTrunkEnCode = 1075909621;
+                bodyBaseModel.z20KhzLeftArmEnCode = 545129035;
+                bodyBaseModel.z20KhzLeftLegEnCode = 553605803;
+                bodyBaseModel.z20KhzRightArmEnCode = 853251;
+                bodyBaseModel.z20KhzRightLegEnCode = 837067472;
+                bodyBaseModel.z20KhzTrunkEnCode = 14200485;
 
                 val fatModel = PPBodyFatModel(bodyBaseModel)
 
