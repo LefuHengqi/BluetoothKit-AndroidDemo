@@ -186,7 +186,8 @@ class MainActivity : Activity(), View.OnClickListener {
                 DataUtil.util().bodyDataModel = fatModel
                 Log.d("liyp_", fatModel.toString())
 
-                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
+                val intent = Intent(this@MainActivity, Calculate8Activitiy::class.java)
+//                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
                 startActivity(intent)
             }
         }
