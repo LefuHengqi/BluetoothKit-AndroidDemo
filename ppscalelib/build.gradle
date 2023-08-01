@@ -33,7 +33,7 @@ android {
 
 dependencies {
     //aar introduce
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-//    api project(':ppscale')
+//    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    api project(':ppscale')
 //    api project(':bodyindex')
 }
