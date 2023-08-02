@@ -16,6 +16,7 @@ import com.lefu.ppscale.ble.activity.*
 import com.lefu.ppscale.ble.model.DataUtil
 import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.peng.ppscale.business.ble.PPScale
+import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.data.PPBodyDetailModel
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -169,19 +170,10 @@ class MainActivity : Activity(), View.OnClickListener {
                 val ppWeightKg = DataUtil.util().weightKg       //weight
                 val impedance = DataUtil.util().impedance       //3609627
 
-                val userModel1 = SettingManager.get()
+                val userModel = SettingManager.get()
                     .getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
 
-                //impedance
-                val userModel = PPUserModel.Builder()
-                    .setSex(userModel1.sex) //gender
-                    .setHeight(userModel1.userHeight)//height 100-220
-                    .setAge(userModel1.age)//age 10-99
-                    .build()
-                val deviceModel = PPDeviceModel(
-                    "",
-                    ""
-                )//Select the corresponding Bluetooth name according to your own device
+                val deviceModel = PPDeviceModel("", DeviceManager.CF568)    //Select the corresponding Bluetooth name according to your own device
                 deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
                 val bodyBaseModel = PPBodyBaseModel()
                 bodyBaseModel.impedance = impedance
@@ -194,15 +186,9 @@ class MainActivity : Activity(), View.OnClickListener {
                 DataUtil.util().bodyDataModel = fatModel
                 Log.d("liyp_", fatModel.toString())
 
-                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
+                val intent = Intent(this@MainActivity, Calculate8Activitiy::class.java)
+//                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
                 startActivity(intent)
-
-//                val bodyIndex = BodyFatIndexUtils.getBodyIndex(
-//                    fatModel, PPUnitType.Unit_KG, 2,
-//                    "kg", "岁",
-//                    "分"
-//                )
-//                Log.d("liyp_", bodyIndex.toString())
             }
         }
     }

@@ -693,8 +693,13 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
     PPTorreDeviceModeChangeInterface modeChangeInterface = new PPTorreDeviceModeChangeInterface() {
 
+        /**
+         *
+         * @param ssid
+         * @param state 0 成功 1失败
+         */
         @Override
-        public void readDeviceSsidCallBack(String ssid) {
+        public void readDeviceSsidCallBack(String ssid, int state) {
             if (TextUtils.isEmpty(ssid)) {
                 weightTextView.setText("未配网");
             } else {
@@ -715,8 +720,12 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
     OnOTAStateListener onOTAStateListener = new OnOTAStateListener() {
 
+        /**
+         *
+         * @param state 0普通的失败 1设备已在升级中不能再次启动升级 2设备低电量无法启动升级
+         */
         @Override
-        public void onUpdateFail() {
+        public void onUpdateFail(int state) {
             Toast.makeText(DeviceSetActivity.this, "升级失败", Toast.LENGTH_SHORT).show();
         }
 

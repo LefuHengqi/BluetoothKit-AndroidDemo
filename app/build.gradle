@@ -21,6 +21,7 @@ android {
         exclude 'res/values/values.xml'
         exclude 'META-INF/proguard/coroutines.pro'
         exclude 'META-INF/body_sl_release.kotlin_module'
+        exclude 'META-INF/body_sl_release.kotlin_module'
         exclude 'AndroidManifest.xml'
         //直流秤
         pickFirst 'lib/armeabi-v7a/libsl.so'

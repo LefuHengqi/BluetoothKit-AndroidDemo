@@ -52,7 +52,7 @@ public class OTAActivity extends AppCompatActivity {
         otaManager = OTAManager.getInstance();
         otaManager.addOnOtaStateListener(new OnOTAStateListener() {
             @Override
-            public void onUpdateFail() {
+            public void onUpdateFail(int state) {
                 isUpgradeSuccess = false;
                 Logger.e("ota is fail");
                 weightTextView.setText("ota is fail");

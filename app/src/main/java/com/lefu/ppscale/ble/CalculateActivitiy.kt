@@ -23,7 +23,7 @@ class CalculateActivitiy : Activity() {
         setContentView(R.layout.activity_calculate)
 
         val ppWeightKg = 70.0       //weight
-        val impedance = 2420004L     //impedance
+        val impedance = 4195332L     //impedance
 
         val userModel = PPUserModel.Builder()
             .setSex(PPUserGender.PPUserGenderMale) //gender
@@ -32,7 +32,7 @@ class CalculateActivitiy : Activity() {
             .build()
 
         val deviceModel = PPDeviceModel("", DeviceManager.CF568_TM_315)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal)
+        deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate)
 
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.impedance = impedance
