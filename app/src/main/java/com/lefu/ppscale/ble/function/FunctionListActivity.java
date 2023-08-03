@@ -1,6 +1,7 @@
 package com.lefu.ppscale.ble.function;
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothClass;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -104,7 +105,7 @@ public class FunctionListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(address)) {
                     DeviceModel device = DBManager.manager().getDevice(address);
-                    if (device != null && device.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
+                    if (isFuncTypeWifi(device)) {
                         if (PPScale.isBluetoothOpened()) {
                             Intent intent = new Intent(FunctionListActivity.this, BleConfigWifiActivity.class);
                             intent.putExtra("address", address);
@@ -137,6 +138,21 @@ public class FunctionListActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    /**
+     * 是否支持Wifi
+     *
+     * @param device
+     * @return
+     */
+    public boolean isFuncTypeWifi(DeviceModel device) {
+        if (device != null) {
+            return (device.getDeviceFuncType() & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeWifi.getType())
+                    == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeWifi.getType();
+        } else {
+            return false;
+        }
     }
 
     private void showDialog() {
