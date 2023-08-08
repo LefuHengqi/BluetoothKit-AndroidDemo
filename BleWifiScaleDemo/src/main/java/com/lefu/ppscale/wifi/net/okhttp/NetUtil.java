@@ -4,14 +4,19 @@ import com.lefu.ppscale.wifi.BuildConfig;
 
 public class NetUtil {
 
+    /**
+     * http='https://healthu.lefuenergy.com',
+     * ws='ws://120.79.144.170:8081',
+     * scaleHttp='http://120.79.144.170:8288'
+     */
+
     /***前面的链接地址***/
     public static String GET_URL() {
         String url = null;
         if (!BuildConfig.DEBUG) {
-            url = "https://api.lefuenergy.com";   // 线上正式服务器
+            url = "https://healthu.lefuenergy.com";   // 线上正式服务器
         } else {
-//            url = "http://healthy.iboohee.com";   // 线上正式服务器
-            url = "http://192.168.8.197:6032";   // 内网测试服务器
+            url = "https://healthu.lefuenergy.com";   // 线上正式服务器
         }
         return url;
     }
@@ -22,10 +27,8 @@ public class NetUtil {
     public static String GET_SCALE_WEIGHTS = GET_URL() + "/lefu/wifi/app/getScaleWeights";
     //保存用户wifi组
     public static String SAVE_WIFI_GROUP = GET_URL() + "/lefu/wifi/app/saveWifiGroup";
-
-
-
-
+    //下发给秤的域名，用于秤访问服务器；自己项目中，请使用你自己的
+    public static String SCALE_DOMAIN = "http://120.79.144.170:8288";
 
 
 }

@@ -28,6 +28,7 @@ import com.lefu.ppscale.wifi.net.okhttp.vo.SaveWifiGroupBean;
 import com.lefu.ppscale.wifi.util.WifiUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
+import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface;
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
@@ -60,8 +61,11 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     private static PreviewHandler mHandler;
     private TextView tvHint;
     private TextView tvOthers;
+    private TextView snTv;
     private String address;
     private String ssid;
+
+    String scaleDomain = NetUtil.SCALE_DOMAIN;
     private TextView tvNext;
 
     @Override
@@ -95,15 +99,17 @@ public class BleConfigWifiActivity extends AppCompatActivity {
         tvNext = findViewById(R.id.tvNext);
         etWifiName = findViewById(R.id.etWifiName);
         etWifiKey = findViewById(R.id.etWifiKey);
+        snTv = findViewById(R.id.snTv);
         if (etWifiName != null) {
             etWifiName.setText("");
             etWifiName.setKeyListener(null);
         }
-
         findViewById(R.id.tvNext).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startConfigWifi();
+                if (!is2_4G) {
+                    startNextStep();
+                }
             }
         });
 
@@ -121,17 +127,9 @@ public class BleConfigWifiActivity extends AppCompatActivity {
         tvNext.setEnabled(true);
     }
 
-    /**
-     * wifi密码为空时，提醒
-     */
-    private void startConfigWifi() {
-        if (!is2_4G) {
-            startNextStep();
-        }
-    }
-
     private void startNextStep() {
         tvNext.setEnabled(false);
+        snTv.setText("");
         ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
         protocalFilter.setConfigWifiInterface(new PPConfigWifiInterface() {
 
@@ -147,7 +145,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                 Logger.e("xxxxxxxxxxxx-" + sn);
                 Logger.e("xxxxxxxxxxxx-deviceName = " + deviceModel.getDeviceName() + " mac = " + deviceModel.getDeviceMac());
                 stopPPScale();
-
+                snTv.setText("sn:" + sn);
                 Map<String, String> map = new HashMap<>();
                 map.put("sn", sn);
                 map.put("uid", SettingManager.get().getUid());
@@ -176,6 +174,32 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+            }
+        });
+        protocalFilter.setConfigWifiInfoInterface(new PPConfigWifiInfoInterface() {
+            @Override
+            public void monitorConfigSn(String sn, PPDeviceModel deviceModel) {
+
+            }
+
+            @Override
+            public void monitorConfigSsid(String ssid, PPDeviceModel deviceModel) {
+            }
+
+            @Override
+            public void monitorConfigPassword(String password, PPDeviceModel deviceModel) {
+            }
+
+            @Override
+            public void monitorModifyServerDNSSuccess() {
+                Logger.d("DNS下发成功，开始下发配网");
+                //wifi秤配网
+                startConfigWifi(null);
+            }
+
+            @Override
+            public void monitorModifyServerIpSuccess() {
 
             }
         });
@@ -215,7 +239,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                 Logger.d(getString(R.string.scanning));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 Logger.d(getString(R.string.Writable));
-                startConfiWifi(null);
+                sendModifyServerDNS();
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
             }
@@ -238,11 +262,22 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     /**
      * 绑定时请确保WIFI是2.4G，并且账号密码正确
      */
-    private void startConfiWifi(PPBleSendResultCallBack sendResultCallBack) {
+    private void startConfigWifi(PPBleSendResultCallBack sendResultCallBack) {
         ssid = etWifiName.getText().toString();
         String password = etWifiKey.getText().toString();
         if (ppScale != null) {
             ppScale.configWifi(ssid, password, sendResultCallBack);
+        }
+    }
+
+    /**
+     * 配置dns
+     */
+    private void sendModifyServerDNS() {
+        if (ppScale != null && !TextUtils.isEmpty(scaleDomain)) {
+            ppScale.sendModifyServerDNS(scaleDomain);
+        } else {
+            startConfigWifi(null);
         }
     }
 
