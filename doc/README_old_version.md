@@ -1,13 +1,12 @@
-[English Docs](doc/README_EN.md)  |  [中文文档](README.md)
+[English Docs](doc/README-en.md)  |  [中文文档](README.md)
+## [PPScale iOS SDK](https://gitee.com/pengsiyuan777/ppscale-demo-ios)
 
-## [PPScale iOS SDK](https://gitee.com/shenzhen-lfscale/bluetooth-kit-iosdemo)
-
-# PPScale Android SDK
+# PPScale Android SDK 
 
 ## -LF蓝牙秤/食物秤/WiFi秤
 
 ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时候，请采用从maven下载的库的集成方式集成。建议开发者查看README.md文档，完成集成。
-
+        
 ### Ⅰ. 集成方式
 
 #### sdk引入方式
@@ -29,23 +28,25 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
 
 #### 1.1.2 蓝牙权限相关约定
 
-使用Demo过程中需要您打开蓝牙，打开定位开关，需确保开启和授权相关必要的权限
+使用Demo过程中需要您打开蓝牙，打开GPS开关，需确保开启和授权相关必要的权限
 
 ##### 1.1.2.1 在Android 6.0及以上系统版本，
 
-1、定位权限
-2、定位开关  
-3、蓝牙开关
+  1、定位权限  
+  2、定位开关  
+  3、蓝牙开关
 
 ##### 1.1.2.2 在Android 12.0及以上系统版本，启动扫描前，需确保开启和授权相关必要的权限
 
-可以查看官方蓝牙权限文档，文档地址：[Google开发者网站关于Bluetooth permissions说明](https://developer.android.com/guide/topics/connectivity/bluetooth/permissions).
-
-1、定位权限
-2、定位开关  
-3、蓝牙开关
-4、扫描和连接附近的设备
-
+  可以查看官方蓝牙权限文档，文档地址：[Google开发者网站关于Bluetooth permissions说明](https://developer.android.com/guide/topics/connectivity/bluetooth/permissions).
+  
+  1、定位权限
+  2、定位开关  
+  3、蓝牙开关
+  4、扫描和连接附近的设备
+   
+   
+    targetSdkVersion 31
     <manifest>
        <!-- Request legacy Bluetooth permissions on older devices. -->
        <uses-permission android:name="android.permission.BLUETOOTH"
@@ -74,27 +75,24 @@ ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时
 
 #### 1.1.3 测量身体数据相关约定
 
-如果需要体重值以外的体脂信息需要输入身高、年龄、性别并且光脚上秤。
+   如果需要体重值以外的信息需要输入身高、年龄、性别并且光脚上秤。
+
 
 ### 1.2 主页功能说明
 
-#### 1.2.1 oldVersionSDK
+#### 1.2.1 用户信息编辑
 
-[Old Version SDK English Docs](doc/README_old_version_en.md)  |  [Old Version SDK 中文文档](doc/README_old_version.md)
-
-#### 1.2.2 Caclulate - CalculateManagerActivity
-
-根据蓝牙协议解析出的体重、阻抗，加上用户数据的身高、年龄、性别，计算出体脂率等多项体脂参数信息。
-
-##### 1.2.2.1 8电极交流体脂计算 - 8AC - Calculate8Activitiy
+用户信息编辑 - 输入用户身高，年龄、性别以及体重单位，如果秤支持孕妇模式和运动员模式也可开启
 
 可输入的内容:
 
     身高的取值范围：30-220厘米；
     年龄的取值范围：10-99岁；
+    体重单位 0代表千克，1代表斤，2代表镑；
     性别 1代表男，0代表女；
-    体重：可输入0-220kg
-    10个身体各个部位的阻抗值：请根据秤返回的阻抗进行输入
+    用户组取值范围 0-9（特定的秤需要这个值）
+    孕妇模式 1开启 0关闭(需要秤支持)
+    运动员模式1开启 0关闭(需要秤支持)
 
 PPUserModel参数说明：
 
@@ -102,59 +100,38 @@ PPUserModel参数说明：
     userHeight范围是100-220cm
     age年龄 范围是10-99
     sex 性别 0为女 1为男
+    isAthleteMode;//运动员模式 false为正常 true开启(需要秤支持)
+    isPregnantMode;//孕妇模式 false为正常 true开启(需要秤支持)
 
-PPDeviceModel参数配置：
+#### 1.2.2 绑定设备
 
-    //8电极计算类型
-    deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+绑定设备 - 在这个控制器在被实例化后会开始扫描附近的外设，并将您的外设做一个记录。
+        - 在“绑定设备”页面绑定成功后，会自动跳转到设备管理列表页面
+        - 体脂秤和食物秤都在此绑定
 
-##### 1.2.2.2 4电极直流体脂计算 - 4DC - Calculate4DCActivitiy
+#### 1.2.3 体脂秤称重
 
-可输入的内容:
+体脂秤称重 - 这个控制器在被实例化后也会开始扫描附近的外设，通过过滤去连接已绑定过的设备。所以只有被绑定过后才能去进行上秤称重，否则无法接收到数据。
+        - 在“体脂秤称重”页面接收到锁定数据后，会自动跳转到数据详情页面
+	
+#### 1.2.3 食物秤称重	
 
-    身高的取值范围：30-220厘米；
-    年龄的取值范围：10-99岁；
-    性别 1代表男，0代表女；
-    体重：可输入0-220kg
-    双脚阻抗值：请根据秤返回的阻抗进行输入
+食物秤称重 - 扫描和连接已经绑定的食物秤，接收和解析重量数据的示例
+	
+#### 1.2.4 设备管理
 
-PPUserModel参数说明：
+设备管理 - 这个控制器会用列表的方式展示你在“绑定设备”页面绑定的外设。你可以通过长按的方式去删除已绑定设备。
+    -这里面同时包含了体脂秤和食物秤
 
-    userHeight、age、sex必须是真实的 
-    userHeight范围是100-220cm
-    age年龄 范围是10-99
-    sex 性别 0为女 1为男
+#### 1.2.5 模拟体脂计算
 
-PPDeviceModel参数配置：
+模拟体脂计算 - 根据蓝牙协议解析出的体重、阻抗，加上用户数据的身高、年龄、性别，计算出体脂率等多项体脂参数信息。
+            
+#### 1.2.6 扫描附近设备列表
 
-    //4电极直流计算类型
-     deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect)
+扫描附近设备列表 - 附近体脂秤的列表，可以设置扫描时间和过滤信号强度，可以选则某个设备进行连接和称重
+    -该功能只针对体脂秤
 
-##### 1.2.2.3 4电极交流流体脂计算 - 4AC - Calculate4ACActivitiy
-
-可输入的内容:
-
-    身高的取值范围：30-220厘米；
-    年龄的取值范围：10-99岁；
-    性别 1代表男，0代表女；
-    体重：可输入0-220kg
-    双脚阻抗值：请根据秤返回的阻抗进行输入
-
-PPUserModel参数说明：
-
-    userHeight、age、sex必须是真实的 
-    userHeight范围是100-220cm
-    age年龄 范围是10-99
-    sex 性别 0为女 1为男
-
-PPDeviceModel参数配置：
-
-    //4电极交流计算类型
-    deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate)
-
-#### 1.2.3 Device 扫描周围支持的设备-ScanDeviceListActivity
-
-扫描附近设备列表 - 附近体脂秤的列表，可以选则某个设备进行连接和其他功能使用示例
 
 ### Ⅲ .PPScale在蓝牙设备的使用
 
@@ -197,8 +174,8 @@ PPDeviceModel参数配置：
                    ppScale.startSearchBluetoothScaleWithMacAddressList();
                }
 
-注意：如果需要自动循环扫描，需要在lockedData()后重新调用
-
+注意：如果需要自动循环扫描，需要在lockedData()后重新调用 
+    
     ppScale.startSearchBluetoothScaleWithMacAddressList()
 
 #### 1.2 体脂秤
@@ -234,12 +211,12 @@ PPDeviceModel参数配置：
             Logger.e("over weight ");
         }
     });
-
+    
 ##### 1.2.2  历史数据
 
 需要先使用“绑定设备”功能绑定对应的设备，然后再读取“历史数据”，具体参考：ReadHistoryListActivity.java
 入口是在设备管理，选则一个设备，然后会有“读取历史数据”功能，使用前请确保你的秤支持历史数据
-
+    	
 ###### 1.2.2.1  读取历史数据
 
      //直接读取历史数据，需要传入要读取的秤
@@ -263,9 +240,9 @@ PPDeviceModel参数配置：
             tv_starts.setText("请先绑定设备");
         }
     }
-
-###### 1.2.2.2  历史数据回调
-
+    
+###### 1.2.2.2  历史数据回调       
+        
      final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
      protocalFilter.setPPHistoryDataInterface(new PPHistoryDataInterface() {
          @Override
@@ -301,9 +278,9 @@ PPDeviceModel参数配置：
 
          }
      });
-
-###### 1.2.2.3  删除历史数据
-
+     
+###### 1.2.2.3  删除历史数据   
+        
      //删除历史
      if (ppScale != null) {
          ppScale.deleteHistoryData();
@@ -312,7 +289,6 @@ PPDeviceModel参数配置：
 #### 1.3 食物秤
 
 ##### 1.3.1  接收和解析数据
-
     示例代码：FoodSclaeDeviceActivity.java
     final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
     protocalFilter.setFoodScaleDataProtocoInterface(new FoodScaleDataProtocoInterface() {
@@ -338,9 +314,9 @@ PPDeviceModel参数配置：
             }
         }
     });
-
-##### 1.3.2 单位转换示例：
-
+    
+##### 1.3.2  单位转换示例：
+    
     @NonNull
     private String getValue(final LFFoodScaleGeneral foodScaleGeneral, PPDeviceModel deviceModel) {
         String valueStr = "";
@@ -374,6 +350,7 @@ PPDeviceModel参数配置：
         }
         return valueStr;
     }
+    
 
 ##### 1.3.3 单位枚举类 PPUnitType
 
@@ -403,9 +380,8 @@ PPDeviceModel参数配置：
 ##### 1.3.7 使用食物秤在不需要连接时，需要手动断开连接
 
        PPScale.disConnect()
-
+       
 ##### 1.3.8 单位精度
-
     enum class PPDeviceAccuracyType {
         PPDeviceAccuracyTypeUnknow(0),//未知精度
         //KG精度0.1
@@ -429,7 +405,7 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 体脂秤的重量值对应的单位是KG,食物秤的重量值对应的单位是g，重量值对应的单位是固定的。（这里的单位与PPScale给的单位不是同步的，PPScale给的单位是当前秤端的单位）
 
 ##### 1.4.3  食物秤与体脂秤的标识
-
+     
      /**
       * 设备类型
       */
@@ -456,7 +432,7 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 
 #### 1.6 [闭目单脚](#闭目单脚模式)
 
-### IV .WiFi功能
+### IV .WiFi秤
 
 #### 1.1 注意事项
 
@@ -468,7 +444,6 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 4、确保秤端使用的Server地址与App使用的Server地址对应
 
 #### 1.2 WiFi配网的基本流程
-
 蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
 
 1、首先确保已经绑定了蓝牙WiFi秤
@@ -492,258 +467,125 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 设备配置页面可以查看当前设备的SN,SSID,PASSWORD、修改秤的服务端DNS地址、清除当前秤的SSID,
 对应的代码是在DeveloperActivity.class下。
 
+
 ### V .实体类对象及具体参数说明
 
-#### 1.1 数据对象PPBodyFatModel 参数说明
+#### 1.1 数据对象实例化方式 PPBodyFatModel
 
-    //用于存储计算所必须的参数
-    var ppBodyBaseModel: PPBodyBaseModel? = null
-    var ppSDKVersion: String? = null//计算库版本号
+如果是自行解析蓝牙协议数据的，需要实例化该类，来获取对应的其他身体数据，
 
-    // 性别
-    var ppSex: PPUserGender = ppBodyBaseModel?.userModel?.sex ?: PPUserGender.PPUserGenderFemale
+##### 1.1.1 数据对象PPBodyFatModel 初始化
 
-    // 身高(cm)
-    var ppHeightCm: Int = ppBodyBaseModel?.userModel?.userHeight ?: 100
+    /**
+     * 称重
+     *
+     * @param ppWeightKg 体重 必传
+     * @param scaleType  设备类型 {@link com.peng.ppscale.business.device.PPDeviceType#PPDeviceTypeBodyFat} 非必传
+     * @param userModel  用户信息 测脂肪数据必传{@link PPUserModel}
+     * @param scaleName  蓝牙秤名称 非必传
+     */
+    public PPBodyFatModel(double ppWeightKg, String scaleType, PPUserModel userModel, String scaleName) {
+        super(ppWeightKg, scaleType, userModel, scaleName);
+    }
 
-    // 年龄(岁)
-    var ppAge: Int = ppBodyBaseModel?.userModel?.age ?: 0
+    /**
+     * 测脂
+     *
+     * @param ppWeightKg 体重 必传
+     * @param impedance  加密阻抗 测脂肪数据必传
+     * @param scaleType  设备类型 {@link com.peng.ppscale.business.device.PPDeviceType#PPDeviceTypeBodyFat} 非必传
+     * @param userModel  用户信息 测脂肪数据必传{@link PPUserModel}
+     * @param scaleName  蓝牙秤名称 非必传
+     */
+    public PPBodyFatModel(double ppWeightKg, int impedance, String scaleType, PPUserModel userModel, String scaleName) {
+        super(ppWeightKg, impedance, scaleType, userModel, scaleName, PPUnitType.Unit_KG);
+    }
 
-    // 体脂错误类型
-    var errorType: BodyFatErrorType = BodyFatErrorType.PP_ERROR_TYPE_NONE
+##### 1.1.2 数据对象PPBodyFatModel 参数说明
 
-    // 数据区间范围和介绍描述
-    var bodyDetailModel: PPBodyDetailModel? = null
-
-    /**************** 四电极算法 ****************************/
-    // 体重(kg)
-    var ppWeightKg: Float = (ppBodyBaseModel?.weight?.toFloat() ?: 0.0f).div(100.0f)
-
-    var ppWeightKgList: List<Float>? = null
-
-    // Body Mass Index
-    var ppBMI: Float = 0f
-    var ppBMIList: List<Float>? = null
-
-    // 脂肪率(%)
-    var ppFat: Float = 0f
-    var ppFatList: List<Float>? = null
-
-    // 脂肪量(kg)
-    var ppBodyfatKg: Float = 0f
-    var ppBodyfatKgList: List<Float>? = null
-
-    // 肌肉率(%)
-    var ppMusclePercentage: Float = 0f
-    var ppMusclePercentageList: List<Float>? = null
-
-    // 肌肉量(kg)
-    var ppMuscleKg: Float = 0f
-    var ppMuscleKgList: List<Float>? = null
-
-    // 骨骼肌率(%)
-    var ppBodySkeletal: Float = 0f
-    var ppBodySkeletalList: List<Float>? = null
-
-    // 骨骼肌量(kg)
-    var ppBodySkeletalKg: Float = 0f
-    var ppBodySkeletalKgList: List<Float>? = null
-
-    // 水分率(%), 分辨率0.1,
-    var ppWaterPercentage: Float = 0f
-    var ppWaterPercentageList: List<Float>? = null
-
-    //水分量(Kg)
-    var ppWaterKg: Float = 0f
-    var ppWaterKgList: List<Float>? = null
-
-    // 蛋白质率(%)
-    var ppProteinPercentage: Float = 0f
-    var ppProteinPercentageList: List<Float>? = null
-
-    //蛋白质量(Kg)
-    var ppProteinKg: Float = 0f
-    var ppProteinKgList: List<Float>? = null
-
-    // 去脂体重(kg)
-    var ppLoseFatWeightKg: Float = 0f
-    var ppLoseFatWeightKgList: List<Float>? = null
-
-    // 皮下脂肪率(%)
-    var ppBodyFatSubCutPercentage: Float = 0f
-    var ppBodyFatSubCutPercentageList: List<Float>? = null
-
-    // 皮下脂肪量
-    var ppBodyFatSubCutKg: Float = 0f
-    var ppBodyFatSubCutKgList: List<Float>? = null
-
-    // 心律(bmp)
-    var ppHeartRate: Int = ppBodyBaseModel?.heartRate ?: 0
-    var ppHeartRateList: List<Float>? = null
-
-    // 基础代谢
-    var ppBMR: Int = 0
-    var ppBMRList: List<Float>? = null
-
-    // 内脏脂肪等级
-    var ppVisceralFat: Int = 0
-    var ppVisceralFatList: List<Float>? = null
-
-    // 骨量(kg)
-    var ppBoneKg: Float = 0f
-    var ppBoneKgList: List<Float>? = null
-
-    // 肌肉控制量(kg)
-    var ppBodyMuscleControl: Float = 0f
-
-    // 脂肪控制量(kg)
-    var ppFatControlKg: Float = 0f
-
-    // 标准体重
-    var ppBodyStandardWeightKg: Float = 0f
-
-    // 理想体重(kg)
-    var ppIdealWeightKg: Float = 0f
-
-    // 控制体重(kg)
-    var ppControlWeightKg: Float = 0f
-
-    // 身体类型
-    var ppBodyType: PPBodyDetailType? = null
-
-    // 肥胖等级
-    var ppFatGrade: PPBodyFatGrade? = null
-    var ppFatGradeList: List<Float>? = null
-
-    // 健康评估
-    var ppBodyHealth: PPBodyHealthAssessment? = null
-    var ppBodyHealthList: List<Float>? = null
-
-    // 身体年龄
-    var ppBodyAge: Int = 0
-    var ppBodyAgeList: List<Float>? = null
-
-    // 身体得分
-    var ppBodyScore: Int = 0
-    var ppBodyScoreList: List<Float>? = null
-
-    /**************** 八电极算法独有 ****************************/
-
-    // 輸出參數-全身体组成:身体细胞量(kg)
-    var ppCellMassKg: Float = 0.0f
-    var ppCellMassKgList: List<Float> = listOf()
-
-    // 輸出參數-评价建议:建议卡路里摄入量 Kcal/day
-    var ppDCI: Int = 0
-
-    // 輸出參數-全身体组成:无机盐量(Kg)
-    var ppMineralKg: Float = 0.0f
-    var ppMineralKgList: List<Float> = listOf()
-
-    // 輸出參數-评价建议: 肥胖度(%)
-    var ppObesity: Float = 0.0f
-    var ppObesityList: List<Float> = listOf()
-
-    // 輸出參數-全身体组成:细胞外水量(kg)
-    var ppWaterECWKg: Float = 0.0f
-    var ppWaterECWKgList: List<Float> = listOf()
-
-    // 輸出參數-全身体组成:细胞内水量(kg)
-    var ppWaterICWKg: Float = 0.0f
-    var ppWaterICWKgList: List<Float> = listOf()
-
-    // 左手脂肪量(%), 分辨率0.1
-    var ppBodyFatKgLeftArm: Float = 0.0f
-
-    // 左脚脂肪量(%), 分辨率0.1
-    var ppBodyFatKgLeftLeg: Float = 0.0f
-
-    // 右手脂肪量(%), 分辨率0.1
-    var ppBodyFatKgRightArm: Float = 0.0f
-
-    // 右脚脂肪量(%), 分辨率0.1
-    var ppBodyFatKgRightLeg: Float = 0.0f
-
-    // 躯干脂肪量(%), 分辨率0.1
-    var ppBodyFatKgTrunk: Float = 0.0f
-
-    // 左手脂肪率(%), 分辨率0.1
-    var ppBodyFatRateLeftArm: Float = 0.0f
-
-    // 左脚脂肪率(%), 分辨率0.1
-    var ppBodyFatRateLeftLeg: Float = 0.0f
-
-    // 右手脂肪率(%), 分辨率0.1
-    var ppBodyFatRateRightArm: Float = 0.0f
-
-    // 右脚脂肪率(%), 分辨率0.1
-    var ppBodyFatRateRightLeg: Float = 0.0f
-
-    // 躯干脂肪率(%), 分辨率0.1
-    var ppBodyFatRateTrunk: Float = 0.0f
-
-    // 左手肌肉量(kg), 分辨率0.1
-    var ppMuscleKgLeftArm: Float = 0.0f
-
-    // 左脚肌肉量(kg), 分辨率0.1
-    var ppMuscleKgLeftLeg: Float = 0.0f
-
-    // 右手肌肉量(kg), 分辨率0.1
-    var ppMuscleKgRightArm: Float = 0.0f
-
-    // 右脚肌肉量(kg), 分辨率0.1
-    var ppMuscleKgRightLeg: Float = 0.0f
-
-    // 躯干肌肉量(kg), 分辨率0.1
-    var ppMuscleKgTrunk: Float = 0.0f
+    protected int impedance;                                                  //阻抗值（加密）
+    //    protected float ppZTwoLegs;                                         //脚对脚阻抗值(Ω), 范围200.0 ~ 1200.0
+    protected double ppWeightKg;                                              //体重
+    protected int ppHeartRate;                                                //心率
+    protected int scaleType;                                                  //称类型
+    protected boolean isHeartRateEnd = true;                                  //心率结束符
+    protected String scaleName;                                               //称名称
+    protected int thanZero;                                                    //正负 0表示负值 1 正值
+    protected PPUnitType unit;                                                 //重量单位 默认kg
+    protected PPUserModel userModel;
+    protected PPUserSex ppSex;                                                //性别
+    protected double ppHeightCm;                                              //身高(cm)，需在 90 ~ 220cm
+    protected int ppAge;                                                      //年龄(岁)，需在6 ~ 99岁
+    protected double ppProteinPercentage;                                     //蛋白质,分辨率0.1, 范围2.0% ~ 30.0%
+    protected int ppBodyAge;                                                  //身体年龄,6~99岁
+    protected double ppIdealWeightKg;                                         //理想体重(kg)
+    protected double ppBMI;                                                   //BMI 人体质量指数, 分辨率0.1, 范围10.0 ~ 90.0
+    protected int ppBMR;                                                      //Basal Metabolic Rate基础代谢, 分辨率1, 范围500 ~ 10000
+    protected int ppVFAL;                                                     //Visceral fat area leverl内脏脂肪, 分辨率1, 范围1 ~ 60
+    protected double ppBoneKg;                                                //骨量(kg), 分辨率0.1, 范围0.5 ~ 8.0
+    protected double ppBodyfatPercentage;                                     //脂肪率(%), 分辨率0.1, 范围5.0% ~ 75.0%
+    protected double ppWaterPercentage;                                       //水分率(%), 分辨率0.1, 范围35.0% ~ 75.0%
+    protected double ppMuscleKg;                                              //肌肉量(kg), 分辨率0.1, 范围10.0 ~ 120.0
+    protected int ppBodyType;                                                 //身体类型
+    protected int ppBodyScore;                                                //身体得分 50 ~ 100分
+    protected double ppMusclePercentage;                                      //肌肉率(%),分辨率0.1，范围5%~90%
+    protected double ppBodyfatKg;                                             //脂肪量(kg)
+    protected double ppBodystandard;                                          //标准体重(kg)
+    protected double ppLoseFatWeightKg;                                       //去脂体重(kg)
+    protected double ppControlWeightKg;                                       //体重控制(kg)
+    protected double ppFatControlKg;                                          //脂肪控制量(kg)
+    protected double ppBonePercentage;                                        //骨骼肌率(%)
+    protected double ppBodyMuscleControlKg;                                   //肌肉控制量(kg)
+    protected double ppVFPercentage;                                          //皮下脂肪(%)
+    protected PPBodyEnum.PPBodyGrade ppBodyHealth;                            //健康评估
+    protected PPBodyEnum.PPBodyFatGrade ppFatGrade;                           //肥胖等级
+    protected PPBodyEnum.PPBodyHealthAssessment ppBodyHealthGrade;            //健康等级
+    protected PPBodyEnum.PPBodyfatErrorType ppBodyfatErrorType;                //错误类型
 
 注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
 
-##### 1.1.1 错误类型 PPBodyfatErrorType
+##### 1.1.3 错误类型 PPBodyEnum.PPBodyfatErrorType
 
-    PP_ERROR_TYPE_NONE(0),                  //无错误
-    PP_ERROR_TYPE_AGE(1),                   //年龄参数有误，需在 6   ~ 99岁(不计算除BMI/idealWeightKg以外参数)
-    PP_ERROR_TYPE_HEIGHT(2),                //身高参数有误，需在 90 ~ 220cm(不计算所有参数)
-    PP_ERROR_TYPE_WEIGHT(3),                //体重有误 10 ~ 200kg
-    PP_ERROR_TYPE_SEX(4),                   //性別有误 0 ~ 1
-    PP_ERROR_TYPE_PEOPLE_TYPE(5),               //身高参数有误，需在 90 ~ 220cm(不计算所有参数)
-    PP_ERROR_TYPE_IMPEDANCE_TWO_LEGS(6),        //阻抗有误 200~1200
-    PP_ERROR_TYPE_IMPEDANCE_TWO_ARMS(7),        //阻抗有误 200~1200
-    PP_ERROR_TYPE_IMPEDANCE_LEFT_BODY(8),       //阻抗有误 200~1200
-    PP_ERROR_TYPE_IMPEDANCE_RIGHT_ARM(9),       //阻抗有误 200~1200
-    PP_ERROR_TYPE_IMPEDANCE_LEFT_ARM(10),        //阻抗有误 200~1200
-    PP_ERROR_TYPE_IMPEDANCE_LEFT_LEG(11),       //阻抗有误 200~1200
-    PP_ERROR_TYPE_IMPEDANCE_RIGHT_LEG(12),      //阻抗有误 200~1200
-    PP_ERROR_TYPE_IMPEDANCE_TRUNK(13);          //阻抗有误 10~100
+      PPBodyfatErrorTypeNone(0),         //!< 无错误(可读取所有参数)
+      PPBodyfatErrorTypeImpedance(-1),    //!< 阻抗有误,阻抗有误时, 不计算除BMI/idealWeightKg以外参数(写0)
+      PPBodyfatErrorTypeAge(-1),          //!< 年龄参数有误，需在 6   ~ 99岁(不计算除BMI/idealWeightKg以外参数)
+      PPBodyfatErrorTypeWeight(-2),       //!< 体重参数有误，需在 10  ~ 200kg(有误不计算所有参数)
+      PPBodyfatErrorTypeHeight(-3);       //!< 身高参数有误，需在 90 ~ 220cm(不计算所有参数)
 
-##### 1.1.2 健康评估 PPBodyEnum.PPBodyHealthAssessment
+##### 1.1.4 健康评估 PPBodyEnum.PPBodyfatErrorType
 
-    PPBodyAssessment1(0),          //!< 健康存在隐患
-    PPBodyAssessment2(1),          //!< 亚健康
-    PPBodyAssessment3(2),          //!< 一般
-    PPBodyAssessment4(3),          //!< 良好
-    PPBodyAssessment5(4);          //!< 非常好
+      PPBodyGradeThin(0),             //!< 偏瘦型
+      PPBodyGradeLThinMuscle(1),      //!< 标准型
+      PPBodyGradeMuscular(2),         //!< 超重型
+      PPBodyGradeLackofexercise(3);   //!< 肥胖型
 
-##### 1.1.3 肥胖等级 PPBodyEnum.PPBodyFatGrade
+##### 1.1.5 肥胖等级 PPBodyEnum.PPBodyfatErrorType
 
-    PPBodyGradeFatThin(0),              //!< 偏瘦
-    PPBodyGradeFatStandard(1),          //!< 标准
-    PPBodyGradeFatOverwight(2),         //!< 超重
-    PPBodyGradeFatOne(3),               //!< 肥胖1级
-    PPBodyGradeFatTwo(4),               //!< 肥胖2级
-    PPBodyGradeFatThree(5);             //!< 肥胖3级
+      PPBodyGradeFatOne(0),             //!< 肥胖1级
+      PPBodyGradeLFatTwo(1),            //!< 肥胖2级
+      PPBodyGradeFatThree(2),           //!< 肥胖3级
+      PPBodyGradeFatFour(-1);           //!< 参数错误
 
-##### 1.1.4 身体类型 PPBodyDetailType
+##### 1.1.6 健康等级 PPBodyEnum.PPBodyfatErrorType
 
-    LF_BODY_TYPE_THIN(0),//偏瘦型
-    LF_BODY_TYPE_THIN_MUSCLE(1),//偏瘦肌肉型
-    LF_BODY_TYPE_MUSCULAR(2),//肌肉发达型
-    LF_BODY_TYPE_LACK_EXERCISE(3),//缺乏运动型
-    LF_BODY_TYPE_STANDARD(4),//标准型
-    LF_BODY_TYPE_STANDARD_MUSCLE(5),//标准肌肉型
-    LF_BODY_TYPE_OBESE_FAT(6),//浮肿肥胖型
-    LF_BODY_TYPE_FAT_MUSCLE(7),//偏胖肌肉型
-    LF_BODY_TYPE_MUSCLE_FAT(8);//肌肉型偏胖
+      PPBodyAssessment1(0),          //!< 健康存在隐患
+      PPBodyAssessment2(1),          //!< 亚健康
+      PPBodyAssessment3(2),          //!< 一般
+      PPBodyAssessment4(3),          //!< 良好
+      PPBodyAssessment5(4),          //!< 非常好
+      PPBodyAssessmentError(-1);          //!< 参数错误
+
+##### 1.1.7 身体类型 PPBodyFatModel.ppBodyType
+
+     0 偏瘦型
+     1 偏瘦肌肉型
+     2 肌肉发达型
+     3 缺乏运动型
+     4 标准型
+     5 标准肌肉型
+     6 浮肿肥胖型
+     7 偏胖肌肉型
+     8 肌肉型偏胖
 
 #### 1.2 设备对象PPDeviceModel 参数说明
 
@@ -820,14 +662,10 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 
 ##### 1.2.1 PPScaleDefine.PPDeviceProtocolType 协议类型，具体说明
 
-        //未知
-        PPDeviceProtocolTypeUnknow(0),
-        //使用V2.0蓝牙协议
-        PPDeviceProtocolTypeV2(1),
-        //使用V3.0蓝牙协议
-        PPDeviceProtocolTypeV3(2),
-        //四电极、八电极协议
-        PPDeviceProtocolTypeTorre(3);
+    PPDeviceProtocolTypeUnknow(0), //未知协议
+    PPDeviceProtocolTypeV2(1) //使用V2.0蓝牙协议
+    PPDeviceProtocolTypeV3(2), //使用V3.0蓝牙协议
+    PPDeviceProtocolTypeTorre(3) //四电极、八电极协议
 
 ##### 1.2.2 PPScaleDefine.PPDeviceType 设备类型具体说明
 
@@ -848,50 +686,27 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 
 ##### 1.2.4 PPScaleDefine.DeviceCalcuteType 体脂计算类型具体说明
 
-    //未知
-    PPDeviceCalcuteTypeUnknow(0),
-    //秤端计算
-    PPDeviceCalcuteTypeInScale(1),
-    //直流
-    PPDeviceCalcuteTypeDirect(2),
-    //交流
-    PPDeviceCalcuteTypeAlternate(3),
-    // 8电极交流算法
-    PPDeviceCalcuteTypeAlternate8(4),
-    //默认计算库直接用合泰返回的体脂率
-    PPDeviceCalcuteTypeNormal(5),
-    //不需要计算
-    PPDeviceCalcuteTypeNeedNot(6);
+    PPDeviceCalcuteTypeUnknow(0), //未知
+    PPDeviceCalcuteTypeInScale(1), //秤端计算
+    PPDeviceCalcuteTypeDirect(2), //直流
+    PPDeviceCalcuteTypeAlternate(3), //交流
+    PPDeviceCalcuteTypeNeedNot(4) //不需要计算
 
 ##### 1.2.5 PPScaleDefine.PPDevicePowerType 供电模式具体说明
 
-    //未知
-    PPDevicePowerTypeUnknow(0),
-    //电池供电
-    PPDevicePowerTypeBattery(1),
-    //太阳能供电
-    PPDevicePowerTypeSolar(2),
-    //充电款
-    PPDevicePowerTypeCharge(3);
+    PPDevicePowerTypeUnknow(0),//未知
+    PPDevicePowerTypeBattery(1),//电池供电
+    PPDevicePowerTypeSolar(2),//太阳能供电
+    PPDevicePowerTypeCharge(3);  //充电款
 
 ##### 1.2.6 PPScaleDefine.PPDeviceFuncType 功能类型，可多功能叠加,具体说明
 
-    // 称重
-    PPDeviceFuncTypeWeight(0x01),
-    //测体脂
-    PPDeviceFuncTypeFat(0x02),
-    //心率
-    PPDeviceFuncTypeHeartRate(0x04),
-    //历史数据
-    PPDeviceFuncTypeHistory(0x08),
-    //安全模式，孕妇模式
-    PPDeviceFuncTypeSafe(0x10),
-    //闭幕单脚
-    PPDeviceFuncTypeBMDJ(0x20),
-    //抱婴模式
-    PPDeviceFuncTypeBaby(0x40),
-    //wifi配网
-    PPDeviceFuncTypeWifi(0x80);
+    PPDeviceFuncTypeWeight(0x01),//体重
+    PPDeviceFuncTypeFat(0x02), //测体脂
+    PPDeviceFuncTypeHeartRate(0x04), //心率
+    PPDeviceFuncTypeHistory(0x08), //历史数据
+    PPDeviceFuncTypeSafe(0x10), //安全模式，孕妇模式
+    PPDeviceFuncTypeBMDJ(0x20);  //闭幕单脚
 
 ##### 1.2.7 PPScaleDefine.PPDeviceUnitType 支持的单位,具体说明（暂时未启用）
 
@@ -900,6 +715,7 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
     PPDeviceUnitTypeST(0x04),//st
     PPDeviceUnitTypeJin(0x08), //斤
     PPDeviceUnitTypeSTLB(0x10);//st:lb
+
 
 ### VI .蓝牙状态监控回调和系统蓝牙状态回调
 
@@ -923,7 +739,7 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
                 Logger.d("扫描超时");
             } else {
-              
+                Logger.e("蓝牙状态异常");
             }
         }
     
@@ -941,6 +757,72 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
             }
         }
     };
+
+### VII .闭目单脚模式
+
+###### 闭目单脚模式
+
+使用PPScale的实例对象调用扫描附近设备的方法来搜索附近的闭目单脚蓝牙秤并进行连接。
+
+### 1.1 连接闭目单脚设备
+
+```
+ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
+        protocalFilter.setBmdjConnectInterface(new PPBMDJConnectInterface() {
+            @Override
+            public void monitorBMDJConnectSuccess() {
+                isAutoPush = true;
+                Intent intent = new Intent(BMDJConnectActivity.this, BMDJIntroduceActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void monitorBMDJConnectFail() {
+
+            }
+        });{
+
+        }
+        BleOptions bleOptions = new BleOptions.Builder()
+                .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_BMDJ)
+                .setDeviceType(PPDeviceType.Contants.FAT_AND_BMDJ)
+                .build();
+
+        ppScale = new PPScale.Builder(getApplicationContext())
+                .setDeviceList(addressList)
+                .setBleOptions(bleOptions)
+                .setProtocalFilterImpl(protocalFilter)
+                .build();
+
+        ppScale.enterBMDJModel();
+```
+
+### 1.2 退出闭目单脚模式并停止扫描断开连接
+
+```
+// 停止扫描切断开闭目单脚的设备
+-  ppScale.exitBMDJModel();
+```
+
+### 1.3 监听闭目单脚状态
+
+```
+(interface)PPBMDJStatesInterface
+```
+
+### 1.4 发送指令使设备进入闭目单脚模式
+
+```
+// 闭目单脚设备进入准备状态
+- (void)enterBMDJModel()
+```
+
+### 1.5 在回调函数中返回闭目单脚站立的时间
+
+```
+/// 设备退出闭目单脚状态
+- (interface)PPBMDJDataInterface;
+```
 
 ### VIII .蓝牙操作相关
 
