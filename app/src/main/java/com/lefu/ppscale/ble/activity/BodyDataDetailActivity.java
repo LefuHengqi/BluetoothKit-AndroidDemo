@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 
 import com.lefu.ppscale.ble.R;
-import com.lefu.ppscale.ble.model.DataUtil;
+import com.lefu.ppscale.ble.util.DataUtil;
 import com.peng.ppscale.vo.PPBodyFatModel;
 
 public class BodyDataDetailActivity extends Activity {

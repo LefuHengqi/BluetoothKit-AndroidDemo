@@ -1,18 +1,11 @@
 package com.lefu.ppscale.ble.wififunction;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
-import com.lefu.ppscale.ble.model.DataUtil;
-import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity;
-import com.lefu.ppscale.wifi.data.WifiDataListActivity;
-import com.peng.ppscale.business.ble.PPScale;
 
 public class WifiFunctionListActivity extends AppCompatActivity {
 

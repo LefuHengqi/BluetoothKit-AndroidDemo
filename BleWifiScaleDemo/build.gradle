@@ -52,6 +52,4 @@ dependencies {
     compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
 
     compileOnly project(':ppscalelib')
-//    compileOnly project(':ppscale')
-
 }

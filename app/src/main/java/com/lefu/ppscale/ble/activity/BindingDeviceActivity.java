@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.lefu.healthu.business.mine.binddevice.BindDeviceWiFiLockSelectConfigNetDialog;
 import com.lefu.ppscale.ble.R;
-import com.lefu.ppscale.ble.model.DataUtil;
+import com.lefu.ppscale.ble.util.DataUtil;
 import com.lefu.ppscale.ble.torre.DeviceSetActivity;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;

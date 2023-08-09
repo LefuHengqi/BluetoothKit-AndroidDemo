@@ -1,6 +1,5 @@
 package com.lefu.ppscale.ble.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
-import com.lefu.ppscale.ble.function.FunctionListActivity;
-import com.lefu.ppscale.ble.model.DataUtil;
 import com.lefu.ppscale.ble.torre.DeviceSetActivity;
+import com.lefu.ppscale.ble.util.DataUtil;
 import com.lefu.ppscale.db.dao.DeviceModel;
-import com.lefu.ppscale.wifi.develop.DeveloperActivity;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.PPSearchDeviceInfoInterface;
@@ -33,7 +30,6 @@ import com.peng.ppscale.vo.PPScaleDefine;
 import com.peng.ppscale.vo.PPUserModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ScanDeviceListActivity extends AppCompatActivity {
 
@@ -88,24 +84,30 @@ public class ScanDeviceListActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
-                if (deviceModel != null) {
-                    startScanData(deviceModel);
-                }
+                onStartDeviceSetPager(position);
             }
         });
-
         adapter.setOnClickInItemLisenter(new DeviceListAdapter.OnItemClickViewInsideListener() {
             @Override
             public void onItemClickViewInside(int position, View view) {
                 if (view.getId() == R.id.tvSetting) {
-                    DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
-                    startScanData(deviceModel);
+                    onStartDeviceSetPager(position);
                 }
             }
         });
+    }
 
-        bindingDevice();
+    private void onStartDeviceSetPager(final int position) {
+        DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
+        if (deviceModel != null) {
+            if (deviceModel.getDeviceProtocolType() == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre.getType()) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, DeviceSetActivity.class);
+                intent.putExtra("address", deviceModel.getDeviceMac());
+                startActivity(intent);
+            } else {
+                startScanData(deviceModel);
+            }
+        }
     }
 
     /**
@@ -144,6 +146,8 @@ public class ScanDeviceListActivity extends AppCompatActivity {
                     if (deviceModel == null) {
                         deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.getType());
                         deviceModel.setRssi(deviceModel.getRssi());
+                        deviceModel.setDeviceProtocolType(ppDeviceModel.deviceProtocolType.getType());
+                        deviceModel.setDeviceCalcuteType(ppDeviceModel.deviceCalcuteType.getType());
                         deviceModels.add(deviceModel);
                     }
                     adapter.notifyDataSetChanged();
@@ -206,8 +210,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 Logger.d(getString(R.string.writable));
             } else {
-                Logger.e(getString(R.string.bluetooth_status_is_abnormal));
-                tv_starts.setText(getString(R.string.bluetooth_status) + getString(R.string.bluetooth_status_is_abnormal));
+
             }
         }
 
@@ -243,6 +246,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         isOnResume = true;
+        delayScan();
     }
 
     @Override

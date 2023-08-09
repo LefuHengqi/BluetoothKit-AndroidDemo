@@ -9,12 +9,10 @@ import com.lefu.ppscale.db.dao.DBManager;
 import com.peng.ppscale.business.ble.PPScale;
 
 public class PPApplication extends Application {
-    private static PPApplication mApp;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mApp = this;
         DBManager.initGreenDao(this);
         PPScale.setDebug(BuildConfig.DEBUG);
         SettingManager.get(this);

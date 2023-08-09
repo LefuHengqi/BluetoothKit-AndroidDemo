@@ -1,29 +1,36 @@
-package com.lefu.ppscale.ble
+package com.lefu.ppscale.ble.calculate
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.lefu.ppscale.ble.model.DataUtil
+import android.widget.Button
+import com.lefu.ppscale.ble.R
+import com.lefu.ppscale.ble.activity.BodyDataDetailActivity
+import com.lefu.ppscale.ble.util.UnitUtil
+import com.lefu.ppscale.ble.util.DataUtil
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.vo.*
 
 
 /**
- * 2.x 连接 apple
- * 2.x 广播 banana
- * 3.x 连接 coconat
- * 秤端计算 durain
- * Torre torre
+ * 直流秤计算库
  */
-class CalculateActivitiy : Activity() {
+class Calculate4DCActivitiy : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calculate)
+        setContentView(R.layout.activity_calculate_4dc)
 
+        findViewById<Button>(R.id.calculateBtn).setOnClickListener {
+            startCalculate()
+        }
+    }
+
+    private fun startCalculate() {
         val ppWeightKg = 70.0       //weight
-        val impedance = 4195332L     //impedance
+        val impedance = 419L     //impedance
 
         val userModel = PPUserModel.Builder()
             .setSex(PPUserGender.PPUserGenderMale) //gender
@@ -31,8 +38,8 @@ class CalculateActivitiy : Activity() {
             .setAge(28)//age 10-99
             .build()
 
-        val deviceModel = PPDeviceModel("", DeviceManager.CF568_TM_315)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate)
+        val deviceModel = PPDeviceModel("", DeviceManager.FL_SCALE)//Select the corresponding Bluetooth name according to your own device
+        deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect)
 
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.impedance = impedance
@@ -46,6 +53,8 @@ class CalculateActivitiy : Activity() {
         DataUtil.util().bodyDataModel = ppBodyFatModel
         Log.d("liyp_", ppBodyFatModel.toString())
 
+        val intent = Intent(this, BodyDataDetailActivity::class.java)
+        startActivity(intent)
     }
 
 }

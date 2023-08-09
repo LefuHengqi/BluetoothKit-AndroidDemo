@@ -1,4 +1,4 @@
-package com.lefu.ppscale.ble.activity;
+package com.lefu.ppscale.ble.foodscale;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -6,12 +6,11 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
-import com.lefu.ppscale.ble.UnitUtil;
-import com.lefu.ppscale.ble.model.DataUtil;
+import com.lefu.ppscale.ble.util.UnitUtil;
+import com.lefu.ppscale.ble.util.DataUtil;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.peng.ppscale.business.ble.BleOptions;

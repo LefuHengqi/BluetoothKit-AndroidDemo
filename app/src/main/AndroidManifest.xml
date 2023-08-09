@@ -32,7 +32,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.lefu.ppscalekit.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -41,6 +41,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".calculate.CalculateManagerActivity" />
+        <activity android:name=".calculate.Calculate4DCActivitiy" />
+        <activity android:name=".calculate.Calculate4ACActivitiy" />
+        <activity android:name=".calculate.Calculate8Activitiy" />
+
         <activity android:name=".activity.BindingDeviceActivity" />
         <activity android:name=".activity.DeviceListActivity" />
         <activity android:name=".activity.BodyDataDetailActivity" />
@@ -51,12 +57,11 @@
         <activity android:name=".activity.ReadHistoryListActivity" />
         <activity android:name=".wififunction.WifiFunctionListActivity" />
         <activity android:name=".function.FunctionListActivity" />
-        <activity android:name="TestBleActivity" />
         <activity android:name=".userinfo.UserinfoActivity" />
         <activity android:name=".activity.OTAActivity" />
         <activity android:name=".torre.DeviceSetActivity" />
-        <activity android:name=".activity.FoodSclaeDeviceActivity" />
-        <activity android:name=".Calculate8Activitiy" />
+        <activity android:name=".foodscale.FoodSclaeDeviceActivity" />
+        <activity android:name=".calculate.Calculate8Activitiy" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

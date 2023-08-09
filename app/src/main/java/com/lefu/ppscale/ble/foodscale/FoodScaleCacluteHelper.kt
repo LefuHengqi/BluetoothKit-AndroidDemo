@@ -1,7 +1,7 @@
-package com.lefu.ppscale.ble.activity
+package com.lefu.ppscale.ble.foodscale
 
 import android.content.Context
-import com.lefu.ppscale.ble.UnitUtil
+import com.lefu.ppscale.ble.util.UnitUtil
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.util.DeviceType
 import com.peng.ppscale.util.DeviceUtil
