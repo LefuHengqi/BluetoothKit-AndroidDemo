@@ -14,12 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.activity.BindingDeviceActivity;
-import com.lefu.ppscale.ble.activity.OTAActivity;
 import com.lefu.ppscale.ble.activity.ReadHistoryListActivity;
-import com.lefu.ppscale.ble.activity.ScanDeviceListActivity;
 import com.lefu.ppscale.ble.bmdj.BMDJConnectActivity;
-import com.lefu.ppscale.ble.model.DataUtil;
-import com.lefu.ppscale.ble.wififunction.WifiFunctionListActivity;
+import com.lefu.ppscale.ble.util.DataUtil;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity;

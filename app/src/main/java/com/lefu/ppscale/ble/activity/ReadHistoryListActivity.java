@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
-import com.lefu.ppscale.ble.model.DataUtil;
+import com.lefu.ppscale.ble.util.DataUtil;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack;
 import com.peng.ppscale.util.PPUtil;

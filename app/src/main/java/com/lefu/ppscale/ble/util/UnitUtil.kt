@@ -1,6 +1,7 @@
-package com.lefu.ppscale.ble
+package com.lefu.ppscale.ble.util
 
 import android.content.Context
+import com.lefu.ppscale.ble.R
 import com.peng.ppscale.business.device.PPUnitType
 
 object UnitUtil {
