@@ -11,6 +11,7 @@ import com.lefu.ppscale.ble.util.UnitUtil
 import com.lefu.ppscale.ble.util.DataUtil
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
+import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.vo.*
 
 /**
@@ -38,8 +39,13 @@ class Calculate4ACActivitiy : Activity() {
             .setAge(28)//age 10-99
             .build()
 
-        val deviceModel = PPDeviceModel("", DeviceManager.CF568_TM_315)//Select the corresponding Bluetooth name according to your own device
+        val deviceModel = PPDeviceModel("", DeviceManager.CF568)//Select the corresponding Bluetooth name according to your own device
         deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate)
+        deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
+            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
+        } else {
+            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
+        }
 
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.impedance = impedance

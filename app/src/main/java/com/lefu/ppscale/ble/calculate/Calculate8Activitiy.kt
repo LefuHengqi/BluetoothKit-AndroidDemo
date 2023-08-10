@@ -10,6 +10,7 @@ import com.lefu.ppscale.ble.util.UnitUtil
 import com.lefu.ppscale.ble.activity.BodyDataDetailActivity
 import com.lefu.ppscale.ble.util.DataUtil
 import com.peng.ppscale.business.device.DeviceManager
+import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_calculate_8ac.*
 
@@ -73,6 +74,11 @@ class Calculate8Activitiy : Activity() {
 
         val deviceModel = PPDeviceModel("", DeviceManager.CF568_CF577)//Select the corresponding Bluetooth name according to your own device
         deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+        deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
+            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
+        } else {
+            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
+        }
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.deviceModel = deviceModel

@@ -11,6 +11,7 @@ import com.lefu.ppscale.ble.util.UnitUtil
 import com.lefu.ppscale.ble.util.DataUtil
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
+import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.vo.*
 
 
@@ -40,7 +41,11 @@ class Calculate4DCActivitiy : Activity() {
 
         val deviceModel = PPDeviceModel("", DeviceManager.FL_SCALE)//Select the corresponding Bluetooth name according to your own device
         deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect)
-
+        deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
+            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
+        } else {
+            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
+        }
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.impedance = impedance
         bodyBaseModel.deviceModel = deviceModel
