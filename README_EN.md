@@ -6,7 +6,7 @@
 
 ## -LF Bluetooth Scale/Food Scale/WiFi Scale
 
-ppscale is the Bluetooth connection logic and data parsing logic. When developers integrate, please use the integration method of the library downloaded from maven. It is recommended that developers check the README.md document to complete the integration.
+ppscale is the Bluetooth connection logic and data parsing logic. When developers integrate, they need to integrate by importing aar. It is recommended that developers check the README.md document to complete the integration.
 
 ### Ⅰ. Integration method
 
