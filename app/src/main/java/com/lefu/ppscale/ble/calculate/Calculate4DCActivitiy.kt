@@ -13,6 +13,12 @@ import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.vo.*
+import kotlinx.android.synthetic.main.activity_calculate_4ac.*
+import kotlinx.android.synthetic.main.activity_calculate_8ac.*
+import kotlinx.android.synthetic.main.activity_calculate_8ac.etAge
+import kotlinx.android.synthetic.main.activity_calculate_8ac.etHeight
+import kotlinx.android.synthetic.main.activity_calculate_8ac.etSex
+import kotlinx.android.synthetic.main.activity_calculate_8ac.etWeight
 
 
 /**
@@ -30,13 +36,20 @@ class Calculate4DCActivitiy : Activity() {
     }
 
     private fun startCalculate() {
-        val ppWeightKg = 70.0       //weight
-        val impedance = 419L     //impedance
+        val sex = if (etSex.text?.toString()?.toInt() == 0) {
+            PPUserGender.PPUserGenderFemale
+        } else {
+            PPUserGender.PPUserGenderMale
+        }
+        val height = etHeight.text?.toString()?.toInt() ?: 180
+        val age = etAge.text?.toString()?.toInt() ?: 28
+        val weight = etWeight.text?.toString()?.toDouble() ?: 70.00
+        val impedance = etImpedance.text?.toString()?.toLong() ?: 4195332L
 
         val userModel = PPUserModel.Builder()
-            .setSex(PPUserGender.PPUserGenderMale) //gender
-            .setHeight(180)//height 100-220
-            .setAge(28)//age 10-99
+            .setSex(sex) //gender
+            .setHeight(height)//height 100-220
+            .setAge(age)//age 10-99
             .build()
 
         val deviceModel = PPDeviceModel("", DeviceManager.FL_SCALE)//Select the corresponding Bluetooth name according to your own device
@@ -47,11 +60,11 @@ class Calculate4DCActivitiy : Activity() {
             PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
         }
         val bodyBaseModel = PPBodyBaseModel()
+        bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.impedance = impedance
         bodyBaseModel.deviceModel = deviceModel
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
-        bodyBaseModel.weight = UnitUtil.getWeight(ppWeightKg)
 
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
 

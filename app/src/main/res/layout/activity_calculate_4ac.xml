@@ -17,14 +17,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/heightTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/height"
                 android:textSize="@dimen/text_sp12" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/etHeight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -34,6 +33,7 @@
                 android:ems="10"
                 android:hint="@string/value_range_30_220"
                 android:inputType="number"
+                android:text="180"
                 android:textSize="@dimen/text_sp12" />
 
         </LinearLayout>
@@ -54,7 +54,7 @@
                 android:textSize="@dimen/text_sp12" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/etAge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -64,6 +64,7 @@
                 android:ems="10"
                 android:hint="@string/value_range_age"
                 android:inputType="number"
+                android:text="28"
                 android:textSize="@dimen/text_sp12" />
 
         </LinearLayout>
@@ -89,7 +90,7 @@
                 android:textSize="@dimen/text_sp12" />
 
             <EditText
-                android:id="@+id/editTextWeightKg"
+                android:id="@+id/etWeight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -99,6 +100,7 @@
                 android:ems="8"
                 android:hint="0.0"
                 android:inputType="numberDecimal"
+                android:text="70.00"
                 android:textSize="@dimen/text_sp12" />
 
         </LinearLayout>
@@ -118,7 +120,7 @@
                 android:textSize="@dimen/text_sp12" />
 
             <EditText
-                android:id="@+id/editTextImp"
+                android:id="@+id/etImpedance"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -128,6 +130,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
+                android:text="4195332"
                 android:textSize="@dimen/text_sp12" />
 
         </LinearLayout>
@@ -148,7 +151,7 @@
             android:textSize="@dimen/text_sp12" />
 
         <EditText
-            android:id="@+id/userSexEt"
+            android:id="@+id/etSex"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -158,6 +161,7 @@
             android:ems="10"
             android:hint="@string/sex_normal"
             android:inputType="number"
+            android:text="0"
             android:textSize="@dimen/text_sp12" />
 
     </LinearLayout>
