@@ -1,12 +1,14 @@
 [English Docs](README_EN.md)  |  [中文文档](README.md)
 
-## [乐福开放平台](https://uniquehealth.lefuenergy.com/unique-open-web/#/document)
-## [PPBluetoothKit iOS SDK](https://gitee.com/shenzhen-lfscale/bluetooth-kit-iosdemo)
-## [PPBluetoothKit 小程序 SDK](https://gitee.com/shenzhen-lfscale/bluetoothkit-webwidgetdemo)
+## 相关文档
+
+[乐福开放平台](https://uniquehealth.lefuenergy.com/unique-open-web/#/document)
+[PPBluetoothKit iOS SDK](https://gitee.com/shenzhen-lfscale/bluetooth-kit-iosdemo)
+[PPBluetoothKit 小程序 SDK](https://gitee.com/shenzhen-lfscale/bluetoothkit-webwidgetdemo)
 
 # PPBluetoothKit Android SDK
 
-## [Android示例程序地址](https://gitee.com/shenzhen-lfscale/bluetooth-kit-android-demo.git)
+[Android示例程序地址](https://gitee.com/shenzhen-lfscale/bluetooth-kit-android-demo.git)
 
 ## -LF蓝牙秤/食物秤/WiFi秤
 
