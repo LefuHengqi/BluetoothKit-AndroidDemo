@@ -1,16 +1,20 @@
 [English Docs](README_EN.md)  |  [中文文档](README.md)
 
 ## [乐福开放平台](https://uniquehealth.lefuenergy.com/unique-open-web/#/document)
-## [PPScale iOS SDK](https://gitee.com/shenzhen-lfscale/bluetooth-kit-iosdemo)
-## [PPScale 小程序 SDK](https://gitee.com/shenzhen-lfscale/bluetoothkit-webwidgetdemo)
+## [PPBluetoothKit iOS SDK](https://gitee.com/shenzhen-lfscale/bluetooth-kit-iosdemo)
+## [PPBluetoothKit 小程序 SDK](https://gitee.com/shenzhen-lfscale/bluetoothkit-webwidgetdemo)
 
-# PPScale Android SDK
+# PPBluetoothKit Android SDK
 
 ## [Android示例程序地址](https://gitee.com/shenzhen-lfscale/bluetooth-kit-android-demo.git)
 
 ## -LF蓝牙秤/食物秤/WiFi秤
 
-ppscale是蓝牙连接逻辑以及数据解析逻辑。 在开发者集成的时候，需要采用从引入aar的方式集成。建议开发者查看README.md文档，完成集成。
+PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成化SDK。 
+为了让客户快速实现称重以及对应的功能而实现，包含示例程序，示例程序中包含体脂计算模块和设备功能模块。
+设备功能模块目前支持的设备包含：蓝牙秤、食物秤、Torre系列蓝牙WiFi体脂秤。
+体脂计算模块支持4电极交流算法、4电极直流算法、8电极交流算法。
+在开发者集成的时候，需要采用从引入aar的方式集成。建议开发者查看README.md文档，完成集成。
 
 ### Ⅰ. 集成方式
 

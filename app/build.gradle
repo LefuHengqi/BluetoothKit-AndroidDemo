@@ -84,7 +84,7 @@ android {
     android.applicationVariants.all { variant ->
         if (variant.buildType.name.equals('release')) {
             variant.outputs.all {
-                outputFileName = "PPScale_${variant.versionName}_${releaseTime()}.apk"
+                outputFileName = "PPBluetoothKit_${variant.versionName}_${releaseTime()}.apk"
                 assemble.doLast {
                     println "${outputFile.parent}"
                     print "$rootDir" + File.separator + "apk"
@@ -104,7 +104,7 @@ android {
                         include "*.txt"
                         into "$rootDir" + File.separator + "mapping" + File.separator + "${android.defaultConfig.versionName}"
                         rename {
-                            "PPScale_${variant.versionName}_mapping.txt"
+                            "PPBluetoothKit_${variant.versionName}_mapping.txt"
                         }
                     }
 
@@ -113,7 +113,7 @@ android {
 
         } else {
             variant.outputs.all {
-                outputFileName = "PPScale_${variant.versionName}_${releaseTime()}.apk"
+                outputFileName = "PPBluetoothKit_${variant.versionName}_${releaseTime()}.apk"
             }
         }
 
