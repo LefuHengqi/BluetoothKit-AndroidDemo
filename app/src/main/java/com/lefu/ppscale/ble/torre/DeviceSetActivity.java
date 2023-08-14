@@ -71,7 +71,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     private PPScale.Builder builder1;
     private boolean isSendData;
     private String address;
-    private TextView device_set_deviceinfo, wifi_name;
+    private TextView wifi_name;
     private TextView device_set_connect_state, weightTextView, functinonTypeTvState;
     private Button device_set_light, device_set_sync_log, device_set_sync_time, device_set_reset,
             device_set_synchistory, device_set_startOTA, device_set_startLocalOTA, device_set_sync_userinfo, device_set_wifi_list, device_set_startConfigWifi,
@@ -102,7 +102,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         weightTextView = findViewById(R.id.weightTextView);
         functinonTypeTvState = findViewById(R.id.functinonTypeTvState);
         device_set_getFilePath = findViewById(R.id.device_set_getFilePath);
-        device_set_deviceinfo = findViewById(R.id.device_set_deviceinfo);
         device_set_connect_state = findViewById(R.id.device_set_connect_state);
         device_set_light = findViewById(R.id.device_set_light);
         device_set_sync_log = findViewById(R.id.device_set_sync_log);
@@ -154,12 +153,22 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         //初始化PPSCale
         initPPScale();
 
+        //控制全量升级
         whetherFullyDFUToggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
             }
         });
+        whetherFullyDFUToggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
+
+
+
     }
 
     public int getTextWidth(Paint paint, String content) {
@@ -295,11 +304,8 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
             public void monitorLockData(PPBodyBaseModel bodyBaseModel, PPDeviceModel deviceModel) {
                 String weightStr = PPUtil.getWeight(bodyBaseModel.unit, bodyBaseModel.getPpWeightKg(), deviceModel.deviceAccuracyType.getType());
                 weightTextView.setText("LockWeight:" + weightStr);
-                Logger.d("bodyBaseModel:" + bodyBaseModel.toString());
-//                device_set_deviceinfo.setText(bodyBaseModel.toString());
                 PPBodyFatModel ppBodyFatModel = new PPBodyFatModel(bodyBaseModel);
-                device_set_deviceinfo.setText(ppBodyFatModel.toString());
-
+                Logger.d("ppBodyFatModel:" + ppBodyFatModel.toString());
             }
 
             @Override
@@ -772,12 +778,12 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
                 ppScale.getTorreDeviceManager().readDeviceBattery(this);
             }
             Logger.d("DeviceInfo :  " + deviceModel.toString());
-            device_set_deviceinfo.setText(deviceModel.toString());
+            wifi_name.append(deviceModel.toString());
         }
 
         @Override
         public void readDevicePower(int power) {
-            device_set_deviceinfo.append("power:" + power);
+            wifi_name.append("power:" + power);
         }
     };
 
