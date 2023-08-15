@@ -161,7 +161,9 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         isOnResume = false;
-        ppScale.stopSearch();
+        if (ppScale != null) {
+            ppScale.stopSearch();
+        }
     }
 
     private void bindingDevice() {

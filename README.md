@@ -3,8 +3,8 @@
 ## 相关文档
 
 [乐福开放平台](https://uniquehealth.lefuenergy.com/unique-open-web/#/document)  |
-[PPBluetoothKit iOS SDK](https://gitee.com/shenzhen-lfscale/bluetooth-kit-iosdemo)  |
-[PPBluetoothKit 小程序 SDK](https://gitee.com/shenzhen-lfscale/bluetoothkit-webwidgetdemo)
+[PPBluetoothKit iOS SDK](https://uniquehealth.lefuenergy.com/unique-open-web/#/document?url=https://lefuhengqi.apifox.cn/doc-2625647)  |
+[PPBluetoothKit 微信小程序插件](https://uniquehealth.lefuenergy.com/unique-open-web/#/document?url=https://lefuhengqi.apifox.cn/doc-2625745)
 
 # PPBluetoothKit Android SDK
 
