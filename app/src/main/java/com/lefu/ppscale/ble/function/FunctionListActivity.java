@@ -85,7 +85,7 @@ public class FunctionListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(address)) {
                     DeviceModel device = DBManager.manager().getDevice(address);
-                    if (device != null && device.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
+                    if (isFuncTypeWifi(device)) {
                         Intent intent = new Intent(FunctionListActivity.this, DeveloperActivity.class);
                         intent.putExtra("address", address);
                         startActivity(intent);

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.lefu.ppscale.wifi.R;
+import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
 import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface;
@@ -23,6 +24,7 @@ import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
 import com.peng.ppscale.util.Logger;
 import com.peng.ppscale.vo.PPDeviceModel;
+import com.peng.ppscale.vo.PPUserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
     TextView tvTitle;
     Button reStartConnectView;
     EditText inputServerIP;
-    EditText inputServerDNS;
+    EditText inputServerDomain;
     TextView mPasswordView;
     TextView mSsidView;
     TextView mSnView;
@@ -57,14 +59,14 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
         tvTitle = findViewById(R.id.tv_title);
         reStartConnectView = findViewById(R.id.developer_mode_id_startConnect);
         inputServerIP = findViewById(R.id.developer_mode_id_input_modifyServerIP);
-        inputServerDNS = findViewById(R.id.developer_mode_id_input_modifyServerDNS);
+        inputServerDomain = findViewById(R.id.developer_mode_id_input_modifyServerDomain);
         mPasswordView = findViewById(R.id.developer_mode_id_password);
         mSsidView = findViewById(R.id.developer_mode_id_ssid);
         mSnView = findViewById(R.id.developer_mode_id_sn);
         developer_mode_id_clearSSID = findViewById(R.id.developer_mode_id_clearSSID);
         Button developer_mode_id_getSSID = findViewById(R.id.developer_mode_id_getSSID);
         Button developer_mode_id_modifyServerIP = findViewById(R.id.developer_mode_id_modifyServerIP);
-        Button developer_mode_id_modifyServerDNS = findViewById(R.id.developer_mode_id_modifyServerDNS);
+        Button developer_mode_id_modifyServerDNS = findViewById(R.id.developer_mode_id_modifyServerDomain);
         iv_Left.setVisibility(View.VISIBLE);
         developer_mode_id_getSSID.setOnClickListener(this);
         developer_mode_id_modifyServerIP.setOnClickListener(this);
@@ -73,6 +75,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
         developer_mode_id_clearSSID.setOnClickListener(this);
         iv_Left.setOnClickListener(this);
 
+        inputServerDomain.setText(NetUtil.SCALE_DOMAIN);
     }
 
     protected void initData() {
@@ -93,8 +96,11 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
 
             protocalFilter.setConfigWifiInfoInterface(ppConfigWifiInfoInterface);
 
+            PPUserModel userModel = new PPUserModel.Builder().build();
+
             ppScale = new PPScale
                     .Builder(this)
+                    .setUserModel(userModel)
                     .setBleStateInterface(ppBleStateInterface)
                     .setDeviceList(devices)
                     .setBleOptions(bleOptions)
@@ -109,11 +115,13 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         public void monitorConfigSn(String sn, PPDeviceModel ppDeviceModel) {
+            Logger.d("configwifi 获取到sn:" + sn);
             mSnView.setText(sn);
         }
 
         @Override
         public void monitorConfigSsid(String ssid, PPDeviceModel ppDeviceModel) {
+            Logger.d("configwifi 获取到ssid:" + ssid);
             if (!TextUtils.isEmpty(ssid)) {
                 mSsidView.setText(ssid);
             }
@@ -121,6 +129,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         public void monitorConfigPassword(String password, PPDeviceModel ppDeviceModel) {
+            Logger.d("configwifi 获取到password:" + password);
             if (!TextUtils.isEmpty(password)) {
                 mPasswordView.setText(password);
             }
@@ -141,7 +150,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel ppDeviceModel) {
-            onBleWorkStateChange(ppBleWorkState);
+            onBleWorkStateChange(ppBleWorkState, ppDeviceModel);
         }
 
         @Override
@@ -158,7 +167,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
         }
     };
 
-    private void onBleWorkStateChange(PPBleWorkState ppBleWorkState) {
+    private void onBleWorkStateChange(PPBleWorkState ppBleWorkState, PPDeviceModel ppDeviceModel) {
         if (reStartConnectView != null) {
             reStartConnectView.setVisibility(View.GONE);
             switch (ppBleWorkState) {
@@ -175,6 +184,14 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
                 case PPBleWorkStateConnected:
                     Logger.d(getString(R.string.device_connected));
 
+                    tvTitle.setText(getString(R.string.device_connected));
+                    break;
+                case PPBleWorkStateConnectable:
+                    Logger.d("可连");
+                    if (ppScale != null) {
+                        ppScale.stopSearch();
+                        ppScale.connectDevice(ppDeviceModel);
+                    }
                     tvTitle.setText(getString(R.string.device_connected));
                     break;
                 case PPBleWorkStateSearching:
@@ -220,8 +237,8 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
                     ppScale.sendModifyServerIp(ip);
                 }
             }
-        } else if (id == R.id.developer_mode_id_modifyServerDNS) {
-            String dns = inputServerDNS.getText().toString();
+        } else if (id == R.id.developer_mode_id_modifyServerDomain) {
+            String dns = inputServerDomain.getText().toString();
             if (!TextUtils.isEmpty(dns)) {
                 dns = dns.trim();
                 if (ppScale != null) {

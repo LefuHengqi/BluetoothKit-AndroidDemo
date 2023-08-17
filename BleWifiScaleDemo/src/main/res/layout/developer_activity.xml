@@ -54,14 +54,14 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <Button
-            android:id="@+id/developer_mode_id_modifyServerDNS"
+            android:id="@+id/developer_mode_id_modifyServerDomain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/modify_serverdns"
+            android:text="@string/modify_server_domain"
             android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="@+id/developer_mode_id_input_modifyServerDNS"
+            app:layout_constraintBottom_toBottomOf="@+id/developer_mode_id_input_modifyServerDomain"
             app:layout_constraintEnd_toEndOf="@+id/developer_mode_id_modifyServerIP"
-            app:layout_constraintTop_toTopOf="@+id/developer_mode_id_input_modifyServerDNS"
+            app:layout_constraintTop_toTopOf="@+id/developer_mode_id_input_modifyServerDomain"
             app:layout_constraintVertical_bias="1.0" />
 
         <EditText
@@ -78,13 +78,13 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <EditText
-            android:id="@+id/developer_mode_id_input_modifyServerDNS"
+            android:id="@+id/developer_mode_id_input_modifyServerDomain"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:hint="@string/server_dns"
             android:text="http://nat.lefuenergy.com:10081"
-            app:layout_constraintEnd_toStartOf="@+id/developer_mode_id_modifyServerDNS"
+            app:layout_constraintEnd_toStartOf="@+id/developer_mode_id_modifyServerDomain"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/developer_mode_id_input_modifyServerIP" />
@@ -96,8 +96,8 @@
             android:layout_gravity="end"
             android:layout_marginTop="28dp"
             android:text="@string/reconnection"
-            app:layout_constraintEnd_toEndOf="@+id/developer_mode_id_modifyServerDNS"
-            app:layout_constraintTop_toBottomOf="@+id/developer_mode_id_modifyServerDNS" />
+            app:layout_constraintEnd_toEndOf="@+id/developer_mode_id_modifyServerDomain"
+            app:layout_constraintTop_toBottomOf="@+id/developer_mode_id_modifyServerDomain" />
 
         <TextView
             android:id="@+id/developer_mode_id_ssid"

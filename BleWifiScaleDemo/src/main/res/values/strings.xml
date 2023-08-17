@@ -67,11 +67,11 @@
     <string name="prompt">提示</string>
     <string name="determine">确定</string>
     <string name="cancel">取消</string>
-    <string name="dns_sent_successfully">发送DNS成功</string>
+    <string name="dns_sent_successfully">发送域名成功</string>
     <string name="service_ip_sent_successfully">发送SeviceIp成功</string>
     <string name="get_ssid">获取SSID</string>
     <string name="modify_serverip">修改ServerIP</string>
-    <string name="modify_serverdns">修改ServerDNS</string>
+    <string name="modify_server_domain">修改Server域名</string>
     <string name="server_ip">服务端IP</string>
     <string name="server_dns">服务端DNS</string>
     <string name="reconnection">重连</string>

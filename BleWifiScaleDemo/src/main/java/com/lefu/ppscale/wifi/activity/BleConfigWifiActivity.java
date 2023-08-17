@@ -239,7 +239,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                 Logger.d(getString(R.string.scanning));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 Logger.d(getString(R.string.Writable));
-                sendModifyServerDNS();
+                sendModifyServerDomain();
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
             }
@@ -271,14 +271,19 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     }
 
     /**
-     * 配置dns
+     * 配置秤端域名
      */
-    private void sendModifyServerDNS() {
-        if (ppScale != null && !TextUtils.isEmpty(scaleDomain)) {
-            ppScale.sendModifyServerDNS(scaleDomain);
-        } else {
-            startConfigWifi(null);
-        }
+    private void sendModifyServerDomain() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (ppScale != null && !TextUtils.isEmpty(scaleDomain)) {
+                    ppScale.sendModifyServerDNS(scaleDomain);
+                } else {
+                    startConfigWifi(null);
+                }
+            }
+        }, 500);
     }
 
     private void stopPPScale() {

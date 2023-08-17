@@ -66,11 +66,11 @@
     <string name="prompt">prompt</string>
     <string name="determine">OK</string>
     <string name="cancel">cancel</string>
-    <string name="dns_sent_successfully">DNS sent successfully </string>
+    <string name="dns_sent_successfully">Domain sent successfully </string>
     <string name="service_ip_sent_successfully">Send SeviceIp successfully</string>
     <string name="get_ssid">get SSID</string>
     <string name="modify_serverip">modify ServerIP</string>
-    <string name="modify_serverdns">modify ServerDNS</string>
+    <string name="modify_server_domain">modify Server Domain</string>
     <string name="server_ip">server IP</string>
     <string name="server_dns">server DNS</string>
     <string name="reconnection">Reconnect</string>
