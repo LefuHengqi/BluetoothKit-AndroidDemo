@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="配置网络" />
+
+        <LinearLayout
+            android:id="@+id/mLoadAnimaLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="26dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/mLoadAnimaIV"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/icon_search_device_wifi" />
+
+            <TextView
+                android:id="@+id/mSearchDeviceWifiListTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                tools:text="搜索中..." />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mDeviceWifiListRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="14"
+            tools:listitem="@layout/adapter_device_search_item_layout" />
+    </LinearLayout>
+
+    <com.lefu.layout.widget.shape.view.ShapeButton
+        android:id="@+id/mWifiRefreshSB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="@dimen/dp_26"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:gravity="center"
+        android:paddingVertical="@dimen/dp_12"
+        android:text="刷新"
+        android:textSize="@dimen/sp_16"
+        android:visibility="visible"
+        app:layout_anchorGravity="bottom"
+        app:shape="rectangle"
+        app:shape_radius="@dimen/dp_86"
+        app:shape_solidColor="@color/col_4A98F8"
+        app:shape_solidPressedColor="@color/col_304A98F8"
+        app:shape_textColor="@color/white" />
+</RelativeLayout>

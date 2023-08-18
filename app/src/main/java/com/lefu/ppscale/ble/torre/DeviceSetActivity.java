@@ -25,6 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralAppleInstance;
+import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralTorreInstance;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.util.DataUtil;
 import com.peng.ppscale.business.ble.BleOptions;
@@ -166,23 +168,9 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
 
             }
         });
-
-
-
     }
 
-    public int getTextWidth(Paint paint, String content) {
-        int width = 0;
-        if (content != null && content.length() > 0) {
-            int length = content.length();
-            float[] widths = new float[length];
-            paint.getTextWidths(content, widths);
-            for (int i = 0; i < length; i++) {
-                width += (int) Math.ceil(widths[i]);
-            }
-        }
-        return width;
-    }
+
 
     private void initPPScale() {
         List<String> addressList = new ArrayList<>();
@@ -192,8 +180,6 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
         }
         if (ppScale == null) {
             ppScale = builder1.setProtocalFilterImpl(getProtocalFilter())
-                    .setBleOptions(getBleOptions())
-                    .setDeviceList(addressList)
                     .setUserModel(userModel)
                     .setBleStateInterface(bleStateInterface)
                     .build();
@@ -207,7 +193,7 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     }
 
     private void initLitener() {
-        ppScale.getTorreDeviceManager().setTorreDeviceLogInterface(new PPDeviceLogInterface() {
+        PPBlutoothPeripheralTorreInstance.Factory.getInstance().getController().getTorreManager().setTorreDeviceLogInterface(new PPDeviceLogInterface() {
             @Override
             public void syncLogStart() {
 
@@ -228,7 +214,8 @@ public class DeviceSetActivity extends Activity implements View.OnClickListener 
     }
 
     public void startConnectDevice(String address) {
-        ppScale.connectAddress(address);
+//        ppScale.connectAddress(address);
+        PPBlutoothPeripheralTorreInstance.Factory.getInstance().getController().startConnect();
     }
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {

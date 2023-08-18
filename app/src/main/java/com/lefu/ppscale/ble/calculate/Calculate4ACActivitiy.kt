@@ -53,7 +53,7 @@ class Calculate4ACActivitiy : Activity() {
             .build()
 
         val deviceModel = PPDeviceModel("", DeviceManager.CF568)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate)
+        deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
         deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
             PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
         } else {

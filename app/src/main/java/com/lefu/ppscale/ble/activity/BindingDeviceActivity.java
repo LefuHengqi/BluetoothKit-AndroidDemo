@@ -281,13 +281,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
             @Override
             public void readDeviceInfoComplete(PPDeviceModel deviceModel) {
                 //如果需要modelNumber 设备型号信息，则要主动发起连接并且见监听readDeviceInfoComplete时回调
-                Logger.d("DeviceInfo :  " + deviceModel.getModelNumber());
-//                if (deviceModel.deviceConnectType != PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
-//
-//                        }
                 Logger.d("DeviceInfo :  " + deviceModel.toString());
-
-
             }
         });
         return protocalFilter;
@@ -297,7 +291,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
         if (bodyBaseModel != null) {
             if (!bodyBaseModel.isHeartRating) {
                 Logger.d("monitorLockData  bodyFatModel weightKg = " + bodyBaseModel.toString());
-
                 if (ppScale != null) {
                     ppScale.stopSearch();
                 }
@@ -306,13 +299,8 @@ public class BindingDeviceActivity extends AppCompatActivity {
                     weightTextView.setText(weightStr);
 //                    showDialog(deviceModel, bodyFatModel);
                 }
-                if (deviceModel.deviceType == PPScaleDefine.PPDeviceType.PPDeviceTypeCC) {
-                    //Bluetooth WiFi scale
-                    showWiFiConfigDialog(bodyBaseModel, deviceModel);
-                } else {
-                    //Ordinary bluetooth scale
-                    showDialog(deviceModel, bodyBaseModel);
-                }
+                //Ordinary bluetooth scale
+                showDialog(deviceModel, bodyBaseModel);
             } else {
                 Logger.d("正在测量心率");
             }
@@ -360,7 +348,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
                 if (searchType != 0 && deviceModel.isDeviceConnectAbled()) {
                     ppScale.stopSearch();
-                    ppScale.connectDevice(deviceModel);
                 } else {
                     //绑定设备时不发起连接，非可连接设备，不发起连接
                 }
@@ -431,7 +418,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
         super.onDestroy();
         if (ppScale != null) {
             ppScale.stopSearch();
-            ppScale.disConnect();
         }
         if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.dismiss();
@@ -497,8 +483,7 @@ public class BindingDeviceActivity extends AppCompatActivity {
 
     private void startSearchDevice() {
         if (ppScale != null) {
-            ppScale.disConnect();
-            ppScale.startSearchBluetoothScaleWithMacAddressList(false);
+            ppScale.startSearchBluetoothScaleWithMacAddressList();
         }
     }
 
@@ -515,7 +500,6 @@ public class BindingDeviceActivity extends AppCompatActivity {
     private void disConnect() {
         if (ppScale != null) {
             ppScale.stopSearch();
-            ppScale.disConnect();
         }
     }
 
