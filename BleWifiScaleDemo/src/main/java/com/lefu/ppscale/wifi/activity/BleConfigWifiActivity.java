@@ -3,10 +3,6 @@ package com.lefu.ppscale.wifi.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -17,6 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.lefu.base.SettingManager;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
@@ -26,10 +25,8 @@ import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
 import com.lefu.ppscale.wifi.net.okhttp.RetCallBack;
 import com.lefu.ppscale.wifi.net.okhttp.vo.SaveWifiGroupBean;
 import com.lefu.ppscale.wifi.util.WifiUtil;
-import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface;
-import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
@@ -131,15 +128,9 @@ public class BleConfigWifiActivity extends AppCompatActivity {
         tvNext.setEnabled(false);
         snTv.setText("");
         ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
-        protocalFilter.setConfigWifiInterface(new PPConfigWifiInterface() {
-
-            /**
-             * wifi设备配网成功并获取到SN
-             *
-             * @param sn 设备识别码
-             */
+        protocalFilter.setConfigWifiInfoInterface(new PPConfigWifiInfoInterface() {
             @Override
-            public void monitorConfigState(final String sn, PPDeviceModel deviceModel) {
+            public void monitorConfigSn(final String sn, PPDeviceModel deviceModel) {
                 tvNext.setEnabled(true);
                 //拿到sn 处理业务逻辑
                 Logger.e("xxxxxxxxxxxx-" + sn);
@@ -174,13 +165,6 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-            }
-        });
-        protocalFilter.setConfigWifiInfoInterface(new PPConfigWifiInfoInterface() {
-            @Override
-            public void monitorConfigSn(String sn, PPDeviceModel deviceModel) {
-
             }
 
             @Override
@@ -206,19 +190,9 @@ public class BleConfigWifiActivity extends AppCompatActivity {
 
         ppScale = new PPScale.Builder(this)
                 .setProtocalFilterImpl(protocalFilter)
-                .setBleOptions(getBleOptions())
                 .setBleStateInterface(bleStateInterface)
                 .build();
         ppScale.connectAddress(address);
-    }
-
-    /**
-     * 参数配置
-     */
-    private BleOptions getBleOptions() {
-        return new BleOptions.Builder()
-                .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_CONFIG_WIFI)
-                .build();
     }
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {

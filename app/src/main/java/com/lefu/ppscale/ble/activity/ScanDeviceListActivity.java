@@ -87,14 +87,14 @@ public class ScanDeviceListActivity extends AppCompatActivity {
                 onStartDeviceSetPager(position);
             }
         });
-        adapter.setOnClickInItemLisenter(new DeviceListAdapter.OnItemClickViewInsideListener() {
-            @Override
-            public void onItemClickViewInside(int position, View view) {
-                if (view.getId() == R.id.tvSetting) {
-                    onStartDeviceSetPager(position);
-                }
-            }
-        });
+//        adapter.setOnClickInItemLisenter(new DeviceListAdapter.OnItemClickViewInsideListener() {
+//            @Override
+//            public void onItemClickViewInside(int position, View view) {
+//                if (view.getId() == R.id.tvSetting) {
+//                    onStartDeviceSetPager(position);
+//                }
+//            }
+//        });
     }
 
     private void onStartDeviceSetPager(final int position) {
@@ -144,7 +144,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
                         }
                     }
                     if (deviceModel == null) {
-                        deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.getType());
+                        deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.ordinal());
                         deviceModel.setRssi(deviceModel.getRssi());
                         deviceModel.setDeviceProtocolType(ppDeviceModel.deviceProtocolType.getType());
                         deviceModel.setDeviceCalcuteType(ppDeviceModel.deviceCalcuteType.getType());
@@ -169,11 +169,9 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     private void bindingDevice() {
         ppScale = new PPScale.Builder(this)
                 .setProtocalFilterImpl(getProtocalFilter())
-//                    .setDeviceList(null)
                 .setUserModel(userModel)
                 .setBleStateInterface(bleStateInterface)
                 .build();
-
         startScanDeviceList();
     }
 
@@ -183,7 +181,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     public void startScanDeviceList() {
         if (ppScale != null) {
             //ppScale.monitorSurroundDevice();      //The default scan time is 300000ms
-            ppScale.monitorSurroundDevice(300000);  //You can dynamically set the scan time in ms
+            ppScale.startSearchDeviceList(300000);  //You can dynamically set the scan time in ms
         }
     }
 
@@ -256,7 +254,6 @@ public class ScanDeviceListActivity extends AppCompatActivity {
         super.onDestroy();
         if (ppScale != null) {
             ppScale.stopSearch();
-            ppScale.disConnect();
         }
         if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.dismiss();
