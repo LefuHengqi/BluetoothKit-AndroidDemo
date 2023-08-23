@@ -53,27 +53,6 @@ class OldVersionManagerActivity : BasePermissionActivity(), View.OnClickListener
             R.id.userInfoBtn -> {
                 startActivity(Intent(this@OldVersionManagerActivity, UserinfoActivity::class.java))
             }
-            R.id.scaleWeightBtn -> {
-                if (PPScale.isBluetoothOpened()) {
-                    val intent = Intent(this@OldVersionManagerActivity, BindingDeviceActivity::class.java)
-                    intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 1)
-                    startActivity(intent)
-                } else {
-                    PPScale.openBluetooth()
-                }
-            }
-            R.id.deviceManagerBtn -> {
-                startActivity(Intent(this@OldVersionManagerActivity, DeviceListActivity::class.java))
-            }
-            R.id.bindingDeviceBtn -> {
-                if (PPScale.isBluetoothOpened()) {
-                    val intent = Intent(this@OldVersionManagerActivity, BindingDeviceActivity::class.java)
-                    intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 0)
-                    startActivity(intent)
-                } else {
-                    PPScale.openBluetooth()
-                }
-            }
             R.id.functionListBleBtn -> {
                 if (PPScale.isBluetoothOpened()) {
 //                    startActivity(Intent(this@MainActivity, FunctionListActivity::class.java))
@@ -88,32 +67,6 @@ class OldVersionManagerActivity : BasePermissionActivity(), View.OnClickListener
                 } else {
                     PPScale.openBluetooth()
                 }
-            }
-            R.id.simulatedBodyFatCalculationBtn -> {
-                PPBodyDetailModel.context = this
-
-                val ppWeightKg = DataUtil.util().weightKg       //weight
-                val impedance = DataUtil.util().impedance       //3609627
-
-                val userModel = SettingManager.get()
-                    .getDataObj(SettingManager.USER_MODEL, PPUserModel::class.java)
-
-                val deviceModel = PPDeviceModel("", DeviceManager.CF568)    //Select the corresponding Bluetooth name according to your own device
-                deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
-                val bodyBaseModel = PPBodyBaseModel()
-                bodyBaseModel.impedance = impedance
-                bodyBaseModel.weight = UnitUtil.getWeight(ppWeightKg)
-                bodyBaseModel.deviceModel = deviceModel
-                bodyBaseModel.userModel = userModel
-
-                val fatModel = PPBodyFatModel(bodyBaseModel)
-
-                DataUtil.util().bodyDataModel = fatModel
-                Log.d("liyp_", fatModel.toString())
-
-                val intent = Intent(this@OldVersionManagerActivity, Calculate8Activitiy::class.java)
-//                val intent = Intent(this@MainActivity, BodyDataDetailActivity::class.java)
-                startActivity(intent)
             }
         }
     }

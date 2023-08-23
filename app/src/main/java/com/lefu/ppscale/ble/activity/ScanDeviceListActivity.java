@@ -13,9 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.lefu.ppblutoothkit.device.PeripheralTorreActivity;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
-import com.lefu.ppscale.ble.torre.DeviceSetActivity;
 import com.lefu.ppscale.ble.util.DataUtil;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.peng.ppscale.business.ble.PPScale;
@@ -54,7 +54,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     boolean isOnResume = false;//页面可见时再重新发起扫描
     private DeviceListAdapter adapter;
-    ArrayList<DeviceModel> deviceModels = new ArrayList<>();
+    ArrayList<PPDeviceModel> deviceModels = new ArrayList<>();
     private TextView tv_starts;
 
     @Override
@@ -101,7 +101,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
         DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
         if (deviceModel != null) {
             if (deviceModel.getDeviceProtocolType() == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre.getType()) {
-                Intent intent = new Intent(ScanDeviceListActivity.this, DeviceSetActivity.class);
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralTorreActivity.class);
                 intent.putExtra("address", deviceModel.getDeviceMac());
                 startActivity(intent);
             } else {
@@ -116,10 +116,6 @@ public class ScanDeviceListActivity extends AppCompatActivity {
      * @param deviceModel
      */
     private void startScanData(DeviceModel deviceModel) {
-        Intent intent = new Intent(ScanDeviceListActivity.this, BindingDeviceActivity.class);
-        intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 2);
-        intent.putExtra(BindingDeviceActivity.CONNECT_ADDRESS, deviceModel.getDeviceMac());
-        startActivity(intent);
     }
 
     /**
@@ -134,9 +130,9 @@ public class ScanDeviceListActivity extends AppCompatActivity {
             @Override
             public void onSearchDevice(PPDeviceModel ppDeviceModel) {
                 if (ppDeviceModel != null) {
-                    DeviceModel deviceModel = null;
+                    PPDeviceModel deviceModel = null;
                     for (int i = 0; i < deviceModels.size(); i++) {
-                        DeviceModel model = deviceModels.get(i);
+                        PPDeviceModel model = deviceModels.get(i);
                         if (model.getDeviceMac().equals(ppDeviceModel.getDeviceMac())) {
                             model.setRssi(ppDeviceModel.getRssi());
                             deviceModel = model;
@@ -144,10 +140,10 @@ public class ScanDeviceListActivity extends AppCompatActivity {
                         }
                     }
                     if (deviceModel == null) {
-                        deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.ordinal());
-                        deviceModel.setRssi(deviceModel.getRssi());
-                        deviceModel.setDeviceProtocolType(ppDeviceModel.deviceProtocolType.getType());
-                        deviceModel.setDeviceCalcuteType(ppDeviceModel.deviceCalcuteType.getType());
+//                        deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.ordinal());
+//                        deviceModel.setRssi(deviceModel.getRssi());
+//                        deviceModel.setDeviceProtocolType(ppDeviceModel.deviceProtocolType.getType());
+//                        deviceModel.setDeviceCalcuteType(ppDeviceModel.deviceCalcuteType.getType());
                         deviceModels.add(deviceModel);
                     }
                     adapter.notifyDataSetChanged();

@@ -87,8 +87,8 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
         }
         if (ppScale == null) {
             ppScale = builder1.setProtocalFilterImpl(getProtocalFilter())
-                    .setBleOptions(getBleOptions())
-                    .setDeviceList(addressList)
+//                    .setBleOptions(getBleOptions())
+//                    .setDeviceList(addressList)
                     .setUserModel(userModel)
                     .setBleStateInterface(bleStateInterface)
                     .build();
@@ -101,17 +101,6 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
         //启动扫描
         startScanData();
 
-    }
-
-    /**
-     * Connection configuration
-     *
-     * @return
-     */
-    private BleOptions getBleOptions() {
-        return new BleOptions.Builder()
-                .setSearchTag(BleOptions.SEARCH_TAG_NORMAL)
-                .build();
     }
 
     @Override
@@ -184,11 +173,11 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
                 //可写状态，可以发送指令，例如切换单位，获取历史数据等
                 weightTextView.setText(getString(R.string.writable));
                 //切换单位
-                ppScale.sendUnitDataScale(unitType, null);
+//                ppScale.sendUnitDataScale(unitType, null);
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 Logger.d(getString(R.string.Connectable));
                 //连接，在ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable时开始发送数据
-                ppScale.connectDevice(deviceModel);
+//                ppScale.connectDevice(deviceModel);
             } else {
                 Logger.e(getString(R.string.bluetooth_status_is_abnormal));
             }
@@ -269,7 +258,7 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
 
     private void dismissSelf() {
         ppScale.stopSearch();
-        ppScale.disConnect();
+//        ppScale.disConnect();
         finish();
     }
 

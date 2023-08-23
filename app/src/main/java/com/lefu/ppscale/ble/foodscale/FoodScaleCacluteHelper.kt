@@ -14,7 +14,7 @@ object FoodScaleCacluteHelper {
 
     @JvmStatic
     fun getValue(context: Context, weightG: Float, unit: PPUnitType, deviceModel: PPDeviceModel): String {
-        DeviceType.deviceType = DeviceUtil.getDeviceType(deviceModel.getDeviceName())
+        DeviceType.deviceType = DeviceUtil.getDeviceType(deviceModel.deviceName)
         var valueStr = ""
         var value = weightG
 //        if (foodScaleGeneral.thanZero == 0) {

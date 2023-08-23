@@ -42,26 +42,27 @@
             </intent-filter>
         </activity>
         <activity android:name=".OldVersionManagerActivity" />
+
+        <activity android:name=".activity.BodyDataDetailActivity" />
+        <activity android:name=".activity.ScanDeviceListActivity" />
+        <activity android:name=".wififunction.WifiFunctionListActivity" />
+        <activity android:name=".function.FunctionListActivity" />
+        <activity android:name=".userinfo.UserinfoActivity" />
+        <activity android:name=".foodscale.FoodSclaeDeviceActivity" />
+
+        <!--Calculate-->
         <activity android:name=".calculate.CalculateManagerActivity" />
         <activity android:name=".calculate.Calculate4DCActivitiy" />
         <activity android:name=".calculate.Calculate4ACActivitiy" />
         <activity android:name=".calculate.Calculate8Activitiy" />
 
-        <activity android:name=".activity.BindingDeviceActivity" />
-        <activity android:name=".activity.DeviceListActivity" />
-        <activity android:name=".activity.BodyDataDetailActivity" />
-        <activity android:name=".bmdj.BMDJConnectActivity" />
-        <activity android:name=".bmdj.BMDJTimeActivity" />
-        <activity android:name=".bmdj.BMDJIntroduceActivity" />
-        <activity android:name=".activity.ScanDeviceListActivity" />
-        <activity android:name=".activity.ReadHistoryListActivity" />
-        <activity android:name=".wififunction.WifiFunctionListActivity" />
-        <activity android:name=".function.FunctionListActivity" />
-        <activity android:name=".userinfo.UserinfoActivity" />
-        <activity android:name=".activity.OTAActivity" />
-        <activity android:name=".torre.DeviceSetActivity" />
-        <activity android:name=".foodscale.FoodSclaeDeviceActivity" />
-        <activity android:name=".calculate.Calculate8Activitiy" />
+        <!--Torre-->
+        <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.device.torre.DeviceSearchWifiListActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity" />
+
+
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

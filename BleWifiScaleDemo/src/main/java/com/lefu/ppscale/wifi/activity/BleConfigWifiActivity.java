@@ -186,13 +186,18 @@ public class BleConfigWifiActivity extends AppCompatActivity {
             public void monitorModifyServerIpSuccess() {
 
             }
+
+            @Override
+            public void monitorConfigFail() {
+
+            }
         });
 
         ppScale = new PPScale.Builder(this)
                 .setProtocalFilterImpl(protocalFilter)
                 .setBleStateInterface(bleStateInterface)
                 .build();
-        ppScale.connectAddress(address);
+//        ppScale.connectAddress(address);
     }
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
@@ -240,7 +245,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
         ssid = etWifiName.getText().toString();
         String password = etWifiKey.getText().toString();
         if (ppScale != null) {
-            ppScale.configWifi(ssid, password, sendResultCallBack);
+//            ppScale.configWifi(ssid, password, sendResultCallBack);
         }
     }
 
@@ -252,7 +257,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (ppScale != null && !TextUtils.isEmpty(scaleDomain)) {
-                    ppScale.sendModifyServerDNS(scaleDomain);
+//                    ppScale.sendModifyServerDNS(scaleDomain);
                 } else {
                     startConfigWifi(null);
                 }
@@ -263,7 +268,7 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     private void stopPPScale() {
         if (ppScale != null) {
 //            ppScale.stopWifiConfig();
-            ppScale.disConnect();
+//            ppScale.disConnect();
             ppScale.stopSearch();
             ppScale = null;
         }

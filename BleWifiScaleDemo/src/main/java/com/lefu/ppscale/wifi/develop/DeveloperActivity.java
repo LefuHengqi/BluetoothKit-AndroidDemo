@@ -89,7 +89,6 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
 
         if (ppScale == null) {
             BleOptions bleOptions = new BleOptions.Builder()
-                    .setSearchTag(BleOptions.SEARCH_TAG_DIRECT_CONNECT)
                     .build();
 
             ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
@@ -102,8 +101,6 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
                     .Builder(this)
                     .setUserModel(userModel)
                     .setBleStateInterface(ppBleStateInterface)
-                    .setDeviceList(devices)
-                    .setBleOptions(bleOptions)
                     .setProtocalFilterImpl(protocalFilter)
                     .build();
         }
@@ -143,6 +140,11 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
         @Override
         public void monitorModifyServerIpSuccess() {
             Toast.makeText(DeveloperActivity.this, R.string.service_ip_sent_successfully, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void monitorConfigFail() {
+
         }
     };
 
@@ -190,7 +192,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
                     Logger.d("可连");
                     if (ppScale != null) {
                         ppScale.stopSearch();
-                        ppScale.connectDevice(ppDeviceModel);
+//                        ppScale.connectDevice(ppDeviceModel);
                     }
                     tvTitle.setText(getString(R.string.device_connected));
                     break;
@@ -216,7 +218,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
         super.onPause();
         if (ppScale != null) {
             ppScale.stopSearch();
-            ppScale.disConnect();
+//            ppScale.disConnect();
         }
     }
 
@@ -227,14 +229,14 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
             finish();
         } else if (id == R.id.developer_mode_id_getSSID) {
             if (ppScale != null) {
-                ppScale.sendInquityWifiConfig();
+//                ppScale.sendInquityWifiConfig();
             }
         } else if (id == R.id.developer_mode_id_modifyServerIP) {
             String ip = inputServerIP.getText().toString();
             if (!TextUtils.isEmpty(ip)) {
                 ip = ip.trim();
                 if (ppScale != null) {
-                    ppScale.sendModifyServerIp(ip);
+//                    ppScale.sendModifyServerIp(ip);
                 }
             }
         } else if (id == R.id.developer_mode_id_modifyServerDomain) {
@@ -242,14 +244,14 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
             if (!TextUtils.isEmpty(dns)) {
                 dns = dns.trim();
                 if (ppScale != null) {
-                    ppScale.sendModifyServerDNS(dns);
+//                    ppScale.sendModifyServerDNS(dns);
                 }
             }
         } else if (id == R.id.developer_mode_id_startConnect) {
             startScanBle();
         } else if (id == R.id.developer_mode_id_clearSSID) {
             if (ppScale != null) {
-                ppScale.sendDeleteWifiConfig();
+//                ppScale.sendDeleteWifiConfig();
             }
         }
     }

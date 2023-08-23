@@ -1,38 +1,52 @@
 package com.lefu.ppblutoothkit.device
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.CompoundButton
-import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.ToggleButton
-import com.lefu.ppblutoothkit.function.PeripheralTorreConfigWifiActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity
 import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppscale.ble.R
 import com.lefu.ppscale.ble.util.DataUtil
-import com.peng.ppscale.business.ble.configWifi.PPConfigStateMenu
 import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.business.ota.OnOTAStateListener
+import com.peng.ppscale.business.state.PPBleSwitchState
+import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
+import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyBaseModel
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPUserModel
-import com.peng.ppscale.vo.PPWifiModel
 
+/**
+ * 一定要先连接设备，确保设备在已连接状态下使用
+ */
 class PeripheralTorreActivity : Activity() {
 
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
     private var wifi_name: TextView? = null
+    private var device_set_connect_state: TextView? = null
+    private var weightMeasureState: TextView? = null
 
-    private val dfuFilePath: String? = null//本地文件升级时使用
+    val REQUEST_CODE = 1024
+
+    var dfuFilePath: String? = null//本地文件升级时使用
 
     private var whetherFullyDFUToggleBtn: ToggleButton? = null//控制是否全量升级，true开启全量
 
@@ -55,72 +69,153 @@ class PeripheralTorreActivity : Activity() {
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         wifi_name = findViewById<TextView>(R.id.wifi_name)
         whetherFullyDFUToggleBtn = findViewById<ToggleButton>(R.id.whetherFullyDFUToggleBtn)
+        device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
+        weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
+
+        initClick()
 
     }
 
     fun initClick() {
-        findViewById<Button>(R.id.device_set_getFilePath).setOnClickListener {
+        findViewById<Button>(R.id.device_start_connect).setOnClickListener {
+            addPrint("startConnect")
+            controller?.startConnect(object : PPBleStateInterface() {
+                override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState?, deviceModel: PPDeviceModel?) {
+                    if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
+                        device_set_connect_state?.text = getString(R.string.device_connected)
+                        addPrint(getString(R.string.device_connected))
+                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
+                        device_set_connect_state?.text = getString(R.string.device_connecting)
+                        addPrint(getString(R.string.device_connecting))
+                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
+                        device_set_connect_state?.text = getString(R.string.device_disconnected)
+                        addPrint(getString(R.string.device_disconnected))
+                    } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
+                        device_set_connect_state?.text = getString(R.string.stop_scanning)
+                        addPrint(getString(R.string.stop_scanning))
+                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
+                        device_set_connect_state?.text = getString(R.string.scan_timeout)
+                        addPrint(getString(R.string.scan_timeout))
+                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
+                        device_set_connect_state?.text = getString(R.string.scanning)
+                        addPrint(getString(R.string.scanning))
+                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
+                        addPrint(getString(R.string.writable))
+                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
+                        addPrint(getString(R.string.Connectable))
+                    }
+                }
 
+                override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState?) {
+                    if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
+                        addPrint(getString(R.string.system_bluetooth_disconnect))
+                        Toast.makeText(this@PeripheralTorreActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
+                    } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
+                        addPrint(getString(R.string.system_blutooth_on))
+                        Toast.makeText(this@PeripheralTorreActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun monitorMtuChange(deviceModel: PPDeviceModel?) {
+                    addPrint("monitorMtuChange mtu:${deviceModel?.mtu}")
+                }
+
+            })
         }
-        findViewById<TextView>(R.id.device_set_connect_state).setOnClickListener {
-
+        findViewById<Button>(R.id.startMeasureBtn).setOnClickListener {
+            addPrint("startMeasure")
+            controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
+            controller?.getTorreDeviceManager()?.startMeasure({})
+        }
+        findViewById<Button>(R.id.stopMeasureBtn).setOnClickListener {
+            addPrint("stopMeasure")
+            controller?.getTorreDeviceManager()?.unRegistDataChangeListener()
+            controller?.getTorreDeviceManager()?.stopMeasure()
         }
         findViewById<Button>(R.id.device_set_light).setOnClickListener {
             val light = (Math.random() * 100).toInt()
+            addPrint("setLight light:$light")
             controller?.getTorreDeviceManager()?.setLight(light, deviceSetInterface)
         }
         findViewById<Button>(R.id.device_set_sync_log).setOnClickListener {
+            addPrint("syncLog")
             controller?.getTorreDeviceManager()?.syncLog(deviceLogInterface)
         }
         findViewById<Button>(R.id.device_set_sync_time).setOnClickListener {
-            controller?.getTorreDeviceManager()?.syncTime { }
+            addPrint("syncTime")
+            controller?.getTorreDeviceManager()?.syncTime {
+                addPrint("syncTime Success")
+            }
         }
-        findViewById<Button>(R.id.device_set_reset).setOnClickListener {
-            controller?.getTorreDeviceManager()?.resetDevice(deviceSetInterface)
+        findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
+            addPrint("syncUserHistoryData userID:${userModel?.userID}")
+            controller?.getTorreDeviceManager()?.syncUserHistory(userModel, userHistoryDataInterface)
         }
-        findViewById<Button>(R.id.device_set_synchistory).setOnClickListener {
-            controller?.getTorreDeviceManager()?.syncHistory(userModel, historyDataInterface)
+        findViewById<Button>(R.id.syncTouristHistoryData).setOnClickListener {
+            addPrint("syncTouristHistoryData username:游客")
+            controller?.getTorreDeviceManager()?.syncTouristHistory(touristHistoryDataInterface)
         }
         findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
-            controller?.getTorreDeviceManager()?.syncUserInfo(userModel)
+            addPrint("syncUserInfo userName:${userModel?.userName}")
+            controller?.getTorreDeviceManager()?.syncUserInfo(userModel, userInfoInterface)
+        }
+        findViewById<Button>(R.id.device_set_delete_userinfo).setOnClickListener {
+            //根据userID去删除该userId下的所有子成员
+            addPrint("deleteAllUserInfo userID:${userModel?.userID}")
+            controller?.getTorreDeviceManager()?.deleteAllUserInfo(userModel, userInfoInterface)
+            //删除单个用户,根据memberID去删除
+//            controller?.getTorreDeviceManager()?.deleteUserInfo(userModel, userInfoInterface)
+        }
+        findViewById<Button>(R.id.device_set_confirm_current_userinfo).setOnClickListener {
+            //下发当前称重用户
+            addPrint("confirmCurrentUser userName:${userModel?.userName}")
+            controller?.getTorreDeviceManager()?.confirmCurrentUser(userModel, userInfoInterface)
         }
         findViewById<Button>(R.id.device_set_wifi_list).setOnClickListener {
+            addPrint("getWifiList")
             controller?.getTorreDeviceManager()?.getWifiList(configWifiInterface)
         }
         findViewById<Button>(R.id.device_set_startConfigWifi).setOnClickListener {
+            addPrint("startConfigWifi pager")
             startActivity(Intent(this, PeripheralTorreConfigWifiActivity::class.java))
-
-            val ssid = "IT32"
-            val password = "whs123456"
-            val domainName = "http://nat.lefuenergy.com:10081"
-            controller?.getTorreDeviceManager()?.configWifi(ssid, password, domainName, configWifiInterface)
         }
-        findViewById<Button>(R.id.device_set_exitConfigWifi).setOnClickListener {
-            controller?.getTorreDeviceManager()?.exitConfigWifi()
+        findViewById<Button>(R.id.getWifiSSID).setOnClickListener {
+            addPrint("getWifiSSID")
+            controller?.getTorreDeviceManager()?.getWifiSSID(configWifiInterface)
         }
-        findViewById<Button>(R.id.device_set_delete_userinfo).setOnClickListener {
-            controller?.getTorreDeviceManager()?.deleteAllUserInfo(userModel, userInfoInterface)
-        }
-        findViewById<Button>(R.id.device_set_confirm_current_userinfo).setOnClickListener {
-            controller?.getTorreDeviceManager()?.confirmCurrentUser(userModel, userInfoInterface)
+        findViewById<Button>(R.id.getWifiMac).setOnClickListener {
+            addPrint("getWifiMac")
+            controller?.getTorreDeviceManager()?.getWifiMac(configWifiInterface)
         }
         findViewById<Button>(R.id.device_set_get_userinfo_list).setOnClickListener {
+            addPrint("getUserList")
             controller?.getTorreDeviceManager()?.getUserList(userInfoInterface)
+        }
+        findViewById<Button>(R.id.startKeepAlive).setOnClickListener {
+            addPrint("startKeepAlive")
+            controller?.getTorreDeviceManager()?.startKeepAlive()
+        }
+        findViewById<Button>(R.id.device_set_getFilePath).setOnClickListener {
+            addPrint("check sdCard read and write permission")
+            requestPermission()
         }
         findViewById<Button>(R.id.device_set_startDFU).setOnClickListener {
             if (dfuFilePath.isNullOrBlank().not()) {
                 if (controller?.getTorreDeviceManager()?.isDFU?.not() ?: false) {
+                    addPrint("启动DFU升级")
                     val isFullyDFUState = whetherFullyDFUToggleBtn?.isChecked ?: true //是否全量升级
                     controller?.getTorreDeviceManager()?.startDFU(isFullyDFUState, dfuFilePath, onDFUStateListener)
                 } else {
                     //正在升级，请不要频繁调用
+                    addPrint("正在升级，请不要频繁调用")
                 }
             } else {
                 //本地升级时未选则升级文件
-
+                addPrint("本地升级时未选则升级文件")
             }
         }
         findViewById<Button>(R.id.device_set_startOTA).setOnClickListener {
+            addPrint("查询配网状态")
             controller?.getTorreDeviceManager()?.getWifiState(object : PPTorreConfigWifiInterface() {
                 /**
                  * 配网状态
@@ -130,11 +225,12 @@ class PeripheralTorreActivity : Activity() {
                  */
                 override fun configWifiState(state: Int) {
                     if (state == 1) {
+                        addPrint("设备已配网，启动用户升级")
                         //已配网
                         controller?.getTorreDeviceManager()?.startUserOTA(otaStateListener)
-
                     } else {
                         //请先给设备配网
+                        addPrint("请先给设备配网")
                     }
                 }
             })
@@ -142,38 +238,127 @@ class PeripheralTorreActivity : Activity() {
         findViewById<Button>(R.id.device_set_startLocalOTA).setOnClickListener {
             //wifi 本地必须有Test的Wifi, 且密码是：12345678 秤会自动连接该Wifi
             //ssid: Test password: 12345678
+            addPrint("startLocalOTA 本地必须有Test的Wifi, 且密码是：12345678 秤会自动连接该Wifi")
             controller?.getTorreDeviceManager()?.startLocalOTA(otaStateListener)
         }
-        findViewById<Button>(R.id.startMeasureBtn).setOnClickListener {
-            controller?.getTorreDeviceManager()?.startMeasure({})
-        }
         findViewById<ToggleButton>(R.id.pregnancyModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
+            addPrint("maternity mode isChecked:$isChecked")
             //0打开 1关闭
             controller?.getTorreDeviceManager()?.controlImpendance(if (isChecked) 0 else 1, modeChangeInterface)
         }
-        findViewById<Button>(R.id.getWifiSSID).setOnClickListener {
-            controller?.getTorreDeviceManager()?.getWifiSSID(configWifiInterface)
-        }
         findViewById<Button>(R.id.device_set_clearUser).setOnClickListener {
+            addPrint("clear Device User Info")
             controller?.getTorreDeviceManager()?.clearDeviceUserInfo(clearDataInterface)
+        }
+        findViewById<Button>(R.id.device_set_reset).setOnClickListener {
+            addPrint("resetDevice")
+            controller?.getTorreDeviceManager()?.resetDevice(deviceSetInterface)
+        }
+        findViewById<Button>(R.id.readDeviceInfo).setOnClickListener {
+            addPrint("readDeviceInfo")
+            controller?.getTorreDeviceManager()?.readDeviceInfoFromCharacter(modeChangeInterface)
+        }
+        findViewById<Button>(R.id.readDeviceBattery).setOnClickListener {
+            addPrint("readDeviceBattery")
+            controller?.getTorreDeviceManager()?.readDeviceBattery(modeChangeInterface)
+        }
+        findViewById<Button>(R.id.readLight).setOnClickListener {
+            addPrint("readLight")
+            controller?.getTorreDeviceManager()?.getLight(deviceSetInterface)
+        }
+
+    }
+
+    val dataChangeListener = object : PPDataChangeListener() {
+
+        /**
+         * 监听过程数据
+         *
+         * @param bodyBaseModel
+         * @param deviceModel
+         */
+        override fun monitorProcessData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
+            val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
+            weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
+            weightMeasureState?.text = ""
+        }
+
+        /**
+         * 锁定数据
+         *
+         * @param bodyBaseModel
+         */
+        override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
+            val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
+            weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
+            weightMeasureState?.text = ""
+        }
+
+        /**
+         * 阻抗测量状态，
+         */
+        override fun onImpedanceFatting() {
+            weightMeasureState?.text = "阻抗测量中"
+        }
+
+        /**
+         * 超重
+         */
+        override fun monitorOverWeight() {
+            weightMeasureState?.text = "超重"
+        }
+
+        /**
+         * 设备关机回调，目前只在Torre设备上生效
+         */
+        override fun onDeviceShutdown() {
+            weightMeasureState?.text = "关机"
+            addPrint("关机")
+        }
+
+        /**
+         * 历史数据发生改变,目前只在Torre设备上生效
+         */
+        override fun onHistoryDataChange() {
+            addPrint("有新的历史数据")
+        }
+
+    }
+
+    fun addPrint(msg: String) {
+        if (msg.isNotEmpty()) {
+            wifi_name?.append("$msg\n")
         }
     }
 
     val clearDataInterface = object : PPClearDataInterface {
         override fun onClearSuccess() {
-
+            addPrint("onClearSuccess")
         }
 
         override fun onClearFail() {
-
+            addPrint("onClearFail")
         }
 
     }
 
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface() {
-        override fun onIlluminationChange(illumination: Int) {}
 
-        override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {}
+        /**
+         * 亮度
+         */
+        override fun onIlluminationChange(illumination: Int) {
+
+        }
+
+        override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {
+            addPrint("readDeviceInfoComplete ${deviceModel.toString()}")
+        }
+
+
+        override fun readDevicePower(power: Int) {
+            addPrint("readDevicePower power:$power")
+        }
 
         /**
          * 设置/获取设备单位
@@ -199,11 +384,20 @@ class PeripheralTorreActivity : Activity() {
          * 获取开关 0x00：阻抗测量打开 0x01：阻抗测量关闭
          */
         override fun controlImpendanceCallBack(type: Int, state: Int) {
-
+            if (type == 0) {//设置开关
+                if (state == 0) {
+                    addPrint("maternity mode success")
+                } else {
+                    addPrint("maternity mode fail")
+                }
+            } else {//获取开关
+                if (state == 0) {
+                    addPrint("maternity mode is on")
+                } else {
+                    addPrint("maternity mode is off")
+                }
+            }
         }
-
-
-        override fun readDeviceWifiMacCallBack(wifiMac: String?) {}
 
         /**
          * 启动测量结果回调
@@ -213,7 +407,9 @@ class PeripheralTorreActivity : Activity() {
          *
          * @param state
          */
-        override fun startMeasureCallBack(state: Int) {}
+        override fun startMeasureCallBack(state: Int) {
+            addPrint("startMeasureCallBack state $state")
+        }
 
         /**
          * 设备绑定状态
@@ -222,66 +418,94 @@ class PeripheralTorreActivity : Activity() {
          * @param state 0x00：设置成功 0x01：设置失败
          * 0x00：设备未绑定 0x01：设备已绑定
          */
-        override fun bindStateCallBack(type: Int, state: Int) {}
+        override fun bindStateCallBack(type: Int, state: Int) {
+            addPrint("bindStateCallBack type $type state$state")
+        }
     }
 
     val onDFUStateListener = object : OnDFUStateListener {
-        override fun onDfuFail(errorType: String?) {}
 
-        override fun onInfoOout(outInfo: String?) {}
+        override fun onDfuFail(errorType: String?) {
+            addPrint("onDfuFail $errorType")
+        }
 
-        override fun onStartSendDfuData() {}
+        override fun onInfoOout(outInfo: String?) {
+            addPrint("onInfoOout $outInfo")
+        }
 
-        override fun onDfuProgress(progress: Int) {}
+        override fun onStartSendDfuData() {
+            addPrint("onStartSendDfuData")
+        }
 
-        override fun onDfuSucess() {}
+        override fun onDfuProgress(progress: Int) {
+            addPrint("onDfuProgress progress:$progress")
+        }
+
+        override fun onDfuSucess() {
+            addPrint("onDfuSucess")
+        }
+
+    }
+
+    val otaStateListener = object : OnOTAStateListener() {
+
+        /**
+         * @param state 0普通的失败 1设备已在升级中不能再次启动升级 2设备低电量无法启动升级
+         */
+        override fun onUpdateFail(state: Int) {
+            addPrint("onUpdateFail state:$state")
+        }
+
+        override fun onStartUpdate() {
+            addPrint("onStartUpdate")
+        }
 
     }
 
     val userInfoInterface = object : PPUserInfoInterface {
         override fun getUserListSuccess(memberIDs: MutableList<String>?) {
-
+            addPrint("getUserListSuccess ${memberIDs.toString()}")
         }
 
         override fun syncUserInfoSuccess() {
-
+            addPrint("syncUserInfoSuccess")
         }
 
         override fun syncUserInfoFail() {
-
+            addPrint("syncUserInfoFail")
         }
 
         override fun deleteUserInfoSuccess(userModel: PPUserModel?) {
-
+            //这里自行根据调用的方法去判断是删除的所有用户还是删除的单个用户
+            addPrint("deleteUserInfoSuccess userID:${userModel?.userID} userName:${userModel?.userName}")
         }
 
         override fun deleteUserInfoFail(userModel: PPUserModel?) {
-
+            addPrint("deleteUserInfoFail userID:${userModel?.userID} userName:${userModel?.userName}")
         }
 
         override fun confirmCurrentUserInfoSuccess() {
-
+            addPrint("confirmCurrentUserInfoSuccess")
         }
 
         override fun confirmCurrentUserInfoFail() {
-
+            addPrint("confirmCurrentUserInfoFail")
         }
 
     }
 
     val configWifiInterface = object : PPTorreConfigWifiInterface() {
-        override fun configResult(configStateMenu: PPConfigStateMenu?, resultCode: String?) {
-        }
-
-        override fun monitorWiFiListSuccess(wifiModels: MutableList<PPWifiModel>?) {
-        }
 
         /**
          * @param ssid
          * @param state 0 成功 1失败
          */
         override fun readDeviceSsidCallBack(ssid: String?, state: Int) {
+            addPrint("readDeviceSsidCallBack ssid:$ssid state:$state")
+        }
 
+        override fun readDeviceWifiMacCallBack(wifiMac: String) {
+            addPrint("readDeviceWifiMacCallBack wifiMac $wifiMac")
         }
 
         /**
@@ -292,76 +516,128 @@ class PeripheralTorreActivity : Activity() {
          * @param state
          */
         override fun configWifiState(state: Int) {
-
+            addPrint("configWifiState state:$state")
         }
-
-
     }
 
-    val otaStateListener = object : OnOTAStateListener() {}
-
-    val historyDataInterface = object : PPHistoryDataInterface() {
+    val touristHistoryDataInterface = object : PPHistoryDataInterface() {
 
         override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
-
+            addPrint("touristHistoryData: weight:${bodyBaseModel?.getPpWeightKg()} dateTime:$dateTime")
         }
 
         override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
-
+            addPrint("touristHistoryDataEnd")
         }
 
         override fun monitorHistoryFail() {
-
+            addPrint("touristHistoryDataFail")
         }
 
-        /**
-         * 历史数据发生改变
-         */
-        override fun onHistoryDataChange() {
+    }
 
+    val userHistoryDataInterface = object : PPHistoryDataInterface() {
+
+        override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
+            addPrint("monitorHistoryData: weight:${bodyBaseModel?.getPpWeightKg()} dateTime:$dateTime")
+        }
+
+        override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
+            addPrint("monitorHistoryEnd")
+        }
+
+        override fun monitorHistoryFail() {
+            addPrint("monitorHistoryFail")
         }
 
     }
 
     val deviceLogInterface = object : PPDeviceLogInterface {
         override fun syncLogStart() {
-
+            addPrint("syncLogStart")
         }
 
         override fun syncLoging(progress: Int) {
-
+            addPrint("syncLoging progress:$progress")
         }
 
         override fun syncLogEnd(logFilePath: String?) {
-
+            addPrint("syncLogEnd")
         }
     }
 
     val deviceSetInterface = object : PPDeviceSetInfoInterface {
         override fun monitorResetStateSuccess() {
-
+            addPrint("monitorResetStateSuccess")
         }
 
         override fun monitorResetStateFail() {
-
+            addPrint("monitorResetStateFail")
         }
 
         override fun monitorLightValueChange(light: Int) {
-
+            addPrint("monitorLightValueChange light：" + light)
         }
 
         override fun monitorLightReviseSuccess() {
-
+            addPrint("monitorLightReviseSuccess")
         }
 
         override fun monitorLightReviseFail() {
-
+            addPrint("monitorLightReviseFail")
         }
 
-        override fun monitorMTUChange(deviceModel: PPDeviceModel?) {
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 2 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                performFileSearch()
+            } else {
+                Toast.makeText(this@PeripheralTorreActivity, "存储权限获取失败", Toast.LENGTH_SHORT).show()
+            }
+        } else if (resultCode == RESULT_OK && data != null) {
+            //当单选选了一个文件后返回
+            if (data.data != null) {
+                handleSingleDocument(data)
+            } else {
+                //多选
+                val clipData = data.clipData
+                if (clipData != null) {
+                    val uris = arrayOfNulls<Uri>(clipData.itemCount)
+                    for (i in 0 until clipData.itemCount) {
+                        uris[i] = clipData.getItemAt(i).uri
+                    }
+                }
+            }
         }
+    }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            ) {
+                performFileSearch()
+            } else {
+                Toast.makeText(this@PeripheralTorreActivity, "存储权限获取失败", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (controller?.getTorreDeviceManager()?.isDFU ?: false) {
+            controller?.getTorreDeviceManager()?.stopDFU()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        controller?.stopSeach()
+        controller?.disConnect()
     }
 
 

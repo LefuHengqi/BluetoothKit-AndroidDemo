@@ -14,9 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lefu.ppscale.ble.R;
-import com.lefu.ppscale.ble.activity.BindingDeviceActivity;
-import com.lefu.ppscale.ble.activity.ReadHistoryListActivity;
-import com.lefu.ppscale.ble.bmdj.BMDJConnectActivity;
+
 import com.lefu.ppscale.ble.util.DataUtil;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
@@ -44,9 +42,9 @@ public class FunctionListActivity extends AppCompatActivity {
                     if (device != null &&
                             (device.deviceFuncType & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType())
                                     == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeHistory.getType()) {
-                        Intent intent = new Intent(FunctionListActivity.this, ReadHistoryListActivity.class);
-                        intent.putExtra("address", address);
-                        startActivity(intent);
+//                        Intent intent = new Intent(FunctionListActivity.this, ReadHistoryListActivity.class);
+//                        intent.putExtra("address", address);
+//                        startActivity(intent);
                     } else {
                         Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_supported), Toast.LENGTH_SHORT).show();
                     }
@@ -62,9 +60,9 @@ public class FunctionListActivity extends AppCompatActivity {
                     if (device != null &&
                             (device.getDeviceType() & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeBMDJ.getType())
                                     == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeBMDJ.getType()) {
-                        Intent intent = new Intent(FunctionListActivity.this, BMDJConnectActivity.class);
-                        intent.putExtra("address", address);
-                        startActivity(intent);
+//                        Intent intent = new Intent(FunctionListActivity.this, BMDJConnectActivity.class);
+//                        intent.putExtra("address", address);
+//                        startActivity(intent);
                     } else {
                         Toast.makeText(FunctionListActivity.this, getString(R.string.device_not_supported), Toast.LENGTH_SHORT).show();
                     }
@@ -166,9 +164,9 @@ public class FunctionListActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (PPScale.isBluetoothOpened()) {
-                    Intent intent = new Intent(FunctionListActivity.this, BindingDeviceActivity.class);
-                    intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 1);
-                    startActivity(intent);
+//                    Intent intent = new Intent(FunctionListActivity.this, BindingDeviceActivity.class);
+//                    intent.putExtra(BindingDeviceActivity.SEARCH_TYPE, 1);
+//                    startActivity(intent);
                 } else {
                     PPScale.openBluetooth();
                 }

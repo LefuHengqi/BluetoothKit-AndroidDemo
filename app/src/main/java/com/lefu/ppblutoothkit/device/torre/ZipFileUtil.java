@@ -1,4 +1,4 @@
-package com.lefu.ppscale.ble.torre;
+package com.lefu.ppblutoothkit.device.torre;
 
 import android.content.Context;
 import android.net.Uri;

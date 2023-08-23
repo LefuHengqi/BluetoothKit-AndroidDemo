@@ -12,9 +12,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="配置网络" />
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="配置网络"
+            android:textColor="@android:color/black" />
 
         <LinearLayout
             android:id="@+id/mLoadAnimaLL"
@@ -38,35 +41,30 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 tools:text="搜索中..." />
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mDeviceWifiListRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="14"
+            tools:itemCount="5"
             tools:listitem="@layout/adapter_device_search_item_layout" />
     </LinearLayout>
 
-    <com.lefu.layout.widget.shape.view.ShapeButton
+    <Button
         android:id="@+id/mWifiRefreshSB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginHorizontal="@dimen/dp_26"
-        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_marginHorizontal="26dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:paddingVertical="@dimen/dp_12"
+        android:paddingVertical="12dp"
         android:text="刷新"
-        android:textSize="@dimen/sp_16"
-        android:visibility="visible"
-        app:layout_anchorGravity="bottom"
-        app:shape="rectangle"
-        app:shape_radius="@dimen/dp_86"
-        app:shape_solidColor="@color/col_4A98F8"
-        app:shape_solidPressedColor="@color/col_304A98F8"
-        app:shape_textColor="@color/white" />
+        android:textSize="@dimen/text_sp16"
+        android:visibility="visible" />
 </RelativeLayout>

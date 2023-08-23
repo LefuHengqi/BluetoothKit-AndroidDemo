@@ -10,7 +10,7 @@ static def releaseTime() {
 android {
     compileSdkVersion 31
     defaultConfig {
-        applicationId "com.lefu.ppscalel.ble"
+        applicationId "com.lefu.ppblutoothkit"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode LIB_VERSION_CODE as int

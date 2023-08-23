@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.db.dao.DeviceModel;
+import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPScaleDefine;
 
 import java.util.List;
@@ -25,14 +26,14 @@ public class DeviceListAdapter extends ArrayAdapter {
     private final int resourceId;
     OnItemClickViewInsideListener onItemClickViewInsideListener;
 
-    public DeviceListAdapter(@NonNull Context context, int resource, List<DeviceModel> objects) {
+    public DeviceListAdapter(@NonNull Context context, int resource, List<PPDeviceModel> objects) {
         super(context, resource, objects);
         this.resourceId = resource;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        DeviceModel deviceModel = (DeviceModel) getItem(position);
+        PPDeviceModel deviceModel = (PPDeviceModel) getItem(position);
         View view = LayoutInflater.from(getContext()).inflate(resourceId, null);
         TextView nameText = (TextView) view.findViewById(R.id.device_name);
         TextView macText = (TextView) view.findViewById(R.id.device_mac);
@@ -44,18 +45,13 @@ public class DeviceListAdapter extends ArrayAdapter {
         TextView tvSetting = view.findViewById(R.id.tvSetting);
 
         device_rssi.setText(String.format(Locale.getDefault(), "RSSI: %d dBm", deviceModel.getRssi()));
-        if (deviceModel.getDeviceType() == PPScaleDefine.PPDeviceType.PPDeviceTypeCC.getType()) {
-            if (!TextUtils.isEmpty(deviceModel.getSsid())) {
-                tv_ssid.setText(deviceModel.getSsid());
+        if (isFuncTypeWifi(deviceModel)) {
+            if (!TextUtils.isEmpty(deviceModel.getDeviceMac())) {
+                tv_ssid.setText(deviceModel.getDeviceMac());
             } else {
-                tv_ssid.setText(R.string.to_config_the_network);
             }
-        } else if (deviceModel.getDeviceProtocolType() == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre.getType()) {
-            if (!TextUtils.isEmpty(deviceModel.getSsid())) {
-                tv_ssid.setText(deviceModel.getSsid());
-            } else {
-                tv_ssid.setText(R.string.to_config_the_network);
-            }
+        } else if (deviceModel.deviceProtocolType == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre) {
+            tv_ssid.setText(deviceModel.getDeviceMac());
         } else {
             tv_ssid.setVisibility(View.GONE);
 //            tvSetting.setVisibility(View.GONE);
@@ -71,6 +67,15 @@ public class DeviceListAdapter extends ArrayAdapter {
         });
 
         return view;
+    }
+
+    public boolean isFuncTypeWifi(PPDeviceModel device) {
+        if (device != null) {
+            return (device.deviceFuncType & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeWifi.getType())
+                    == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeWifi.getType();
+        } else {
+            return false;
+        }
     }
 
     public void setOnClickInItemLisenter(OnItemClickViewInsideListener onItemClickViewInsideListener) {
