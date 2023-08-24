@@ -33,9 +33,8 @@ class WifiListAdapter : RecyclerView.Adapter<WifiListAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(wifiModel: PPWifiModel) {
-
             itemView.mWifiNameSsidSB.text = wifiModel.ssid
-            itemView.mWifiNameSignSB.text = wifiModel.sign.toString()
+            itemView.mWifiNameSignSB.text = "rssi:${wifiModel.sign}"
         }
     }
 

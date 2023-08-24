@@ -21,12 +21,12 @@ import com.peng.ppscale.vo.PPWifiModel
  *    date   : 2023/4/3 14:45
  *    desc   : 设备的wifi列表
  */
-class DeviceSearchWifiListActivity : Activity() {
+class PeripheralTorreSearchWifiListActivity : Activity() {
 
-    private val mLoadAnimaLL: LinearLayout? = findViewById(R.id.mLoadAnimaLL)
-    private val mLoadAnimaIV: ImageView? = findViewById(R.id.mLoadAnimaIV)
-    private val mDeviceWifiListRV: RecyclerView? = findViewById(R.id.mDeviceWifiListRV)
-    private val mWifiRefreshSB: Button? = findViewById(R.id.mWifiRefreshSB)
+    private var mLoadAnimaLL: LinearLayout? = null
+    private var mLoadAnimaIV: ImageView? = null
+    private var mDeviceWifiListRV: RecyclerView? = null
+    private var mWifiRefreshSB: Button? = null
     private val mDeviceSearchWifAdapter: WifiListAdapter = WifiListAdapter()
 
     //旋转动画
@@ -42,6 +42,11 @@ class DeviceSearchWifiListActivity : Activity() {
      * 初始化控件
      */
     fun initView() {
+        mLoadAnimaLL = findViewById(R.id.mLoadAnimaLL)
+        mLoadAnimaIV = findViewById(R.id.mLoadAnimaIV)
+        mDeviceWifiListRV = findViewById(R.id.mDeviceWifiListRV)
+        mWifiRefreshSB = findViewById(R.id.mWifiRefreshSB)
+
         mWifiRefreshSB?.setOnClickListener {
             loadWifList()
         }
@@ -51,7 +56,7 @@ class DeviceSearchWifiListActivity : Activity() {
             override fun onItemClickViewInside(position: Int, v: View?) {
                 cloneRotateAnimator()
                 PeripheralTorreConfigWifiActivity.ssid = mDeviceSearchWifAdapter.users.get(position).ssid ?: ""
-                startActivity(Intent(this@DeviceSearchWifiListActivity, PeripheralTorreConfigWifiActivity::class.java))
+                startActivity(Intent(this@PeripheralTorreSearchWifiListActivity, PeripheralTorreConfigWifiActivity::class.java))
                 finish()
             }
         })

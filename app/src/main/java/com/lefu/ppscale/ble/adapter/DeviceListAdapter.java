@@ -42,14 +42,14 @@ public class DeviceListAdapter extends ArrayAdapter {
         nameText.setText(deviceModel.getDeviceName());
         macText.setText(deviceModel.getDeviceMac());
         device_rssi.setText(String.format(Locale.getDefault(), "RSSI: %d dBm", deviceModel.getRssi()));
-//        convertView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (onItemClickViewInsideListener != null) {
-//                    onItemClickViewInsideListener.onItemClickViewInside(position, v);
-//                }
-//            }
-//        });
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickViewInsideListener != null) {
+                    onItemClickViewInsideListener.onItemClickViewInside(position, v);
+                }
+            }
+        });
         return view;
     }
 

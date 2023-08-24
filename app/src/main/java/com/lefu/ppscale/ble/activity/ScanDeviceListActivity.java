@@ -50,6 +50,8 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     ArrayList<PPDeviceModel> deviceModels = new ArrayList<>();
     private TextView tv_starts;
 
+    long lastTimes = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,21 +70,19 @@ public class ScanDeviceListActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list_View);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                onStartDeviceSetPager(position);
+//            }
+//        });
+        adapter.setOnClickInItemLisenter(new DeviceListAdapter.OnItemClickViewInsideListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClickViewInside(int position, View view) {
                 onStartDeviceSetPager(position);
             }
         });
-//        adapter.setOnClickInItemLisenter(new DeviceListAdapter.OnItemClickViewInsideListener() {
-//            @Override
-//            public void onItemClickViewInside(int position, View view) {
-//                if (view.getId() == R.id.tvSetting) {
-//                    onStartDeviceSetPager(position);
-//                }
-//            }
-//        });
     }
 
     private void reStartScan() {
@@ -95,7 +95,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     private void onStartDeviceSetPager(final int position) {
         PPDeviceModel deviceModel = (PPDeviceModel) adapter.getItem(position);
         if (deviceModel != null) {
-            if (deviceModel.getPeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
+            if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
                 Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralTorreActivity.class);
                 PeripheralTorreActivity.Companion.setDeviceModel(deviceModel);
                 startActivity(intent);
@@ -137,7 +137,6 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     }
 
 
-
     public void delayScan() {
         new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
@@ -175,18 +174,19 @@ public class ScanDeviceListActivity extends AppCompatActivity {
                     if (model.getDeviceMac().equals(ppDeviceModel.getDeviceMac())) {
                         model.setRssi(ppDeviceModel.getRssi());
                         deviceModel = model;
-                        deviceModels.set(i, deviceModel);
+                        deviceModels.set(i, model);
                     }
                 }
                 if (deviceModel == null) {
                     deviceModels.add(ppDeviceModel);
                 }
-                adapter.notifyDataSetChanged();
+                if (System.currentTimeMillis() - lastTimes > 1000) {
+                    lastTimes = System.currentTimeMillis();
+                    adapter.notifyDataSetChanged();
+                }
             }
         }
     };
-
-
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
 

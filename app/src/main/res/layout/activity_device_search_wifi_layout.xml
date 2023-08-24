@@ -40,7 +40,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                tools:text="搜索中..." />
+                android:text="搜索中..." />
 
         </LinearLayout>
 

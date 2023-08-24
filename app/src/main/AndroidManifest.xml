@@ -58,7 +58,7 @@
 
         <!--Torre-->
         <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity" />
-        <activity android:name="com.lefu.ppblutoothkit.device.torre.DeviceSearchWifiListActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity" />
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity" />
 
 

@@ -22,7 +22,7 @@ class PeripheralTorreConfigWifiActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wifi_config_torre)
 
-        findViewById<TextView>(R.id.etWifiName).text = ssid
+        findViewById<TextView>(R.id.etWifiName)?.text = ssid
         val etWifiKey = findViewById<EditText>(R.id.etWifiKey)
 
         configResultTV = findViewById<TextView>(R.id.configResultTV)
@@ -42,7 +42,7 @@ class PeripheralTorreConfigWifiActivity : Activity() {
     val configWifiInterface = object : PPTorreConfigWifiInterface() {
 
         override fun configResult(configStateMenu: PPConfigStateMenu?, resultCode: String?) {
-            configResultTV?.text = "configResult configStateMenu:$configStateMenu resultCode$resultCode"
+            configResultTV?.text = "configResult configStateMenu: $configStateMenu\nresultCode: $resultCode"
         }
 
     }

@@ -15,7 +15,7 @@ import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity
+import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppscale.ble.R
 import com.lefu.ppscale.ble.util.DataUtil
@@ -72,6 +72,8 @@ class PeripheralTorreActivity : Activity() {
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
 
+        controller?.deviceModel = deviceModel
+
         initClick()
 
     }
@@ -79,48 +81,7 @@ class PeripheralTorreActivity : Activity() {
     fun initClick() {
         findViewById<Button>(R.id.device_start_connect).setOnClickListener {
             addPrint("startConnect")
-            controller?.startConnect(object : PPBleStateInterface() {
-                override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState?, deviceModel: PPDeviceModel?) {
-                    if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
-                        device_set_connect_state?.text = getString(R.string.device_connected)
-                        addPrint(getString(R.string.device_connected))
-                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
-                        device_set_connect_state?.text = getString(R.string.device_connecting)
-                        addPrint(getString(R.string.device_connecting))
-                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
-                        device_set_connect_state?.text = getString(R.string.device_disconnected)
-                        addPrint(getString(R.string.device_disconnected))
-                    } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
-                        device_set_connect_state?.text = getString(R.string.stop_scanning)
-                        addPrint(getString(R.string.stop_scanning))
-                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
-                        device_set_connect_state?.text = getString(R.string.scan_timeout)
-                        addPrint(getString(R.string.scan_timeout))
-                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
-                        device_set_connect_state?.text = getString(R.string.scanning)
-                        addPrint(getString(R.string.scanning))
-                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
-                        addPrint(getString(R.string.writable))
-                    } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
-                        addPrint(getString(R.string.Connectable))
-                    }
-                }
-
-                override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState?) {
-                    if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
-                        addPrint(getString(R.string.system_bluetooth_disconnect))
-                        Toast.makeText(this@PeripheralTorreActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
-                    } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
-                        addPrint(getString(R.string.system_blutooth_on))
-                        Toast.makeText(this@PeripheralTorreActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun monitorMtuChange(deviceModel: PPDeviceModel?) {
-                    addPrint("monitorMtuChange mtu:${deviceModel?.mtu}")
-                }
-
-            })
+            controller?.startConnect(bleStateInterface)
         }
         findViewById<Button>(R.id.startMeasureBtn).setOnClickListener {
             addPrint("startMeasure")
@@ -171,13 +132,13 @@ class PeripheralTorreActivity : Activity() {
             addPrint("confirmCurrentUser userName:${userModel?.userName}")
             controller?.getTorreDeviceManager()?.confirmCurrentUser(userModel, userInfoInterface)
         }
-        findViewById<Button>(R.id.device_set_wifi_list).setOnClickListener {
-            addPrint("getWifiList")
-            controller?.getTorreDeviceManager()?.getWifiList(configWifiInterface)
-        }
+//        findViewById<Button>(R.id.device_set_wifi_list).setOnClickListener {
+//            addPrint("getWifiList")
+//            controller?.getTorreDeviceManager()?.getWifiList(configWifiInterface)
+//        }
         findViewById<Button>(R.id.device_set_startConfigWifi).setOnClickListener {
             addPrint("startConfigWifi pager")
-            startActivity(Intent(this, PeripheralTorreConfigWifiActivity::class.java))
+            startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
         }
         findViewById<Button>(R.id.getWifiSSID).setOnClickListener {
             addPrint("getWifiSSID")
@@ -265,6 +226,49 @@ class PeripheralTorreActivity : Activity() {
         findViewById<Button>(R.id.readLight).setOnClickListener {
             addPrint("readLight")
             controller?.getTorreDeviceManager()?.getLight(deviceSetInterface)
+        }
+
+    }
+
+    val bleStateInterface = object : PPBleStateInterface() {
+        override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState?, deviceModel: PPDeviceModel?) {
+            if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
+                device_set_connect_state?.text = getString(R.string.device_connected)
+                addPrint(getString(R.string.device_connected))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
+                device_set_connect_state?.text = getString(R.string.device_connecting)
+                addPrint(getString(R.string.device_connecting))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
+                device_set_connect_state?.text = getString(R.string.device_disconnected)
+                addPrint(getString(R.string.device_disconnected))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
+                device_set_connect_state?.text = getString(R.string.stop_scanning)
+                addPrint(getString(R.string.stop_scanning))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
+                device_set_connect_state?.text = getString(R.string.scan_timeout)
+                addPrint(getString(R.string.scan_timeout))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
+                device_set_connect_state?.text = getString(R.string.scanning)
+                addPrint(getString(R.string.scanning))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
+                addPrint(getString(R.string.writable))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
+                addPrint(getString(R.string.Connectable))
+            }
+        }
+
+        override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState?) {
+            if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
+                addPrint(getString(R.string.system_bluetooth_disconnect))
+                Toast.makeText(this@PeripheralTorreActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
+            } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
+                addPrint(getString(R.string.system_blutooth_on))
+                Toast.makeText(this@PeripheralTorreActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun monitorMtuChange(deviceModel: PPDeviceModel?) {
+            addPrint("monitorMtuChange mtu:${deviceModel?.mtu}")
         }
 
     }
