@@ -38,34 +38,18 @@ public class DeviceListAdapter extends ArrayAdapter {
         TextView nameText = (TextView) view.findViewById(R.id.device_name);
         TextView macText = (TextView) view.findViewById(R.id.device_mac);
 
-        TextView tv_ssid = (TextView) view.findViewById(R.id.device_ssid);
         TextView device_rssi = (TextView) view.findViewById(R.id.device_rssi);
         nameText.setText(deviceModel.getDeviceName());
         macText.setText(deviceModel.getDeviceMac());
-        TextView tvSetting = view.findViewById(R.id.tvSetting);
-
         device_rssi.setText(String.format(Locale.getDefault(), "RSSI: %d dBm", deviceModel.getRssi()));
-        if (isFuncTypeWifi(deviceModel)) {
-            if (!TextUtils.isEmpty(deviceModel.getDeviceMac())) {
-                tv_ssid.setText(deviceModel.getDeviceMac());
-            } else {
-            }
-        } else if (deviceModel.deviceProtocolType == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre) {
-            tv_ssid.setText(deviceModel.getDeviceMac());
-        } else {
-            tv_ssid.setVisibility(View.GONE);
-//            tvSetting.setVisibility(View.GONE);
-        }
-
-        tvSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickViewInsideListener != null) {
-                    onItemClickViewInsideListener.onItemClickViewInside(position, v);
-                }
-            }
-        });
-
+//        convertView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (onItemClickViewInsideListener != null) {
+//                    onItemClickViewInsideListener.onItemClickViewInside(position, v);
+//                }
+//            }
+//        });
         return view;
     }
 

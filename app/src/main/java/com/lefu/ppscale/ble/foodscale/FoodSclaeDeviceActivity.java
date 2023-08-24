@@ -68,7 +68,7 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
     }
 
     private void startScanData() {
-        ppScale.startSearchBluetoothScaleWithMacAddressList();
+        ppScale.startSearchDeviceList(30000, null);
     }
 
     private void initPPScale() {

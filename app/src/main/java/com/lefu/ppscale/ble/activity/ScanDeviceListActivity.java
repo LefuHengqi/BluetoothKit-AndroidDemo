@@ -1,6 +1,5 @@
 package com.lefu.ppscale.ble.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,18 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.lefu.ppblutoothkit.device.PeripheralTorreActivity;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
-import com.lefu.ppscale.ble.util.DataUtil;
-import com.lefu.ppscale.db.dao.DeviceModel;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.PPSearchDeviceInfoInterface;
-import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
 import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
 import com.peng.ppscale.util.Logger;
 import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPScaleDefine;
-import com.peng.ppscale.vo.PPUserModel;
 
 import java.util.ArrayList;
 
@@ -50,8 +45,6 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     //0是绑定设备 1是搜索已有设备
     public static final String SEARCH_TYPE = "SearchType";
 
-    private PPUserModel userModel;
-    private AlertDialog alertDialog;
     boolean isOnResume = false;//页面可见时再重新发起扫描
     private DeviceListAdapter adapter;
     ArrayList<PPDeviceModel> deviceModels = new ArrayList<>();
@@ -67,14 +60,9 @@ public class ScanDeviceListActivity extends AppCompatActivity {
         tv_starts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ppScale != null) {
-                    ppScale.stopSearch();
-                }
-                startScanDeviceList();
+                reStartScan();
             }
         });
-
-        userModel = DataUtil.util().getUserModel();
 
         adapter = new DeviceListAdapter(this, R.layout.activity_scan_list_item, deviceModels);
         ListView listView = (ListView) findViewById(R.id.list_View);
@@ -97,12 +85,19 @@ public class ScanDeviceListActivity extends AppCompatActivity {
 //        });
     }
 
+    private void reStartScan() {
+        if (ppScale != null) {
+            ppScale.stopSearch();
+        }
+        startScanDeviceList();
+    }
+
     private void onStartDeviceSetPager(final int position) {
-        DeviceModel deviceModel = (DeviceModel) adapter.getItem(position);
+        PPDeviceModel deviceModel = (PPDeviceModel) adapter.getItem(position);
         if (deviceModel != null) {
-            if (deviceModel.getDeviceProtocolType() == PPScaleDefine.PPDeviceProtocolType.PPDeviceProtocolTypeTorre.getType()) {
+            if (deviceModel.getPeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
                 Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralTorreActivity.class);
-                intent.putExtra("address", deviceModel.getDeviceMac());
+                PeripheralTorreActivity.Companion.setDeviceModel(deviceModel);
                 startActivity(intent);
             } else {
                 startScanData(deviceModel);
@@ -115,42 +110,8 @@ public class ScanDeviceListActivity extends AppCompatActivity {
      *
      * @param deviceModel
      */
-    private void startScanData(DeviceModel deviceModel) {
-    }
+    private void startScanData(PPDeviceModel deviceModel) {
 
-    /**
-     * 解析数据回调
-     *
-     * @return
-     */
-    private ProtocalFilterImpl getProtocalFilter() {
-        deviceModels.clear();
-        final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
-        protocalFilter.setSearchDeviceInfoInterface(new PPSearchDeviceInfoInterface() {
-            @Override
-            public void onSearchDevice(PPDeviceModel ppDeviceModel) {
-                if (ppDeviceModel != null) {
-                    PPDeviceModel deviceModel = null;
-                    for (int i = 0; i < deviceModels.size(); i++) {
-                        PPDeviceModel model = deviceModels.get(i);
-                        if (model.getDeviceMac().equals(ppDeviceModel.getDeviceMac())) {
-                            model.setRssi(ppDeviceModel.getRssi());
-                            deviceModel = model;
-                            deviceModels.set(i, deviceModel);
-                        }
-                    }
-                    if (deviceModel == null) {
-//                        deviceModel = new DeviceModel(ppDeviceModel.getDeviceMac(), ppDeviceModel.getDeviceName(), ppDeviceModel.deviceType.ordinal());
-//                        deviceModel.setRssi(deviceModel.getRssi());
-//                        deviceModel.setDeviceProtocolType(ppDeviceModel.deviceProtocolType.getType());
-//                        deviceModel.setDeviceCalcuteType(ppDeviceModel.deviceCalcuteType.getType());
-                        deviceModels.add(deviceModel);
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
-        return protocalFilter;
     }
 
     @Override
@@ -162,24 +123,70 @@ public class ScanDeviceListActivity extends AppCompatActivity {
         }
     }
 
-    private void bindingDevice() {
-        ppScale = new PPScale.Builder(this)
-                .setProtocalFilterImpl(getProtocalFilter())
-                .setUserModel(userModel)
-                .setBleStateInterface(bleStateInterface)
-                .build();
-        startScanDeviceList();
-    }
-
     /**
      * Get around bluetooth scale devices
      */
     public void startScanDeviceList() {
+        if (ppScale == null) {
+            ppScale = new PPScale.Builder(this)
+                    .setBleStateInterface(bleStateInterface)
+                    .build();
+        }
+        //ppScale.monitorSurroundDevice();      //The default scan time is 300000ms
+        ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface);  //You can dynamically set the scan time in ms
+    }
+
+
+
+    public void delayScan() {
+        new Handler(getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isOnResume) {
+                    startScanDeviceList();
+                }
+            }
+        }, 1000);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isOnResume = true;
+        delayScan();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         if (ppScale != null) {
-            //ppScale.monitorSurroundDevice();      //The default scan time is 300000ms
-            ppScale.startSearchDeviceList(300000);  //You can dynamically set the scan time in ms
+            ppScale.stopSearch();
         }
     }
+
+    PPSearchDeviceInfoInterface searchDeviceInfoInterface = new PPSearchDeviceInfoInterface() {
+        @Override
+        public void onSearchDevice(PPDeviceModel ppDeviceModel) {
+            if (ppDeviceModel != null) {
+                PPDeviceModel deviceModel = null;
+                for (int i = 0; i < deviceModels.size(); i++) {
+                    PPDeviceModel model = deviceModels.get(i);
+                    if (model.getDeviceMac().equals(ppDeviceModel.getDeviceMac())) {
+                        model.setRssi(ppDeviceModel.getRssi());
+                        deviceModel = model;
+                        deviceModels.set(i, deviceModel);
+                    }
+                }
+                if (deviceModel == null) {
+                    deviceModels.add(ppDeviceModel);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        }
+    };
+
+
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
 
@@ -220,42 +227,11 @@ public class ScanDeviceListActivity extends AppCompatActivity {
                 delayScan();
                 Logger.d(getString(R.string.system_blutooth_on));
                 Toast.makeText(ScanDeviceListActivity.this, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show();
-            } else {
-                Logger.e(getString(R.string.system_bluetooth_abnormal));
             }
         }
     };
 
-    public void delayScan() {
-        new Handler(getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isOnResume) {
-                    bindingDevice();
-                }
-            }
-        }, 1000);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        isOnResume = true;
-        delayScan();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (ppScale != null) {
-            ppScale.stopSearch();
-        }
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
-            alertDialog = null;
-        }
-    }
 }
 
 

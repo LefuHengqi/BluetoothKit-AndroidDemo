@@ -105,7 +105,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
                     .build();
         }
 
-        ppScale.startSearchBluetoothScaleWithMacAddressList();
+        ppScale.startSearchDeviceList(30000, null);
     }
 
     PPConfigWifiInfoInterface ppConfigWifiInfoInterface = new PPConfigWifiInfoInterface() {
