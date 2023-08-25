@@ -61,7 +61,6 @@
         <activity android:name=".activity.OTAActivity" />
         <activity android:name=".torre.DeviceSetActivity" />
         <activity android:name=".foodscale.FoodSclaeDeviceActivity" />
-        <activity android:name=".calculate.Calculate8Activitiy" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
