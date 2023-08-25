@@ -9,15 +9,13 @@ class PPBlutoothPeripheralDutianInstance {
     var controller: PPBlutoothPeripheralDutianController? = null
 
     companion object Factory {
-        val instance by lazy { PPBlutoothPeripheralCoconutInstance() }
+        val instance by lazy { PPBlutoothPeripheralDutianInstance() }
         var deviceModel: PPDeviceModel? = null
-        var userModel: PPUserModel? = null
     }
 
     init {
         controller = PPBlutoothPeripheralDutianController()
         controller?.deviceModel
-        controller?.userModel
     }
 
 

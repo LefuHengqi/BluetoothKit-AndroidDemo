@@ -37,31 +37,30 @@
             android:layout_marginEnd="@dimen/dimens_30dp"
             android:text="state" />
 
-
     </LinearLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="5dp"
         android:layout_weight="0.6"
-        android:fillViewport="true">
+        android:background="#11000000"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollViewLog"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="5dp"
-            android:background="#11000000"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
 
             <TextView
-                android:id="@+id/wifi_name"
+                android:id="@+id/logTxt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp" />
 
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -79,7 +78,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/device_start_connect"
+                    android:id="@+id/startConnectDevice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -100,7 +99,7 @@
                     android:text="停止测量" />
 
                 <Button
-                    android:id="@+id/device_set_sync_time"
+                    android:id="@+id/syncTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -121,7 +120,7 @@
                     android:text="同步所有用户数据" />
 
                 <Button
-                    android:id="@+id/device_set_delete_userinfo"
+                    android:id="@+id/deleteUserinfo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -152,7 +151,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/device_set_startConfigWifi"
+                    android:id="@+id/startConfigWifi"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -161,7 +160,7 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/getWifiSSID"
+                    android:id="@+id/getWifiInfo"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

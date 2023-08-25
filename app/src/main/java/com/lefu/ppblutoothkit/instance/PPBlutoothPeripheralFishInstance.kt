@@ -1,12 +1,12 @@
 package com.lefu.ppblutoothkit.instance
 
-import com.peng.ppscale.device.PeripheralFish.PPBluttoothPeripheralFishController
+import com.peng.ppscale.device.PeripheralFish.PPBlutoothPeripheralFishController
 import com.peng.ppscale.vo.PPDeviceModel
 
 class PPBlutoothPeripheralFishInstance {
 
 
-    var controller: PPBluttoothPeripheralFishController? = null
+    var controller: PPBlutoothPeripheralFishController? = null
 
     companion object Factory {
         val instance by lazy { PPBlutoothPeripheralFishInstance() }
@@ -14,7 +14,7 @@ class PPBlutoothPeripheralFishInstance {
     }
 
     init {
-        controller = PPBluttoothPeripheralFishController()
+        controller = PPBlutoothPeripheralFishController()
         controller?.deviceModel
     }
 

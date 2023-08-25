@@ -17,10 +17,4 @@ class PPBlutoothPeripheralAppleInstance {
         controller?.deviceModel
     }
 
-
-
-
-
-
-
 }

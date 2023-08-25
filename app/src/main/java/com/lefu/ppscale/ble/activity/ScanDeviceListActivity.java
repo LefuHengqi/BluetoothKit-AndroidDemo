@@ -12,6 +12,13 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.lefu.ppblutoothkit.device.PeripheralAppleActivity;
+import com.lefu.ppblutoothkit.device.PeripheralBananaActivity;
+import com.lefu.ppblutoothkit.device.PeripheralCoconutActivity;
+import com.lefu.ppblutoothkit.device.PeripheralDutianActivity;
+import com.lefu.ppblutoothkit.device.PeripheralEggActivity;
+import com.lefu.ppblutoothkit.device.PeripheralFishActivity;
+import com.lefu.ppblutoothkit.device.PeripheralGrapesActivity;
 import com.lefu.ppblutoothkit.device.PeripheralTorreActivity;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
@@ -99,19 +106,36 @@ public class ScanDeviceListActivity extends AppCompatActivity {
                 Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralTorreActivity.class);
                 PeripheralTorreActivity.Companion.setDeviceModel(deviceModel);
                 startActivity(intent);
-            } else {
-                startScanData(deviceModel);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralApple) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralAppleActivity.class);
+                PeripheralAppleActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBanana) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralBananaActivity.class);
+                PeripheralBananaActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralCoconut) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralCoconutActivity.class);
+                PeripheralCoconutActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDurian) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralDutianActivity.class);
+                PeripheralDutianActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralEgg) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralEggActivity.class);
+                PeripheralEggActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralFish) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralFishActivity.class);
+                PeripheralFishActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralGrapes) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralGrapesActivity.class);
+                PeripheralGrapesActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
             }
         }
-    }
-
-    /**
-     * Start the page that receives the data
-     *
-     * @param deviceModel
-     */
-    private void startScanData(PPDeviceModel deviceModel) {
-
     }
 
     @Override

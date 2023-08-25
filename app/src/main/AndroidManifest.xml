@@ -45,8 +45,6 @@
 
         <activity android:name=".activity.BodyDataDetailActivity" />
         <activity android:name=".activity.ScanDeviceListActivity" />
-        <activity android:name=".wififunction.WifiFunctionListActivity" />
-        <activity android:name=".function.FunctionListActivity" />
         <activity android:name=".userinfo.UserinfoActivity" />
         <activity android:name=".foodscale.FoodSclaeDeviceActivity" />
 
@@ -60,9 +58,21 @@
         <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity" />
         <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity" />
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity" />
-
-
-
+        <activity android:name=".function.FunctionListActivity" />
+        <!--Apple-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralAppleActivity" />
+        <!--Dutian-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralDutianActivity" />
+        <!--Grapes-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralGrapesActivity" />
+        <!--Fish-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralFishActivity" />
+        <!--Egg-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralEggActivity" />
+        <!--Coconut-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralCoconutActivity" />
+        <!--Banana-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralBananaActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

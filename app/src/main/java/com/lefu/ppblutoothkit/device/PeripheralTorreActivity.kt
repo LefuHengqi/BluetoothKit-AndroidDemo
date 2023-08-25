@@ -8,6 +8,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
@@ -15,6 +18,7 @@ import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppscale.ble.R
@@ -35,12 +39,15 @@ import com.peng.ppscale.vo.PPUserModel
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
+ * 对应的协议: TORRE
+ * 连接类型:连接
+ * 设备类型 人体秤
  */
 class PeripheralTorreActivity : Activity() {
 
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
-    private var wifi_name: TextView? = null
+    private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
 
@@ -59,7 +66,7 @@ class PeripheralTorreActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContentView(R.layout.device_set_torre_layout)
+        setContentView(R.layout.peripheral_torre_layout)
 
         userModel = DataUtil.util().userModel
         userModel?.userID = "1006451068@qq.com"
@@ -67,10 +74,22 @@ class PeripheralTorreActivity : Activity() {
         userModel?.userName = "AB"
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
-        wifi_name = findViewById<TextView>(R.id.wifi_name)
+        logTxt = findViewById<TextView>(R.id.logTxt)
         whetherFullyDFUToggleBtn = findViewById<ToggleButton>(R.id.whetherFullyDFUToggleBtn)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
+        val nestedScrollViewLog = findViewById<NestedScrollView>(R.id.nestedScrollViewLog)
+
+        logTxt?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
+            }
+
+        })
 
         controller?.deviceModel = deviceModel
 
@@ -79,7 +98,7 @@ class PeripheralTorreActivity : Activity() {
     }
 
     fun initClick() {
-        findViewById<Button>(R.id.device_start_connect).setOnClickListener {
+        findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
             controller?.startConnect(bleStateInterface)
         }
@@ -102,7 +121,7 @@ class PeripheralTorreActivity : Activity() {
             addPrint("syncLog")
             controller?.getTorreDeviceManager()?.syncLog(deviceLogInterface)
         }
-        findViewById<Button>(R.id.device_set_sync_time).setOnClickListener {
+        findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
             controller?.getTorreDeviceManager()?.syncTime {
                 addPrint("syncTime Success")
@@ -120,7 +139,7 @@ class PeripheralTorreActivity : Activity() {
             addPrint("syncUserInfo userName:${userModel?.userName}")
             controller?.getTorreDeviceManager()?.syncUserInfo(userModel, userInfoInterface)
         }
-        findViewById<Button>(R.id.device_set_delete_userinfo).setOnClickListener {
+        findViewById<Button>(R.id.deleteUserinfo).setOnClickListener {
             //根据userID去删除该userId下的所有子成员
             addPrint("deleteAllUserInfo userID:${userModel?.userID}")
             controller?.getTorreDeviceManager()?.deleteAllUserInfo(userModel, userInfoInterface)
@@ -136,11 +155,11 @@ class PeripheralTorreActivity : Activity() {
 //            addPrint("getWifiList")
 //            controller?.getTorreDeviceManager()?.getWifiList(configWifiInterface)
 //        }
-        findViewById<Button>(R.id.device_set_startConfigWifi).setOnClickListener {
+        findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
             addPrint("startConfigWifi pager")
             startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
         }
-        findViewById<Button>(R.id.getWifiSSID).setOnClickListener {
+        findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
             addPrint("getWifiSSID")
             controller?.getTorreDeviceManager()?.getWifiSSID(configWifiInterface)
         }
@@ -331,7 +350,7 @@ class PeripheralTorreActivity : Activity() {
 
     fun addPrint(msg: String) {
         if (msg.isNotEmpty()) {
-            wifi_name?.append("$msg\n")
+            logTxt?.append("$msg\n")
         }
     }
 
@@ -351,8 +370,8 @@ class PeripheralTorreActivity : Activity() {
         /**
          * 亮度
          */
-        override fun onIlluminationChange(illumination: Int) {
-
+        override fun onScreenBrightnessChange(brightness: Int) {
+            addPrint("readScreenBrightness screen brightness:$brightness")
         }
 
         override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {

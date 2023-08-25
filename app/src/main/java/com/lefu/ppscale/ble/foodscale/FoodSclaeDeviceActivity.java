@@ -13,9 +13,8 @@ import com.lefu.ppscale.ble.util.UnitUtil;
 import com.lefu.ppscale.ble.util.DataUtil;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
-import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
-import com.peng.ppscale.business.ble.listener.FoodScaleDataProtocoInterface;
+import com.peng.ppscale.business.ble.listener.FoodScaleDataChangeListener;
 import com.peng.ppscale.business.device.DeviceManager;
 import com.peng.ppscale.vo.LFFoodScaleGeneral;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
@@ -120,7 +119,7 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
      */
     private ProtocalFilterImpl getProtocalFilter() {
         final ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
-        protocalFilter.setFoodScaleDataProtocoInterface(new FoodScaleDataProtocoInterface() {
+        protocalFilter.setFoodScaleDataProtocoInterface(new FoodScaleDataChangeListener() {
             @Override
             public void processData(LFFoodScaleGeneral foodScaleGeneral, PPDeviceModel deviceModel) {
                 textView.setText("过程数据");
