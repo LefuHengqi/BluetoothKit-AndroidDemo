@@ -96,6 +96,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
         if (ppScale != null) {
             ppScale.stopSearch();
         }
+        tv_starts.setText("启动扫描");
         startScanDeviceList();
     }
 
@@ -157,7 +158,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
                     .build();
         }
         //ppScale.monitorSurroundDevice();      //The default scan time is 300000ms
-        ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface);  //You can dynamically set the scan time in ms
+        ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface);  //You can dynamically set the scan time in ms
     }
 
 
@@ -204,7 +205,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
                 if (deviceModel == null) {
                     deviceModels.add(ppDeviceModel);
                 }
-                if (System.currentTimeMillis() - lastTimes > 1000) {
+                if (System.currentTimeMillis() - lastTimes > 500) {
                     lastTimes = System.currentTimeMillis();
                     adapter.notifyDataSetChanged();
                 }

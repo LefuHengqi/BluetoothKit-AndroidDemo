@@ -105,7 +105,7 @@ public class DeveloperActivity extends AppCompatActivity implements View.OnClick
                     .build();
         }
 
-        ppScale.startSearchDeviceList(30000, null);
+        ppScale.startSearchDeviceList(30000, null, null);
     }
 
     PPConfigWifiInfoInterface ppConfigWifiInfoInterface = new PPConfigWifiInfoInterface() {

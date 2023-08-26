@@ -97,27 +97,15 @@ class PeripheralAppleActivity : Activity() {
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
             addPrint("syncUnit")
-            if (deviceModel?.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeInScale) {
-                controller?.sendSyncUnitInScale(PPUnitType.Unit_LB, object : PPBleSendResultCallBack {
-                    override fun onResult(sendState: PPScaleSendState?) {
-                        if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                            addPrint("syncUnit InScale send success")
-                        } else {
-                            addPrint("syncUnit InScale send fail")
-                        }
+            controller?.sendSwitchUnitData(PPUnitType.Unit_LB, object : PPBleSendResultCallBack {
+                override fun onResult(sendState: PPScaleSendState?) {
+                    if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                        addPrint("syncUnit send success")
+                    } else {
+                        addPrint("syncUnit send fail")
                     }
-                });
-            } else {
-                controller?.sendSwitchUnitData(PPUnitType.Unit_LB, object : PPBleSendResultCallBack {
-                    override fun onResult(sendState: PPScaleSendState?) {
-                        if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                            addPrint("syncUnit send success")
-                        } else {
-                            addPrint("syncUnit send fail")
-                        }
-                    }
-                });
-            }
+                }
+            })
         }
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData")

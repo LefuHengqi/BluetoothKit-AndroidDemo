@@ -13,6 +13,7 @@ import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralCoconutInstance
 import com.lefu.ppscale.ble.R
+import com.lefu.ppscale.ble.util.DataUtil
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.*
@@ -21,11 +22,13 @@ import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
 import com.peng.ppscale.device.PeripheralCoconut.PPBlutoothPeripheralCoconutController
+import com.peng.ppscale.util.DateUtil
 import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyBaseModel
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPScaleDefine
 import com.peng.ppscale.vo.PPScaleSendState
+import com.peng.ppscale.vo.PPUserModel
 
 /**
  * 对应的协议: 3.x
@@ -38,6 +41,8 @@ class PeripheralCoconutActivity : Activity() {
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
+
+    var userModel: PPUserModel? = null
 
     var controller: PPBlutoothPeripheralCoconutController? = PPBlutoothPeripheralCoconutInstance.instance.controller
 
@@ -64,7 +69,7 @@ class PeripheralCoconutActivity : Activity() {
                 nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
             }
         })
-
+        userModel = DataUtil.util().userModel
         controller?.deviceModel = deviceModel
 
         initClick()
@@ -89,17 +94,29 @@ class PeripheralCoconutActivity : Activity() {
                 }
             })
         }
+        findViewById<Button>(R.id.syncUserInfo).setOnClickListener {
+            addPrint("syncUserInfo")
+            if (deviceModel?.deviceConnectType == PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+                syncUserAndUnitData()
+            } else {
+                addPrint("syncUserInfo: Does not support sending user data")
+            }
+        }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
-            addPrint("syncUnit")
-            controller?.sendSwitchUnitData(PPUnitType.Unit_LB, object : PPBleSendResultCallBack {
-                override fun onResult(sendState: PPScaleSendState?) {
-                    if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                        addPrint("syncUnit send success")
-                    } else {
-                        addPrint("syncUnit send fail")
+            addPrint("syncUnit ")
+            if (deviceModel?.deviceConnectType == PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
+                syncUserAndUnitData()
+            } else {
+                controller?.sendSyncUnitData(PPUnitType.Unit_LB, object : PPBleSendResultCallBack {
+                    override fun onResult(sendState: PPScaleSendState?) {
+                        if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                            addPrint("syncUnit send success")
+                        } else {
+                            addPrint("syncUnit send fail")
+                        }
                     }
-                }
-            });
+                })
+            }
         }
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData")
@@ -137,6 +154,19 @@ class PeripheralCoconutActivity : Activity() {
                 addPrint("device does not support")
             }
         }
+    }
+
+    private fun syncUserAndUnitData() {
+        addPrint("syncUserInfo and syncUnit")
+        controller?.sendSyncUserAndUnitData(PPUnitType.Unit_LB, userModel, object : PPBleSendResultCallBack {
+            override fun onResult(sendState: PPScaleSendState?) {
+                if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                    addPrint("syncUserInfo and syncUnit send success")
+                } else {
+                    addPrint("syncUserInfo and syncUnit send fail")
+                }
+            }
+        })
     }
 
     val dataChangeListener = object : PPDataChangeListener() {

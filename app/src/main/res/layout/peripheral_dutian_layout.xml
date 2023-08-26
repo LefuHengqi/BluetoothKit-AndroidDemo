@@ -85,11 +85,11 @@
                     android:text="连接设备" />
 
                 <Button
-                    android:id="@+id/syncTime"
+                    android:id="@+id/syncUserInfo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="同步时间" />
+                    android:text="同步用户" />
 
             </LinearLayout>
 
@@ -104,21 +104,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="切换单位" />
-
-                <Button
-                    android:id="@+id/syncUserHistoryData"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="历史数据" />
-
-                <Button
-                    android:id="@+id/deleteHistory"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="清除历史" />
 
             </LinearLayout>
 

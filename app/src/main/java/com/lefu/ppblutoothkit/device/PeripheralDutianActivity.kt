@@ -14,6 +14,7 @@ import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralDutianInstance
 import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralGrapesInstance
 import com.lefu.ppscale.ble.R
+import com.lefu.ppscale.ble.util.DataUtil
 import com.lefu.ppscale.ble.util.UnitUtil
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
@@ -42,6 +43,8 @@ class PeripheralDutianActivity : Activity() {
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
 
+    var userModel: PPUserModel? = null
+
     var controller: PPBlutoothPeripheralDutianController? = PPBlutoothPeripheralDutianInstance.instance.controller
 
     companion object {
@@ -58,6 +61,8 @@ class PeripheralDutianActivity : Activity() {
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
         val nestedScrollViewLog = findViewById<NestedScrollView>(R.id.nestedScrollViewLog)
 
+        userModel = DataUtil.util().userModel
+
         logTxt?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -68,8 +73,8 @@ class PeripheralDutianActivity : Activity() {
             }
         })
 
-        controller?.deviceModel = deviceModel
-
+        controller?.deviceModel = deviceModel //必传参数 This is a required parameter
+        controller?.userModel = userModel     //必传参数 This is a required parameter
         initClick()
 
     }
@@ -80,66 +85,27 @@ class PeripheralDutianActivity : Activity() {
             controller?.registDataChangeListener(dataChangeListener)
             controller?.startConnect(bleStateInterface)
         }
-        findViewById<Button>(R.id.syncTime).setOnClickListener {
-            addPrint("syncTime")
-            controller?.sendSyncTime(object : PPBleSendResultCallBack {
-                override fun onResult(sendState: PPScaleSendState?) {
-                    if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                        addPrint("syncTime send success")
-                    } else {
-                        addPrint("syncTime send fail")
-                    }
-                }
-            })
+        findViewById<Button>(R.id.syncUserInfo).setOnClickListener {
+            syncUnitAndSyncUser()
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
-            addPrint("syncUnit")
-            controller?.sendSyncUnitInScale(PPUnitType.Unit_LB, object : PPBleSendResultCallBack {
-                override fun onResult(sendState: PPScaleSendState?) {
-                    if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                        addPrint("syncUnit InScale send success")
-                    } else {
-                        addPrint("syncUnit InScale send fail")
-                    }
+            syncUnitAndSyncUser()
+        }
+    }
+
+    private fun syncUnitAndSyncUser() {
+        addPrint("syncUserInfo and syncUnit")
+        addPrint("syncUnit unit:$ PPUnitType.Unit_LB")
+        addPrint("userModel:${userModel.toString()}")
+        controller?.sendSyncUnitAndUserInfoInScale(PPUnitType.Unit_LB, userModel!!, object : PPBleSendResultCallBack {
+            override fun onResult(sendState: PPScaleSendState?) {
+                if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                    addPrint("syncUserInfo and syncUnit success")
+                } else {
+                    addPrint("syncUserInfo and syncUnit success")
                 }
-            });
-        }
-        findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
-            addPrint("syncUserHistoryData")
-            if (controller?.isSupportHistoryData(deviceModel) ?: false) {
-                controller?.getHistoryData(object : PPHistoryDataInterface() {
-                    override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
-                        addPrint("monitorHistoryData weight: ${bodyBaseModel?.weight}" + " dateTime:$dateTime")
-                    }
-
-                    override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
-                        addPrint("monitorHistoryEnd")
-                    }
-
-                    override fun monitorHistoryFail() {
-                        addPrint("monitorHistoryFail")
-                    }
-                })
-            } else {
-                addPrint("device does not support")
             }
-        }
-        findViewById<Button>(R.id.deleteHistory).setOnClickListener {
-            addPrint("deleteHistory")
-            if (controller?.isSupportHistoryData(deviceModel) ?: false) {
-                controller?.deleteHistoryData(object : PPBleSendResultCallBack {
-                    override fun onResult(sendState: PPScaleSendState?) {
-                        if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                            addPrint("deleteHistory success")
-                        } else {
-                            addPrint("deleteHistory fail")
-                        }
-                    }
-                })
-            } else {
-                addPrint("device does not support")
-            }
-        }
+        })
     }
 
     val dataChangeListener = object : PPDataChangeListener() {
@@ -156,15 +122,14 @@ class PeripheralDutianActivity : Activity() {
             weightMeasureState?.text = ""
         }
 
-        /**
-         * 锁定数据
-         *
-         * @param bodyBaseModel
-         */
-        override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-            val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
-            weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
-            weightMeasureState?.text = ""
+        override fun monitorLockDataByCalculateInScale(bodyFatModel: PPBodyFatModel?) {
+            bodyFatModel?.let {
+                val bodyBaseModel = it.ppBodyBaseModel;
+                val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
+                weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
+                weightMeasureState?.text = ""
+                addPrint(it.toString())
+            }
         }
 
         /**
@@ -204,6 +169,7 @@ class PeripheralDutianActivity : Activity() {
                 addPrint(getString(R.string.scanning))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
+                syncUnitAndSyncUser()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
                 addPrint(getString(R.string.Connectable))
             }

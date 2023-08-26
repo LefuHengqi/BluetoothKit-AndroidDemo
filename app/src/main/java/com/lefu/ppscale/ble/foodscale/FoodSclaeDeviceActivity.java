@@ -67,7 +67,7 @@ public class FoodSclaeDeviceActivity extends AppCompatActivity {
     }
 
     private void startScanData() {
-        ppScale.startSearchDeviceList(30000, null);
+        ppScale.startSearchDeviceList(120000, null, null);
     }
 
     private void initPPScale() {
