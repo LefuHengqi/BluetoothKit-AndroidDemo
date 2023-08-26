@@ -19,6 +19,7 @@ import com.lefu.ppblutoothkit.device.PeripheralDutianActivity;
 import com.lefu.ppblutoothkit.device.PeripheralEggActivity;
 import com.lefu.ppblutoothkit.device.PeripheralFishActivity;
 import com.lefu.ppblutoothkit.device.PeripheralGrapesActivity;
+import com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity;
 import com.lefu.ppblutoothkit.device.PeripheralTorreActivity;
 import com.lefu.ppscale.ble.R;
 import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
@@ -134,6 +135,10 @@ public class ScanDeviceListActivity extends AppCompatActivity {
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralGrapes) {
                 Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralGrapesActivity.class);
                 PeripheralGrapesActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralHamburger) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralHamburgerActivity.class);
+                PeripheralHamburgerActivity.Companion.setDeviceModel(deviceModel);
                 startActivity(intent);
             }
         }

@@ -35,7 +35,6 @@ class PeripheralGrapesActivity : Activity() {
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
-    private var weightMeasureState: TextView? = null
 
     var controller: PPBlutoothPeripheralGrapesController? = PPBlutoothPeripheralGrapesInstance.instance.controller
 
@@ -50,7 +49,6 @@ class PeripheralGrapesActivity : Activity() {
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
-        weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
         val nestedScrollViewLog = findViewById<NestedScrollView>(R.id.nestedScrollViewLog)
 
         logTxt?.addTextChangedListener(object : TextWatcher {
@@ -63,7 +61,7 @@ class PeripheralGrapesActivity : Activity() {
             }
         })
 
-        controller?.deviceModel = PeripheralAppleActivity.deviceModel
+        controller?.deviceModel = deviceModel
 
         initClick()
 
@@ -93,23 +91,20 @@ class PeripheralGrapesActivity : Activity() {
 
         override fun processData(foodScaleGeneral: LFFoodScaleGeneral?, deviceModel: PPDeviceModel) {
             foodScaleGeneral?.let {
-                weightTextView?.text = "process:${getValue(it, deviceModel)}}"
+                weightTextView?.text = "process:${getValue(it, deviceModel)}"
             }
         }
 
         override fun lockedData(foodScaleGeneral: LFFoodScaleGeneral?, deviceModel: PPDeviceModel) {
             foodScaleGeneral?.let {
-                weightTextView?.text = "lock:${getValue(it, deviceModel)}}"
+                weightTextView?.text = "lock:${getValue(it, deviceModel)}"
             }
         }
     }
 
     val bleStateInterface = object : PPBleStateInterface() {
         override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState?, deviceModel: PPDeviceModel?) {
-            if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
-                device_set_connect_state?.text = getString(R.string.device_connecting)
-                addPrint(getString(R.string.device_connecting))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
+           if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 device_set_connect_state?.text = getString(R.string.stop_scanning)
                 addPrint(getString(R.string.stop_scanning))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {

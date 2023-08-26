@@ -60,7 +60,7 @@ class PeripheralBananaActivity : Activity() {
             }
         })
 
-        controller?.deviceModel = PeripheralAppleActivity.deviceModel
+        controller?.deviceModel = deviceModel
 
         initClick()
 
@@ -71,6 +71,11 @@ class PeripheralBananaActivity : Activity() {
             addPrint("startSearch")
             controller?.registDataChangeListener(dataChangeListener)
             controller?.startSearch(bleStateInterface)
+        }
+        findViewById<Button>(R.id.stopSearch).setOnClickListener {
+            addPrint("stopSearch")
+            controller?.registDataChangeListener(null)
+            controller?.stopSeach()
         }
     }
 
@@ -116,10 +121,7 @@ class PeripheralBananaActivity : Activity() {
 
     val bleStateInterface = object : PPBleStateInterface() {
         override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState?, deviceModel: PPDeviceModel?) {
-            if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
-                device_set_connect_state?.text = getString(R.string.device_connecting)
-                addPrint(getString(R.string.device_connecting))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
+            if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 device_set_connect_state?.text = getString(R.string.stop_scanning)
                 addPrint(getString(R.string.stop_scanning))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {

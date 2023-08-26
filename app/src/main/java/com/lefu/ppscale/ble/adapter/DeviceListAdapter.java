@@ -37,11 +37,12 @@ public class DeviceListAdapter extends ArrayAdapter {
         View view = LayoutInflater.from(getContext()).inflate(resourceId, null);
         TextView nameText = (TextView) view.findViewById(R.id.device_name);
         TextView macText = (TextView) view.findViewById(R.id.device_mac);
-
         TextView device_rssi = (TextView) view.findViewById(R.id.device_rssi);
+        TextView device_type = (TextView) view.findViewById(R.id.device_type);
         nameText.setText(deviceModel.getDeviceName());
         macText.setText(deviceModel.getDeviceMac());
         device_rssi.setText(String.format(Locale.getDefault(), "RSSI: %d dBm", deviceModel.getRssi()));
+        device_type.setText(deviceModel.getDevicePeripheralType().toString());
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
