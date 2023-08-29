@@ -10,10 +10,8 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralAppleInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppscale.ble.R
-import com.lefu.ppscale.ble.util.DataUtil
-import com.lefu.ppscale.db.dao.DeviceModel
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.*

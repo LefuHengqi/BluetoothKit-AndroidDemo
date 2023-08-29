@@ -1,4 +1,4 @@
-package com.lefu.ppscale.ble.calculate
+package com.lefu.ppblutoothkit.calculate
 
 import android.app.Activity
 import android.content.Intent
@@ -6,21 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import com.lefu.ppscale.ble.R
-import com.lefu.ppscale.ble.util.UnitUtil
-import com.lefu.ppscale.ble.activity.BodyDataDetailActivity
-import com.lefu.ppscale.ble.util.DataUtil
+import com.lefu.ppblutoothkit.util.UnitUtil
+import com.lefu.ppblutoothkit.util.DataUtil
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_calculate_8ac.*
 
-/**
- * 2.x 连接 apple
- * 2.x 广播 banana
- * 3.x 连接 coconat
- * 秤端计算 durain
- * Torre torre
- */
 /**
  * 8电极计算库
  */

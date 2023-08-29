@@ -1,4 +1,4 @@
-package com.lefu.ppscale.ble.util;
+package com.lefu.ppblutoothkit.util;
 
 import com.lefu.base.SettingManager;
 import com.peng.ppscale.business.device.PPUnitType;

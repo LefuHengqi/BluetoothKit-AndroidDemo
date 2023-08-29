@@ -1,4 +1,4 @@
-package com.lefu.ppscale.ble.activity;
+package com.lefu.ppblutoothkit.calculate;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 
 import com.lefu.ppscale.ble.R;
-import com.lefu.ppscale.ble.util.DataUtil;
+import com.lefu.ppblutoothkit.util.DataUtil;
 import com.peng.ppscale.vo.PPBodyFatModel;
 
 public class BodyDataDetailActivity extends Activity {

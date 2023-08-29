@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralTorreInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppscale.ble.R
 import com.peng.ppscale.business.ble.configWifi.PPConfigStateMenu
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface

@@ -1,7 +1,7 @@
-package com.lefu.ppscale.ble.foodscale
+package com.lefu.ppblutoothkit.device.foodscale
 
 import android.content.Context
-import com.lefu.ppscale.ble.util.UnitUtil
+import com.lefu.ppblutoothkit.util.UnitUtil
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.util.DeviceType
 import com.peng.ppscale.util.DeviceUtil

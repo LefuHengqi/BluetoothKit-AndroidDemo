@@ -20,9 +20,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
-import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralTorreInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppscale.ble.R
-import com.lefu.ppscale.ble.util.DataUtil
+import com.lefu.ppblutoothkit.util.DataUtil
 import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.business.ota.OnOTAStateListener

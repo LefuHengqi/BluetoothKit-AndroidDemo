@@ -1,4 +1,4 @@
-package com.lefu.ppscale.ble.util
+package com.lefu.ppblutoothkit.util
 
 import android.content.Context
 import com.lefu.ppscale.ble.R

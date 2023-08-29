@@ -1,7 +1,6 @@
 package com.lefu.ppblutoothkit.device
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,23 +9,14 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralAppleInstance
-import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralDutianInstance
-import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralGrapesInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDutianInstance
 import com.lefu.ppscale.ble.R
-import com.lefu.ppscale.ble.util.DataUtil
-import com.lefu.ppscale.ble.util.UnitUtil
-import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
-import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
+import com.lefu.ppblutoothkit.util.DataUtil
 import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
-import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
 import com.peng.ppscale.device.PeripheralDurian.PPBlutoothPeripheralDutianController
-import com.peng.ppscale.device.PeripheralGrapes.PPBlutoothPeripheralGrapesController
-import com.peng.ppscale.util.Energy
-import com.peng.ppscale.util.EnergyUnitLbOz
 import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.*
 

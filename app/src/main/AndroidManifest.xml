@@ -17,7 +17,6 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
         android:name="com.lefu.ppblutoothkit.PPApplication"
@@ -35,30 +34,29 @@
             android:name="com.lefu.ppblutoothkit.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".OldVersionManagerActivity" />
 
-        <activity android:name=".activity.BodyDataDetailActivity" />
-        <activity android:name=".activity.ScanDeviceListActivity" />
+        </activity>
+
+        <activity android:name="com.lefu.ppblutoothkit.calculate.BodyDataDetailActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity" />
         <activity android:name=".userinfo.UserinfoActivity" />
-        <activity android:name=".foodscale.FoodSclaeDeviceActivity" />
 
         <!--Calculate-->
-        <activity android:name=".calculate.CalculateManagerActivity" />
-        <activity android:name=".calculate.Calculate4DCActivitiy" />
-        <activity android:name=".calculate.Calculate4ACActivitiy" />
-        <activity android:name=".calculate.Calculate8Activitiy" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.CalculateManagerActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy" />
 
         <!--Torre-->
         <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity" />
         <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity" />
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity" />
-        <activity android:name=".function.FunctionListActivity" />
         <!--Apple-->
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralAppleActivity" />
         <!--Dutian-->
@@ -75,6 +73,7 @@
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralBananaActivity" />
         <!--Hamburger-->
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

@@ -1,4 +1,4 @@
-package com.lefu.ppblutoothkit.instance
+package com.lefu.ppblutoothkit.device.instance
 
 import com.peng.ppscale.device.PeripheralGrapes.PPBlutoothPeripheralGrapesController
 import com.peng.ppscale.vo.PPDeviceModel

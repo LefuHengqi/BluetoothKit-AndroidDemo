@@ -7,7 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import com.lefu.ppscale.ble.R
-import com.lefu.ppscale.ble.util.DataUtil
+import com.lefu.ppblutoothkit.util.DataUtil
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.util.ByteUtil
 import com.peng.ppscale.util.PPUtil

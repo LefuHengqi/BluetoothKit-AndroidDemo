@@ -1,4 +1,4 @@
-package com.lefu.ppscale.ble.adapter;
+package com.lefu.ppblutoothkit.devicelist;
 
 import android.content.Context;
 

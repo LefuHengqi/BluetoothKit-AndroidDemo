@@ -1,4 +1,4 @@
-package com.lefu.ppscale.ble.calculate
+package com.lefu.ppblutoothkit.calculate
 
 import android.app.Activity
 import android.content.Intent

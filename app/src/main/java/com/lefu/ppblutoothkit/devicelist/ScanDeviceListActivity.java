@@ -1,10 +1,9 @@
-package com.lefu.ppscale.ble.activity;
+package com.lefu.ppblutoothkit.devicelist;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import com.lefu.ppblutoothkit.device.PeripheralGrapesActivity;
 import com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity;
 import com.lefu.ppblutoothkit.device.PeripheralTorreActivity;
 import com.lefu.ppscale.ble.R;
-import com.lefu.ppscale.ble.adapter.DeviceListAdapter;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.PPSearchDeviceInfoInterface;
@@ -158,15 +156,15 @@ public class ScanDeviceListActivity extends AppCompatActivity {
      */
     public void startScanDeviceList() {
         if (ppScale == null) {
-            ppScale = new PPScale.Builder(this)
-                    .setBleStateInterface(bleStateInterface)
-                    .build();
+            ppScale = new PPScale(this);
         }
-        //ppScale.monitorSurroundDevice();      //The default scan time is 300000ms
         ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface);  //You can dynamically set the scan time in ms
     }
 
 
+    /**
+     * 重新扫描
+     */
     public void delayScan() {
         new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
@@ -222,16 +220,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
 
         @Override
         public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
-            if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
-                Logger.d(getString(R.string.device_connected));
-                tv_starts.setText(getString(R.string.bluetooth_status) + getString(R.string.device_connected));
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
-                Logger.d(getString(R.string.device_connecting));
-                tv_starts.setText(getString(R.string.bluetooth_status) + getString(R.string.device_connecting));
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
-                Logger.d(getString(R.string.device_disconnected));
-                tv_starts.setText(getString(R.string.bluetooth_status) + getString(R.string.device_disconnected));
-            } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
+            if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 Logger.d(getString(R.string.stop_scanning));
                 tv_starts.setText(getString(R.string.bluetooth_status) + getString(R.string.stop_scanning));
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
@@ -240,8 +229,6 @@ public class ScanDeviceListActivity extends AppCompatActivity {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 Logger.d(getString(R.string.scanning));
                 tv_starts.setText(getString(R.string.bluetooth_status) + getString(R.string.scanning));
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
-                Logger.d(getString(R.string.writable));
             } else {
 
             }

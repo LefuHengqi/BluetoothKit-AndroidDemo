@@ -10,10 +10,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralAppleInstance
-import com.lefu.ppblutoothkit.instance.PPBlutoothPeripheralEggInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralEggInstance
 import com.lefu.ppscale.ble.R
-import com.lefu.ppscale.ble.util.UnitUtil
+import com.lefu.ppblutoothkit.util.UnitUtil
+import com.lefu.ppblutoothkit.device.foodscale.FoodScaleCacluteHelper
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.*
@@ -102,13 +103,13 @@ class PeripheralEggActivity : Activity() {
 
         override fun processData(foodScaleGeneral: LFFoodScaleGeneral?, deviceModel: PPDeviceModel) {
             foodScaleGeneral?.let {
-                weightTextView?.text = "process:${getValue(it, deviceModel)}"
+                weightTextView?.text = "process:${getFoodValue(it, deviceModel)}"
             }
         }
 
         override fun lockedData(foodScaleGeneral: LFFoodScaleGeneral?, deviceModel: PPDeviceModel) {
             foodScaleGeneral?.let {
-                weightTextView?.text = "lock:${getValue(it, deviceModel)}"
+                weightTextView?.text = "lock:${getFoodValue(it, deviceModel)}"
             }
         }
     }
@@ -158,35 +159,9 @@ class PeripheralEggActivity : Activity() {
 
     }
 
-    private fun getValue(foodScaleGeneral: LFFoodScaleGeneral, deviceModel: PPDeviceModel): String {
-        var valueStr = ""
-        var value = foodScaleGeneral.lfWeightKg.toFloat()
-        if (foodScaleGeneral.thanZero == 0) {
-            value *= -1f
-        }
-        val type = foodScaleGeneral.unit
-        valueStr = if (deviceModel.deviceAccuracyType === PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G) {
-            //            String num = String.valueOf(value);
-            val unit = Energy.toG(value, type)
-            val num = unit.format01()
-            val unitText = UnitUtil.unitText(this@PeripheralEggActivity, type)
-            num + unitText
-        } else {
-            val unit = Energy.toG(value, type)
-            if (unit is EnergyUnitLbOz) {
-                val split = ":"
-                val values = unit.format().split(split.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                val unitText = UnitUtil.unitText(this@PeripheralEggActivity, type)
-                val units = unitText.split(split.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                values[0] + split + values[1] + units[0] + split + units[1]
-            } else {
-                val num = unit.format()
-                val unitText = UnitUtil.unitText(this@PeripheralEggActivity, type)
-                num + unitText
-            }
-        }
-        return valueStr
-    }
+    private fun getFoodValue(it: LFFoodScaleGeneral, deviceModel: PPDeviceModel) = FoodScaleCacluteHelper.getValue(
+        this@PeripheralEggActivity, it.lfWeightKg.toFloat(), it.unit, deviceModel
+    )
 
     override fun onDestroy() {
         super.onDestroy()

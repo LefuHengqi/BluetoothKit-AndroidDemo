@@ -47,7 +47,6 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     private final static int MSG_START_HINT = 1;
     int RET_CODE_SYSTEM_WIFI_SETTINGS = 8161;
 
-    private PPScale ppScale;
     private EditText etWifiName;
     private EditText etWifiKey;
 
@@ -192,11 +191,6 @@ public class BleConfigWifiActivity extends AppCompatActivity {
 
             }
         });
-
-        ppScale = new PPScale.Builder(this)
-                .setProtocalFilterImpl(protocalFilter)
-                .setBleStateInterface(bleStateInterface)
-                .build();
 //        ppScale.connectAddress(address);
     }
 
@@ -244,9 +238,9 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     private void startConfigWifi(PPBleSendResultCallBack sendResultCallBack) {
         ssid = etWifiName.getText().toString();
         String password = etWifiKey.getText().toString();
-        if (ppScale != null) {
+//        if (ppScale != null) {
 //            ppScale.configWifi(ssid, password, sendResultCallBack);
-        }
+//        }
     }
 
     /**
@@ -256,22 +250,22 @@ public class BleConfigWifiActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (ppScale != null && !TextUtils.isEmpty(scaleDomain)) {
+//                if (ppScale != null && !TextUtils.isEmpty(scaleDomain)) {
 //                    ppScale.sendModifyServerDNS(scaleDomain);
-                } else {
-                    startConfigWifi(null);
-                }
+//                } else {
+//                    startConfigWifi(null);
+//                }
             }
         }, 500);
     }
 
     private void stopPPScale() {
-        if (ppScale != null) {
-//            ppScale.stopWifiConfig();
-//            ppScale.disConnect();
-            ppScale.stopSearch();
-            ppScale = null;
-        }
+//        if (ppScale != null) {
+////            ppScale.stopWifiConfig();
+////            ppScale.disConnect();
+//            ppScale.stopSearch();
+//            ppScale = null;
+//        }
     }
 
     @Override

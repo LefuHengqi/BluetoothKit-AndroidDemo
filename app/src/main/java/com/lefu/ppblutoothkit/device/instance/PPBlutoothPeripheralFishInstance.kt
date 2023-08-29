@@ -1,4 +1,4 @@
-package com.lefu.ppblutoothkit.instance
+package com.lefu.ppblutoothkit.device.instance
 
 import com.peng.ppscale.device.PeripheralFish.PPBlutoothPeripheralFishController
 import com.peng.ppscale.vo.PPDeviceModel
