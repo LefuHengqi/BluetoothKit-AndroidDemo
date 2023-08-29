@@ -4,6 +4,7 @@ import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.data.PPBodyDetailInfoModel
 import com.peng.ppscale.data.PPBodyDetailModel
 import com.peng.ppscale.util.PPUtil
+import com.peng.ppscale.vo.HT_8_
 import com.peng.ppscale.vo.PPBodyFatModel
 
 /**
@@ -32,7 +33,7 @@ object BodyFatIndexUtils {
         val bodyItemList: ArrayList<BodyFatItemVo?> = ArrayList()
         val bodyDetailModel: PPBodyDetailModel? = bodyFat.bodyDetailModel
         //48项数据
-        if (bodyFat.ppSDKVersion?.contains("HT_8") == true) {
+        if (bodyFat.ppSDKVersion?.contains(HT_8_) == true) {
             getBodyIndex48(
                 bodyDetailModel,
                 weightUnitStr,
@@ -53,7 +54,6 @@ object BodyFatIndexUtils {
                 bodyScoreUnitString
             )
         }
-
         return bodyItemList.toMutableList()
     }
 

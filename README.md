@@ -10,13 +10,16 @@
 
 [Android示例程序地址](https://gitee.com/shenzhen-lfscale/bluetooth-kit-android-demo.git)
 
-## -LF蓝牙秤/食物秤/WiFi秤
+## LF蓝牙秤/食物秤/WiFi秤
 
 PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成化SDK。 
 为了让客户快速实现称重以及对应的功能而实现，包含示例程序，示例程序中包含体脂计算模块和设备功能模块。
-设备功能模块目前支持的设备包含：蓝牙秤、食物秤、Torre系列蓝牙WiFi体脂秤。
-体脂计算模块支持4电极交流算法、4电极直流算法、8电极交流算法。
-在开发者集成的时候，需要采用从引入aar的方式集成。建议开发者查看README.md文档，完成集成。
+
+1. 设备功能模块目前支持的设备包含：蓝牙秤、食物秤、Torre系列蓝牙WiFi体脂秤。
+2. 体脂计算模块支持4电极交流算法、4电极直流算法、8电极交流算法。
+
+商用版本程序：
+可在各个应用市场搜索下载 "Unique Health"
 
 ### Ⅰ. 集成方式
 
@@ -24,10 +27,13 @@ PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成
 
 在需要引入sdk的module下的build.gradle中加入(最新版本请查看ppscalelib的module下的libs)
 
+```
     dependencies {
         //aar引入
         api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     }
+
+```
 
 ### Ⅱ .使用说明
 
@@ -39,48 +45,43 @@ PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成
 
 #### 1.1.2 蓝牙权限相关约定
 
-使用Demo过程中需要您打开蓝牙，打开定位开关，需确保开启和授权相关必要的权限
-
-##### 1.1.2.1 在Android 6.0及以上系统版本，
-
-1、定位权限
-2、定位开关  
-3、蓝牙开关
-
-##### 1.1.2.2 在Android 12.0及以上系统版本，启动扫描前，需确保开启和授权相关必要的权限
-
+使用Demo过程中需要您打开蓝牙，打开定位开关，需确保开启和授权必要的权限: 精准定位权限和附近的设备权限
 可以查看官方蓝牙权限文档，文档地址：[Google开发者网站关于Bluetooth permissions说明](https://developer.android.com/guide/topics/connectivity/bluetooth/permissions).
 
-1、定位权限
-2、定位开关  
-3、蓝牙开关
-4、扫描和连接附近的设备
 
-    <manifest>
-       <!-- Request legacy Bluetooth permissions on older devices. -->
-       <uses-permission android:name="android.permission.BLUETOOTH"
-                        android:maxSdkVersion="30" />
-       <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
-                        android:maxSdkVersion="30" />
-   
-       <!-- Needed only if your app looks for Bluetooth devices.
-            If your app doesn't use Bluetooth scan results to derive physical
-            location information, you can strongly assert that your app
-            doesn't derive physical location. -->
-       <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-   
-       <!-- Needed only if your app makes the device discoverable to Bluetooth
-            devices. -->
-       <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-   
-       <!-- Needed only if your app communicates with already-paired Bluetooth
-            devices. -->
-       <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-   
-       <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
-       <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-       ...
-    </manifest>
+- 精准定位权限
+- 附近设备权限
+- 定位开关
+- 蓝牙开关
+
+```
+<manifest>
+    <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"
+                    android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+                    android:maxSdkVersion="30" />
+
+    <!-- Needed only if your app looks for Bluetooth devices.
+        If your app doesn't use Bluetooth scan results to derive physical
+        location information, you can strongly assert that your app
+        doesn't derive physical location. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
+    <!-- Needed only if your app makes the device discoverable to Bluetooth
+        devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
+    <!-- Needed only if your app communicates with already-paired Bluetooth
+        devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    ...
+</manifest>
+
+```
 
 #### 1.1.3 测量身体数据相关约定
 
@@ -88,15 +89,11 @@ PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成
 
 ### 1.2 主页功能说明
 
-#### 1.2.1 oldVersionSDK
-
-[Old Version SDK English Docs](doc/README_old_version_en.md)  |  [Old Version SDK 中文文档](doc/README_old_version.md)
-
-#### 1.2.2 Caclulate - CalculateManagerActivity
+#### 1.2.1 Caclulate - CalculateManagerActivity
 
 根据蓝牙协议解析出的体重、阻抗，加上用户数据的身高、年龄、性别，计算出体脂率等多项体脂参数信息。
 
-##### 1.2.2.1 8电极交流体脂计算 - 8AC - Calculate8Activitiy
+##### 1.2.1.1 8电极交流体脂计算 - 8AC - Calculate8Activitiy
 
 可输入的内容:
 
@@ -118,7 +115,7 @@ PPDeviceModel参数配置：
     //8电极计算类型
     deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
 
-##### 1.2.2.2 4电极直流体脂计算 - 4DC - Calculate4DCActivitiy
+##### 1.2.1.2 4电极直流体脂计算 - 4DC - Calculate4DCActivitiy
 
 可输入的内容:
 
@@ -165,6 +162,39 @@ PPDeviceModel参数配置：
 #### 1.2.3 Device 扫描周围支持的设备-ScanDeviceListActivity
 
 扫描附近设备列表 - 附近体脂秤的列表，可以选则某个设备进行连接和其他功能使用示例
+扫描的设备类型分类：
+
+| 分类名称 | 使用示例类 | 连接方式 | 设备类型
+|------|--------|--------|--------|
+| PeripheralApple | PeripheralAppleActivity | 连接 | 人体秤
+| PeripheralBanana | PeripheralBananaActivity | 广播 | 人体秤
+| PeripheralCoconut | PeripheralCoconutActivity | 连接 | 人体秤
+| PeripheralDurian | PeripheralDutianActivity | 设备端计算的连接 | 人体秤
+| PeripheralEgg | PeripheralEggActivity | 连接 | 厨房秤
+| PeripheralFish | PeripheralFishActivity | 连接 | 厨房秤
+| PeripheralGrapes | PeripheralGrapesActivity | 广播 | 厨房秤
+| PeripheralHamburger | PeripheralHamburgerActivity | 广播 | 厨房秤
+| PeripheralTorre | PeripheralTorreActivity | 连接 | 人体秤
+
+支持连接的设备必须，先连接，再使用其他功能
+
+#### 1.2.3.1 PeripheralApple
+
+#### 1.2.3.2 PeripheralBanana
+
+#### 1.2.3.3 PeripheralCoconut
+
+#### 1.2.3.4 PeripheralDurian
+
+#### 1.2.3.5 PeripheralEgg
+
+#### 1.2.3.6 PeripheralFish
+
+#### 1.2.3.7 PeripheralGrapes
+
+#### 1.2.3.8 PeripheralHamburger
+
+#### 1.2.3.9 PeripheralTorre
 
 ### Ⅲ .PPScale在蓝牙设备的使用
 

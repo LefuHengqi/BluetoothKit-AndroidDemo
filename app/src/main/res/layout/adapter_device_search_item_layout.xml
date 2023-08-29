@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:background="@android:color/white"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="10dp">
+
+    <TextView
+        android:id="@+id/mWifiNameSsidSB"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="haisilen"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_16sp" />
+
+    <TextView
+        android:id="@+id/mWifiNameSignSB"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:text="haisilen"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_16sp" />
+
+
+</LinearLayout>

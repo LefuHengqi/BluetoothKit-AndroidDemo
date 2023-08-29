@@ -3,10 +3,6 @@ package com.lefu.ppscale.wifi.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -17,6 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.lefu.base.SettingManager;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
@@ -26,10 +25,8 @@ import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
 import com.lefu.ppscale.wifi.net.okhttp.RetCallBack;
 import com.lefu.ppscale.wifi.net.okhttp.vo.SaveWifiGroupBean;
 import com.lefu.ppscale.wifi.util.WifiUtil;
-import com.peng.ppscale.business.ble.BleOptions;
 import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface;
-import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInterface;
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl;
@@ -50,7 +47,6 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     private final static int MSG_START_HINT = 1;
     int RET_CODE_SYSTEM_WIFI_SETTINGS = 8161;
 
-    private PPScale ppScale;
     private EditText etWifiName;
     private EditText etWifiKey;
 
@@ -131,15 +127,9 @@ public class BleConfigWifiActivity extends AppCompatActivity {
         tvNext.setEnabled(false);
         snTv.setText("");
         ProtocalFilterImpl protocalFilter = new ProtocalFilterImpl();
-        protocalFilter.setConfigWifiInterface(new PPConfigWifiInterface() {
-
-            /**
-             * wifi设备配网成功并获取到SN
-             *
-             * @param sn 设备识别码
-             */
+        protocalFilter.setConfigWifiInfoInterface(new PPConfigWifiInfoInterface() {
             @Override
-            public void monitorConfigState(final String sn, PPDeviceModel deviceModel) {
+            public void monitorConfigSn(final String sn, PPDeviceModel deviceModel) {
                 tvNext.setEnabled(true);
                 //拿到sn 处理业务逻辑
                 Logger.e("xxxxxxxxxxxx-" + sn);
@@ -174,13 +164,6 @@ public class BleConfigWifiActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-            }
-        });
-        protocalFilter.setConfigWifiInfoInterface(new PPConfigWifiInfoInterface() {
-            @Override
-            public void monitorConfigSn(String sn, PPDeviceModel deviceModel) {
-
             }
 
             @Override
@@ -202,23 +185,13 @@ public class BleConfigWifiActivity extends AppCompatActivity {
             public void monitorModifyServerIpSuccess() {
 
             }
+
+            @Override
+            public void monitorConfigFail() {
+
+            }
         });
-
-        ppScale = new PPScale.Builder(this)
-                .setProtocalFilterImpl(protocalFilter)
-                .setBleOptions(getBleOptions())
-                .setBleStateInterface(bleStateInterface)
-                .build();
-        ppScale.connectAddress(address);
-    }
-
-    /**
-     * 参数配置
-     */
-    private BleOptions getBleOptions() {
-        return new BleOptions.Builder()
-                .setFeaturesFlag(BleOptions.ScaleFeatures.FEATURES_CONFIG_WIFI)
-                .build();
+//        ppScale.connectAddress(address);
     }
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
@@ -265,9 +238,9 @@ public class BleConfigWifiActivity extends AppCompatActivity {
     private void startConfigWifi(PPBleSendResultCallBack sendResultCallBack) {
         ssid = etWifiName.getText().toString();
         String password = etWifiKey.getText().toString();
-        if (ppScale != null) {
-            ppScale.configWifi(ssid, password, sendResultCallBack);
-        }
+//        if (ppScale != null) {
+//            ppScale.configWifi(ssid, password, sendResultCallBack);
+//        }
     }
 
     /**
@@ -277,22 +250,22 @@ public class BleConfigWifiActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (ppScale != null && !TextUtils.isEmpty(scaleDomain)) {
-                    ppScale.sendModifyServerDNS(scaleDomain);
-                } else {
-                    startConfigWifi(null);
-                }
+//                if (ppScale != null && !TextUtils.isEmpty(scaleDomain)) {
+//                    ppScale.sendModifyServerDNS(scaleDomain);
+//                } else {
+//                    startConfigWifi(null);
+//                }
             }
         }, 500);
     }
 
     private void stopPPScale() {
-        if (ppScale != null) {
-//            ppScale.stopWifiConfig();
-            ppScale.disConnect();
-            ppScale.stopSearch();
-            ppScale = null;
-        }
+//        if (ppScale != null) {
+////            ppScale.stopWifiConfig();
+////            ppScale.disConnect();
+//            ppScale.stopSearch();
+//            ppScale = null;
+//        }
     }
 
     @Override

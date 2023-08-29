@@ -17,10 +17,9 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".PPApplication"
+        android:name="com.lefu.ppblutoothkit.PPApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -32,35 +31,48 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name="com.lefu.ppscalekit.SplashActivity"
+            android:name="com.lefu.ppblutoothkit.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".calculate.CalculateManagerActivity" />
-        <activity android:name=".calculate.Calculate4DCActivitiy" />
-        <activity android:name=".calculate.Calculate4ACActivitiy" />
-        <activity android:name=".calculate.Calculate8Activitiy" />
 
-        <activity android:name=".activity.BindingDeviceActivity" />
-        <activity android:name=".activity.DeviceListActivity" />
-        <activity android:name=".activity.BodyDataDetailActivity" />
-        <activity android:name=".bmdj.BMDJConnectActivity" />
-        <activity android:name=".bmdj.BMDJTimeActivity" />
-        <activity android:name=".bmdj.BMDJIntroduceActivity" />
-        <activity android:name=".activity.ScanDeviceListActivity" />
-        <activity android:name=".activity.ReadHistoryListActivity" />
-        <activity android:name=".wififunction.WifiFunctionListActivity" />
-        <activity android:name=".function.FunctionListActivity" />
+        </activity>
+
+        <activity android:name="com.lefu.ppblutoothkit.calculate.BodyDataDetailActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity" />
         <activity android:name=".userinfo.UserinfoActivity" />
-        <activity android:name=".activity.OTAActivity" />
-        <activity android:name=".torre.DeviceSetActivity" />
-        <activity android:name=".foodscale.FoodSclaeDeviceActivity" />
+
+        <!--Calculate-->
+        <activity android:name="com.lefu.ppblutoothkit.calculate.CalculateManagerActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy" />
+
+        <!--Torre-->
+        <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity" />
+        <!--Apple-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralAppleActivity" />
+        <!--Dutian-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralDutianActivity" />
+        <!--Grapes-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralGrapesActivity" />
+        <!--Fish-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralFishActivity" />
+        <!--Egg-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralEggActivity" />
+        <!--Coconut-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralCoconutActivity" />
+        <!--Banana-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralBananaActivity" />
+        <!--Hamburger-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
