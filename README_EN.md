@@ -130,7 +130,7 @@ According to the body weight and impedance analyzed by the Bluetooth protocol, p
 
 Content that can be entered:
 
-The range of height: 30-220 cm;
+The range of height: 100-220 cm;
 The value range of age: 10-99 years old;
 Gender 1 represents male, 0 represents female;
 Weight: 0-220kg can be input
@@ -152,7 +152,7 @@ PPDeviceModel parameter configuration:
 
 Content that can be entered:
 
-The range of height: 30-220 cm;
+The range of height: 100-220 cm;
 The value range of age: 10-99 years old;
 Gender 1 represents male, 0 represents female;
 Weight: 0-220kg can be input
@@ -174,7 +174,7 @@ PPDeviceModel parameter configuration:
 
 Content that can be entered:
 
-The range of height: 30-220 cm;
+The range of height: 100-220 cm;
 The value range of age: 10-99 years old;
 Gender 1 represents male, 0 represents female;
 Weight: 0-220kg can be input
