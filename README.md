@@ -53,6 +53,9 @@ PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成
 
 - 如果遇到“.so”类型的文件错误，请尝试清除缓存，并将集成sdk的方式改为api
 
+- 如遇到其他集成的问题请咨询：yanfabu-5@lefu.cc 或联系我们的销售顾问
+
+- 如你有好的建议或优秀的代码你可以在Gitee上提交你的请求，我们会非常感谢你
 
 ## Ⅱ .使用说明
 
@@ -218,7 +221,7 @@ PPDeviceModel参数配置：
 - 获取设备分类名称
 
     扫描设备会返回deviceModel对象，通过设备的方法：deviceModel.getDevicePeripheralType()，获取设备分类，根据PPDevicePeripheralType区分自己的设备，对应设备功能示例的Activity。
-    
+```
         /**
         * 设备分组类型
         */
@@ -243,7 +246,7 @@ PPDeviceModel参数配置：
             PeripheralTorre;
         }
 
-
+```
 - 启动扫描 - 对应方法：startSearchDeviceList
 
 ```
@@ -330,7 +333,7 @@ PPDeviceModel参数配置：
 
     只有部分设备支持WiFi
     检测是否支持Wifi:
-
+```
         /**
         * 是否支持Wifi
         *
@@ -346,6 +349,7 @@ PPDeviceModel参数配置：
             }
         }
 
+```
 ##### 1.1 注意事项
 
 默认Server域名地址是：https://api.lefuenergy.com
@@ -359,13 +363,14 @@ PPDeviceModel参数配置：
 
 蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
 
-1、首先确保已经绑定了蓝牙WiFi秤
-2、用户输入Wifi账号和密码
-3、发起连接设备，
-4、连接成功后，在可写的回调（PPBleWorkStateWritable）里面，将账号和密码发送给秤
+1.首先确保已经绑定了蓝牙WiFi秤
+2.用户输入Wifi账号和密码
+3.发起连接设备，
+4.连接成功后，在可写的回调（PPBleWorkStateWritable）里面，将账号和密码发送给秤
 
+```
     ppScale.configWifi(ssid, password)
-
+```
 5、在PPConfigWifiInterface的监听器里面monitorConfigState方法返回sn码，此时秤上的WiFi图标会先闪烁（连接路由器中），再常量（连接路由器成功并获取到sn），
 6、将sn传给Server验证秤是否已经完成注册
 7、Server返回成功，则配网成功，否则配网失败
@@ -386,17 +391,17 @@ PPDeviceModel参数配置：
 2. 然后选则一个Wifi
 3. 输入密码 - PeripheralTorreConfigWifiActivity
 4. 启动配网
-
+```
         var pwd = ""
         if (etWifiKey.text != null) {
             pwd = etWifiKey.text.toString()
         }
         val domainName = "http://nat.lefuenergy.com:10081"//动态配置服务器地址，需要后台配合提供
         PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(ssid, pwd, domainName, configWifiInterface)
-        
+```
 5. 配网完成
 
-
+```
     val configWifiInterface = object : PPTorreConfigWifiInterface() {
 
         override fun configResult(configStateMenu: PPConfigStateMenu?, resultCode: String?) {
@@ -404,7 +409,7 @@ PPDeviceModel参数配置：
         }
 
     }
-
+```
 6. 退出配网
 
 ```
@@ -466,7 +471,7 @@ PPDeviceModel参数配置：
 ### IV 厨房秤枚举具体参数说明
 
 #### 1.1 单位枚举类 PPUnitType
-
+```
         Unit_KG(0),//KG 
         Unit_LB(1),//LB
         PPUnitST(2),//ST
@@ -476,9 +481,9 @@ PPDeviceModel参数配置：
         PPUnitOZ(6),//oz
         PPUnitMLWater(7),//ml(water)
         PPUnitMLMilk(8);//milk
-
+```
 #### 1.2 单位精度
-
+```
     enum class PPDeviceAccuracyType {
         PPDeviceAccuracyTypeUnknow(0),//未知精度
         //KG精度0.1
@@ -490,7 +495,7 @@ PPDeviceModel参数配置：
         // 0.1G精度
         PPDeviceAccuracyTypePoint01G(4);
     }
-
+```
 #### 1.3  食物秤与体脂秤的区别
 
 ##### 1.3.1  接收数据的接口不一样
@@ -504,7 +509,7 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 ### V .实体类对象及具体参数说明
 
 #### 1.1 PPBodyBaseModel参数说明
-
+```
     //体重 重量放大了100倍
     @JvmField
     var weight = 0
@@ -596,10 +601,10 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
     //20KHz軀幹阻抗加密值(下位机上传值)
     @JvmField
     var z20KhzTrunkEnCode: Long = 0
-
+```
 
 #### 1.2 PPBodyFatModel 体脂计算对象参数说明
-
+```
     //用于存储计算所必须的参数
     var ppBodyBaseModel: PPBodyBaseModel? = null
     var ppSDKVersion: String? = null//计算库版本号
@@ -800,11 +805,11 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
 
     // 躯干肌肉量(kg), 分辨率0.1
     var ppMuscleKgTrunk: Float = 0.0f
-
+```
 注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
 
 ##### 1.2.1 错误类型 PPBodyfatErrorType
-
+```
     PP_ERROR_TYPE_NONE(0),                  //无错误
     PP_ERROR_TYPE_AGE(1),                   //年龄参数有误，需在 6   ~ 99岁(不计算除BMI/idealWeightKg以外参数)
     PP_ERROR_TYPE_HEIGHT(2),                //身高参数有误，需在 90 ~ 220cm(不计算所有参数)
@@ -819,26 +824,26 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
     PP_ERROR_TYPE_IMPEDANCE_LEFT_LEG(11),       //阻抗有误 200~1200
     PP_ERROR_TYPE_IMPEDANCE_RIGHT_LEG(12),      //阻抗有误 200~1200
     PP_ERROR_TYPE_IMPEDANCE_TRUNK(13);          //阻抗有误 10~100
-
+```
 ##### 1.2.2 健康评估 PPBodyEnum.PPBodyHealthAssessment
-
+```
     PPBodyAssessment1(0),          //!< 健康存在隐患
     PPBodyAssessment2(1),          //!< 亚健康
     PPBodyAssessment3(2),          //!< 一般
     PPBodyAssessment4(3),          //!< 良好
     PPBodyAssessment5(4);          //!< 非常好
-
+```
 ##### 1.2.3 肥胖等级 PPBodyEnum.PPBodyFatGrade
-
+```
     PPBodyGradeFatThin(0),              //!< 偏瘦
     PPBodyGradeFatStandard(1),          //!< 标准
     PPBodyGradeFatOverwight(2),         //!< 超重
     PPBodyGradeFatOne(3),               //!< 肥胖1级
     PPBodyGradeFatTwo(4),               //!< 肥胖2级
     PPBodyGradeFatThree(5);             //!< 肥胖3级
-
+```
 ##### 1.2.4 身体类型 PPBodyDetailType
-
+```
     LF_BODY_TYPE_THIN(0),//偏瘦型
     LF_BODY_TYPE_THIN_MUSCLE(1),//偏瘦肌肉型
     LF_BODY_TYPE_MUSCULAR(2),//肌肉发达型
@@ -848,9 +853,9 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
     LF_BODY_TYPE_OBESE_FAT(6),//浮肿肥胖型
     LF_BODY_TYPE_FAT_MUSCLE(7),//偏胖肌肉型
     LF_BODY_TYPE_MUSCLE_FAT(8);//肌肉型偏胖
-
+```
 #### 1.3 设备对象PPDeviceModel 参数说明
-
+```
     String deviceMac;//设备mac
     String deviceName;//设备蓝牙名称
     /**
@@ -921,9 +926,9 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
      * 是否能连接
      */
     public boolean deviceConnectAbled;
-
+```
 ##### 1.3.1 PPScaleDefine.PPDeviceProtocolType 协议类型，具体说明
-
+```
         //未知
         PPDeviceProtocolTypeUnknow(0),
         //使用V2.0蓝牙协议
@@ -932,26 +937,26 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
         PPDeviceProtocolTypeV3(2),
         //四电极、八电极协议
         PPDeviceProtocolTypeTorre(3);
-
+```
 ##### 1.3.2 PPScaleDefine.PPDeviceType 设备类型具体说明
-
+```
     PPDeviceTypeUnknow(0), //未知
     PPDeviceTypeCF(1), //体脂秤
     PPDeviceTypeCE(2), //体重秤
     PPDeviceTypeCB(3), //婴儿秤
     PPDeviceTypeCA(4), //厨房秤
     PPDeviceTypeCC(5); //蓝牙wifi秤
-
+```
 ##### 1.3.3 PPScaleDefine.PPDeviceAccuracyType 重量的精度类型具体说明
-
+```
     PPDeviceAccuracyTypeUnknow(0), //未知精度
     PPDeviceAccuracyTypePoint01(1), //KG精度0.1
     PPDeviceAccuracyTypePoint005(2), //KG精度0.05
     PPDeviceAccuracyTypePointG(3), // 1G精度
     PPDeviceAccuracyTypePoint01G(4); // 0.1G精度
-
+```
 ##### 1.3.4 PPScaleDefine.DeviceCalcuteType 体脂计算类型具体说明
-
+```
     //未知
     PPDeviceCalcuteTypeUnknow(0),
     //秤端计算
@@ -966,9 +971,9 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
     PPDeviceCalcuteTypeNormal(5),
     //不需要计算
     PPDeviceCalcuteTypeNeedNot(6);
-
+```
 ##### 1.3.5 PPScaleDefine.PPDevicePowerType 供电模式具体说明
-
+```
     //未知
     PPDevicePowerTypeUnknow(0),
     //电池供电
@@ -977,9 +982,9 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
     PPDevicePowerTypeSolar(2),
     //充电款
     PPDevicePowerTypeCharge(3);
-
+```
 ##### 1.3.6 PPScaleDefine.PPDeviceFuncType 功能类型，可多功能叠加,具体说明
-
+```
     // 称重
     PPDeviceFuncTypeWeight(0x01),
     //测体脂
@@ -996,29 +1001,29 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
     PPDeviceFuncTypeBaby(0x40),
     //wifi配网
     PPDeviceFuncTypeWifi(0x80);
-
+```
 ##### 1.3.7 PPScaleDefine.PPDeviceUnitType 支持的单位,具体说明（暂时未启用）
-
+```
     PPDeviceUnitTypeKG(0x01),//kg
     PPDeviceUnitTypeLB(0x02),//lb
     PPDeviceUnitTypeST(0x04),//st
     PPDeviceUnitTypeJin(0x08), //斤
     PPDeviceUnitTypeSTLB(0x10);//st:lb
-
+```
 
 #### 1.4 LFFoodScaleGeneral参数说明
-
+```
     private double lfWeightKg;      //重量 以g为单位
     private PPUnitType unit;   //单位
     private int byteNum;   //11字节和16字节 由于秤蓝牙名称一样，所以根据自己长度分辨秤类型
     private int thanZero; //正负 0表示负值 1 正值
     private String scaleType;//秤类型，根据类型判断单位对应的精度
-
+```
 
 ### VI .蓝牙状态监控回调和系统蓝牙状态回调
 
 包含两个回调方法，一个是蓝牙状态监控，一个是系统蓝牙回调
-
+```
      PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
         //蓝牙状态监控
         //deviceModel 在蓝牙处于扫描过程中，它是null
@@ -1055,7 +1060,7 @@ ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInt
             }
         }
     };
-
+```
 ### VII. [版本更新说明](doc/version_update.md)
 
 ### VIII. 使用的第三方库
