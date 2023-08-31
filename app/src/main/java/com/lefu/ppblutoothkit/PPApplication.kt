@@ -14,6 +14,6 @@ class PPApplication : Application() {
         PPScale.setDebug(BuildConfig.DEBUG)
         SettingManager.get(this)
         //SDK 初始化
-        PPBlutoothKit.init(this)
+        PPBlutoothKit.initSdk(this)
     }
 }

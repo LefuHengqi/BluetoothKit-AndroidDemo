@@ -37,18 +37,18 @@ dependencies {
     implementation(project(":ppscalelib"))
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-//        Ubuntu本地仓库路径， Windows 为(url:"file://D://***/***/***/")
-//        repository(url: "file:/home/pen/develop/other/")
-//        String deployPath = "C:/liyp/Android/workspace/PPScale-Android/ppscale/"
-        String deployPath = getProjectDir().absolutePath + "/../ppscale-android-maven/"
-        repository(url: "file://${deployPath}")
-        pom.groupId = GROUP_ID
-        pom.artifactId = ARTIFACT_ID_BODY_INDEX
-        pom.version = LIB_VERSION
-        pom.packaging = 'aar'
-    }
-}
+//uploadArchives {
+//    repositories.mavenDeployer {
+////        Ubuntu本地仓库路径， Windows 为(url:"file://D://***/***/***/")
+////        repository(url: "file:/home/pen/develop/other/")
+////        String deployPath = "C:/liyp/Android/workspace/PPScale-Android/ppscale/"
+//        String deployPath = getProjectDir().absolutePath + "/../ppscale-android-maven/"
+//        repository(url: "file://${deployPath}")
+//        pom.groupId = GROUP_ID
+//        pom.artifactId = ARTIFACT_ID_BODY_INDEX
+//        pom.version = LIB_VERSION
+//        pom.packaging = 'aar'
+//    }
+//}
 
 
