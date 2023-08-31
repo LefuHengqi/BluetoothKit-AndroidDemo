@@ -65,8 +65,6 @@ fastlane/test_output
 fastlane/readme.md
 .idea/
 .DS_Store
-ppscale-new-master/build
 app/release/
 ppscale-android-maven/
-bluetoothkit/
 test260h/release/

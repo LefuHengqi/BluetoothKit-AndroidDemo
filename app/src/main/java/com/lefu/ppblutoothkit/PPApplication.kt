@@ -4,8 +4,8 @@ import android.app.Application
 import com.lefu.base.SettingManager
 import com.lefu.ppscale.ble.BuildConfig
 import com.lefu.ppscale.db.dao.DBManager
+import com.peng.ppscale.PPBlutoothKit
 import com.peng.ppscale.business.ble.PPScale
-import com.peng.ppscale.device.PPBlutoothKit
 
 class PPApplication : Application() {
     override fun onCreate() {

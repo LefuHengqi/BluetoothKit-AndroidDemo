@@ -1,3 +1,3 @@
-[submodule "ppscale"]
-	path = ppscale
-	url = https://gitee.com/ppscale/ppscale.git
+[submodule "ppblutoothkit"]
+	path = ppblutoothkit
+	url = https://gitee.com/shenzhen-lfscale/bluetooth-kit-android.git
