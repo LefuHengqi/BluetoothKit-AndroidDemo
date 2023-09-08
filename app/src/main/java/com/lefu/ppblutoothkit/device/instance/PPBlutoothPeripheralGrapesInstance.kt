@@ -9,12 +9,10 @@ class PPBlutoothPeripheralGrapesInstance {
 
     companion object Factory {
         val instance by lazy { PPBlutoothPeripheralGrapesInstance() }
-        var deviceModel: PPDeviceModel? = null
     }
 
     init {
         controller = PPBlutoothPeripheralGrapesController()
-        controller?.deviceModel
     }
 
 

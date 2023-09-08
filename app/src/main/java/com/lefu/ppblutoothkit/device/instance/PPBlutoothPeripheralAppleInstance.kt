@@ -9,12 +9,10 @@ class PPBlutoothPeripheralAppleInstance {
 
     companion object Factory {
         val instance by lazy { PPBlutoothPeripheralAppleInstance() }
-        var deviceModel: PPDeviceModel? = null
     }
 
     init {
         controller = PPBlutoothPeripheralAppleController()
-        controller?.deviceModel
     }
 
 }
