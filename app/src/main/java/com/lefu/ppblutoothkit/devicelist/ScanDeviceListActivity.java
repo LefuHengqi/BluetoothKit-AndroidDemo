@@ -21,11 +21,11 @@ import com.lefu.ppblutoothkit.device.PeripheralGrapesActivity;
 import com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity;
 import com.lefu.ppblutoothkit.device.PeripheralTorreActivity;
 import com.lefu.ppscale.ble.R;
-import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.PPSearchDeviceInfoInterface;
 import com.peng.ppscale.business.state.PPBleSwitchState;
 import com.peng.ppscale.business.state.PPBleWorkState;
+import com.peng.ppscale.search.PPSearchManager;
 import com.peng.ppscale.util.Logger;
 import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPScaleDefine;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class ScanDeviceListActivity extends AppCompatActivity {
 
-    PPScale ppScale;
+    PPSearchManager ppScale;
 
     /**
      * PPUnitKG = 0,
@@ -156,7 +156,7 @@ public class ScanDeviceListActivity extends AppCompatActivity {
      */
     public void startScanDeviceList() {
         if (ppScale == null) {
-            ppScale = new PPScale(this);
+            ppScale = new PPSearchManager();
         }
         ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface);  //You can dynamically set the scan time in ms
     }
@@ -193,8 +193,9 @@ public class ScanDeviceListActivity extends AppCompatActivity {
     }
 
     PPSearchDeviceInfoInterface searchDeviceInfoInterface = new PPSearchDeviceInfoInterface() {
+
         @Override
-        public void onSearchDevice(PPDeviceModel ppDeviceModel) {
+        public void onSearchDevice(PPDeviceModel ppDeviceModel, String data) {
             if (ppDeviceModel != null) {
                 PPDeviceModel deviceModel = null;
                 for (int i = 0; i < deviceModels.size(); i++) {

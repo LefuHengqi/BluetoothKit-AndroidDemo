@@ -11,8 +11,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
+import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppscale.ble.R
+import com.lefu.ppscale.ble.userinfo.UserinfoActivity
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
+import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.device.PPUnitType
@@ -95,19 +98,23 @@ class PeripheralAppleActivity : Activity() {
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
             addPrint("syncUnit")
-            controller?.sendSwitchUnitData(PPUnitType.Unit_LB, object : PPBleSendResultCallBack {
-                override fun onResult(sendState: PPScaleSendState?) {
-                    if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                        addPrint("syncUnit send success")
-                    } else {
-                        addPrint("syncUnit send fail")
+            val userModel = DataUtil.util().userModel
+
+            userModel?.let { it1 ->
+                controller?.sendSwitchUnitData(DataUtil.util().unit, it1, object : PPBleSendResultCallBack {
+                    override fun onResult(sendState: PPScaleSendState?) {
+                        if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                            addPrint("syncUnit send success")
+                        } else {
+                            addPrint("syncUnit send fail")
+                        }
                     }
-                }
-            })
+                })
+            }
         }
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData")
-            if (controller?.isSupportHistoryData(deviceModel) ?: false) {
+            if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType)) {
                 controller?.getHistoryData(object : PPHistoryDataInterface() {
                     override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
                         addPrint("monitorHistoryData weight: ${bodyBaseModel?.weight}" + " dateTime:$dateTime")
@@ -127,7 +134,7 @@ class PeripheralAppleActivity : Activity() {
         }
         findViewById<Button>(R.id.deleteHistory).setOnClickListener {
             addPrint("deleteHistory")
-            if (controller?.isSupportHistoryData(deviceModel) ?: false) {
+            if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType) ?: false) {
                 controller?.deleteHistoryData(object : PPBleSendResultCallBack {
                     override fun onResult(sendState: PPScaleSendState?) {
                         if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
@@ -143,7 +150,7 @@ class PeripheralAppleActivity : Activity() {
         }
         findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
             addPrint("startConfigWifi")
-            if (controller?.isFuncTypeWifi(deviceModel) ?: false) {
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
                 controller?.disConnect()
                 val intent = Intent(this@PeripheralAppleActivity, BleConfigWifiActivity::class.java)
                 intent.putExtra("address", deviceModel?.deviceMac)
@@ -154,15 +161,20 @@ class PeripheralAppleActivity : Activity() {
         }
         findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
             addPrint("getWifiInfo")
-            if (controller?.isFuncTypeWifi(deviceModel) ?: false) {
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType) ?: false) {
                 controller?.getWiFiParmameters(configWifiInfoInterface)
             } else {
                 addPrint("device does not support")
             }
         }
+        findViewById<Button>(R.id.setUserInfo).setOnClickListener {
+            addPrint("start UserInfo pager")
+            startActivity(Intent(this, UserinfoActivity::class.java))
+        }
+
     }
 
-    val dataChangeListener = object : PPDataChangeListener() {
+    val dataChangeListener = object : PPDataChangeListener {
 
         /**
          * 监听过程数据

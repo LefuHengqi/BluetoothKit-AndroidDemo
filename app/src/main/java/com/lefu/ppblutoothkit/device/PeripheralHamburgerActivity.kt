@@ -74,14 +74,13 @@ class PeripheralHamburgerActivity : Activity() {
         findViewById<Button>(R.id.startSearch).setOnClickListener {
             addPrint("startSearch")
             controller?.registDataChangeListener(dataChangeListener)
-            controller?.startSearch(bleStateInterface)
+            deviceModel?.deviceMac?.let { it1 -> controller?.startSearch(it1, bleStateInterface) }
         }
         findViewById<Button>(R.id.stopSearch).setOnClickListener {
             addPrint("stopSearch")
             controller?.registDataChangeListener(null)
             controller?.stopSeach()
         }
-
     }
 
     fun addPrint(msg: String) {

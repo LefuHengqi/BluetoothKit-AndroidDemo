@@ -33,6 +33,6 @@ android {
 
 dependencies {
     //aar introduce
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-//    api project(':ppblutoothkit')
+//    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    api project(':ppblutoothkit')
 }

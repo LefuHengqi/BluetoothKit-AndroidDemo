@@ -30,6 +30,13 @@
             android:layout_marginHorizontal="5dp"
             android:text="0.0" />
 
+        <TextView
+            android:id="@+id/weightMeasureState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_30dp"
+            android:text="state" />
+
     </LinearLayout>
 
     <LinearLayout

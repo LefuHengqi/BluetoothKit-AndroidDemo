@@ -119,7 +119,9 @@ class PeripheralTorreActivity : Activity() {
         }
         findViewById<Button>(R.id.device_set_sync_log).setOnClickListener {
             addPrint("syncLog")
-            controller?.getTorreDeviceManager()?.syncLog(deviceLogInterface)
+            //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
+            val fileFath = filesDir.absolutePath + "/Log/DeviceLog"
+            controller?.getTorreDeviceManager()?.syncLog(fileFath, deviceLogInterface)
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
@@ -292,7 +294,7 @@ class PeripheralTorreActivity : Activity() {
 
     }
 
-    val dataChangeListener = object : PPDataChangeListener() {
+    val dataChangeListener = object : PPDataChangeListener {
 
         /**
          * 监听过程数据
@@ -366,13 +368,6 @@ class PeripheralTorreActivity : Activity() {
     }
 
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface() {
-
-        /**
-         * 亮度
-         */
-        override fun onScreenBrightnessChange(brightness: Int) {
-            addPrint("readScreenBrightness screen brightness:$brightness")
-        }
 
         override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {
             addPrint("readDeviceInfoComplete ${deviceModel.toString()}")

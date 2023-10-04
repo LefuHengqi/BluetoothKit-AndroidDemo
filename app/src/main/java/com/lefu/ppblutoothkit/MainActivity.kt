@@ -7,7 +7,7 @@ import android.widget.Button
 import com.lefu.ppscale.ble.R
 import com.lefu.ppblutoothkit.calculate.CalculateManagerActivity
 import com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity
-import com.peng.ppscale.business.ble.PPScale
+import com.peng.ppscale.PPBlutoothKit
 
 class MainActivity : BasePermissionActivity(), View.OnClickListener {
 
@@ -25,10 +25,10 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.searchDevice -> {
-                if (PPScale.isBluetoothOpened()) {
+                if (PPBlutoothKit.isBluetoothOpened()) {
                     startActivity(Intent(this@MainActivity, ScanDeviceListActivity::class.java))
                 } else {
-                    PPScale.openBluetooth()
+                    PPBlutoothKit.openBluetooth()
                 }
             }
             R.id.caculateBodyFat -> {

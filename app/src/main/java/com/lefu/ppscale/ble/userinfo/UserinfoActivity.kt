@@ -24,8 +24,6 @@ class UserinfoActivity : Activity() {
     var unit = PPUnitType.Unit_KG
     var sex = PPUserGender.PPUserGenderMale
     var group = 0
-    var impedance = 0L;
-    var weightKg = 0.0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_userinfo)
@@ -42,8 +40,6 @@ class UserinfoActivity : Activity() {
             maternityMode = if (userModel.isPregnantMode) 1 else 0
         }
         unit = DataUtil.util().unit
-        impedance = DataUtil.util().impedance
-        weightKg = DataUtil.util().weightKg
 
         // 身高
         val heightET = findViewById<EditText>(R.id.editText3)
@@ -152,35 +148,6 @@ class UserinfoActivity : Activity() {
                 }
             }
         })
-
-        //阻抗
-        val editTextImp = findViewById<EditText>(R.id.editTextImp)
-        editTextImp.setText(impedance.toString())
-        editTextImp.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                val number = s.toString()
-                if (number.length > 0) {
-                    val impedance = number.toLong()
-                    this@UserinfoActivity.impedance = impedance
-                }
-            }
-        })
-        val editTextWeightKg = findViewById<EditText>(R.id.editTextWeightKg)
-        editTextWeightKg.setText(weightKg.toString())
-        editTextWeightKg.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                val number = s.toString()
-                if (number.length > 0) {
-                    val weightKg = number.toDouble()
-                    this@UserinfoActivity.weightKg = weightKg
-                }
-            }
-        })
-
     }
 
     private fun onBtnClck() {
@@ -199,8 +166,6 @@ class UserinfoActivity : Activity() {
             .build()
         DataUtil.util().userModel = userModel
         DataUtil.util().unit = unit
-        DataUtil.util().impedance = impedance
-        DataUtil.util().weightKg = weightKg
     }
 
     fun onSave(view: View) {

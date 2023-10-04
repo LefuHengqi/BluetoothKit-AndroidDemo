@@ -25,7 +25,6 @@ import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
 import com.lefu.ppscale.wifi.net.okhttp.RetCallBack;
 import com.lefu.ppscale.wifi.net.okhttp.vo.SaveWifiGroupBean;
 import com.lefu.ppscale.wifi.util.WifiUtil;
-import com.peng.ppscale.business.ble.PPScale;
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface;
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;

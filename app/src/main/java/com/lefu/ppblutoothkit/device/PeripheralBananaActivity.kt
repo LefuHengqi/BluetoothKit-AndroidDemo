@@ -60,8 +60,6 @@ class PeripheralBananaActivity : Activity() {
             }
         })
 
-        controller?.deviceModel = deviceModel
-
         initClick()
 
     }
@@ -70,7 +68,7 @@ class PeripheralBananaActivity : Activity() {
         findViewById<Button>(R.id.startSearch).setOnClickListener {
             addPrint("startSearch")
             controller?.registDataChangeListener(dataChangeListener)
-            controller?.startSearch(bleStateInterface)
+            deviceModel?.deviceMac?.let { it1 -> controller?.startSearch(it1, bleStateInterface) }
         }
         findViewById<Button>(R.id.stopSearch).setOnClickListener {
             addPrint("stopSearch")
@@ -85,7 +83,7 @@ class PeripheralBananaActivity : Activity() {
         }
     }
 
-    val dataChangeListener = object : PPDataChangeListener() {
+    val dataChangeListener = object : PPDataChangeListener {
 
         /**
          * 监听过程数据
