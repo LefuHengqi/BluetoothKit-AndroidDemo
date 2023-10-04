@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppscale.ble.R
@@ -19,13 +18,13 @@ import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.*
-import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
-import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
 import com.peng.ppscale.device.PeripheralIce.PPBlutoothPeripheralIceController
 import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.*
+import com.peng.ppscale.vo.PPBodyBaseModel
+import com.peng.ppscale.vo.PPDeviceModel
+import com.peng.ppscale.vo.PPScaleSendState
 
 /**
  * 对应的协议: 4.x
@@ -101,19 +100,15 @@ class PeripheralIceActivity : Activity() {
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
             addPrint("syncUnit")
-            val userModel = DataUtil.util().userModel
-
-            userModel?.let { it1 ->
-                controller?.sendSwitchUnitData(DataUtil.util().unit, it1, object : PPBleSendResultCallBack {
-                    override fun onResult(sendState: PPScaleSendState?) {
-                        if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                            addPrint("syncUnit send success")
-                        } else {
-                            addPrint("syncUnit send fail")
-                        }
+            controller?.sendSwitchUnitData(DataUtil.util().unit, object : PPBleSendResultCallBack {
+                override fun onResult(sendState: PPScaleSendState?) {
+                    if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                        addPrint("syncUnit send success")
+                    } else {
+                        addPrint("syncUnit send fail")
                     }
-                })
-            }
+                }
+            })
         }
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData")
@@ -211,7 +206,7 @@ class PeripheralIceActivity : Activity() {
 
     }
 
-    val configWifiInfoInterface = object : PPConfigWifiInfoInterface() {
+    val configWifiInfoInterface = object : PPConfigWifiInfoInterface {
 
         override fun monitorConfigSn(sn: String?, deviceModel: PPDeviceModel?) {
             addPrint("getWifiInfo sn:$sn")

@@ -18,12 +18,13 @@ import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.*
-import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
 import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.*
+import com.peng.ppscale.vo.PPBodyBaseModel
+import com.peng.ppscale.vo.PPDeviceModel
+import com.peng.ppscale.vo.PPScaleSendState
 
 /**
  * 对应的协议: 2.x
@@ -134,7 +135,7 @@ class PeripheralAppleActivity : Activity() {
         }
         findViewById<Button>(R.id.deleteHistory).setOnClickListener {
             addPrint("deleteHistory")
-            if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType) ?: false) {
+            if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType)) {
                 controller?.deleteHistoryData(object : PPBleSendResultCallBack {
                     override fun onResult(sendState: PPScaleSendState?) {
                         if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
@@ -208,7 +209,7 @@ class PeripheralAppleActivity : Activity() {
 
     }
 
-    val configWifiInfoInterface = object : PPConfigWifiInfoInterface() {
+    val configWifiInfoInterface = object : PPConfigWifiInfoInterface {
 
         override fun monitorConfigSn(sn: String?, deviceModel: PPDeviceModel?) {
             addPrint("getWifiInfo sn:$sn")
