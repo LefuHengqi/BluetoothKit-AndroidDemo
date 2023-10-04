@@ -16,6 +16,8 @@ class CalculateManagerActivity : Activity(), View.OnClickListener {
         findViewById<Button>(R.id.dc4).setOnClickListener(this)
         findViewById<Button>(R.id.ac4).setOnClickListener(this)
         findViewById<Button>(R.id.ac8).setOnClickListener(this)
+
+        setTitle("Caculate")
     }
 
     override fun onClick(v: View?) {

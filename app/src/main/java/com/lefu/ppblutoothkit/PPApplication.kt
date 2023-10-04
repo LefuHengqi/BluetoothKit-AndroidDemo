@@ -14,5 +14,6 @@ class PPApplication : Application() {
         SettingManager.get(this)
         //SDK 初始化
         PPBlutoothKit.initSdk(this)
+        PPBlutoothKit.setDeviceConfigFilePath(this, "", "Device.json")
     }
 }

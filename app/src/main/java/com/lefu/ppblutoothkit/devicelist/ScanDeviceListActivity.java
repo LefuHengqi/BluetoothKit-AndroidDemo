@@ -1,5 +1,6 @@
 package com.lefu.ppblutoothkit.devicelist;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,7 +33,7 @@ import com.peng.ppscale.vo.PPScaleDefine;
 
 import java.util.ArrayList;
 
-public class ScanDeviceListActivity extends AppCompatActivity {
+public class ScanDeviceListActivity extends Activity {
 
     PPSearchManager ppScale;
 
