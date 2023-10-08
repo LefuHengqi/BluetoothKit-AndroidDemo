@@ -9,14 +9,12 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBananaInstance
 import com.lefu.ppscale.ble.R
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
-import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
 import com.peng.ppscale.device.PeripheralBanana.PPBlutoothPeripheralBananaController
 import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyBaseModel

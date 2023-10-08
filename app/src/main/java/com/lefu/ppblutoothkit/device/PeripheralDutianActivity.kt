@@ -63,7 +63,6 @@ class PeripheralDutianActivity : Activity() {
             }
         })
 
-        controller?.deviceModel = deviceModel //必传参数 This is a required parameter
         controller?.userModel = userModel     //必传参数 This is a required parameter
         initClick()
 
@@ -73,7 +72,7 @@ class PeripheralDutianActivity : Activity() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
             controller?.registDataChangeListener(dataChangeListener)
-            controller?.startConnect(bleStateInterface)
+            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         }
         findViewById<Button>(R.id.syncUserInfo).setOnClickListener {
             syncUnitAndSyncUser()

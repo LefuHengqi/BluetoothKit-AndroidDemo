@@ -65,7 +65,6 @@ class PeripheralFishActivity : Activity() {
                 nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
             }
         })
-        controller?.deviceModel = deviceModel
         initClick()
     }
 
@@ -73,7 +72,7 @@ class PeripheralFishActivity : Activity() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
             controller?.registDataChangeListener(dataChangeListener)
-            controller?.startConnect(bleStateInterface)
+            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
             addPrint("syncUnit")

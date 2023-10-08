@@ -9,22 +9,16 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
+import com.lefu.ppblutoothkit.device.foodscale.FoodScaleCacluteHelper
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralGrapesInstance
 import com.lefu.ppscale.ble.R
-import com.lefu.ppblutoothkit.util.UnitUtil.unitText
-import com.lefu.ppblutoothkit.device.foodscale.FoodScaleCacluteHelper
 import com.peng.ppscale.business.ble.listener.FoodScaleDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralGrapes.PPBlutoothPeripheralGrapesController
-import com.peng.ppscale.util.Energy.toG
-import com.peng.ppscale.util.EnergyUnitLbOz
-import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.LFFoodScaleGeneral
-import com.peng.ppscale.vo.PPBodyBaseModel
 import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPScaleDefine
 
 /**
  * 对应的协议: 2.x

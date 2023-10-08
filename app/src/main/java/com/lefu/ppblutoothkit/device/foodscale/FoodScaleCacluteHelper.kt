@@ -23,12 +23,12 @@ object FoodScaleCacluteHelper {
         val type = unit
         valueStr = if (deviceModel.deviceAccuracyType == PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G) {
             //            String num = String.valueOf(value);
-            val unit = Energy.toG(value, type)
+            val unit = Energy.toG(value, type, deviceModel.deviceAccuracyType)
             val num = unit.format01()
             val unitText = UnitUtil.unitText(context, type)
             num + unitText
         } else {
-            val unit = Energy.toG(value, type)
+            val unit = Energy.toG(value, type, deviceModel.deviceAccuracyType)
             if (unit is EnergyUnitLbOz) {
                 val split = ":"
                 val values = unit.format().split(split.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()

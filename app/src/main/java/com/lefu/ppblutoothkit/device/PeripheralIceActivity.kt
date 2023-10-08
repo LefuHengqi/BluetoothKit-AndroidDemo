@@ -63,9 +63,6 @@ class PeripheralIceActivity : Activity() {
                 nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
             }
         })
-
-        controller?.deviceModel = deviceModel
-
         setTitle("${deviceModel?.getDevicePeripheralType()}")
 
         initClick()
@@ -76,11 +73,11 @@ class PeripheralIceActivity : Activity() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
             controller?.registDataChangeListener(dataChangeListener)
-            controller?.startConnect(bleStateInterface)
+            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
-            controller?.sendSyncTime(object : PPBleSendResultCallBack {
+            controller?.syncTime(object : PPBleSendResultCallBack {
                 override fun onResult(sendState: PPScaleSendState?) {
                     if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                         addPrint("syncTime send success")
@@ -100,7 +97,7 @@ class PeripheralIceActivity : Activity() {
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
             addPrint("syncUnit")
-            controller?.sendSwitchUnitData(DataUtil.util().unit, object : PPBleSendResultCallBack {
+            controller?.syncUnit(DataUtil.util().unit, object : PPBleSendResultCallBack {
                 override fun onResult(sendState: PPScaleSendState?) {
                     if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                         addPrint("syncUnit send success")
@@ -113,7 +110,7 @@ class PeripheralIceActivity : Activity() {
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData")
             if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType)) {
-                controller?.getHistoryData(object : PPHistoryDataInterface() {
+                controller?.getHistory(object : PPHistoryDataInterface() {
                     override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
                         addPrint("monitorHistoryData weight: ${bodyBaseModel?.weight}" + " dateTime:$dateTime")
                     }
@@ -160,7 +157,7 @@ class PeripheralIceActivity : Activity() {
         findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
             addPrint("getWifiInfo")
             if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType) ?: false) {
-                controller?.getWiFiParmameters(configWifiInfoInterface)
+                controller?.getWifiInfo(configWifiInfoInterface)
             } else {
                 addPrint("device does not support")
             }

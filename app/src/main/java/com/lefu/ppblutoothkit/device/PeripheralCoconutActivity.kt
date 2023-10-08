@@ -64,7 +64,6 @@ class PeripheralCoconutActivity : Activity() {
             }
         })
         userModel = DataUtil.util().userModel
-        controller?.deviceModel = deviceModel
 
         initClick()
 
@@ -74,7 +73,7 @@ class PeripheralCoconutActivity : Activity() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
             controller?.registDataChangeListener(dataChangeListener)
-            controller?.startConnect(bleStateInterface)
+            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
@@ -101,7 +100,7 @@ class PeripheralCoconutActivity : Activity() {
             if (deviceModel?.deviceConnectType == PPScaleDefine.PPDeviceConnectType.PPDeviceConnectTypeDirect) {
                 syncUserAndUnitData()
             } else {
-                controller?.sendSyncUnitData(PPUnitType.Unit_LB, object : PPBleSendResultCallBack {
+                controller?.sendSyncUserAndUnitData(PPUnitType.Unit_LB, userModel, object : PPBleSendResultCallBack {
                     override fun onResult(sendState: PPScaleSendState?) {
                         if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                             addPrint("syncUnit send success")

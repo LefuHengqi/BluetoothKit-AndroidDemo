@@ -88,11 +88,7 @@ class PeripheralTorreActivity : Activity() {
             override fun afterTextChanged(s: Editable?) {
                 nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
             }
-
         })
-
-        controller?.deviceModel = deviceModel
-
         initClick()
 
     }
@@ -100,7 +96,7 @@ class PeripheralTorreActivity : Activity() {
     fun initClick() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
-            controller?.startConnect(bleStateInterface)
+            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         }
         findViewById<Button>(R.id.startMeasureBtn).setOnClickListener {
             addPrint("startMeasure")
