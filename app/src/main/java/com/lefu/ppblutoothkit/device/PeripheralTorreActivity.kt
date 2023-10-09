@@ -363,7 +363,7 @@ class PeripheralTorreActivity : Activity() {
 
     }
 
-    val modeChangeInterface = object : PPTorreDeviceModeChangeInterface() {
+    val modeChangeInterface = object : PPTorreDeviceModeChangeInterface {
 
         override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {
             addPrint("readDeviceInfoComplete ${deviceModel.toString()}")
