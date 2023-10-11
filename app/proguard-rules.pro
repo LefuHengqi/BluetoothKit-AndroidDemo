@@ -115,11 +115,8 @@ public static java.lang.String TABLENAME;
 
 # ppscale
 -keep class com.peng.ppscale.vo.** {*;}
--keep class com.besthealth.bhBodyComposition.** {*;}
-
-# ppscale
--keep class com.peng.ppscale.vo.** {*;}
 -keep class com.peng.ppscale.business.torre.vo.** {*;}
 -keep class com.besthealth.bhBodyComposition.** {*;}
+-keep class com.besthealth.bh1BodyComposition.** {*;}
 
 
