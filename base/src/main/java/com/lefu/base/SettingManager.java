@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
+import com.lefu.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;

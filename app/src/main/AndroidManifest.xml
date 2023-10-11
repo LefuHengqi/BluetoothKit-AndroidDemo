@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.lefu.ppscale.ble">
-
+    <!--蓝牙相关权限-->
     <uses-permission
         android:name="android.permission.BLUETOOTH"
         android:maxSdkVersion="30" />
@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!--存储相关权限-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -59,20 +60,22 @@
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity" />
         <!--Apple-->
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralAppleActivity" />
-        <!--Dutian-->
-        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralDutianActivity" />
-        <!--Grapes-->
-        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralGrapesActivity" />
-        <!--Fish-->
-        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralFishActivity" />
-        <!--Egg-->
-        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralEggActivity" />
-        <!--Coconut-->
-        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralCoconutActivity" />
         <!--Banana-->
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralBananaActivity" />
+        <!--Coconut-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralCoconutActivity" />
+        <!--Dutian-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralDutianActivity" />
+        <!--Egg-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralEggActivity" />
+        <!--Fish-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralFishActivity" />
+        <!--Grapes-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralGrapesActivity" />
         <!--Hamburger-->
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity" />
+        <!--Ice-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralIceActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
