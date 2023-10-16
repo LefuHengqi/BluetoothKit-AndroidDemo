@@ -32,8 +32,10 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
+import com.peng.ppscale.util.Logger
 import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyBaseModel
+import com.peng.ppscale.vo.PPBodyFatModel
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPUserModel
 
@@ -310,9 +312,22 @@ class PeripheralTorreActivity : Activity() {
          * @param bodyBaseModel
          */
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-            val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
-            weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
-            weightMeasureState?.text = ""
+            if (bodyBaseModel?.isHeartRating?:false) {
+               addPrint("心率测量中...")
+                val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
+                weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
+                weightMeasureState?.text = ""
+            } else {
+                addPrint("测量完成")
+                val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
+                weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
+                weightMeasureState?.text = ""
+                bodyBaseModel?.userModel = userModel //在调用计算库之前必须赋值成当前称重的用户的个人信息
+                //调用计算库计算体脂信息
+                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
+                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
+            }
+
         }
 
         /**
