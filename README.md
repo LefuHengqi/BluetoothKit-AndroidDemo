@@ -31,6 +31,30 @@ PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成
 - 先到[乐福开放平台](https://uniquehealth.lefuenergy.com/unique-open-web/#/document)申请AppKey、AppSecret和config文件
 - 将config文件放到项目的assets目录下
 
+```mermaid
+sequenceDiagram
+App->>设备: 下发开始配网指令
+设备-->>App: 可用wifi列表
+App-)设备: 填写wifi密码，下发配网指令
+设备->>服务器: 调用设备注册配网接口(/lefu/wifi/register)
+服务器-->>设备: 注册成功
+设备->>服务器: 调用设备配置同步接口(/lefu/wifi/config)
+服务器-->>设备:设备使用服务器返回的数据更新时间和单位
+```
+
+~~~mermaid
+graph TD
+A[发现蓝牙设备] --> B[判断设备类型] --> C[广播秤 Banana]
+B[判断设备类型] --> D[蓝牙秤 Apple,Coconut,Durian]
+C[广播秤 Banana] --> E[scaleDataDelegate]
+E[scaleDataDelegate] --> F[monitorProcessData] --> G[monitorLockData] --> H[PPBluetoothScaleBaseModel转换PPBodyFatModel]
+D[蓝牙秤 Apple,Coconut,Durian] --> I[connect]
+I[connect] --> J[discoverFFF0Service]
+J[discoverFFF0Service] --> k[discoverFFF0ServiceSuccess]
+k[discoverFFF0ServiceSuccess] --> E[scaleDataDelegate]
+
+~~~
+
 ![申请AppKey、AppSecret和config文件](./doc/images/appkey.png)
 
 ### 1.2 SDK初始化
