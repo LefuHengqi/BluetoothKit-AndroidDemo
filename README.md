@@ -47,9 +47,13 @@ App-)设备: 填写wifi密码，下发配网指令
 
 ~~~mermaid
 graph TD
-A[进入开放平台] --> B[注册/登录] --> 
-C[获取AppKey和AppSecret] --> D[授权成功]--> 
-E[授权成功] --> F[下载config文件] --> G[将config文件复制到项目的assets目录下] --> 
+A[进入开放平台] --> B[注册/登录]
+B[注册/登录] --> C[获取AppKey和AppSecret]
+C[获取AppKey和AppSecret] --> D[授权成功] 
+D[授权成功]  --> E[授权成功]
+E[授权成功] --> F[下载config文件]
+F[下载config文件] --> G[将config文件复制到项目的assets目录下] --> 
+G[将config文件复制到项目的assets目录下] --> H[拿到AppKey、AppSecret和config文件] 
 H[拿到AppKey、AppSecret和config文件] --> I[初始化SDK]
 ~~~
 
