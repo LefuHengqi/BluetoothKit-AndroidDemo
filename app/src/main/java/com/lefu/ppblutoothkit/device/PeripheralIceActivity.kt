@@ -217,7 +217,7 @@ class PeripheralIceActivity : Activity() {
             addPrint("getWifiInfo password:$password")
         }
 
-        override fun monitorModifyServerDNSSuccess() {
+        override fun monitorModifyServerDomainSuccess() {
             addPrint("ModifyServerDNSSuccess")
         }
 

@@ -42,7 +42,7 @@ class Calculate4ACActivitiy : Activity() {
         val height = etHeight.text?.toString()?.toInt() ?: 180
         val age = etAge.text?.toString()?.toInt() ?: 28
         val weight = etWeight.text?.toString()?.toDouble() ?: 70.00
-        val impedance = etImpedance.text?.toString()?.toFloat() ?: 4195332L
+        val impedance = etImpedance.text?.toString()?.toLong() ?: 4195332L
 
         val userModel = PPUserModel.Builder()
             .setSex(sex) //gender

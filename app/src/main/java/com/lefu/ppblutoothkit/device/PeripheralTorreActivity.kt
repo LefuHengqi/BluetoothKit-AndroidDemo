@@ -103,12 +103,12 @@ class PeripheralTorreActivity : Activity() {
         findViewById<Button>(R.id.startMeasureBtn).setOnClickListener {
             addPrint("startMeasure")
             controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
-            controller?.getTorreDeviceManager()?.startMeasure({})
+            controller?.getTorreDeviceManager()?.startMeasure(){}
         }
         findViewById<Button>(R.id.stopMeasureBtn).setOnClickListener {
             addPrint("stopMeasure")
             controller?.getTorreDeviceManager()?.unRegistDataChangeListener()
-            controller?.getTorreDeviceManager()?.stopMeasure()
+            controller?.getTorreDeviceManager()?.stopMeasure(){}
         }
         findViewById<Button>(R.id.device_set_light).setOnClickListener {
             val light = (Math.random() * 100).toInt()

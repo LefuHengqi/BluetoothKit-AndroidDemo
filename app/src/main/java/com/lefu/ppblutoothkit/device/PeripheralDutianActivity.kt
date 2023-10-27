@@ -86,7 +86,7 @@ class PeripheralDutianActivity : Activity() {
         addPrint("syncUserInfo and syncUnit")
         addPrint("syncUnit unit:$ PPUnitType.Unit_LB")
         addPrint("userModel:${userModel.toString()}")
-        controller?.sendSyncUnitAndUserInfoInScale(PPUnitType.Unit_LB, userModel!!, object : PPBleSendResultCallBack {
+        controller?.syncUnit(PPUnitType.Unit_LB, userModel!!, object : PPBleSendResultCallBack {
             override fun onResult(sendState: PPScaleSendState?) {
                 if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                     addPrint("syncUserInfo and syncUnit success")

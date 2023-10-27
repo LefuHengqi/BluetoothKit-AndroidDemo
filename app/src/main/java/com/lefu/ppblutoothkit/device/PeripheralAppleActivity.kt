@@ -101,7 +101,7 @@ class PeripheralAppleActivity : Activity() {
             val userModel = DataUtil.util().userModel
 
             userModel?.let { it1 ->
-                controller?.sendSwitchUnitData(DataUtil.util().unit, it1, object : PPBleSendResultCallBack {
+                controller?.syncUnit(DataUtil.util().unit, it1, object : PPBleSendResultCallBack {
                     override fun onResult(sendState: PPScaleSendState?) {
                         if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                             addPrint("syncUnit send success")
@@ -222,7 +222,7 @@ class PeripheralAppleActivity : Activity() {
             addPrint("getWifiInfo password:$password")
         }
 
-        override fun monitorModifyServerDNSSuccess() {
+        override fun monitorModifyServerDomainSuccess() {
             addPrint("ModifyServerDNSSuccess")
         }
 

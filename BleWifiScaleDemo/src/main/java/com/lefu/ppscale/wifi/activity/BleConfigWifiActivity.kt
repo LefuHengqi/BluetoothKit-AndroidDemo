@@ -131,12 +131,11 @@ class BleConfigWifiActivity : AppCompatActivity() {
 
             override fun monitorConfigSsid(ssid: String?, deviceModel: PPDeviceModel?) {}
             override fun monitorConfigPassword(password: String?, deviceModel: PPDeviceModel?) {}
-            override fun monitorModifyServerDNSSuccess() {
-                Logger.d("DNS下发成功，开始下发配网")
+            override fun monitorModifyServerDomainSuccess() {
+                Logger.d("Domain下发成功，开始下发配网")
                 //wifi秤配网
                 startConfigWifi(null)
             }
-
             override fun monitorModifyServerIpSuccess() {}
             override fun monitorConfigFail() {}
         }
