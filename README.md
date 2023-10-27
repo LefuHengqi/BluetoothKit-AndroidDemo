@@ -54,6 +54,19 @@ A[进入开放平台] --> B[注册/登录] --> C[获取AppKey和AppSecret] --> D
     PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
 ```
 
+
+~~~mermaid
+graph TD
+A[发现蓝牙设备] --> B[判断设备类型] --> C[广播秤 Banana]
+C[广播秤 Banana] --> E[scaleDataDelegate]
+E[scaleDataDelegate] --> F[monitorProcessData] --> G[monitorLockData] --> H[PPBluetoothScaleBaseModel转换PPBodyFatModel]
+I[connect] --> J[discoverFFF0Service]
+J[discoverFFF0Service] --> k[discoverFFF0ServiceSuccess]
+k[discoverFFF0ServiceSuccess] --> E[scaleDataDelegate]
+
+~~~
+
+
 ~~~mermaid
 graph TD
 A[发现蓝牙设备] --> B[判断设备类型] --> C[广播秤 Banana]
