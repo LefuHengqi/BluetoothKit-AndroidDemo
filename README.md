@@ -44,16 +44,23 @@ App-)设备: 填写wifi密码，下发配网指令
 
 ~~~mermaid
 graph TD
-A[发现蓝牙设备] --> B[判断设备类型] --> C[广播秤 Banana]
-B[判断设备类型] --> D[蓝牙秤 Apple,Coconut,Durian]
+A[进入开放平台] --> B[注册/登录]：个人信息入口 --> 
+C[获取AppKey和AppSecret] --> D[授权成功]：联系商务授权 --> 
+E[授权成功] --> F[下载config文件] --> G[将config文件复制到项目的assets目录下] --> 
+H[拿到AppKey、AppSecret和config文件] --> I[初始化SDK]
+~~~
+
+```
+    PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
+```
+
+B[注册/登录] --> D[蓝牙秤 Apple,Coconut,Durian]
 C[广播秤 Banana] --> E[scaleDataDelegate]
 E[scaleDataDelegate] --> F[monitorProcessData] --> G[monitorLockData] --> H[PPBluetoothScaleBaseModel转换PPBodyFatModel]
 D[蓝牙秤 Apple,Coconut,Durian] --> I[connect]
 I[connect] --> J[discoverFFF0Service]
 J[discoverFFF0Service] --> k[discoverFFF0ServiceSuccess]
 k[discoverFFF0ServiceSuccess] --> E[scaleDataDelegate]
-
-~~~
 
 ![申请AppKey、AppSecret和config文件](./doc/images/appkey.png)
 
