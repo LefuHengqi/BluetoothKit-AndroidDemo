@@ -12,7 +12,7 @@
 
 ## LF蓝牙秤/食物秤/WiFi秤
 
-### SDK 说明
+### SDK 介绍
 
 PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成化SDK。
 为了让客户快速实现称重以及对应的功能而实现，包含示例程序，示例程序中包含体脂计算模块和设备功能模块。
@@ -20,7 +20,7 @@ PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成
 1. 设备功能模块目前支持的设备包含：蓝牙秤、食物秤、Torre系列蓝牙WiFi体脂秤。
 2. 体脂计算模块支持4电极交流算法、4电极直流算法、8电极交流算法。
 
-### 商用版本程序：
+### 商用版本程序
 
 - 可在各个应用市场搜索下载 "Unique Health"
 
@@ -32,72 +32,29 @@ PPBluetoothKit是一个包含蓝牙连接逻辑以及数据解析逻辑的集成
 - 将config文件放到项目的assets目录下
 
 ```mermaid
-sequenceDiagram
-App->>设备: 下发开始配网指令
-设备-->>App: 可用wifi列表
-App-)设备: 填写wifi密码，下发配网指令
-设备->>服务器: 调用设备注册配网接口(/lefu/wifi/register)
-服务器-->>设备: 注册成功
-设备->>服务器: 调用设备配置同步接口(/lefu/wifi/config)
-服务器-->>设备:设备使用服务器返回的数据更新时间和单位
-```
-：个人信息入口
-：联系商务授权 
-
-
-~~~mermaid
 graph TD
-A[进入开放平台] --> B[注册/登录] --> C[获取AppKey和AppSecret] --> D[授权成功] --> E[授权成功] --> F[下载config文件] --> G[将config文件复制到项目的assets目录下] --> H[拿到AppKey、AppSecret和config文件] --> I[初始化SDK]
-~~~
-
+A[进入开放平台] --> B[注册/登录] -- 个人信息入口--> C[获取AppKey和AppSecret] --> 
+D[联系商务授权] -- 授权成功 --> F[下载config文件] -->
+G[将config文件复制到项目的assets目录下] --> H[拿到AppKey/AppSecret和config文件] -- 
+PPBlutoothKit.initSdk --> I[(初始化SDK)]
 ```
-    PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
-```
-
-
-~~~mermaid
-graph TD
-A[发现蓝牙设备] --> B[判断设备类型] --> C[广播秤 Banana]
-C[广播秤 Banana] --> E[scaleDataDelegate]
-E[scaleDataDelegate] --> F[monitorProcessData] --> G[monitorLockData] --> H[PPBluetoothScaleBaseModel转换PPBodyFatModel]
-I[connect] --> J[discoverFFF0Service]
-J[discoverFFF0Service] --> k[discoverFFF0ServiceSuccess]
-k[discoverFFF0ServiceSuccess] --> E[scaleDataDelegate]
-
-~~~
-
-
-~~~mermaid
-graph TD
-A[发现蓝牙设备] --> B[判断设备类型] --> C[广播秤 Banana]
-B[判断设备类型] --> D[蓝牙秤 Apple,Coconut,Durian]
-C[广播秤 Banana] --> E[scaleDataDelegate]
-E[scaleDataDelegate] --> F[monitorProcessData] --> G[monitorLockData] --> H[PPBluetoothScaleBaseModel转换PPBodyFatModel]
-D[蓝牙秤 Apple,Coconut,Durian] --> I[connect]
-I[connect] --> J[discoverFFF0Service]
-J[discoverFFF0Service] --> k[discoverFFF0ServiceSuccess]
-k[discoverFFF0ServiceSuccess] --> E[scaleDataDelegate]
-
-~~~
-
-![申请AppKey、AppSecret和config文件](./doc/images/appkey.png)
 
 ### 1.2 SDK初始化
 ```
-        //使用时请务必替换成你自己的AppKey/AppSecret，需要增加设备配置请联系我司销售顾问
-        val appKey = ""
-        val appSecret = ""
+    //使用时请务必替换成你自己的AppKey/AppSecret，需要增加设备配置请联系我司销售顾问
+    val appKey = ""
+    val appSecret = ""
 
-        /*********************以下内容为SDK的配置项***************************************/
-        //SDK日志打印控制，true会打印
-        PPBlutoothKit.setDebug(BuildConfig.DEBUG)
-        /**
-         * SDK 初始化 所需参数需要自行到开放平台自行申请，请勿直接使用Demo中的参数，
-         * @param appKey App的标识
-         * @param appSecret Appp的密钥
-         * @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK
-         */
-        PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
+    /*********************以下内容为SDK的配置项***************************************/
+    //SDK日志打印控制，true会打印
+    PPBlutoothKit.setDebug(BuildConfig.DEBUG)
+    /**
+     * SDK 初始化 所需参数需要自行到开放平台自行申请，请勿直接使用Demo中的参数，
+     * @param appKey App的标识
+     * @param appSecret Appp的密钥
+     * @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK
+     */
+    PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
 ```
 
 ### 1.3 aar文件导入
