@@ -159,7 +159,8 @@ public class ScanDeviceListActivity extends Activity {
         if (ppScale == null) {
             ppScale = new PPSearchManager();
         }
-        ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface);  //You can dynamically set the scan time in ms
+        //You can dynamically set the scan time in ms
+        ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface);
     }
 
 
@@ -195,6 +196,11 @@ public class ScanDeviceListActivity extends Activity {
 
     PPSearchDeviceInfoInterface searchDeviceInfoInterface = new PPSearchDeviceInfoInterface() {
 
+        /**
+         *
+         * @param ppDeviceModel 设备对象
+         * @param data  广播数据
+         */
         @Override
         public void onSearchDevice(PPDeviceModel ppDeviceModel, String data) {
             if (ppDeviceModel != null) {
@@ -220,6 +226,11 @@ public class ScanDeviceListActivity extends Activity {
 
     PPBleStateInterface bleStateInterface = new PPBleStateInterface() {
 
+        /**
+         * 蓝牙扫描和连接状态回调
+         * @param ppBleWorkState 蓝牙状态标识
+         * @param deviceModel 设备对象
+         */
         @Override
         public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
             if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
@@ -236,6 +247,10 @@ public class ScanDeviceListActivity extends Activity {
             }
         }
 
+        /**
+         * 系统蓝牙状态回调
+         * @param ppBleSwitchState 系统蓝牙状态标识
+         */
         @Override
         public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {
             if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
