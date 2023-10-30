@@ -78,7 +78,7 @@ class PeripheralAppleActivity : Activity() {
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
-            controller?.sendSyncTime(object : PPBleSendResultCallBack {
+            controller?.syncTime(object : PPBleSendResultCallBack {
                 override fun onResult(sendState: PPScaleSendState?) {
                     if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                         addPrint("syncTime send success")
@@ -122,6 +122,7 @@ class PeripheralAppleActivity : Activity() {
 
                     override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
                         addPrint("monitorHistoryEnd")
+
                     }
 
                     override fun monitorHistoryFail() {
@@ -196,7 +197,15 @@ class PeripheralAppleActivity : Activity() {
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
             weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
-            weightMeasureState?.text = ""
+            if (bodyBaseModel?.isHeartRating ?: false) {
+                //心率测量中
+                weightMeasureState?.text = "心率测量中"
+            } else {
+                //测量结束
+                weightMeasureState?.text = "测量完成"
+
+            }
+
         }
 
         /**
@@ -255,6 +264,8 @@ class PeripheralAppleActivity : Activity() {
                 device_set_connect_state?.text = getString(R.string.scanning)
                 addPrint(getString(R.string.scanning))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
+                addPrint(getString(R.string.writable))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectFailed) {
                 addPrint(getString(R.string.writable))
             }
         }

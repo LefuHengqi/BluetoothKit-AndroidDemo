@@ -103,12 +103,12 @@ class PeripheralTorreActivity : Activity() {
         findViewById<Button>(R.id.startMeasureBtn).setOnClickListener {
             addPrint("startMeasure")
             controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
-            controller?.getTorreDeviceManager()?.startMeasure(){}
+            controller?.getTorreDeviceManager()?.startMeasure() {}
         }
         findViewById<Button>(R.id.stopMeasureBtn).setOnClickListener {
             addPrint("stopMeasure")
             controller?.getTorreDeviceManager()?.unRegistDataChangeListener()
-            controller?.getTorreDeviceManager()?.stopMeasure(){}
+            controller?.getTorreDeviceManager()?.stopMeasure() {}
         }
         findViewById<Button>(R.id.device_set_light).setOnClickListener {
             val light = (Math.random() * 100).toInt()
@@ -246,6 +246,10 @@ class PeripheralTorreActivity : Activity() {
             addPrint("readLight")
             controller?.getTorreDeviceManager()?.getLight(deviceSetInterface)
         }
+        findViewById<Button>(R.id.getUnit).setOnClickListener {
+            addPrint("getUnit")
+            controller?.getTorreDeviceManager()?.getUnit(deviceSetInterface)
+        }
 
     }
 
@@ -271,8 +275,6 @@ class PeripheralTorreActivity : Activity() {
                 addPrint(getString(R.string.scanning))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
-                addPrint(getString(R.string.Connectable))
             }
         }
 
@@ -312,8 +314,8 @@ class PeripheralTorreActivity : Activity() {
          * @param bodyBaseModel
          */
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-            if (bodyBaseModel?.isHeartRating?:false) {
-               addPrint("心率测量中...")
+            if (bodyBaseModel?.isHeartRating ?: false) {
+                addPrint("心率测量中...")
                 val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
                 weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
                 weightMeasureState?.text = ""

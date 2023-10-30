@@ -159,8 +159,6 @@ class PeripheralDutianActivity : Activity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
                 syncUnitAndSyncUser()
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
-                addPrint(getString(R.string.Connectable))
             }
         }
 

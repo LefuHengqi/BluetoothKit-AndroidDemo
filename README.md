@@ -111,7 +111,7 @@ android { ``` packagingOptions { exclude 'AndroidManifest.xml' ``` } }```
 | 身高 | 100-220 | cm |  
 | 年龄 | 10-99   | 岁 |  
 | 性别 | 0/1     | 女/男 |  
-| 体重 | 0-220   | kg |
+| 体重 | 10-200   | kg |
 
 - 需要身高、年龄、性别和对应的阻抗，调用对应的计算库去获得
 - 8电极所涉及的体脂数据项需要8电极的秤才可使用
@@ -300,6 +300,24 @@ Log.d("liyp_", ppBodyFatModel.toString())
 - 如果有连续页面需要调用扫描时，请一定要确保上个页面的蓝牙已停止扫描后，再在第二个页面进行扫描，建议是第二个页面延迟1000ms再启动。
 - 如果你需要一直扫描蓝牙，你要在monitorBluetoothWorkState方法中ppBleWorkState返回PPBleWorkState.PPBleWorkSearchTimeOut时重启扫描，以确保循环扫描
 
+```mermaid  
+graph TD  
+A[检测蓝牙相关权限] --有权限--> B[检测定位开关和蓝牙开关]
+A[检测蓝牙相关权限] --没有权限--> X[申请权限]
+X[申请权限] --申请到权限 --> B[检测定位开关和蓝牙开关]
+B[检测定位开关和蓝牙开关] --开关均打开--> C[启动蓝牙扫描]
+B[检测定位开关和蓝牙开关] --开关未打开--> Y[引导用户打开相应开关] --开关打开--> C[启动蓝牙扫描]
+C[启动蓝牙扫描<br>PPSearchManager.startSearchDeviceList] --> D[扫描到设备<br>onSearchDevice] -->E[获取设备分类<br>deviceModel.getDevicePeripheralType] -->F[根据不同的分类处理不同的业务逻辑]
+C[启动蓝牙扫描]-->G[蓝牙状态监听<br>PPBleStateInterface]
+G[蓝牙状态监听<br>PPBleStateInterface]-->G1[主动取消扫描<br>PPBleStateSearchCanceled]
+G[蓝牙状态监听<br>PPBleStateInterface]-->G2[扫描超时<br>PPBleWorkSearchTimeOut]
+G[蓝牙状态监听<br>PPBleStateInterface]-->G3[系统蓝牙关闭<br>PPBleSwitchStateOff]
+G[蓝牙状态监听<br>PPBleStateInterface]-->G4[系统蓝牙打开<br>PPBleSwitchStateOn]
+G2[扫描超时<br>PPBleWorkSearchTimeOut]--循环扫描-->C[启动蓝牙扫描<br>PPSearchManager.startSearchDeviceList]
+G4[系统蓝牙打开<br>PPBleSwitchStateOn]--循环扫描-->C[启动蓝牙扫描<br>PPSearchManager.startSearchDeviceList]
+F[根据不同的分类处理不同的业务逻辑]-->H[停止蓝牙扫描<br>stopSearch]
+```
+
 ####  启动扫描 - startSearchDeviceList
 ```  
  /** * Get around bluetooth scale devices */
@@ -374,6 +392,86 @@ ppScale.stopSearch();
  ```  
 ### 2.1 PeripheralApple功能说明  -PeripheralAppleActivity
 
+**注意：**
+- 默认已处理完蓝牙权限和开关检测，并匹配到PPDevicePeripheralType的类型为PeripheralApple，2.x /连接 /人体秤
+- 需要自行判断是否支持历史，然后再处理历史相关功能
+- 需要自行判断是否支持Wifi，然后再处理Wifi相关功能
+- Wifi秤需要自行读取当前手机所连接Wifi的ssid，且只支持2.4G或2.4G&5G双模Wifi，不支持单5GWiFi
+- Wifi秤配网前需要先配置域名，成功后再下发ssid和pwd
+- Wifi秤上传到后台的Wifi历史数据需要Server具备相应的接口能力可咨询Server开发人员
+
+| 功能| 方法名 | 参数 |返回数据类型|备注
+|------|--------|--------|--------|--------|
+|蓝牙连接| startConnect|PPDeviceModel|PPBleStateInterface| 蓝牙相关状态
+|断开连接(非Wifi秤)| disConnect||PPBleStateInterface| 蓝牙相关状态
+|断开连接(Wifi秤)| disWifi||PPBleSendResultCallBack| 需要下发断开连接指令，下发成功后，再调用disConnect主动断开
+|同步时间| syncTime||PPBleSendResultCallBack-onResult(PPScaleSendState sendState)|发送状态回调
+|读取设备信息| readDeviceInfo||PPDeviceInfoInterface-readDeviceInfoComplete|设备信息回调，部分秤支持(包括modelNumber、softwareVersion、serialNumber)
+|同步单位| syncUnit |PPUnitType,PPUserModel|PPBleSendResultCallBack|发送状态回调
+|注册数据变化监听| registDataChangeListener |PPDataChangeListener|monitorProcessData 过程数据<br>monitorLockData锁定数据<br>monitorOverWeight超重 |
+|读取蓝牙历史| getHistoryData||PPHistoryDataInterface|monitorHistoryData历史数据回调<br>monitorHistoryEnd历史数据结束<br>monitorHistoryFail历史数据失败
+|删除蓝牙历史| deleteHistoryData ||PPBleSendResultCallBack|发送状态回调
+|是否支持历史| PPScaleHelper-<br> isSupportHistoryData |deviceFuncType|Boolean|true支持 false不支持
+|是否支持Wifi| PPScaleHelper-<br>isFuncTypeWifi |deviceFuncType|Boolean|true支持 false不支持
+|配置域名| sendModifyServerDomain |domain: String|PPConfigWifiInfoInterface|monitorModifyServerDomainSuccess修改Domain成功回调
+|配网| configWifiData |ssid: String, password: String?|PPConfigWifiInfoInterface|monitorConfigSn(sn:String)<br>sn不为空代表配网成功<br>monitorConfigFail()配网失败
+|读取设备的Wifi-SSID| getWiFiParmameters ||PPConfigWifiInfoInterface|monitorConfigSsid(ssid:String?)
+
+#### 完整的称重逻辑
+
+```mermaid  
+graph TD  
+A[发起连接设备<br>startConnect]-->B[监听蓝牙连接状态<br>PPBleStateInterface]-->C1[连接成功<br>PPBleWorkStateConnected]-->E[展示UI连接状态]
+B[监听蓝牙连接状态<br>PPBleStateInterface]-->C2[当前可写<br>PPBleWorkStateWritable] --> D[切换单位<br>syncUnit]
+D[切换单位<br>syncUnit]--监听蓝牙写入回调<br>PPBleSendResultCallBack-->D1[同步时间<br>syncTime]
+B[监听蓝牙连接状态<br>PPBleStateInterface]-->C3[连接失败<br>PPBleWorkStateConnectFailed] --延迟1s--> A
+B[监听蓝牙连接状态<br>PPBleStateInterface]-->C4[断开连接<br>PPBleWorkStateDisconnected] -->X[处理断开连接业务逻辑]
+```
+```mermaid  
+graph TD  
+A[发起连接设备<br>startConnect]-->F[设备数据变化监听<br>PPDataChangeListener]
+F[设备数据变化监听<br>PPDataChangeListener]-->G1[过程数据<br>monitorProcessData]
+F[设备数据变化监听<br>PPDataChangeListener]-->G2[锁定数据<br>monitorLockData]
+G1--拿自己App当前的单位<br>转成PPUnitType-->H1[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]
+G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.getWeightValueD]-->I2[判断心率状态]
+I2[判断心率状态]-->J1[正在测量心率]-->K1[展示心率测量中UI]
+I2[判断心率状态]-->J2[心率测量完成]-->K2[匹配用户信息<br>给PPBodyBaseModelbodyBaseModel.PPUserModel]-->L[调用计算库计算体脂<br>示例:Calculate4ACActivitiy]
+
+```
+#### 完整的读取蓝牙历史数据
+
+**前提：蓝牙已连接**
+```mermaid  
+graph TD  
+A[读取历史数据<br>getHistoryData]--历史数据监听-->B1[历史数据回调<br>monitorHistoryData]
+B1[历史数据回调<br>monitorHistoryData]-->C[使用List存历史数据]
+A[读取历史数据<br>getHistoryData]--历史数据监听-->B2[历史数据结束回调<br>monitorHistoryEnd]
+B2-->D[拿到list的历史数据]-->E[匹配用户信息<br>给PPBodyBaseModelbodyBaseModel.PPUserModel]-->F[调用计算库计算体脂<br>示例:Calculate4ACActivitiy]
+B2-->G[删除历史数据<br>deleteHistoryData]
+A[读取历史数据<br>getHistoryData]--历史数据监听-->B3[历史数据失败回调<br>monitorHistoryFail]
+```
+#### 完整的Wifi配网流程
+**前提：蓝牙已连接**
+
+注意：
+1. 确保Server正常，路由器能正常连接到Server
+2. 确保WiFi环境是2.4G或2.4/5G混合模式，不支持单5G模式
+3. 确保账号密码正确
+4. 确保秤端使用的Server地址与App使用的Server地址对应
+5. 默认Server域名地址是：https://api.lefuenergy.com
+
+```mermaid  
+graph TD  
+A[获取当前手机Wifi]-->A1[检测当前Wifi是否支持2.4G]-->B1[不支持]-->B3[提示引导用户切换Wifi]-->B4[切换WIfi成功后]-->B2
+A1-->B2[支持]
+B2-->C[让用户输入该Wifi的密码]-->D[开始配网]-->E[配置域名<br>sendModifyServerDomain]
+E-->E1[配网接口监听<br>PPConfigWifiInfoInterface]-->F[收到域名配成功<br>monitorModifyServerDomainSuccess]
+F-->G[开始下发SSID和PWD]-->H1[配网接口收到SN标识成功<br>monitorConfigSn]-->I1[配网成功]-->J1[返回配网前页面并展示配网的SSID]
+G[开始下发SSID和PWD]-->H2[配网接口返回失败<br>monitorConfigFail]-->I2[配网失败]-->J[提示用户可能失败的原因]--自查完成-->A[获取当前手机Wifi]
+
+```
+
+
 ### 2.2 PeripheralBanana 功能说明  -PeripheralBanana Activity
 
 ### 2.3 PeripheralCoconut功能说明  -PeripheralCoconutActivity
@@ -390,477 +488,262 @@ ppScale.stopSearch();
 
 ### 2.9 PeripheralTorre功能说明  -PeripheralTorreActivity
 
-### 2.10 PeripheralIce功能说明  -PeripheralIceActivity
+**注意：**
+- 默认已处理完蓝牙权限和开关检测，并匹配到PPDevicePeripheralType的类型为PeripheralTorre，TORRE/连接 /人体秤
+- 需要自行判断是否支持历史，然后再处理历史相关功能
+- 需要自行判断是否支持Wifi，然后再处理Wifi相关功能
 
-### 2.11 PeripheralJambul功能说明  -PeripheralJambulActivity
+#### 2.9.1完整的称重流程
 
+**前提：蓝牙已连接**
+```mermaid  
+graph TD
+A[发起连接设备<br>startConnect]-->B[监听蓝牙状态<br>PPBleStateInterface]-->C1[蓝牙设备状态<br>monitorBluetoothWorkState]
+B-->C2[系统蓝牙状态<br>monitorBluetoothSwitchState]
+B-->C3[Mtu状态<br>monitorMtuChange]-->D[同步时间<br>]-->E[同步单位<br>syncUnit]
+E--需要同步用户信息-->F[走2.9.2业务逻辑]-->F1[同步信息完成]-->G
+E--不需要同步用户信息-->G[选则当前用户<br>confirmCurrentUser] -->G1[当前用户选则成功<br>confirmCurrentUserInfoSuccess]-->H[启动测量<br>startMeasure]--注册数据变化监听<br>registDataChangeListener-->I[测量结果回调<br>PPDataChangeListener]
+I-->I1[过程数据<br>monitorProcessData]--拿自己App当前的单位<br>转成PPUnitType-->I11[单位转换<br>PPUtil.getWeightValueD]-->I12[实时展示体重数据UI]
+I-->I2[锁定数据<br>monitorLockData]-->I21[心率状态<br>isHeartRating]
+I21--true-->I211[正在测量心率]-->K1[展示心率测量中UI]
+I21--false-->I212[测量结束]-->J[根据memberID匹配用户信息<br>给PPBodyBaseModelbodyBaseModel.PPUserModel]-->K[调用计算库计算体脂<br>八电极示例:Calculate8ACActivitiy<br>四电极示例:Calculate4ACActivitiy]
+I-->I3[阻抗测量中<br>onImpedanceFatting]-->I31[根据自己的业务展示UI]
+I-->I4[超重<br>monitorOverWeight]-->I41[根据自己的业务展示UI]
+I-->I5[设备关机回调<br>onDeviceShutdown]-->I51[根据自己的业务展示UI]
+I-->I6[历史数据发生改变<br>onHistoryDataChange]-->I61[主动去读取历史数据]
+G-->G2[当前用户选则失败]-->H
+```
+#### 2.9.2完整的用户信息同步流程
 
-### Ⅲ WiFi功能说明
+**前提：蓝牙已连接**
+```mermaid  
+graph TD  
+E[需要同步用户信息<br>App自己记录当前的设备是否需要同步]-->F1[删除设备端所有用户<br>deleteAllUserInfo]
+F1--删除成功-->G[同步用户信息<br>syncUserInfo循环同步<br>直到同步完成-支持5个账户,每账户/10个用户]
+G-->G1[一个用户同步完成<br>syncUserInfoSuccess]-->G2[同步下一个]--循环同步-->G
+G-->H[所有用户同步完成<br>syncUserInfoSuccess]
+G-->H1[用户同步失败<br>syncUserInfoFail]-->H11[提示用户]
 
-#### PeripheralApple的Wifi功能 = BleConfigWifiActivity.java
-
-    只有部分设备支持WiFi  
-检测是否支持Wifi:
-
-```  
- /** * 是否支持Wifi  
- * * @param device * @return */ fun isFuncTypeWifi(device: PPDeviceModel?): Boolean { return if (device != null) { (device.deviceFuncType and PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeWifi.getType() == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeWifi.getType()) } else { false } }  
-```  
-
-##### 1.1 注意事项
-
-默认Server域名地址是：https://api.lefuenergy.com
-
+```
+#### 2.9.3完整的配网流程
+**前提：蓝牙已连接**
+注意：
 1. 确保Server正常，路由器能正常连接到Server
 2. 确保WiFi环境是2.4G或2.4/5G混合模式，不支持单5G模式
 3. 确保账号密码正确
 4. 确保秤端使用的Server地址与App使用的Server地址对应
 
-##### 1.2 WiFi配网的基本流程
+```mermaid  
+graph TD  
+A[检测是否支持配网<br>PPScaleHelper.isFuncTypeWifi]--支持-->A1[获取Wifi列表<br>getWifiList<br>注册Wifi列表回调<br>PPTorreConfigWifiInterface]
+A--不支持-->A2[处理UI展示]
+A1-->B1[Wifi列表返回成功<br>monitorWiFiListSuccess]-->B2[为空-周围没有支持的Wifi]
+B1-->B3[不为空]-->B4[展示Wifi列表]-->B5[用户选则一个Wifi]-->B6[输入密码]
+B6-->D[开始下发配网信息<br>configWifi:domainName,ssid,password,configWifiInterface]-->C
+D-->E[用户手动返回-退出配网<br>exitConfigWifi]
+A1-->C[配网状态<br>configResult]
+C-->C1[配网成功<br>CONFIG_STATE_SUCCESS]-->C11[返回入口,重新获取WifiSSID<br>getWifiSSID]
+C-->C2[配网失败<br>详细看枚举类PPConfigStateMenu]-->C21[提示用户,排查原因]-->C22[重新配网]
+C-->C3[退出配网状态<br>CONFIG_STATE_EXIT]
+```
+#### 2.9.4 完整的蓝牙历史数据读取
+**前提：蓝牙已连接**
+- 有主用户历史：指有有效的memberID的历史数据
+- 无主用户历史：指没有有效的memberID的历史数据,memberID全为64个0或为空
+- 有主用户历史数据同步
+```mermaid  
+graph TD  
+A[有主用户历史数据同步<br>syncUserHistory]-->B[注册历史数据监听<br>OnTorreHistoryDataListener]
+B-->B1[有主历史数据同步成功<br>onSyncUserHistorySuccess]
+B-->B2[正在同步xx用户历史数据<br>onStartSyncUserHistory]
+B-->B3[同步失败<br>onHistoryFail]
+B-->B4[有主用户同步完成<br>onHistoryEnd]
+B4-->C[根据memberID匹配用户信息<br>给PPBodyBaseModelbodyBaseModel.PPUserModel]-->D[调用计算库计算体脂<br>八电极示例:Calculate8ACActivitiy<br>四电极示例:Calculate4ACActivitiy]-->E[将数据存储到数据表]
+```
+- 无主用户历史数据同步
+```mermaid  
+graph TD  
+A[无主用户历史数据同步<br>syncUserHistory]-->B[注册历史数据监听<br>OnTorreHistoryDataListener]
+B-->B1[无主历史数据同步成功<br>onTouristUserHistorySuccess]
+B-->B2[同步失败<br>onHistoryFail]
+B-->B3[无主用户同步完成<br>onHistoryEnd]
+B3-->D[将数据作为无主数据存储,让用户自己去认领数据]
+```
 
-蓝牙配网 - 该功能用于蓝牙WiFi秤，在给秤配置网络时使用
 
-1.首先确保已经绑定了蓝牙WiFi秤  
-2.用户输入Wifi账号和密码  
-3.发起连接设备，  
-4.连接成功后，在可写的回调（PPBleWorkStateWritable）里面，将账号和密码发送给秤
 
-```  
- ppScale.configWifi(ssid, password)```  
-  
-5、在PPConfigWifiInterface的监听器里面monitorConfigState方法返回sn码，此时秤上的WiFi图标会先闪烁（连接路由器中），再常量（连接路由器成功并获取到sn），  
-6、将sn传给Server验证秤是否已经完成注册  
-7、Server返回成功，则配网成功，否则配网失败  
-  
-##### 1.3 数据列表  
-  
-数据列表 -是从Server端获取的秤存在Server端的离线数据,并非秤端存储的历史数据  
-  
-##### 1.4 设备配置  
-  
-在设备管理页面，如果绑定了WiFi秤，则会显示设置入口，点击设置入口可进入到设备配置页面,  
-设备配置页面可以查看当前设备的SN,SSID,PASSWORD、修改秤的服务端DNS地址、清除当前秤的SSID,  
-对应的代码是在DeveloperActivity.class下。  
-  
-#### PeripheralTorre的Wifi功能  
-  
-1. 首先从设备端读取Wifi列表 - PeripheralTorreSearchWifiListActivity  
-2. 然后选则一个Wifi  
-3. 输入密码 - PeripheralTorreConfigWifiActivity  
-4. 启动配网  
-  
-```  
-var pwd = "" if (etWifiKey.text != null) { pwd = etWifiKey.text.toString() } val domainName = "http://nat.lefuenergy.com:10081"//动态配置服务器地址，需要后台配合提供  
-PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(ssid, pwd, domainName, configWifiInterface)```
+| 功能| 方法名 | 参数 |返回数据类型|备注
+|------|--------|--------|--------|--------|
+|蓝牙连接| startConnect|PPDeviceModel|PPBleStateInterface| 蓝牙相关状态
+|启动测量| startMeasure||PPDataChangeListener| 蓝牙相关状态
+|停止测量| stopMeasure|PPDeviceModel|PPBleStateInterface| 蓝牙相关状态
+|同步时间| syncTime||PPBleSendResultCallBack-onResult(PPScaleSendState sendState)|发送状态回调
+|读取设备信息| readDeviceInfo||PPDeviceInfoInterface-readDeviceInfoComplete|设备信息回调，部分秤支持(包括modelNumber、softwareVersion、serialNumber)
+|同步单位| syncUnit |PPUnitType,PPUserModel|PPBleSendResultCallBack|发送状态回调
+|注册数据变化监听| registDataChangeListener |PPDataChangeListener|monitorProcessData 过程数据<br>monitorLockData锁定数据<br>monitorOverWeight超重 |
+|是否支持历史| PPScaleHelper-<br> isSupportHistoryData |deviceFuncType|Boolean|true支持 false不支持
+|是否支持Wifi| PPScaleHelper-<br>isFuncTypeWifi |deviceFuncType|Boolean|true支持 false不支持
+|同步用户数据| syncUserInfo |PPUserModel|PPUserInfoInterface|同步多个用户要一个一个同步
+|删除用户数据| deleteAllUserInfo |deviceFuncType|PPUserInfoInterface|根据userID去删除该userId下的所有子成员
+|确认当前用户| confirmCurrentUser |PPUserModel|PPUserInfoInterface|
+|获取用户列表| getUserList ||PPUserInfoInterface|true支持 false不支持
+|开始配网| startConfigWifi ||Boolean|true支持 false不支持
+|获取SSID| getWifiSSID |deviceFuncType|Boolean|true支持 false不支持
+|获取WifiMac| getWifiMac |deviceFuncType|Boolean|true支持 false不支持
+|清除用户| clearDeviceUserInfo |deviceFuncType|Boolean|true支持 false不支持
+|获取单位| getUnit |deviceFuncType|Boolean|true支持 false不支持
+|设备信息| readDeviceInfoFromCharacter |deviceFuncType|Boolean|true支持 false不支持
+|获取电量| readDeviceBattery |deviceFuncType|Boolean|true支持 false不支持
+|获取亮度| getLight |deviceFuncType|Boolean|true支持 false不支持
+|设置亮度| setLight |light|Boolean|0-100
+|用户历史数据| syncUserHistory |PPUserModel|PPHistoryDataInterface|
+|游客历史数据| syncTouristHistory ||PPHistoryDataInterface|
+|恢复出厂| resetDevice |deviceFuncType|Boolean|true支持 false不支持
+|启动保活| startKeepAlive ||无需主动退出保活|
 
-5. 配网完成
+### 2.10 PeripheralIce功能说明  -PeripheralIceActivity
 
-```  
- val configWifiInterface = object : PPTorreConfigWifiInterface() {  
- override fun configResult(configStateMenu: PPConfigStateMenu?, resultCode: String?) { configResultTV?.text = "configResult configStateMenu: $configStateMenu\nresultCode: $resultCode" }  
- }```  
-  
-6. 退出配网  
-  
-```  
-PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.exitConfigWifi()```
+### 2.11 PeripheralJambul功能说明  -PeripheralJambulActivity
 
-7. 配网接口说明-PPTorreConfigWifiInterface
+## V .实体类对象及具体参数说明
 
-```  
- public class PPTorreConfigWifiInterface {  
- /** * 配网状态  
- * * @param configStateMenu * @param resultCode */ public void configResult(PPConfigStateMenu configStateMenu, String resultCode) { }  
- /** * Wifi列表回调  
- * * @param wifiModels 返回的Wifi信息列表  
- */ public void monitorWiFiListSuccess(List<PPWifiModel> wifiModels) { }  
- /** * 读取设备的SSID  
- * * @param ssid * @param state 0 成功 1失败  
- */ public void readDeviceSsidCallBack(String ssid, int state) { }  
- /** * 读取wifimac  
- * * @param wifiMac */ public void readDeviceWifiMacCallBack(String wifiMac) {  
- }  
-  
- /** * 配网状态  
- * 0x00：未配网（设备端恢复出厂或APP解除设备配网后状态）  
- * 0x01：已配网（APP已配网状态）  
- * * @param state */ public void configWifiState(int state) { } }```  
-  
-### IV 厨房秤枚举具体参数说明  
-  
-#### 1.1 单位枚举类 PPUnitType  
-  
-```  
-Unit_KG(0),//KG        Unit_LB(1),//LB  
-PPUnitST(2),//ST PPUnitJin(3),//斤  
-PPUnitG(4),//g PPUnitLBOZ(5),//lb:oz PPUnitOZ(6),//oz PPUnitMLWater(7),//ml(water) PPUnitMLMilk(8);//milk```
+### 1.1 PPBodyFatModel 体脂计算对象参数说明
+四电极对应的24项数据
+八电极对应的48项数据
+| 参数| 参数类型 | 说明 |数据类型|备注
+|------|--------|--------|--------|--------|
+|ppBodyBaseModel| PPBodyBaseModel |体脂计算的入参|基础入参|包含设备信息、用户基础信息、体重和心率|体脂秤
+|ppSDKVersion| String |计算库版本号|返回参数|
+|ppSex| PPUserGender|性别|返回参数| PPUserGenderFemale女<br>PPUserGenderMale男
+|ppHeightCm|Int |身高|返回参数|cm
+|ppAge|Int |年龄|返回参数|岁
+|errorType|BodyFatErrorType |错误类型|返回参数|PP_ERROR_TYPE_NONE(0),无错误                      <br>PP_ERROR_TYPE_AGE(1), 年龄有误   <br>PP_ERROR_TYPE_HEIGHT(2),身高有误               <br>PP_ERROR_TYPE_WEIGHT(3), 体重有误 <br>PP_ERROR_TYPE_SEX(4) 性別有误 <br>PP_ERROR_TYPE_PEOPLE_TYPE(5)  <br>以下是阻抗有误 <br>PP_ERROR_TYPE_IMPEDANCE_TWO_LEGS(6)  <br>PP_ERROR_TYPE_IMPEDANCE_TWO_ARMS(7)<br>PP_ERROR_TYPE_IMPEDANCE_LEFT_BODY(8)  <br>PP_ERROR_TYPE_IMPEDANCE_RIGHT_ARM(9)<br>PP_ERROR_TYPE_IMPEDANCE_LEFT_ARM(10)  <br>PP_ERROR_TYPE_IMPEDANCE_LEFT_LEG(11)  <br>PP_ERROR_TYPE_IMPEDANCE_RIGHT_LEG(12)  <br>PP_ERROR_TYPE_IMPEDANCE_TRUNK(13)
+|bodyDetailModel|PPBodyDetailModel|数据区间范围和介绍描述|
+|ppWeightKg|Float |体重|24&48|kg
+|ppBMI|Float|Body Mass Index|24&48|
+|ppFat|Float |脂肪率|24&48|%
+|ppBodyfatKg|Float |脂肪量|24&48|kg
+|ppMusclePercentage|Float |肌肉率|24&48|%
+|ppMuscleKg|Float |肌肉量|24&48|kg
+|ppBodySkeletal|Float |骨骼肌率|24&48|%
+|ppBodySkeletalKg|Float |骨骼肌量|24&48|kg
+|ppWaterPercentage|Float |水分率|24&48|%
+|ppWaterKg|Float |水分量|24&48|kg
+|ppProteinPercentage|Float |蛋白质率|24&48|%
+|ppProteinKg|Float |蛋白质量|24&48|kg
+|ppLoseFatWeightKg|Float |去脂体重|24&48|kg
+|ppBodyFatSubCutPercentage|Float |皮下脂肪率|24&48|%
+|ppBodyFatSubCutKg|Float |皮下脂肪量|24&48|kg
+|ppHeartRate|Int |心率|24&48|bmp该值与秤有关，且大于0为有效
+|ppBMR|Int |基础代谢|24&48|
+|ppVisceralFat|Int |内脏脂肪等级|24&48|
+|ppBoneKg|Float |骨量|24&48|kg
+|ppBodyMuscleControl|Float |肌肉控制量|24&48|kg
+|ppFatControlKg|Float |脂肪控制量|24&48|kg
+|ppBodyStandardWeightKg|Float |标准体重|24&48|kg
+|ppIdealWeightKg|Float |理想体重|24&48|kg
+|ppControlWeightKg|Float |控制体重|24&48|kg
+|ppBodyType|PPBodyDetailType |身体类型|24&48|PPBodyDetailType有单独说明
+|ppFatGrade|PPBodyFatGrade|肥胖等级|24&48|PPBodyGradeFatThin(0),              //!< 偏瘦  <br>PPBodyGradeFatStandard(1),//!< 标准  <br>PPBodyGradeFatOverwight(2), //!< 超重  <br>PPBodyGradeFatOne(3),//!< 肥胖1级  <br>PPBodyGradeFatTwo(4),//!< 肥胖2级  <br>PPBodyGradeFatThree(5);//!< 肥胖3级
+|ppBodyHealth|PPBodyHealthAssessment |健康评估|24&48|PPBodyAssessment1(0),          //!< 健康存在隐患  <br>PPBodyAssessment2(1),          //!< 亚健康  <br>PPBodyAssessment3(2),          //!< 一般  <br>PPBodyAssessment4(3),          //!< 良好  <br>PPBodyAssessment5(4);          //!< 非常好
+|ppBodyAge|Int|身体年龄|24&48|岁
+|ppBodyScore|Int |身体得分|24&48|分
+|ppCellMassKg|Float |身体细胞量|48|kg
+|ppDCI|Int |建议卡路里摄入量|48|Kcal/day
+|ppMineralKg|Float |无机盐量|48|kg
+|ppObesity|Float |肥胖度|48|%
+|ppWaterECWKg|Float |细胞外水量|48|kg
+|ppWaterICWKg|Float |细胞内水量|48|kg
+|ppBodyFatKgLeftArm|Float |左手脂肪量|48|kg
+|ppBodyFatKgLeftLeg|Float |左脚脂肪量|48|kg
+|ppBodyFatKgRightArm|Float |右手脂肪量|48|kg
+|ppBodyFatKgRightLeg|Float |右脚脂肪量|48|kg
+|ppBodyFatKgTrunk|Float |躯干脂肪量|48|kg
+|ppBodyFatRateLeftArm|Float |左手脂肪率|48|%
+|ppBodyFatRateLeftLeg|Float |左脚脂肪率|48|%
+|ppBodyFatRateRightArm|Float |右手脂肪率|48|%
+|ppBodyFatRateRightLeg|Float |右脚脂肪率|48|%
+|ppBodyFatRateTrunk|Float |躯干脂肪率|48|%
+|ppMuscleKgLeftArm|Float |左手肌肉量|48|kg
+|ppMuscleKgLeftLeg|Float |左脚肌肉量|48|kg
+|ppMuscleKgRightArm|Float |右手肌肉量|48|kg
+|ppMuscleKgRightLeg|Float |右脚肌肉量|48|kg
+|ppMuscleKgTrunk|Float |躯干肌肉量|48|kg
 
-#### 1.2 单位精度
+注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
 
-```  
- enum class PPDeviceAccuracyType { PPDeviceAccuracyTypeUnknow(0),//未知精度  
- //KG精度0.1  
- PPDeviceAccuracyTypePoint01(1), //KG精度0.05  
- PPDeviceAccuracyTypePoint005(2), // 1G精度  
- PPDeviceAccuracyTypePointG(3), // 0.1G精度  
- PPDeviceAccuracyTypePoint01G(4); }```  
-  
-#### 1.3  食物秤与体脂秤的区别  
-  
-##### 1.3.1  接收数据的接口不一样  
-  
-ProtocalFilterImpl中接收数据的监听器食物秤是FoodScaleDataProtocoInterface，体脂秤是由PPProcessDateInterface(过程数据)、PPLockDataInterface(锁定数据)。  
-  
-##### 1.3.2  接收数据的重量单位不一样  
-  
-体脂秤的重量值对应的单位是KG,食物秤的重量值对应的单位是g，重量值对应的单位是固定的。（这里的单位与PPScale给的单位不是同步的，PPScale给的单位是当前秤端的单位）  
-  
-### V .实体类对象及具体参数说明  
-  
-#### 1.1 PPBodyBaseModel参数说明  
-  
-```  
-//体重 重量放大了100倍  
-@JvmField var weight = 0  
-//4电极算法阻抗  
-@JvmField var impedance: Long = 0  
-//脚对脚明文阻抗值(Ω), 范围200.0 ~ 1200.0  
-var ppZTwoLegs = 0  
-//设备信息  
-@JvmField var deviceModel: PPDeviceModel? = null  
-//用户信息  
-@JvmField var userModel: PPUserModel? = null  
-//心率是否测量中  
-@JvmField var isHeartRating = false  
-//本次测量是否结束  
-var isEnd = true  
-//设备单位 重量单位 默认kg  
-@JvmField var unit: PPUnitType? = null  
-//心率  
-@JvmField var heartRate = 0  
-// 是否超载  
-@JvmField var isOverload = false  
-// 是否是正数  
-@JvmField var isPlus = true  
-//formate yyyy-MM-dd HH:mm:ss @JvmField var dateStr = ""  
-//数据归属 torre协议用  
-@JvmField var memberId = ""  
-/****************************8电极（Torre）阻抗*****************************************/
+### 1.2 身体类型-PPBodyDetailType
+| 参数| 说明| type |
+|------|--------|--------|
+|LF_BODY_TYPE_THIN|偏瘦型|0
+|LF_BODY_TYPE_THIN_MUSCLE|偏瘦肌肉型|1
+|LF_BODY_TYPE_MUSCULAR|肌肉发达型|2
+|LF_BODY_TYPE_LACK_EXERCISE|缺乏运动型|3
+|LF_BODY_TYPE_STANDARD|标准型|4
+|LF_BODY_TYPE_STANDARD_MUSCLE|标准肌肉型|5
+|LF_BODY_TYPE_OBESE_FAT|浮肿肥胖型|6
+|LF_BODY_TYPE_FAT_MUSCLE|偏胖肌肉型|7
+|LF_BODY_TYPE_MUSCLE_FAT|肌肉型偏胖|8
 
-//100KHz左手阻抗加密值(下位机上传值)  
-@JvmField var z100KhzLeftArmEnCode: Long = 0  
-//100KHz左腳阻抗加密值(下位机上传值)  
-@JvmField var z100KhzLeftLegEnCode: Long = 0  
-//100KHz右手阻抗加密值(下位机上传值)  
-@JvmField var z100KhzRightArmEnCode: Long = 0  
-//100KHz右腳阻抗加密值(下位机上传值)  
-@JvmField var z100KhzRightLegEnCode: Long = 0  
-//100KHz軀幹阻抗加密值(下位机上传值)  
-@JvmField var z100KhzTrunkEnCode: Long = 0  
-//20KHz左手阻抗加密值(下位机上传值)  
-@JvmField var z20KhzLeftArmEnCode: Long = 0  
-//20KHz左腳阻抗加密值(下位机上传值)  
-@JvmField var z20KhzLeftLegEnCode: Long = 0  
-//20KHz右手阻抗加密值(下位机上传值)  
-@JvmField var z20KhzRightArmEnCode: Long = 0  
-//20KHz右腳阻抗加密值(下位机上传值)  
-@JvmField var z20KhzRightLegEnCode: Long = 0  
-//20KHz軀幹阻抗加密值(下位机上传值)  
-@JvmField var z20KhzTrunkEnCode: Long = 0```
+### 1.3 设备对象-PPDeviceModel
 
-#### 1.2 PPBodyFatModel 体脂计算对象参数说明
+| 属性名 | 类型 | 描述 |备注
+| ------ | ---- | ---- | ---- |
+| deviceMac | String | 设备mac|设备唯一标识
+| deviceName | String | 设备蓝牙名称 |设备名称标识
+| devicePower | Int | 电量 |-1标识不支持 >0为有效值
+| rssi | Int | 蓝牙信号强度 |
+| firmwareVersion | String? | 固件版本号 |要在连接后主动调用readDeviceInfo
+| hardwareVersion | String? | 硬件版本号 |要在连接后主动调用readDeviceInfo
+| manufacturerName | String? | 制造商 |要在连接后主动调用readDeviceInfo
+| softwareVersion | String? | 软件版本号 |要在连接后主动调用readDeviceInfo
+| serialNumber | String? | 序列号 |要在连接后主动调用readDeviceInfo
+| modelNumber | String? | 时区编号 |要在连接后主动调用readDeviceInfo
+| deviceType | PPDeviceType | 设备类型 |PPDeviceTypeUnknow, //未知  <br>PPDeviceTypeCF,//体脂秤  <br>PPDeviceTypeCE, //体重秤  <br>PPDeviceTypeCB,// 婴儿秤  <br>PPDeviceTypeCA; // 厨房秤
+| deviceProtocolType | PPDeviceProtocolType | 协议模式 |  PPDeviceProtocolTypeUnknow(0),//未知 <br>PPDeviceProtocolTypeV2(1),//使用V2.x蓝牙协议    <br>  PPDeviceProtocolTypeV3(2),//使用V3.x蓝牙协议  <br>PPDeviceProtocolTypeTorre(3),//Torre协议    <br> PPDeviceProtocolTypeV4(4);//V4.0协议
+| deviceCalcuteType | PPDeviceCalcuteType | 计算方式 |PPDeviceCalcuteTypeUnknow(0),//未知  <br> PPDeviceCalcuteTypeInScale(1), //秤端计算  <br> PPDeviceCalcuteTypeDirect(2), //直流4DC  <br> PPDeviceCalcuteTypeAlternate(3),//交流4AC  br> PPDeviceCalcuteTypeAlternate8(4),// 8电极交流算法  <br> PPDeviceCalcuteTypeNormal(5), //默认默认体脂率采用原始值-4AC  <br> PPDeviceCalcuteTypeNeedNot(6),//不需要计算  <br> PPDeviceCalcuteTypeAlternate8_0(7);//8电极算法，bhProduct =0
+| deviceAccuracyType | PPDeviceAccuracyType | 精度 |PPDeviceAccuracyTypeUnknow(0), //未知精度                                   <br> PPDeviceAccuracyTypePoint01(1), //精度0.1                                                                                <br> PPDeviceAccuracyTypePoint005(2),//精度0.05                                                                           <br> PPDeviceAccuracyTypePointG(3),  // 1G精度                                                                                     <br> PPDeviceAccuracyTypePoint01G(4), // 0.1G精度                                                                          <br> PPDeviceAccuracyTypePoint001(5); //0.01KG精度
+| devicePowerType | PPDevicePowerType | 供电模式 |PPDevicePowerTypeUnknow(0),//未知                                    <br>PPDevicePowerTypeBattery(1),//电池供电                                                                               <br>PPDevicePowerTypeSolar(2),//太阳能供电                                                                                     <br>PPDevicePowerTypeCharge(3); //充电款
+| deviceConnectType | PPDeviceConnectType | 设备连接类型 |PPDeviceConnectTypeUnknow(0),  <br>PPDeviceConnectTypeBroadcast(1), //广播  <br>PPDeviceConnectTypeDirect(2),//直连  <br>PPDeviceConnectTypeBroadcastOrDirect(3); //广播或直连
+| deviceFuncType | Int | 功能类型 | PPScaleHelper-isSupportHistoryData//判断是否支持历史                     <br>PPScaleHelper-isFuncTypeWifi//判断是否支持Wifi                                                             <br>PPScaleHelper-isFat//判断是否支持测脂
+| deviceUnitType | String | 支持的单位 |采用","隔开,对应PPUnitType的type
 
-```  
- //用于存储计算所必须的参数  
- var ppBodyBaseModel: PPBodyBaseModel? = null var ppSDKVersion: String? = null//计算库版本号  
-  
- // 性别  
- var ppSex: PPUserGender = ppBodyBaseModel?.userModel?.sex ?: PPUserGender.PPUserGenderFemale  
- // 身高(cm)  
- var ppHeightCm: Int = ppBodyBaseModel?.userModel?.userHeight ?: 100  
- // 年龄(岁)  
- var ppAge: Int = ppBodyBaseModel?.userModel?.age ?: 0  
- // 体脂错误类型  
- var errorType: BodyFatErrorType = BodyFatErrorType.PP_ERROR_TYPE_NONE  
- // 数据区间范围和介绍描述  
- var bodyDetailModel: PPBodyDetailModel? = null  
- /**************** 四电极算法 ****************************/ // 体重(kg)  
- var ppWeightKg: Float = (ppBodyBaseModel?.weight?.toFloat() ?: 0.0f).div(100.0f)  
- var ppWeightKgList: List<Float>? = null  
- // Body Mass Index var ppBMI: Float = 0f var ppBMIList: List<Float>? = null  
- // 脂肪率(%)  
- var ppFat: Float = 0f var ppFatList: List<Float>? = null  
- // 脂肪量(kg)  
- var ppBodyfatKg: Float = 0f var ppBodyfatKgList: List<Float>? = null  
- // 肌肉率(%)  
- var ppMusclePercentage: Float = 0f var ppMusclePercentageList: List<Float>? = null  
- // 肌肉量(kg)  
- var ppMuscleKg: Float = 0f var ppMuscleKgList: List<Float>? = null  
- // 骨骼肌率(%)  
- var ppBodySkeletal: Float = 0f var ppBodySkeletalList: List<Float>? = null  
- // 骨骼肌量(kg)  
- var ppBodySkeletalKg: Float = 0f var ppBodySkeletalKgList: List<Float>? = null  
- // 水分率(%), 分辨率0.1,  
- var ppWaterPercentage: Float = 0f var ppWaterPercentageList: List<Float>? = null  
- //水分量(Kg)  
- var ppWaterKg: Float = 0f var ppWaterKgList: List<Float>? = null  
- // 蛋白质率(%)  
- var ppProteinPercentage: Float = 0f var ppProteinPercentageList: List<Float>? = null  
- //蛋白质量(Kg)  
- var ppProteinKg: Float = 0f var ppProteinKgList: List<Float>? = null  
- // 去脂体重(kg)  
- var ppLoseFatWeightKg: Float = 0f var ppLoseFatWeightKgList: List<Float>? = null  
- // 皮下脂肪率(%)  
- var ppBodyFatSubCutPercentage: Float = 0f var ppBodyFatSubCutPercentageList: List<Float>? = null  
- // 皮下脂肪量  
- var ppBodyFatSubCutKg: Float = 0f var ppBodyFatSubCutKgList: List<Float>? = null  
- // 心率(bmp)  
- var ppHeartRate: Int = ppBodyBaseModel?.heartRate ?: 0 var ppHeartRateList: List<Float>? = null  
- // 基础代谢  
- var ppBMR: Int = 0 var ppBMRList: List<Float>? = null  
- // 内脏脂肪等级  
- var ppVisceralFat: Int = 0 var ppVisceralFatList: List<Float>? = null  
- // 骨量(kg)  
- var ppBoneKg: Float = 0f var ppBoneKgList: List<Float>? = null  
- // 肌肉控制量(kg)  
- var ppBodyMuscleControl: Float = 0f  
- // 脂肪控制量(kg)  
- var ppFatControlKg: Float = 0f  
- // 标准体重  
- var ppBodyStandardWeightKg: Float = 0f  
- // 理想体重(kg)  
- var ppIdealWeightKg: Float = 0f  
- // 控制体重(kg)  
- var ppControlWeightKg: Float = 0f  
- // 身体类型  
- var ppBodyType: PPBodyDetailType? = null  
- // 肥胖等级  
- var ppFatGrade: PPBodyFatGrade? = null var ppFatGradeList: List<Float>? = null  
- // 健康评估  
- var ppBodyHealth: PPBodyHealthAssessment? = null var ppBodyHealthList: List<Float>? = null  
- // 身体年龄  
- var ppBodyAge: Int = 0 var ppBodyAgeList: List<Float>? = null  
- // 身体得分  
- var ppBodyScore: Int = 0 var ppBodyScoreList: List<Float>? = null  
- /**************** 八电极算法独有 ****************************/  
- // 輸出參數-全身体组成:身体细胞量(kg)  
- var ppCellMassKg: Float = 0.0f var ppCellMassKgList: List<Float> = listOf()  
- // 輸出參數-评价建议:建议卡路里摄入量 Kcal/day var ppDCI: Int = 0  
- // 輸出參數-全身体组成:无机盐量(Kg)  
- var ppMineralKg: Float = 0.0f var ppMineralKgList: List<Float> = listOf()  
- // 輸出參數-评价建议: 肥胖度(%)  
- var ppObesity: Float = 0.0f var ppObesityList: List<Float> = listOf()  
- // 輸出參數-全身体组成:细胞外水量(kg)  
- var ppWaterECWKg: Float = 0.0f var ppWaterECWKgList: List<Float> = listOf()  
- // 輸出參數-全身体组成:细胞内水量(kg)  
- var ppWaterICWKg: Float = 0.0f var ppWaterICWKgList: List<Float> = listOf()  
- // 左手脂肪量(%), 分辨率0.1  
- var ppBodyFatKgLeftArm: Float = 0.0f  
- // 左脚脂肪量(%), 分辨率0.1  
- var ppBodyFatKgLeftLeg: Float = 0.0f  
- // 右手脂肪量(%), 分辨率0.1  
- var ppBodyFatKgRightArm: Float = 0.0f  
- // 右脚脂肪量(%), 分辨率0.1  
- var ppBodyFatKgRightLeg: Float = 0.0f  
- // 躯干脂肪量(%), 分辨率0.1  
- var ppBodyFatKgTrunk: Float = 0.0f  
- // 左手脂肪率(%), 分辨率0.1  
- var ppBodyFatRateLeftArm: Float = 0.0f  
- // 左脚脂肪率(%), 分辨率0.1  
- var ppBodyFatRateLeftLeg: Float = 0.0f  
- // 右手脂肪率(%), 分辨率0.1  
- var ppBodyFatRateRightArm: Float = 0.0f  
- // 右脚脂肪率(%), 分辨率0.1  
- var ppBodyFatRateRightLeg: Float = 0.0f  
- // 躯干脂肪率(%), 分辨率0.1  
- var ppBodyFatRateTrunk: Float = 0.0f  
- // 左手肌肉量(kg), 分辨率0.1  
- var ppMuscleKgLeftArm: Float = 0.0f  
- // 左脚肌肉量(kg), 分辨率0.1  
- var ppMuscleKgLeftLeg: Float = 0.0f  
- // 右手肌肉量(kg), 分辨率0.1  
- var ppMuscleKgRightArm: Float = 0.0f  
- // 右脚肌肉量(kg), 分辨率0.1  
- var ppMuscleKgRightLeg: Float = 0.0f  
- // 躯干肌肉量(kg), 分辨率0.1  
- var ppMuscleKgTrunk: Float = 0.0f```  
-  
-注意：在使用时拿到对象，请调用对应的get方法来获取对应的值  
-  
-##### 1.2.1 错误类型 PPBodyfatErrorType  
-  
-```  
-PP_ERROR_TYPE_NONE(0),                  //无错误  
-PP_ERROR_TYPE_AGE(1),                   //年龄参数有误，需在 6   ~ 99岁(不计算除BMI/idealWeightKg以外参数)  
-PP_ERROR_TYPE_HEIGHT(2),                //身高参数有误，需在 90 ~ 220cm(不计算所有参数)  
-PP_ERROR_TYPE_WEIGHT(3),                //体重有误 10 ~ 200kg PP_ERROR_TYPE_SEX(4),                   //性別有误 0 ~ 1 PP_ERROR_TYPE_PEOPLE_TYPE(5),               //身高参数有误，需在 90 ~ 220cm(不计算所有参数)  
-PP_ERROR_TYPE_IMPEDANCE_TWO_LEGS(6),        //阻抗有误 200~1200 PP_ERROR_TYPE_IMPEDANCE_TWO_ARMS(7),        //阻抗有误 200~1200 PP_ERROR_TYPE_IMPEDANCE_LEFT_BODY(8),       //阻抗有误 200~1200 PP_ERROR_TYPE_IMPEDANCE_RIGHT_ARM(9),       //阻抗有误 200~1200 PP_ERROR_TYPE_IMPEDANCE_LEFT_ARM(10),        //阻抗有误 200~1200 PP_ERROR_TYPE_IMPEDANCE_LEFT_LEG(11),       //阻抗有误 200~1200 PP_ERROR_TYPE_IMPEDANCE_RIGHT_LEG(12),      //阻抗有误 200~1200 PP_ERROR_TYPE_IMPEDANCE_TRUNK(13);          //阻抗有误 10~100```
+### 1.4 设备单位-PPUnitType
 
-##### 1.2.2 健康评估 PPBodyEnum.PPBodyHealthAssessment
+| 枚举类型 | type | 单位 |
+| -- | ---- |---- |
+|Unit_KG| 0 | KG |
+|Unit_LB| 1 | LB |
+|PPUnitST_LB| 2 | ST_LB |
+|PPUnitJin| 3 | 斤 |
+|PPUnitG| 4 | g |
+|PPUnitLBOZ| 5 | lb:oz |
+|PPUnitOZ| 6 | oz |
+|PPUnitMLWater| 7 | ml（水） |
+|PPUnitMLMilk| 8 | ml（牛奶） |
+|PPUnitFL_OZ_WATER| 9 | fl_oz（水） |
+|PPUnitFL_OZ_MILK| 10 | fl_oz（牛奶） |
+|PPUnitST| 11 | ST |
 
-```  
- PPBodyAssessment1(0),          //!< 健康存在隐患  
- PPBodyAssessment2(1),          //!< 亚健康  
- PPBodyAssessment3(2),          //!< 一般  
- PPBodyAssessment4(3),          //!< 良好  
- PPBodyAssessment5(4);          //!< 非常好  
-```  
+### 2.0 食物秤-LFFoodScaleGeneral参数说明
 
-##### 1.2.3 肥胖等级 PPBodyEnum.PPBodyFatGrade
+| 属性名 | 类型 | 描述 |
+| ------ | ---- | ---- |
+| lfWeightKg | double | 重量 |
+| unit | PPUnitType | 单位 |
+| byteNum | int | 字节数 |
+| thanZero | int | 正负标识 |
+| scaleType | String | 秤类型 |
 
-```  
- PPBodyGradeFatThin(0),              //!< 偏瘦  
- PPBodyGradeFatStandard(1),          //!< 标准  
- PPBodyGradeFatOverwight(2),         //!< 超重  
- PPBodyGradeFatOne(3),               //!< 肥胖1级  
- PPBodyGradeFatTwo(4),               //!< 肥胖2级  
- PPBodyGradeFatThree(5);             //!< 肥胖3级  
-```  
 
-##### 1.2.4 身体类型 PPBodyDetailType
+## VI. [版本更新说明](doc/version_update.md)
 
-```  
- LF_BODY_TYPE_THIN(0),//偏瘦型  
- LF_BODY_TYPE_THIN_MUSCLE(1),//偏瘦肌肉型  
- LF_BODY_TYPE_MUSCULAR(2),//肌肉发达型  
- LF_BODY_TYPE_LACK_EXERCISE(3),//缺乏运动型  
- LF_BODY_TYPE_STANDARD(4),//标准型  
- LF_BODY_TYPE_STANDARD_MUSCLE(5),//标准肌肉型  
- LF_BODY_TYPE_OBESE_FAT(6),//浮肿肥胖型  
- LF_BODY_TYPE_FAT_MUSCLE(7),//偏胖肌肉型  
- LF_BODY_TYPE_MUSCLE_FAT(8);//肌肉型偏胖  
-```  
+## VII. 使用的第三方库
 
-#### 1.3 设备对象PPDeviceModel 参数说明
+### 1、芯片方案商提供的体脂计算库
 
-```  
- String deviceMac;//设备mac  
- String deviceName;//设备蓝牙名称  
- /** * 设备类型  
- * * @see com.peng.ppscale.business.device.PPDeviceType.ScaleType * @deprecated */ String scaleType; /** * 电量  
- */ int devicePower = -1; /** * 硬件版本号  
- * @deprecated     */  
- String firmwareVersion; /** * 设备类型  
- * * @see PPScaleDefine.PPDeviceType */ public PPScaleDefine.PPDeviceType deviceType; /** * 协议模式  
- * * @see PPScaleDefine.PPDeviceProtocolType */ public PPScaleDefine.PPDeviceProtocolType deviceProtocolType; /** * 计算方式  
- * * @see PPScaleDefine.PPDeviceCalcuteType */ public PPScaleDefine.PPDeviceCalcuteType deviceCalcuteType; /** * 精度  
- * * @see PPScaleDefine.PPDeviceAccuracyType */ public PPScaleDefine.PPDeviceAccuracyType deviceAccuracyType; /** * 供电模式  
- * * @see PPScaleDefine.PPDevicePowerType */ public PPScaleDefine.PPDevicePowerType devicePowerType; /** * 设备连接类型，用于必须直连的状态  
- * * @see PPScaleDefine.PPDeviceConnectType */ public PPScaleDefine.PPDeviceConnectType deviceConnectType; /** * 功能类型，可多功能叠加  
- * * @see PPScaleDefine.PPDeviceFuncType */ public int deviceFuncType; /** * 支持的单位  
- * * @see PPScaleDefine.PPDeviceUnitType */ public int deviceUnitType; /** * 是否能连接  
- */ public boolean deviceConnectAbled;```  
-  
-##### 1.3.1 PPScaleDefine.PPDeviceProtocolType 协议类型，具体说明  
-  
-```  
-//未知  
-PPDeviceProtocolTypeUnknow(0), //使用V2.0蓝牙协议  
-PPDeviceProtocolTypeV2(1), //使用V3.0蓝牙协议  
-PPDeviceProtocolTypeV3(2), //四电极、八电极协议  
-PPDeviceProtocolTypeTorre(3);```
+### 2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)
 
-##### 1.3.2 PPScaleDefine.PPDeviceType 设备类型具体说明
+## VII. [常见问题](doc/common_problem.md)
 
-```  
- PPDeviceTypeUnknow(0), //未知  
- PPDeviceTypeCF(1), //体脂秤  
- PPDeviceTypeCE(2), //体重秤  
- PPDeviceTypeCB(3), //婴儿秤  
- PPDeviceTypeCA(4), //厨房秤  
- PPDeviceTypeCC(5); //蓝牙wifi秤  
-```  
-
-##### 1.3.3 PPScaleDefine.PPDeviceAccuracyType 重量的精度类型具体说明
-
-```  
- PPDeviceAccuracyTypeUnknow(0), //未知精度  
- PPDeviceAccuracyTypePoint01(1), //KG精度0.1  
- PPDeviceAccuracyTypePoint005(2), //KG精度0.05  
- PPDeviceAccuracyTypePointG(3), // 1G精度  
- PPDeviceAccuracyTypePoint01G(4); // 0.1G精度  
-```  
-
-##### 1.3.4 PPScaleDefine.DeviceCalcuteType 体脂计算类型具体说明
-
-```  
- //未知  
- PPDeviceCalcuteTypeUnknow(0), //秤端计算  
- PPDeviceCalcuteTypeInScale(1), //直流  
- PPDeviceCalcuteTypeDirect(2), //交流  
- PPDeviceCalcuteTypeAlternate(3), // 8电极交流算法  
- PPDeviceCalcuteTypeAlternate8(4), //默认计算库直接用合泰返回的体脂率  
- PPDeviceCalcuteTypeNormal(5), //不需要计算  
- PPDeviceCalcuteTypeNeedNot(6);```  
-  
-##### 1.3.5 PPScaleDefine.PPDevicePowerType 供电模式具体说明  
-  
-```  
-//未知  
-PPDevicePowerTypeUnknow(0), //电池供电  
-PPDevicePowerTypeBattery(1), //太阳能供电  
-PPDevicePowerTypeSolar(2), //充电款  
-PPDevicePowerTypeCharge(3);```
-
-##### 1.3.6 PPScaleDefine.PPDeviceFuncType 功能类型，可多功能叠加,具体说明
-
-```  
- // 称重  
- PPDeviceFuncTypeWeight(0x01), //测体脂  
- PPDeviceFuncTypeFat(0x02), //心率  
- PPDeviceFuncTypeHeartRate(0x04), //历史数据  
- PPDeviceFuncTypeHistory(0x08), //安全模式，孕妇模式  
- PPDeviceFuncTypeSafe(0x10), //闭幕单脚  
- PPDeviceFuncTypeBMDJ(0x20), //抱婴模式  
- PPDeviceFuncTypeBaby(0x40), //wifi配网  
- PPDeviceFuncTypeWifi(0x80);```  
-  
-##### 1.3.7 PPScaleDefine.PPDeviceUnitType 支持的单位,具体说明（暂时未启用）  
-  
-```  
-PPDeviceUnitTypeKG(0x01),//kg PPDeviceUnitTypeLB(0x02),//lb PPDeviceUnitTypeST(0x04),//st PPDeviceUnitTypeJin(0x08), //斤  
-PPDeviceUnitTypeSTLB(0x10);//st:lb```
-
-#### 1.4 LFFoodScaleGeneral参数说明
-
-```  
- private double lfWeightKg;      //重量 以g为单位  
- private PPUnitType unit;   //单位  
- private int byteNum;   //11字节和16字节 由于秤蓝牙名称一样，所以根据自己长度分辨秤类型  
- private int thanZero; //正负 0表示负值 1 正值  
- private String scaleType;//秤类型，根据类型判断单位对应的精度  
-```  
-
-### VI .蓝牙状态监控回调和系统蓝牙状态回调
-
-包含两个回调方法，一个是蓝牙状态监控，一个是系统蓝牙回调
-
-```  
- PPBleStateInterface bleStateInterface = new PPBleStateInterface() { //蓝牙状态监控  
- //deviceModel 在蓝牙处于扫描过程中，它是null  
- @Override public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) { if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) { Logger.d("设备已连接");  
- } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) { Logger.d("设备连接中");  
- } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) { Logger.d("设备已断开");  
- } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateStop) { Logger.d("停止扫描");  
- } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) { Logger.d("扫描中");  
- } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) { Logger.d("扫描超时");  
- } else {             }  
- }         //系统蓝牙回调  
- @Override public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) { if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) { Logger.e("系统蓝牙断开");  
- Toast.makeText(BindingDeviceActivity.this, "系统蓝牙断开", Toast.LENGTH_SHORT).show();  
- } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) { Logger.d("系统蓝牙打开");  
- Toast.makeText(BindingDeviceActivity.this, "系统蓝牙打开", Toast.LENGTH_SHORT).show();  
- } else { Logger.e("系统蓝牙异常");  
- } } };```  
-  
-### VII. [版本更新说明](doc/version_update.md)  
-  
-### VIII. 使用的第三方库  
-  
-#### 1、芯片方案商提供的体脂计算库  
-  
-#### 2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)  
-  
-### IX. [常见问题](doc/common_problem.md)  
-  
 Contact Developer： Email: yanfabu-5@lefu.cc

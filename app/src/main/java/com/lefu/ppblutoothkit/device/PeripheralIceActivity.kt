@@ -251,8 +251,6 @@ class PeripheralIceActivity : Activity() {
                 addPrint(getString(R.string.scanning))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectable) {
-                addPrint(getString(R.string.Connectable))
             }
         }
 
