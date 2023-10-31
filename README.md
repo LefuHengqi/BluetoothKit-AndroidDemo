@@ -113,44 +113,44 @@ android { ``` packagingOptions { exclude 'AndroidManifest.xml' ``` } }```
 
 #### 1.1.1   PPBodyBaseModel
 
-| 参数 | 注释| 说明 |
-| -------- | -------- | -------- |
+| 参数 | 注释| 说明 |  
+| :--------  | :-----  | :----:  |  
 | weight | 体重 | 实际体重*100取整|  
 | impedance|四电极算法阻抗 |四电极算法字段|  
-| zTwoLegsDeCode|四电极脚对脚明文阻抗值 |四电极算法字段|
+| zTwoLegsDeCode|四电极脚对脚明文阻抗值 |四电极算法字段|  
 | userModel|用户基础信息对象 |PPUserModel|  
-| deviceModel-deviceCalcuteType| 对应设备的计算方式 |    后面具体说明 |
-| isHeartRating| 是否正在测量心率 |    心率测量状态 |  
-| unit| 秤端的当前单位 | 实时单位 |  
-| heartRate| 心率 |  秤端支持心率生效 |  
-| isPlus| 是否是正数 |     食物秤生效 |  
-| memberId| 成员Id | 秤端支持用户时生效 |  
-| z100KhzLeftArmEnCode| 100KHz左手阻抗加密值 |     八电极字段 |  
-| z100KhzLeftLegEnCode| 100KHz左腳阻抗加密值 |     八电极字段 |  
-| z100KhzRightArmEnCode| 100KHz右手阻抗加密值 |     八电极字段 |  
-| z100KhzRightLegEnCode| 100KHz右腳阻抗加密值 |     八电极字段 |  
-| z100KhzTrunkEnCode| 100KHz軀幹阻抗加密值 |     八电极字段 |  
-| z20KhzLeftArmEnCode| 20KHz左手阻抗加密值 |     八电极字段 |  
-| z20KhzLeftLegEnCode| 20KHz左腳阻抗加密值 |     八电极字段 |  
-| z20KhzRightArmEnCode|20KHz右手阻抗加密值 |     八电极字段 |  
-| z20KhzRightLegEnCode| 20KHz右腳阻抗加密值 |     八电极字段 |  
-| z20KhzTrunkEnCode| 20KHz軀幹阻抗加密值 |     八电极字段 |  
-| z100KhzLeftArmDeCode| 100KHz左手阻抗解密值 |     八电极字段 |  
-| z100KhzLeftLegDeCode| 100KHz左腳阻抗解密值 |     八电极字段 |  
-| z100KhzRightArmDeCode| 100KHz右手阻抗解密值 |     八电极字段 |  
-| z100KhzRightLegDeCode| 100KHz右腳阻抗解密值 |     八电极字段 |  
-| z100KhzRightArmDeCode| 100KHz左手阻抗解密值 |     八电极字段 |  
-| z100KhzTrunkDeCode| 100KHz軀幹阻抗解密值 |     八电极字段 |  
-| z20KhzLeftArmDeCode| 20KHz左手阻抗解密值 |     八电极字段 |  
-| z20KhzLeftLegDeCode| 20KHz左腳阻抗解密值 |     八电极字段 |  
-| z20KhzRightArmDeCode| 20KHz右手阻抗解密值 |     八电极字段 |  
-| z20KhzRightLegDeCode| 20KHz右腳阻抗解密值 |     八电极字段 |  
-| z20KhzTrunkDeCode| 20KHz軀幹阻抗解密值 |     八电极字段 |  
+| deviceModel-deviceCalcuteType| 对应设备的计算方式 |后面具体说明|  
+| isHeartRating| 是否正在测量心率 |心率测量状态|  
+| unit| 秤端的当前单位 |实时单位|  
+| heartRate| 心率 |秤端支持心率生效|  
+| isPlus| 是否是正数 |食物秤生效|  
+| memberId| 成员Id |秤端支持用户时生效|  
+| z100KhzLeftArmEnCode| 100KHz左手阻抗加密值 |八电极字段|  
+| z100KhzLeftLegEnCode| 100KHz左腳阻抗加密值 |八电极字段|  
+| z100KhzRightArmEnCode| 100KHz右手阻抗加密值 |八电极字段|  
+| z100KhzRightLegEnCode| 100KHz右腳阻抗加密值 |八电极字段|  
+| z100KhzTrunkEnCode| 100KHz軀幹阻抗加密值 |八电极字段|  
+| z20KhzLeftArmEnCode| 20KHz左手阻抗加密值 |八电极字段|  
+| z20KhzLeftLegEnCode| 20KHz左腳阻抗加密值 |八电极字段|  
+| z20KhzRightArmEnCode|20KHz右手阻抗加密值 |八电极字段|  
+| z20KhzRightLegEnCode| 20KHz右腳阻抗加密值 |八电极字段|  
+| z20KhzTrunkEnCode| 20KHz軀幹阻抗加密值 |八电极字段|  
+| z100KhzLeftArmDeCode| 100KHz左手阻抗解密值 |八电极字段|  
+| z100KhzLeftLegDeCode| 100KHz左腳阻抗解密值 |八电极字段|  
+| z100KhzRightArmDeCode| 100KHz右手阻抗解密值 |八电极字段|  
+| z100KhzRightLegDeCode| 100KHz右腳阻抗解密值 |八电极字段|  
+| z100KhzRightArmDeCode| 100KHz左手阻抗解密值 |八电极字段|  
+| z100KhzTrunkDeCode| 100KHz軀幹阻抗解密值 |八电极字段|  
+| z20KhzLeftArmDeCode| 20KHz左手阻抗解密值 |八电极字段|  
+| z20KhzLeftLegDeCode| 20KHz左腳阻抗解密值 |八电极字段|  
+| z20KhzRightArmDeCode| 20KHz右手阻抗解密值 |八电极字段|  
+| z20KhzRightLegDeCode| 20KHz右腳阻抗解密值 |八电极字段|  
+| z20KhzTrunkDeCode| 20KHz軀幹阻抗解密值 |八电极字段|  
 
 #### 1.1.2 计算类型说明  PPDeviceModel - deviceCalcuteType
 
-| PPDeviceCalcuteType   | 注释| 使用范围 |
-| :--------  | :-----  | :----:  |
+| PPDeviceCalcuteType   | 注释| 使用范围 |  
+| :--------  | :-----  | :----:  |  
 | PPDeviceCalcuteTypeInScale | 秤端计算 | 秤端计算的秤|  
 | PPDeviceCalcuteTypeDirect| 直流 | 四电极直流体脂秤|  
 | PPDeviceCalcuteTypeAlternate| 四电极交流 | 四电极体脂秤|  
@@ -161,8 +161,8 @@ android { ``` packagingOptions { exclude 'AndroidManifest.xml' ``` } }```
 
 #### 1.1.3 用户基础信息说明 PPUserModel
 
-| 参数 | 注释| 说明 |
-| :--------  | :-----  | :----:  |
+| 参数 | 注释| 说明 |  
+| :--------  | :-----  | :----:  |  
 | userHeight| 身高|所有体脂秤|  
 | age| 年龄 |所有体脂秤|  
 | sex| 性别 |所有体脂秤|  
@@ -227,7 +227,7 @@ PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01 }
 扫描设备会返回PPDeviceModel对象，通过设备的方法：deviceModel.getDevicePeripheralType()，获取设备分类，根据PPDevicePeripheralType区分自己的设备，对应设备功能示例的Activity。
 
 | 分类枚举 | 使用示例类 | 连接方式 | 设备类型 | 协议类型 |  
-|------|--------|--------|--------|-----|
+|------|--------|--------|--------|-----|  
 | PeripheralApple | PeripheralAppleActivity | 连接 | 人体秤 | 2.x | | PeripheralBanana | PeripheralBananaActivity | 广播 | 人体秤 | 2.x | | PeripheralCoconut | PeripheralCoconutActivity | 连接 | 人体秤 | 3.x | | PeripheralDurian | PeripheralDutianActivity | 设备端计算的连接 | 人体秤 | 2.x |  
 | PeripheralEgg | PeripheralEggActivity | 连接 | 厨房秤 | 2.x |  
 | PeripheralFish | PeripheralFishActivity | 连接 | 厨房秤 | 3.x |  
@@ -245,7 +245,9 @@ PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01 }
 - 如果有连续页面需要调用扫描时，请一定要确保上个页面的蓝牙已停止扫描后，再在第二个页面进行扫描，建议是第二个页面延迟1000ms再启动。
 - 如果你需要一直扫描蓝牙，你要在monitorBluetoothWorkState方法中ppBleWorkState返回PPBleWorkState.PPBleWorkSearchTimeOut时重启扫描，以确保循环扫描
 
-```mermaid graph TD A[检测蓝牙相关权限] --有权限--> B[检测定位开关和蓝牙开关]  
+```mermaid 
+graph TD 
+A[检测蓝牙相关权限] --有权限--> B[检测定位开关和蓝牙开关]  
 A[检测蓝牙相关权限] --没有权限--> X[申请权限]  
 X[申请权限] --申请到权限 --> B[检测定位开关和蓝牙开关]  
 B[检测定位开关和蓝牙开关] --开关均打开--> C[启动蓝牙扫描]  
@@ -269,18 +271,21 @@ F[根据不同的分类处理不同的业务逻辑]-->H[停止蓝牙扫描<br>st
    }   
    //You can dynamically set the scan time in ms    
    ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface，bleStateInterface);    
-} ```   
-**处理扫描结果-PPSearchDeviceInfoInterface**  
-  
-``` /**    
+} 
+```   
+**处理扫描结果-PPSearchDeviceInfoInterface**
+
+``` 
+/**    
 * @param ppDeviceModel 设备对象    
 * @param data 广播数据    
- */  
+*/  
 public void onSearchDevice(PPDeviceModel ppDeviceModel, String data) {}  
 ```   
 #### 1.2.2 蓝牙相关状态监听-PPBleStateInterface
 
-``` /**    
+``` 
+/**    
 * 蓝牙扫描和连接状态回调    
 * @param ppBleWorkState 蓝牙状态标识    
 * @param deviceModel 设备对象    
@@ -294,7 +299,7 @@ public void onSearchDevice(PPDeviceModel ppDeviceModel, String data) {}
 #### 1.2.3 蓝牙状态PPBleWorkState
 
 | 分类枚举 | 说明 | 备注 |  
-|------|--------|--------|
+|------|--------|--------|  
 | PPBleWorkStateSearching | 扫描中 |
 | PPBleWorkSearchTimeOut| 扫描超时 | 如有需要可重启扫描 |  
 | PPBleWorkSearchFail | 扫描失败| 如有需要可重启扫描 |  
@@ -332,7 +337,7 @@ public void onSearchDevice(PPDeviceModel ppDeviceModel, String data) {}
 - Wifi秤上传到后台的Wifi历史数据需要Server具备相应的接口能力可咨询Server开发人员
 
 | 功能| 方法名 | 参数 | 返回数据类型 | 备注 |  
-|------|--------|--------|--------|--------|
+|------|--------|--------|--------|--------|  
 |蓝牙连接| startConnect|PPDeviceModel|PPBleStateInterface| 蓝牙相关状态|  
 |断开连接(非Wifi秤)| disConnect||PPBleStateInterface| 蓝牙相关状态|  
 |断开连接(Wifi秤)| disWifi||PPBleSendResultCallBack| 需要下发断开连接指令，下发成功后，再调用disConnect主动断开|  
@@ -350,7 +355,9 @@ public void onSearchDevice(PPDeviceModel ppDeviceModel, String data) {}
 
 #### 2.1.1 称重逻辑
 
-```mermaid graph TD A[发起连接设备<br>startConnect]-->B[监听蓝牙连接状态<br>PPBleStateInterface]  
+```mermaid 
+graph TD 
+A[发起连接设备<br>startConnect]-->B[监听蓝牙连接状态<br>PPBleStateInterface]  
 B-->B1[monitorBluetoothWorkState<br>蓝牙扫描和连接状态监听<br>PPBleWorkStateConnected连接成功<br>PPBleWorkStateConnectFailed连接失败<br>PPBleWorkStateDisconnected断开连接<br>PPBleWorkStateWritable可写]  
 B1-->C2[当前可写<br>PPBleWorkStateWritable] --> D[切换单位<br>syncUnit]  
 D[切换单位<br>syncUnit]--监听蓝牙写入回调<br>PPBleSendResultCallBack-->D1[同步时间<br>syncTime]  
@@ -368,7 +375,9 @@ I2[判断心率状态]-->J2[心率测量完成]-->K2[匹配用户信息<br>给PP
 
 **前提：蓝牙已连接**
 
-```mermaid graph TD A[读取历史数据<br>getHistoryData]-->A1[历史数据监听]-->B1[历史数据回调<br>monitorHistoryData]  
+```mermaid 
+graph TD 
+A[读取历史数据<br>getHistoryData]-->A1[历史数据监听]-->B1[历史数据回调<br>monitorHistoryData]  
 B1[历史数据回调<br>monitorHistoryData]-->C[使用List存历史数据]  
 A1-->B2[历史数据结束回调<br>monitorHistoryEnd]  
 B2-->D[拿到list的历史数据]-->E[匹配用户信息<br>给PPBodyBaseModelbodyBaseModel.PPUserModel]-->F[调用计算库计算体脂<br>示例:Calculate4ACActivitiy]  
@@ -387,7 +396,9 @@ A1-->B3[历史数据失败回调<br>monitorHistoryFail]
 3. 确保账号密码正确
 4. 确保秤端使用的Server地址与App使用的Server地址对应
 
-```mermaid graph TD A[获取当前手机Wifi]-->A1[检测当前Wifi是否支持2.4G]-->B1[不支持]-->B3[提示引导用户切换Wifi]-->B4[切换WIfi成功后]-->B2  
+```mermaid 
+graph TD 
+A[获取当前手机Wifi]-->A1[检测当前Wifi是否支持2.4G]-->B1[不支持]-->B3[提示引导用户切换Wifi]-->B4[切换WIfi成功后]-->B2  
 A1-->B2[支持]  
 B2-->C[让用户输入该Wifi的密码]-->D[开始配网]-->E[配置域名<br>sendModifyServerDomain]  
 E-->E1[配网接口监听<br>PPConfigWifiInfoInterface]-->F[收到域名配成功<br>monitorModifyServerDomainSuccess]  
@@ -424,7 +435,9 @@ I2[判断心率状态]-->J2[心率测量完成]-->K2[匹配用户信息<br>给PP
 
 #### 2.3.1 称重逻辑
 
-```mermaid graph TD A[发起连接设备<br>startConnect]-->B[监听蓝牙连接状态<br>PPBleStateInterface]  
+```mermaid 
+graph TD 
+A[发起连接设备<br>startConnect]-->B[监听蓝牙连接状态<br>PPBleStateInterface]  
 B-->B1[monitorBluetoothWorkState<br>蓝牙扫描和连接状态监听<br>PPBleWorkStateConnected连接成功<br>PPBleWorkStateConnectFailed连接失败<br>PPBleWorkStateDisconnected断开连接<br>PPBleWorkStateWritable可写]  
 B1-->C2[当前可写<br>PPBleWorkStateWritable] --> D[切换单位<br>syncUnit]  
 D[切换单位<br>syncUnit]--监听蓝牙写入回调<br>PPBleSendResultCallBack-->D1[同步时间<br>syncTime]  
@@ -487,9 +500,9 @@ A[发起连接设备<br>startConnect]-->B[监听蓝牙连接状态<br>PPBleState
 B-->B1[monitorBluetoothWorkState<br>蓝牙扫描和连接状态监听<br>PPBleWorkStateConnected连接成功<br>PPBleWorkStateConnectFailed连接失败<br>PPBleWorkStateDisconnected断开连接<br>PPBleWorkStateWritable可写]  
 B1-->C2[当前可写<br>PPBleWorkStateWritable] --> D[切换单位<br>syncUnit]  
 
-A-->F[设备数据变化监听<br>FoodScaleDataChangeListener]  
-F-->G1[过程数据<br>processData]  
-F-->G2[锁定数据<br>lockedData]  
+A-->F[设备数据变化监听<br>PPDataChangeListener]  
+F[设备数据变化监听<br>FoodScaleDataChangeListener]-->G1[过程数据<br>monitorProcessData]  
+F-->G2[锁定数据<br>monitorLockData]  
 G1--拿自己App当前的单位<br>转成PPUnitType-->H1[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]  
 G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]
 ```
@@ -506,12 +519,12 @@ A[发起连接设备<br>startConnect]-->B[监听蓝牙连接状态<br>PPBleState
 B-->B1[monitorBluetoothWorkState<br>蓝牙扫描和连接状态监听<br>PPBleWorkStateConnected连接成功<br>PPBleWorkStateConnectFailed连接失败<br>PPBleWorkStateDisconnected断开连接<br>PPBleWorkStateWritable可写]  
 B1-->C2[当前可写<br>PPBleWorkStateWritable] --> D[切换单位<br>syncUnit]  
 
-A-->F[设备数据变化监听<br>FoodScaleDataChangeListener]  
-F-->G1[过程数据<br>processData]  
-F-->G2[锁定数据<br>lockedData]  
+A-->F[设备数据变化监听<br>PPDataChangeListener]  
+F[设备数据变化监听<br>PPDataChangeListener]-->G1[过程数据<br>monitorProcessData]  
+F[设备数据变化监听<br>PPDataChangeListener]-->G2[锁定数据<br>monitorLockData]  
 G1--拿自己App当前的单位<br>转成PPUnitType-->H1[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]  
 G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]
-```
+```  
 
 ### 2.7 PeripheralGrapes功能说明 -PeripheralGrapesActivity
 
@@ -522,12 +535,12 @@ G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.
 ```mermaid  
 graph TD 
 A[发起蓝牙扫描<br>startSearch]-->B[监听蓝牙扫描状态<br>PPBleStateInterface]-->C[monitorBluetoothWorkState<br>PPBleStateSearchCanceled停止扫描<br>PPBleWorkSearchTimeOut扫描超时<br>PPBleWorkStateSearching扫描中]  
-A-->F[设备数据变化监听<br>FoodScaleDataChangeListener]  
-F-->G1[过程数据<br>processData]  
-F-->G2[锁定数据<br>lockedData]  
+A-->F[设备数据变化监听<br>PPDataChangeListener]  
+F-->G1[过程数据<br>monitorProcessData]  
+F-->G2[锁定数据<br>monitorLockData]  
 G1--拿自己App当前的单位<br>转成PPUnitType-->H1[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]  
-G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]
-```
+G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]  
+```  
 
 ### 2.8 PeripheralHamburger功能说明 -PeripheralHamburgerActivity
 
@@ -537,12 +550,12 @@ G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.
 ```mermaid  
 graph TD 
 A[发起蓝牙扫描<br>startSearch]-->B[监听蓝牙扫描状态<br>PPBleStateInterface]-->C[monitorBluetoothWorkState<br>PPBleStateSearchCanceled停止扫描<br>PPBleWorkSearchTimeOut扫描超时<br>PPBleWorkStateSearching扫描中]  
-A-->F[设备数据变化监听<br>FoodScaleDataChangeListener]  
-F-->G1[过程数据<br>processData]  
-F-->G2[锁定数据<br>lockedData]  
+A-->F[设备数据变化监听<br>PPDataChangeListener]  
+F-->G1[过程数据<br>monitorProcessData]  
+F-->G2[锁定数据<br>monitorLockData]  
 G1--拿自己App当前的单位<br>转成PPUnitType-->H1[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]  
-G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]
-```
+G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.getWeightValueD]-->I1[实时展示体重数据UI]  
+```  
 
 ### 2.9 PeripheralIce功能说明 -PeripheralIceActivity
 
@@ -707,7 +720,7 @@ B3-->D[将数据作为无主数据存储,让用户自己去认领数据]
 #### 2.11.5  功能列表
 
 | 功能| 方法名 | 参数 |返回数据类型|备注|  
-|------|--------|--------|--------|--------|
+|------|--------|--------|--------|--------|  
 |蓝牙连接| startConnect|PPDeviceModel|PPBleStateInterface| 蓝牙相关状态|  
 |启动测量| startMeasure | | PPDataChangeListener | 蓝牙相关状态|  
 |停止测量| stopMeasure|PPDeviceModel|PPBleStateInterface| 蓝牙相关状态|  
@@ -815,7 +828,7 @@ B3-->D[将数据作为无主数据存储,让用户自己去认领数据]
 ### 1.2 身体类型-PPBodyDetailType
 
 | 参数| 说明| type |  
-|------|--------|--------|
+|------|--------|--------|  
 |LF_BODY_TYPE_THIN|偏瘦型|0|  
 |LF_BODY_TYPE_THIN_MUSCLE|偏瘦肌肉型|1|  
 |LF_BODY_TYPE_MUSCULAR|肌肉发达型|2|  
@@ -829,8 +842,8 @@ B3-->D[将数据作为无主数据存储,让用户自己去认领数据]
 ### 1.3 设备对象-PPDeviceModel
 
 | 属性名 | 类型 | 描述 |备注|  
-| ------ | ---- | ---- | ---- |
-| deviceMac | String | 设备mac|设备唯一标识|
+| ------ | ---- | ---- | ---- |  
+| deviceMac | String | 设备mac|设备唯一标识|  
 | deviceName | String | 设备蓝牙名称 |设备名称标识|  
 | devicePower | Int | 电量 |-1标识不支持 >0为有效值|  
 | rssi | Int | 蓝牙信号强度 |
@@ -868,9 +881,9 @@ B3-->D[将数据作为无主数据存储,让用户自己去认领数据]
 
 ### 2.0 食物秤-LFFoodScaleGeneral参数说明
 
-| 属性名 | 类型 | 描述 |
-| ------ | ---- | ---- |
-| lfWeightKg | double | 重量 |
+| 属性名 | 类型 | 描述 |  
+| ------ | ---- | ---- |  
+| lfWeightKg | double | 重量 |  
 | unit | PPUnitType | 单位 |  
 | byteNum | int | 字节数 |  
 | thanZero | int | 正负标识 |  
