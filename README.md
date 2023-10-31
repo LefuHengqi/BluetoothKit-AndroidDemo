@@ -1,9 +1,7 @@
 
-[English Docs](README_EN.md)  |  [中文文档](README.md)
-
-[乐福开放平台](https://uniquehealth.lefuenergy.com/unique-open-web/#/document)  |    
-[PPBluetoothKit iOS SDK](https://uniquehealth.lefuenergy.com/unique-open-web/#/document?url=https://lefuhengqi.apifox.cn/doc-2625647)  |    
-[PPBluetoothKit 微信小程序插件](https://uniquehealth.lefuenergy.com/unique-open-web/#/document?url=https://lefuhengqi.apifox.cn/doc-2625745)
+[English Docs](README_EN.md)  |  [中文文档](README.md)  
+相关文档
+[乐福开放平台](https://uniquehealth.lefuenergy.com/unique-open-web/#/document)  |    [PPBluetoothKit iOS SDK](https://uniquehealth.lefuenergy.com/unique-open-web/#/document?url=https://lefuhengqi.apifox.cn/doc-2625647)  |    [PPBluetoothKit 微信小程序插件](https://uniquehealth.lefuenergy.com/unique-open-web/#/document?url=https://lefuhengqi.apifox.cn/doc-2625745)
 
 [Android示例程序地址](https://gitee.com/shenzhen-lfscale/bluetooth-kit-android-demo.git)
 
@@ -29,7 +27,10 @@ PPBluetoothKit是针对人体秤和食物秤进行封装的SDK，包含蓝牙连
 - 先到[乐福开放平台](https://uniquehealth.lefuenergy.com/unique-open-web/#/document)申请AppKey、AppSecret和config文件
 - 将config文件放到项目的assets目录下
 
-```mermaid graph TD A[进入开放平台] --> B[注册/登录] -- 个人信息入口--> C[获取AppKey和AppSecret] --> D[联系商务授权] -- 授权成功 --> F[下载config文件] --> G[将config文件复制到项目的assets目录下] --> H[拿到AppKey/AppSecret和config文件] -- PPBlutoothKit.initSdk --> I[(初始化SDK)] ```
+```mermaid 
+graph TD 
+A[进入开放平台] --> B[注册/登录] -- 个人信息入口--> C[获取AppKey和AppSecret] --> D[联系商务授权] -- 授权成功 --> F[下载config文件] --> G[将config文件复制到项目的assets目录下] --> H[拿到AppKey/AppSecret和config文件] -- PPBlutoothKit.initSdk --> I[(初始化SDK)] 
+```   
 ### 1.2 SDK初始化
 
 ```    
@@ -40,17 +41,26 @@ PPBluetoothKit是针对人体秤和食物秤进行封装的SDK，包含蓝牙连
 PPBlutoothKit.setDebug(BuildConfig.DEBUG) /** * SDK 初始化 所需参数需要自行到开放平台自行申请，请勿直接使用Demo中的参数，    
  * @param appKey App的标识    
  * @param appSecret Appp的密钥    
-* @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK    
- */ PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")```    
- ### 1.3 aar文件导入    
- - 在需要引入sdk的module下的build.gradle中加入(最新版本请查看ppscalelib的module下的libs)    
- ```   
-dependencies { //aar引入 api(name: 'ppblutoothkit-3.1.0-20230829.165034-1', ext: 'aar') }
+ * @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK    
+ */ PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
+ ```    
+### 1.3 aar文件导入
+- 在需要引入sdk的module下的build.gradle中加入(最新版本请查看ppscalelib的module下的libs)
+``` 
+dependencies { 
+	//aar引入 api(name: 'ppblutoothkit-3.1.0-20230829.165034-1', ext: 'aar') 
+}  
+``` 
 
-``` ### 1.4 集成常见问题    
- - 如果遇到集成后提示“AndroidManifest.xml”相关的报错，请尝试着在主module中加入以下代码解决：    
+### 1.4 集成常见问题
+- 如果遇到集成后提示“AndroidManifest.xml”相关的报错，请尝试着在主module中加入以下代码解决：
  ```   
-android { ``` packagingOptions { exclude 'AndroidManifest.xml' ``` } }```
+android {
+	 packagingOptions {
+		 exclude 'AndroidManifest.xml' 
+	 } 
+ }
+ ```  
 
 - 如果遇到“.so”类型的文件错误，请尝试清除缓存，并将集成sdk的方式改为api
 
@@ -75,13 +85,15 @@ android { ``` packagingOptions { exclude 'AndroidManifest.xml' ``` } }```
 - 定位开关
 - 蓝牙开关
 
-``` <manifest>    
+``` 
+<manifest>    
  <!-- Request legacy Bluetooth permissions on older devices. --> <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" /> <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />    
  <!-- Needed only if your app looks for Bluetooth devices. If your app doesn't use Bluetooth scan results to derive physical location information, you can strongly assert that your app doesn't derive physical location. --> <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />    
  <!-- Needed only if your app makes the device discoverable to Bluetooth devices. --> <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />    
  <!-- Needed only if your app communicates with already-paired Bluetooth devices. --> <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />    
  <!-- Needed only if your app uses Bluetooth scan results to derive physical location. --> <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> ...</manifest>    
  ```   
+
 ### 1.2 测量身体数据相关约定
 
 #### 1.2.1 称重测脂注意事项
@@ -191,15 +203,17 @@ PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01 } val bodyBaseMod
 
 **四电极直流计算体脂示例:**
 
- ``` val userModel = PPUserModel.Builder()    
+ ```
+ val userModel = PPUserModel.Builder()    
     .setSex(sex) //gender    
-  .setHeight(height)//height 100-220    
-  .setAge(age)//age 10-99    
-.build()   
+	.setHeight(height)//height 100-220    
+	.setAge(age)//age 10-99 
+.build()
 val deviceModel = PPDeviceModel("", DeviceManager.FL_SCALE)//更换成你自己的设备蓝牙名称  
 deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect val bodyBaseModel = PPBodyBaseModel() bodyBaseModel.weight = UnitUtil.getWeight(weight) bodyBaseModel.impedance = impedance bodyBaseModel.deviceModel = deviceModel bodyBaseModel.userModel = userModel bodyBaseModel.unit = PPUnitType.Unit_KG   
 val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)   
-DataUtil.util().bodyDataModel = ppBodyFatModel Log.d("liyp_", ppBodyFatModel.toString())  
+DataUtil.util().bodyDataModel = ppBodyFatModel 
+Log.d("liyp_", ppBodyFatModel.toString())
 ```  
 
 ### 1.4  四电极交流体脂计算 - 4AC - Calculate4ACActivitiy
@@ -312,8 +326,9 @@ public void onSearchDevice(PPDeviceModel ppDeviceModel, String data) {}
 
 #### 1.2.4 停止扫描
 
-``` ppScale.stopSearch();   
-```   
+``` 
+ppScale.stopSearch();   
+``` 
 #### 1.2.5 重启扫描
 
 重启扫描建议延迟1-2s再启动，防止触发Android系统的频繁扫描
@@ -325,7 +340,8 @@ public void onSearchDevice(PPDeviceModel ppDeviceModel, String data) {}
      }, 1000);    
  }  
  ```   
-### 2.1 PeripheralApple功能说明 -PeripheralAppleActivity
+## Ⅴ. 功能说明
+### 2.1 PeripheralApple -PeripheralAppleActivity
 
 **注意：**
 
@@ -456,7 +472,8 @@ I2[判断心率状态]-->J2[心率测量完成]-->K2[匹配用户信息<br>给PP
 **前提：蓝牙已连接**
 
 ```mermaid 
-graph TD A[读取历史数据<br>getHistoryData]-->A1[历史数据监听]-->B1[历史数据回调<br>monitorHistoryData]  
+graph TD 
+A[读取历史数据<br>getHistoryData]-->A1[历史数据监听]-->B1[历史数据回调<br>monitorHistoryData]  
 B1[历史数据回调<br>monitorHistoryData]-->C[使用List存历史数据]  
 A1-->B2[历史数据结束回调<br>monitorHistoryEnd]  
 B2-->D[拿到list的历史数据]-->E[匹配用户信息<br>给PPBodyBaseModelbodyBaseModel.PPUserModel]-->F[调用计算库计算体脂<br>示例:Calculate4ACActivitiy]  
@@ -565,7 +582,9 @@ G2--拿自己App当前的单位<br>转成PPUnitType-->H2[单位转换<br>PPUtil.
 
 #### 2.9.1 称重逻辑
 
-```mermaid graph TD A[发起蓝牙扫描<br>startSearch]-->B[监听蓝牙扫描状态<br>PPBleStateInterface]-->C[monitorBluetoothWorkState<br>PPBleStateSearchCanceled停止扫描<br>PPBleWorkSearchTimeOut扫描超时<br>PPBleWorkStateSearching扫描中]  
+```mermaid 
+graph TD 
+A[发起蓝牙扫描<br>startSearch]-->B[监听蓝牙扫描状态<br>PPBleStateInterface]-->C[monitorBluetoothWorkState<br>PPBleStateSearchCanceled停止扫描<br>PPBleWorkSearchTimeOut扫描超时<br>PPBleWorkStateSearching扫描中]  
 A-->F[设备数据变化监听<br>PPDataChangeListener]  
 F-->G1[过程数据<br>monitorProcessData]  
 F-->G2[锁定数据<br>monitorLockData]  
@@ -579,7 +598,9 @@ I2[判断心率状态]-->J2[心率测量完成]-->K2[匹配用户信息<br>给PP
 
 **前提：蓝牙已连接**
 
-```mermaid graph TD A[读取历史数据<br>getHistoryData]-->A1[历史数据监听]-->B1[历史数据回调<br>monitorHistoryData]  
+```mermaid 
+graph TD 
+A[读取历史数据<br>getHistoryData]-->A1[历史数据监听]-->B1[历史数据回调<br>monitorHistoryData]  
 B1[历史数据回调<br>monitorHistoryData]-->C[使用List存历史数据]  
 A1-->B2[历史数据结束回调<br>monitorHistoryEnd]  
 B2-->D[拿到list的历史数据]-->E[匹配用户信息<br>给PPBodyBaseModelbodyBaseModel.PPUserModel]-->F[调用计算库计算体脂<br>示例:Calculate4ACActivitiy]  
@@ -597,7 +618,9 @@ A1-->B3[历史数据失败回调<br>monitorHistoryFail]
 - 确保账号密码正确
 - 确保秤端使用的Server地址与App使用的Server地址对应
 
-```mermaid graph TD A[检测是否支持配网<br>PPScaleHelper.isFuncTypeWifi]--支持-->A1[获取Wifi列表<br>getWifiList<br>注册Wifi列表回调<br>PPTorreConfigWifiInterface]  
+```mermaid 
+graph TD 
+A[检测是否支持配网<br>PPScaleHelper.isFuncTypeWifi]--支持-->A1[获取Wifi列表<br>getWifiList<br>注册Wifi列表回调<br>PPTorreConfigWifiInterface]  
 A--不支持-->A2[处理UI展示]  
 A1-->B1[Wifi列表返回成功<br>monitorWiFiListSuccess]-->B2[为空-周围没有支持的Wifi]  
 B1-->B3[不为空]-->B4[展示Wifi列表]-->B5[用户选则一个Wifi]-->B6[输入密码]  
@@ -617,7 +640,9 @@ C-->C3[退出配网状态<br>CONFIG_STATE_EXIT]
 
 #### 2.10.1 完整的称重逻辑
 
-```mermaid graph TD A[发起蓝牙扫描<br>startSearch]-->B[监听蓝牙扫描状态<br>PPBleStateInterface]-->C[monitorBluetoothWorkState<br>PPBleStateSearchCanceled停止扫描<br>PPBleWorkSearchTimeOut扫描超时<br>PPBleWorkStateSearching扫描中]  
+```mermaid 
+graph TD 
+A[发起蓝牙扫描<br>startSearch]-->B[监听蓝牙扫描状态<br>PPBleStateInterface]-->C[monitorBluetoothWorkState<br>PPBleStateSearchCanceled停止扫描<br>PPBleWorkSearchTimeOut扫描超时<br>PPBleWorkStateSearching扫描中]  
 A-->F[设备数据变化监听<br>PPDataChangeListener]  
 F-->G1[过程数据<br>monitorProcessData]  
 F-->G2[锁定数据<br>monitorLockData]  
@@ -635,11 +660,12 @@ I2[判断心率状态]-->J2[心率测量完成]-->K2[匹配用户信息<br>给PP
 - 需要自行判断是否支持历史，然后再处理历史相关功能
 - 需要自行判断是否支持Wifi，然后再处理Wifi相关功能
 
-#### 2.11.1 完整的称重流程
+#### 2.11.1 称重流程
 
 **前提：蓝牙已连接**
 
-```mermaid graph TD  
+```mermaid 
+graph TD  
 A[发起连接设备<br>startConnect]-->B[监听蓝牙状态<br>PPBleStateInterface]-->C1[蓝牙设备状态<br>monitorBluetoothWorkState]  
 B-->C2[系统蓝牙状态<br>monitorBluetoothSwitchState]  
 B-->C3[Mtu状态<br>monitorMtuChange]-->D[同步时间<br>]-->E[同步单位<br>syncUnit]  
@@ -660,7 +686,9 @@ G-->G2[当前用户选则失败]-->H
 
 **前提：蓝牙已连接**
 
-```mermaid graph TD E[需要同步用户信息<br>App自己记录当前的设备是否需要同步]-->F1[删除设备端所有用户<br>deleteAllUserInfo]  
+```mermaid 
+graph TD 
+E[需要同步用户信息<br>App自己记录当前的设备是否需要同步]-->F1[删除设备端所有用户<br>deleteAllUserInfo]  
 F1--删除成功-->G[同步用户信息<br>syncUserInfo循环同步<br>直到同步完成-支持5个账户,每账户/10个用户]  
 G-->G1[一个用户同步完成<br>syncUserInfoSuccess]-->G2[同步下一个]--循环同步-->G  
 G-->H[所有用户同步完成<br>syncUserInfoSuccess]  
@@ -678,7 +706,9 @@ G-->H1[用户同步失败<br>syncUserInfoFail]-->H11[提示用户]
 - 确保账号密码正确
 - 确保秤端使用的Server地址与App使用的Server地址对应
 
-```mermaid graph TD A[检测是否支持配网<br>PPScaleHelper.isFuncTypeWifi]--支持-->A1[获取Wifi列表<br>getWifiList<br>注册Wifi列表回调<br>PPTorreConfigWifiInterface]  
+```mermaid 
+graph TD 
+A[检测是否支持配网<br>PPScaleHelper.isFuncTypeWifi]--支持-->A1[获取Wifi列表<br>getWifiList<br>注册Wifi列表回调<br>PPTorreConfigWifiInterface]  
 A--不支持-->A2[处理UI展示]  
 A1-->B1[Wifi列表返回成功<br>monitorWiFiListSuccess]-->B2[为空-周围没有支持的Wifi]  
 B1-->B3[不为空]-->B4[展示Wifi列表]-->B5[用户选则一个Wifi]-->B6[输入密码]  
@@ -696,13 +726,15 @@ C-->C3[退出配网状态<br>CONFIG_STATE_EXIT]
 
 - 有主用户历史：指有有效的memberID的历史数据
 
-```mermaid graph TD A[有主用户历史数据同步<br>syncUserHistory]-->B[注册历史数据监听<br>OnTorreHistoryDataListener]  
+```mermaid 
+graph TD 
+A[有主用户历史数据同步<br>syncUserHistory]-->B[注册历史数据监听<br>OnTorreHistoryDataListener]  
 B-->B1[有主历史数据同步成功<br>onSyncUserHistorySuccess]  
 B-->B2[正在同步xx用户历史数据<br>onStartSyncUserHistory]  
 B-->B3[同步失败<br>onHistoryFail]  
 B-->B4[有主用户同步完成<br>onHistoryEnd]  
 B4-->C[根据memberID匹配用户信息<br>给PPBodyBaseModelbodyBaseModel.PPUserModel]-->D[调用计算库计算体脂<br>八电极示例:Calculate8ACActivitiy<br>四电极示例:Calculate4ACActivitiy]-->E[将数据存储到数据表]  
-```  
+```
 
 #### 2.11.5  无主用户历史数据同步
 
@@ -710,7 +742,9 @@ B4-->C[根据memberID匹配用户信息<br>给PPBodyBaseModelbodyBaseModel.PPUse
 
 - 无主用户历史：指没有有效的memberID的历史数据,memberID全为64个0或为空
 
-```mermaid graph TD A[无主用户历史数据同步<br>syncUserHistory]-->B[注册历史数据监听<br>OnTorreHistoryDataListener]  
+```mermaid 
+graph TD 
+A[无主用户历史数据同步<br>syncUserHistory]-->B[注册历史数据监听<br>OnTorreHistoryDataListener]  
 B-->B1[无主历史数据同步成功<br>onTouristUserHistorySuccess]  
 B-->B2[同步失败<br>onHistoryFail]  
 B-->B3[无主用户同步完成<br>onHistoryEnd]  
@@ -752,7 +786,7 @@ B3-->D[将数据作为无主数据存储,让用户自己去认领数据]
 
 ### 2.11 PeripheralJambul功能说明 -PeripheralJambulActivity
 
-## V .实体类对象及具体参数说明
+## Ⅵ .实体类对象及具体参数说明
 
 ### 1.1 PPBodyFatModel 体脂计算对象参数说明
 
@@ -765,63 +799,58 @@ B3-->D[将数据作为无主数据存储,让用户自己去认领数据]
 |ppSex| PPUserGender|性别|返回参数| PPUserGenderFemale女<br>PPUserGenderMale男  
 |ppHeightCm|Int |身高|返回参数|cm  
 |ppAge|Int |年龄|返回参数|岁  
-|errorType|BodyFatErrorType |错误类型|返回参数|PP_ERROR_TYPE_NONE(0),无错误 <br>PP_ERROR_TYPE_AGE(1), 年龄有误 <br>PP_ERROR_TYPE_HEIGHT(2),身高有误 <br>PP_ERROR_TYPE_WEIGHT(3),  
-体重有误 <br>PP_ERROR_TYPE_SEX(4) 性別有误 <br>PP_ERROR_TYPE_PEOPLE_TYPE(5)  <br>以下是阻抗有误 <br>PP_ERROR_TYPE_IMPEDANCE_TWO_LEGS(6)  <br>PP_ERROR_TYPE_IMPEDANCE_TWO_ARMS(7)<br>PP_ERROR_TYPE_IMPEDANCE_LEFT_BODY(
-8) <br>PP_ERROR_TYPE_IMPEDANCE_RIGHT_ARM(9)<br>PP_ERROR_TYPE_IMPEDANCE_LEFT_ARM(10)  <br>PP_ERROR_TYPE_IMPEDANCE_LEFT_LEG(11)  <br>PP_ERROR_TYPE_IMPEDANCE_RIGHT_LEG(12)  <br>  
-   PP_ERROR_TYPE_IMPEDANCE_TRUNK(13)  
-   |bodyDetailModel|PPBodyDetailModel|数据区间范围和介绍描述|  
-   |ppWeightKg|Float |体重|24&48|kg  
-   |ppBMI|Float|Body Mass Index|24&48|  
-   |ppFat|Float |脂肪率|24&48|%  
-   |ppBodyfatKg|Float |脂肪量|24&48|kg  
-   |ppMusclePercentage|Float |肌肉率|24&48|%  
-   |ppMuscleKg|Float |肌肉量|24&48|kg  
-   |ppBodySkeletal|Float |骨骼肌率|24&48|%  
-   |ppBodySkeletalKg|Float |骨骼肌量|24&48|kg  
-   |ppWaterPercentage|Float |水分率|24&48|%  
-   |ppWaterKg|Float |水分量|24&48|kg  
-   |ppProteinPercentage|Float |蛋白质率|24&48|%  
-   |ppProteinKg|Float |蛋白质量|24&48|kg  
-   |ppLoseFatWeightKg|Float |去脂体重|24&48|kg  
-   |ppBodyFatSubCutPercentage|Float |皮下脂肪率|24&48|%  
-   |ppBodyFatSubCutKg|Float |皮下脂肪量|24&48|kg  
-   |ppHeartRate|Int |心率|24&48|bmp该值与秤有关，且大于0为有效  
-   |ppBMR|Int |基础代谢|24&48|  
-   |ppVisceralFat|Int |内脏脂肪等级|24&48|  
-   |ppBoneKg|Float |骨量|24&48|kg  
-   |ppBodyMuscleControl|Float |肌肉控制量|24&48|kg  
-   |ppFatControlKg|Float |脂肪控制量|24&48|kg  
-   |ppBodyStandardWeightKg|Float |标准体重|24&48|kg  
-   |ppIdealWeightKg|Float |理想体重|24&48|kg  
-   |ppControlWeightKg|Float |控制体重|24&48|kg  
-   |ppBodyType|PPBodyDetailType |身体类型|24&48|PPBodyDetailType有单独说明  
-   |ppFatGrade|PPBodyFatGrade|肥胖等级|24&48|PPBodyGradeFatThin(0), //!< 偏瘦 <br>PPBodyGradeFatStandard(1),//!< 标准 <br>PPBodyGradeFatOverwight(2), //!< 超重 <br>PPBodyGradeFatOne(3),//!< 肥胖1级 <br>  
-   PPBodyGradeFatTwo(4),//!< 肥胖2级 <br>PPBodyGradeFatThree(5);//!< 肥胖3级  
-   |ppBodyHealth|PPBodyHealthAssessment |健康评估|24&48|PPBodyAssessment1(0), //!< 健康存在隐患 <br>PPBodyAssessment2(1), //!< 亚健康 <br>PPBodyAssessment3(2), //!< 一般 <br>PPBodyAssessment4(3), //!< 良好 <br>  
-   PPBodyAssessment5(4); //!< 非常好  
-   |ppBodyAge|Int|身体年龄|24&48|岁  
-   |ppBodyScore|Int |身体得分|24&48|分  
-   |ppCellMassKg|Float |身体细胞量|48|kg  
-   |ppDCI|Int |建议卡路里摄入量|48|Kcal/day  
-   |ppMineralKg|Float |无机盐量|48|kg  
-   |ppObesity|Float |肥胖度|48|%  
-   |ppWaterECWKg|Float |细胞外水量|48|kg  
-   |ppWaterICWKg|Float |细胞内水量|48|kg  
-   |ppBodyFatKgLeftArm|Float |左手脂肪量|48|kg  
-   |ppBodyFatKgLeftLeg|Float |左脚脂肪量|48|kg  
-   |ppBodyFatKgRightArm|Float |右手脂肪量|48|kg  
-   |ppBodyFatKgRightLeg|Float |右脚脂肪量|48|kg  
-   |ppBodyFatKgTrunk|Float |躯干脂肪量|48|kg  
-   |ppBodyFatRateLeftArm|Float |左手脂肪率|48|%  
-   |ppBodyFatRateLeftLeg|Float |左脚脂肪率|48|%  
-   |ppBodyFatRateRightArm|Float |右手脂肪率|48|%  
-   |ppBodyFatRateRightLeg|Float |右脚脂肪率|48|%  
-   |ppBodyFatRateTrunk|Float |躯干脂肪率|48|%  
-   |ppMuscleKgLeftArm|Float |左手肌肉量|48|kg  
-   |ppMuscleKgLeftLeg|Float |左脚肌肉量|48|kg  
-   |ppMuscleKgRightArm|Float |右手肌肉量|48|kg  
-   |ppMuscleKgRightLeg|Float |右脚肌肉量|48|kg  
-   |ppMuscleKgTrunk|Float |躯干肌肉量|48|kg
+|errorType|BodyFatErrorType |错误类型|返回参数|PP_ERROR_TYPE_NONE(0),无错误 <br>PP_ERROR_TYPE_AGE(1), 年龄有误 <br>PP_ERROR_TYPE_HEIGHT(2),身高有误 <br>PP_ERROR_TYPE_WEIGHT(3),体重有误 <br>PP_ERROR_TYPE_SEX(4) 性別有误 <br>PP_ERROR_TYPE_PEOPLE_TYPE(5)  <br>以下是阻抗有误 <br>PP_ERROR_TYPE_IMPEDANCE_TWO_LEGS(6)  <br>PP_ERROR_TYPE_IMPEDANCE_TWO_ARMS(7)<br>PP_ERROR_TYPE_IMPEDANCE_LEFT_BODY(8) <br>PP_ERROR_TYPE_IMPEDANCE_RIGHT_ARM(9)<br>PP_ERROR_TYPE_IMPEDANCE_LEFT_ARM(10)  <br>PP_ERROR_TYPE_IMPEDANCE_LEFT_LEG(11)  <br>PP_ERROR_TYPE_IMPEDANCE_RIGHT_LEG(12)  <br>PP_ERROR_TYPE_IMPEDANCE_TRUNK(13)  
+|bodyDetailModel|PPBodyDetailModel|数据区间范围和介绍描述|  
+|ppWeightKg|Float |体重|24&48|kg  
+|ppBMI|Float|Body Mass Index|24&48|  
+|ppFat|Float |脂肪率|24&48|%  
+|ppBodyfatKg|Float |脂肪量|24&48|kg  
+|ppMusclePercentage|Float |肌肉率|24&48|%  
+|ppMuscleKg|Float |肌肉量|24&48|kg  
+|ppBodySkeletal|Float |骨骼肌率|24&48|%  
+|ppBodySkeletalKg|Float |骨骼肌量|24&48|kg  
+|ppWaterPercentage|Float |水分率|24&48|%  
+|ppWaterKg|Float |水分量|24&48|kg  
+|ppProteinPercentage|Float |蛋白质率|24&48|%  
+|ppProteinKg|Float |蛋白质量|24&48|kg  
+|ppLoseFatWeightKg|Float |去脂体重|24&48|kg  
+|ppBodyFatSubCutPercentage|Float |皮下脂肪率|24&48|%  
+|ppBodyFatSubCutKg|Float |皮下脂肪量|24&48|kg  
+|ppHeartRate|Int |心率|24&48|bmp该值与秤有关，且大于0为有效  
+|ppBMR|Int |基础代谢|24&48|  
+|ppVisceralFat|Int |内脏脂肪等级|24&48|  
+|ppBoneKg|Float |骨量|24&48|kg  
+|ppBodyMuscleControl|Float |肌肉控制量|24&48|kg  
+|ppFatControlKg|Float |脂肪控制量|24&48|kg  
+|ppBodyStandardWeightKg|Float |标准体重|24&48|kg  
+|ppIdealWeightKg|Float |理想体重|24&48|kg  
+|ppControlWeightKg|Float |控制体重|24&48|kg  
+|ppBodyType|PPBodyDetailType |身体类型|24&48|PPBodyDetailType有单独说明  
+|ppFatGrade|PPBodyFatGrade|肥胖等级|24&48|PPBodyGradeFatThin(0), //!< 偏瘦 <br>PPBodyGradeFatStandard(1),//!< 标准 <br>PPBodyGradeFatOverwight(2), //!< 超重 <br>PPBodyGradeFatOne(3),//!< 肥胖1级 <br>PPBodyGradeFatTwo(4),//!< 肥胖2级 <br>PPBodyGradeFatThree(5);//!< 肥胖3级  
+|ppBodyHealth|PPBodyHealthAssessment |健康评估|24&48|PPBodyAssessment1(0), //!< 健康存在隐患<br>PPBodyAssessment2(1), //!< 亚健康 <br>PPBodyAssessment3(2), //!< 一般 <br>PPBodyAssessment4(3), //!< 良好<br>  PPBodyAssessment5(4); //!< 非常好  
+|ppBodyAge|Int|身体年龄|24&48|岁  
+|ppBodyScore|Int |身体得分|24&48|分  
+|ppCellMassKg|Float |身体细胞量|48|kg  
+|ppDCI|Int |建议卡路里摄入量|48|Kcal/day  
+|ppMineralKg|Float |无机盐量|48|kg  
+|ppObesity|Float |肥胖度|48|%  
+|ppWaterECWKg|Float |细胞外水量|48|kg  
+|ppWaterICWKg|Float |细胞内水量|48|kg  
+|ppBodyFatKgLeftArm|Float |左手脂肪量|48|kg  
+|ppBodyFatKgLeftLeg|Float |左脚脂肪量|48|kg  
+|ppBodyFatKgRightArm|Float |右手脂肪量|48|kg  
+|ppBodyFatKgRightLeg|Float |右脚脂肪量|48|kg  
+|ppBodyFatKgTrunk|Float |躯干脂肪量|48|kg  
+|ppBodyFatRateLeftArm|Float |左手脂肪率|48|%  
+|ppBodyFatRateLeftLeg|Float |左脚脂肪率|48|%  
+|ppBodyFatRateRightArm|Float |右手脂肪率|48|%  
+|ppBodyFatRateRightLeg|Float |右脚脂肪率|48|%  
+|ppBodyFatRateTrunk|Float |躯干脂肪率|48|%  
+|ppMuscleKgLeftArm|Float |左手肌肉量|48|kg  
+|ppMuscleKgLeftLeg|Float |左脚肌肉量|48|kg  
+|ppMuscleKgRightArm|Float |右手肌肉量|48|kg  
+|ppMuscleKgRightLeg|Float |右脚肌肉量|48|kg  
+|ppMuscleKgTrunk|Float |躯干肌肉量|48|kg
 
 注意：在使用时拿到对象，请调用对应的get方法来获取对应的值
 
@@ -889,14 +918,14 @@ B3-->D[将数据作为无主数据存储,让用户自己去认领数据]
 | thanZero | int | 正负标识 |  
 | scaleType | String | 秤类型 |  
 
-## VI. [版本更新说明](doc/version_update.md)
+## Ⅶ. [版本更新说明](doc/version_update.md)
 
-## VII. 使用的第三方库
+## Ⅷ. 使用的第三方库
 
 ### 1、芯片方案商提供的体脂计算库
 
 ### 2、[bluetoothkit1.4.0 蓝牙库](https://github.com/dingjikerbo/Android-BluetoothKit)
 
-## VII. [常见问题](doc/common_problem.md)
+## Ⅸ. [常见问题](doc/common_problem.md)
 
 Contact Developer： Email: yanfabu-5@lefu.cc
