@@ -1,0 +1,166 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+
+def releaseTime() {
+//GMT+8代表北京时间
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+8"))
+}
+
+def fileName
+
+android {
+    compileSdkVersion 31
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 31
+        versionCode LIB_VERSION_CODE as int
+        versionName LIB_VERSION
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            android.libraryVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def f = output.outputFileName
+                    if (f != null && f.endsWith('.aar')) {
+                        fileName = "${ARTIFACT_ID}_v${defaultConfig.versionName}_${releaseTime()}.aar"
+                        output.outputFileName = fileName
+                    }
+                }
+            }
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            android.libraryVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def f = output.outputFileName
+                    if (f != null && f.endsWith('.aar')) {
+                        fileName = "${ARTIFACT_ID}_v${defaultConfig.versionName}_${releaseTime()}.aar"
+                        output.outputFileName = fileName
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+dependencies {
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
+
+//    api(project(":lefulib:bh1BodyComposition"))
+//    api(project(":lefulib:bhBodyComposition"))
+//    api(project(":lefulib:bluetoothkit"))
+//    api(project(":lefulib:body_sl"))
+//    api(project(":lefulib:lfgson"))
+
+}
+
+
+//上传到maven
+apply plugin: 'maven'
+uploadArchives {
+    repositories.mavenDeployer {
+//        Ubuntu本地仓库路径， Windows 为(url:"file://D://***/***/***/")
+//        repository(url: "file:/home/pen/develop/other/")
+//        String deployPath = "C:/liyp/Android/workspace/PPScale-Android/ppscale/"
+        String deployPath = getProjectDir().absolutePath + "/../ppscale-android-maven/"
+        repository(url: "file://${deployPath}")
+        pom.groupId = GROUP_ID
+        pom.artifactId = ARTIFACT_ID
+        pom.version = LIB_VERSION
+        pom.packaging = 'aar'
+    }
+}
+
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            aar(MavenPublication) {
+//                String deployPath = getProjectDir().absolutePath + "/ppscale-android-maven/"
+////                repository(url: "file://${deployPath}")
+//                // 发布的 AAR 配置
+//                groupId = GROUP_ID
+//                artifactId = ARTIFACT_ID
+//                version = LIB_VERSION
+//
+//                from components.release
+//            }
+//        }
+//    }
+//
+//}
+
+////生成文档注释
+//task androidJavadocs(type: Javadoc) {
+//    failOnError = false
+//    source = android.sourceSets.main.java.srcDirs
+//    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+//    classpath += files(ext.androidJar)
+//}
+////将文档打包成jar
+//task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+//    archiveClassifier.set('javadoc')
+//    from androidJavadocs.destinationDir
+//}
+////生成文档注释
+//task generateSourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier 'sources'
+//}
+//将源码打包，这一点对kotlin来说很重要，否则业务侧无法看到源码
+//task androidSourcesJar(type: Jar) {
+//    archiveClassifier.set('sources')
+//    from android.sourceSets.main.java.srcDirs
+//}
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            debug(MavenPublication) {
+////                repository(url: "file://${deployPath}")
+//                groupId = GROUP_ID
+//                artifactId = ARTIFACT_ID
+//                version = LIB_VERSION
+//                pom.packaging = 'aar'
+//                afterEvaluate {
+//                    artifact(tasks.getByName("bundleReleaseAar"))
+//                }
+//            }
+//        }
+//        repositories {
+//            maven {
+//                // Ubuntu本地仓库路径， Windows 为(url:"file://D://***/***/***/")
+//                // url "file:/home/pen/develop/other/"
+//                url = file(getProjectDir().absolutePath + "/../ppscale-android-maven/")
+//            }
+//        }
+//
+//
+//    }
+//
+//
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
