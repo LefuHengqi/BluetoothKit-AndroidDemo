@@ -183,6 +183,10 @@ class PeripheralIceActivity : Activity() {
             weightMeasureState?.text = ""
         }
 
+        override fun monitorDataFail(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
+            TODO("Not yet implemented")
+        }
+
         /**
          * 锁定数据
          *

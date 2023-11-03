@@ -248,7 +248,7 @@ class PeripheralTorreActivity : Activity() {
         }
         findViewById<Button>(R.id.getUnit).setOnClickListener {
             addPrint("getUnit")
-            controller?.getTorreDeviceManager()?.getUnit(deviceSetInterface)
+            controller?.getTorreDeviceManager()?.getUnit(modeChangeInterface)
         }
 
     }
@@ -330,6 +330,10 @@ class PeripheralTorreActivity : Activity() {
                 addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
             }
 
+        }
+
+        override fun monitorDataFail(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
+            addPrint("monitorDataFail")
         }
 
         /**

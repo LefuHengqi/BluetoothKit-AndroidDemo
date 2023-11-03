@@ -189,6 +189,10 @@ class PeripheralAppleActivity : Activity() {
             weightMeasureState?.text = ""
         }
 
+        override fun monitorDataFail(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
+
+        }
+
         /**
          * 锁定数据
          *

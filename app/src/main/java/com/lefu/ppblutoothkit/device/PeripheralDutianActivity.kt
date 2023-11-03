@@ -111,6 +111,10 @@ class PeripheralDutianActivity : Activity() {
             weightMeasureState?.text = ""
         }
 
+        override fun monitorDataFail(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
+
+        }
+
         override fun monitorLockDataByCalculateInScale(bodyFatModel: PPBodyFatModel?) {
             bodyFatModel?.let {
                 val bodyBaseModel = it.ppBodyBaseModel;
