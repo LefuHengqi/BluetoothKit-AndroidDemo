@@ -369,6 +369,7 @@ class PeripheralTorreActivity : Activity() {
 
     fun addPrint(msg: String) {
         if (msg.isNotEmpty()) {
+            Logger.d(msg)
             logTxt?.append("$msg\n")
         }
     }
