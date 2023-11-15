@@ -9,8 +9,8 @@ import com.peng.ppscale.PPBlutoothKit
 class PPApplication : Application() {
 
     //使用时请务必替换成你自己的AppKey/AppSecret，需要增加设备配置请联系我司销售人员
-    val appKey = "lefu49d9158e653459f2"
-    val appSecret = "YMEWS/CcgomjxqKWubSV+nlU+6qm582gDFOpc1JyiUk="
+    val appKey = "lefub60060202a15ac8a"
+    val appSecret = "UCzWzna/eazehXaz8kKAC6WVfcL25nIPYlV9fXYzqDM="
 
     override fun onCreate() {
         super.onCreate()

@@ -19,6 +19,7 @@ abstract class BasePermissionActivity : Activity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 //The location permission is permanently denied by the user, and the user needs to go to the settings page to enable it
+
             } else {
                 ActivityCompat.requestPermissions(
                     this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
@@ -36,7 +37,9 @@ abstract class BasePermissionActivity : Activity() {
             } else {
                 //Here you should remind the user to go to the system settings page to enable permissions
                 ActivityCompat.requestPermissions(
-                    this, arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT), 2
+                    this, arrayOf(Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.BLUETOOTH_CONNECT,
+                        Manifest.permission.BLUETOOTH_ADVERTISE), 2
                 )
             }
         }
