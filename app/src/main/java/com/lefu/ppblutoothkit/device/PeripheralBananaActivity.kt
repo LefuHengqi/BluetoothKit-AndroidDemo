@@ -9,8 +9,8 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
+import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBananaInstance
-import com.lefu.ppscale.ble.R
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.state.PPBleSwitchState

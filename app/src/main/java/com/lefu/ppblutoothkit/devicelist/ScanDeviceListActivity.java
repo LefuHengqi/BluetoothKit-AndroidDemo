@@ -21,7 +21,7 @@ import com.lefu.ppblutoothkit.device.PeripheralFishActivity;
 import com.lefu.ppblutoothkit.device.PeripheralGrapesActivity;
 import com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity;
 import com.lefu.ppblutoothkit.device.PeripheralTorreActivity;
-import com.lefu.ppscale.ble.R;
+import com.lefu.ppblutoothkit.R;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
 import com.peng.ppscale.business.ble.listener.PPSearchDeviceInfoInterface;
 import com.peng.ppscale.business.state.PPBleSwitchState;

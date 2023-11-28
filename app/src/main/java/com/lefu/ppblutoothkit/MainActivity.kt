@@ -10,7 +10,6 @@ import android.widget.Button
 import androidx.core.app.ActivityCompat
 import com.lefu.ppblutoothkit.calculate.CalculateManagerActivity
 import com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity
-import com.lefu.ppscale.ble.R
 import com.peng.ppscale.PPBlutoothKit
 
 class MainActivity : BasePermissionActivity(), View.OnClickListener {

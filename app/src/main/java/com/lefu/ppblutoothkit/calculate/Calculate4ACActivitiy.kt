@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import com.lefu.ppscale.ble.R
+import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.peng.ppscale.business.device.DeviceManager

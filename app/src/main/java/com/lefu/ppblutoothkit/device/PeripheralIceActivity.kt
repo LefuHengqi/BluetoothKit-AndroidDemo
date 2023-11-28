@@ -12,8 +12,8 @@ import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
 import com.lefu.ppblutoothkit.util.DataUtil
-import com.lefu.ppscale.ble.R
-import com.lefu.ppscale.ble.userinfo.UserinfoActivity
+import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface

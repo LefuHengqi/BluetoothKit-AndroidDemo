@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.lefu.ppscale.ble">
+    package="com.lefu.ppblutoothkit">
     <!--蓝牙相关权限-->
     <uses-permission
         android:name="android.permission.BLUETOOTH"
@@ -47,7 +47,7 @@
 
         <activity android:name="com.lefu.ppblutoothkit.calculate.BodyDataDetailActivity" />
         <activity android:name="com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity" />
-        <activity android:name=".userinfo.UserinfoActivity" />
+        <activity android:name="com.lefu.ppblutoothkit.UserinfoActivity" />
 
         <!--Calculate-->
         <activity android:name="com.lefu.ppblutoothkit.calculate.CalculateManagerActivity" />
@@ -83,9 +83,11 @@
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
+
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths_share_img" />
+                android:resource="@xml/file_paths" />
+
         </provider>
 
     </application>

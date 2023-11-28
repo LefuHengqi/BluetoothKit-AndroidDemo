@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lefu.ppscale.ble.R
+import com.lefu.ppblutoothkit.R
 import com.peng.ppscale.vo.PPWifiModel
 import kotlinx.android.synthetic.main.adapter_device_search_item_layout.view.*
 

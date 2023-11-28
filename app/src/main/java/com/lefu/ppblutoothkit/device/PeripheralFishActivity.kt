@@ -12,7 +12,7 @@ import android.widget.ToggleButton
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralEggInstance
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralFishInstance
-import com.lefu.ppscale.ble.R
+import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.device.foodscale.FoodScaleCacluteHelper
 import com.peng.ppscale.business.ble.listener.FoodScaleDataChangeListener

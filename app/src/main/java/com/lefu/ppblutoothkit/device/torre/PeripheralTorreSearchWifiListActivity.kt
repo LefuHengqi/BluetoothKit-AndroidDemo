@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
-import com.lefu.ppscale.ble.R
+import com.lefu.ppblutoothkit.R
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.vo.PPWifiModel
 

@@ -10,7 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDutianInstance
-import com.lefu.ppscale.ble.R
+import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.device.PPUnitType

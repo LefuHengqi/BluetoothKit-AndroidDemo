@@ -1,7 +1,6 @@
 package com.lefu.ppblutoothkit.device
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,22 +9,19 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralEggInstance
-import com.lefu.ppscale.ble.R
-import com.lefu.ppblutoothkit.util.UnitUtil
+import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.foodscale.FoodScaleCacluteHelper
-import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
-import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
-import com.peng.ppscale.business.ble.listener.*
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralEggInstance
+import com.peng.ppscale.business.ble.listener.FoodScaleDataChangeListener
+import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
+import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
-import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
 import com.peng.ppscale.device.PeripheralEgg.PPBlutoothPeripheralEggController
-import com.peng.ppscale.util.Energy
-import com.peng.ppscale.util.EnergyUnitLbOz
-import com.peng.ppscale.vo.*
+import com.peng.ppscale.vo.LFFoodScaleGeneral
+import com.peng.ppscale.vo.PPDeviceModel
+import com.peng.ppscale.vo.PPScaleSendState
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用

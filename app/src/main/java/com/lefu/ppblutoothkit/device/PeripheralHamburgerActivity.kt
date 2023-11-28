@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralGrapesInstance
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralHamburgerInstance
-import com.lefu.ppscale.ble.R
+import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.UnitUtil.unitText
 import com.lefu.ppblutoothkit.device.foodscale.FoodScaleCacluteHelper
 import com.peng.ppscale.business.ble.listener.FoodScaleDataChangeListener

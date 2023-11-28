@@ -19,10 +19,11 @@ import android.widget.ToggleButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
-import com.lefu.ppscale.ble.R
+import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.util.DataUtil
+import com.lefu.ppblutoothkit.util.FileUtil
+import com.lefu.ppblutoothkit.R
 import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.business.ota.OnOTAStateListener
@@ -598,7 +599,12 @@ class PeripheralTorreActivity : Activity() {
         }
 
         override fun syncLogEnd(logFilePath: String?) {
-            addPrint("syncLogEnd")
+
+            addPrint("syncLogEnd ")
+            addPrint("logFilePath: $logFilePath")
+
+            Toast.makeText(this@PeripheralTorreActivity, "日志同步完成", Toast.LENGTH_SHORT).show()
+            FileUtil.sendEmail(this@PeripheralTorreActivity, logFilePath)
         }
     }
 

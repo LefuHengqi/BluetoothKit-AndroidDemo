@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 
-import com.lefu.ppscale.ble.R;
+import com.lefu.ppblutoothkit.R;
 import com.lefu.ppblutoothkit.util.DataUtil;
 import com.peng.ppscale.vo.PPBodyFatModel;
 

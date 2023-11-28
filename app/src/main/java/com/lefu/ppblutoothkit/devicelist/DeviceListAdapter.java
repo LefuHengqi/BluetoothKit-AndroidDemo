@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
-import com.lefu.ppscale.ble.R;
+import com.lefu.ppblutoothkit.R;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPScaleDefine;
