@@ -93,7 +93,7 @@ class PeripheralTorreActivity : Activity() {
             }
         })
         initClick()
-
+        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
     }
 
     fun initClick() {
