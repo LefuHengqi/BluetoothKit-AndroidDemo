@@ -9,11 +9,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
+import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.view.MsgDialog
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
@@ -24,6 +29,7 @@ import com.peng.ppscale.device.PeripheralIce.PPBlutoothPeripheralIceController
 import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyBaseModel
 import com.peng.ppscale.vo.PPDeviceModel
+import com.peng.ppscale.vo.PPScaleDefine
 import com.peng.ppscale.vo.PPScaleSendState
 
 /**
@@ -31,7 +37,7 @@ import com.peng.ppscale.vo.PPScaleSendState
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralIceActivity : Activity() {
+class PeripheralIceActivity : AppCompatActivity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -64,7 +70,9 @@ class PeripheralIceActivity : Activity() {
             }
         })
         setTitle("${deviceModel?.getDevicePeripheralType()}")
-
+        addPrint("startConnect")
+        controller?.registDataChangeListener(dataChangeListener)
+        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         initClick()
 
     }
@@ -184,7 +192,7 @@ class PeripheralIceActivity : Activity() {
         }
 
         override fun monitorDataFail(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-            TODO("Not yet implemented")
+
         }
 
         /**
@@ -195,7 +203,42 @@ class PeripheralIceActivity : Activity() {
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
             weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
-            weightMeasureState?.text = ""
+
+            //这里要填称重用户的个人信息
+            val userModel = DataUtil.util().userModel
+            bodyBaseModel?.userModel = userModel
+            if (bodyBaseModel?.isHeartRating ?: false) {
+                //心率测量中
+                weightMeasureState?.text = getString(R.string.heartrate_mesuring)
+            } else {
+                //测量结束
+                weightMeasureState?.text = getString(R.string.measure_complete)
+                MsgDialog.init(supportFragmentManager)
+                    .setTitle(getString(R.string.tips))
+                    .setMessage(getString(R.string.is_body_fat_calculated))
+                    .setAnimStyle(R.style.dialog_)
+                    .setCancelableAll(true)
+                    .setNegativeButton(getString(R.string.cancel))
+                    .setPositiveButton(getString(R.string.confirm), View.OnClickListener {
+                        DataUtil.util().bodyBaseModel = bodyBaseModel
+                        if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
+                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
+                        ) {
+                            //8电极交流算法  48项数据
+                            val intent = Intent(this@PeripheralIceActivity, Calculate8Activitiy::class.java)
+                            intent.putExtra("bodyDataModel", "bodyDataModel")
+                            startActivity(intent)
+                        } else {
+                            //4电极交流算法  24项数据
+                            val intent = Intent(this@PeripheralIceActivity, Calculate4ACActivitiy::class.java)
+                            intent.putExtra("bodyDataModel", "bodyDataModel")
+                            startActivity(intent)
+                        }
+
+                    })
+                    .show()
+            }
         }
 
         /**

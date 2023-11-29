@@ -13,6 +13,7 @@ import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_calculate_4ac.*
+import kotlinx.android.synthetic.main.activity_calculate_8ac.*
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etAge
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etHeight
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etSex
@@ -23,12 +24,31 @@ import kotlinx.android.synthetic.main.activity_calculate_8ac.etWeight
  */
 class Calculate4DCActivitiy : Activity() {
 
+    var deviceName: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculate_4dc)
 
         findViewById<Button>(R.id.calculateBtn).setOnClickListener {
             startCalculate()
+        }
+
+        initData()
+    }
+
+    private fun initData() {
+
+        val tag = intent.getStringExtra("bodyDataModel")
+        if (tag != null) {
+            //显示称重完成后的数据
+            val bodyBaseModel = DataUtil.util().bodyBaseModel
+            deviceName = bodyBaseModel.deviceModel?.deviceName ?: ""
+            etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
+            etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
+            etAge.setText(bodyBaseModel?.userModel?.age.toString())
+            etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
+            etImpedance.setText(bodyBaseModel?.impedance.toString())
         }
     }
 
@@ -49,7 +69,7 @@ class Calculate4DCActivitiy : Activity() {
             .setAge(age)//age 10-99
             .build()
 
-        val deviceModel = PPDeviceModel("", DeviceManager.FL_SCALE)//Select the corresponding Bluetooth name according to your own device
+        val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
         deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect
         deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
             PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005

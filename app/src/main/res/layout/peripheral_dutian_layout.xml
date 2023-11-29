@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="连接状态" />
+            android:text="@string/connect_state" />
 
         <TextView
             android:id="@+id/functinonTypeTvState"
@@ -82,7 +82,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="连接设备" />
+                    android:text="@string/connect_device"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/syncUserInfo"
@@ -103,7 +104,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="切换单位" />
+                    android:text="@string/change_unit" />
 
             </LinearLayout>
 

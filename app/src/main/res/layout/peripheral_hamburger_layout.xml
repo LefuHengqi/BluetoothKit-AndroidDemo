@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="连接状态" />
+            android:text="@string/connect_state" />
 
         <TextView
             android:id="@+id/functinonTypeTvState"
@@ -75,14 +75,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="启动扫描" />
+                    android:text="@string/start_scan" />
 
                 <Button
                     android:id="@+id/stopSearch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="停止扫描" />
+                    android:text="@string/stop_scan" />
 
             </LinearLayout>
 

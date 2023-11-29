@@ -65,6 +65,9 @@ class PeripheralFishActivity : Activity() {
                 nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
             }
         })
+        addPrint("startConnect")
+        controller?.registDataChangeListener(dataChangeListener)
+        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         initClick()
     }
 

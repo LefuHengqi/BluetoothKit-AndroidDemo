@@ -64,6 +64,9 @@ class PeripheralDutianActivity : Activity() {
         })
 
         controller?.userModel = userModel     //必传参数 This is a required parameter
+        addPrint("startConnect")
+        controller?.registDataChangeListener(dataChangeListener)
+        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         initClick()
 
     }

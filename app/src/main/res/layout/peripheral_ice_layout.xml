@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="连接状态" />
+            android:text="@string/connect_state" />
 
         <TextView
             android:id="@+id/functinonTypeTvState"
@@ -82,21 +82,22 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="连接设备" />
+                    android:visibility="gone"
+                    android:text="@string/connect_device" />
 
                 <Button
                     android:id="@+id/syncTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="同步时间" />
+                    android:text="@string/sync_time" />
 
                 <Button
                     android:id="@+id/readDeviceInfo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="设备信息" />
+                    android:text="@string/device_info" />
 
             </LinearLayout>
 
@@ -109,14 +110,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="切换单位" />
+                    android:text="@string/change_unit" />
 
                 <Button
                     android:id="@+id/syncUserHistoryData"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="历史数据" />
+                    android:text="@string/history_data" />
 
                 <Button
                     android:id="@+id/deleteHistory"
@@ -124,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="清除历史" />
+                    android:text="@string/clear_history" />
 
             </LinearLayout>
 
@@ -138,7 +139,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="开始配网"
+                    android:text="@string/start_config_net"
                     android:textAllCaps="false" />
 
                 <Button
@@ -147,7 +148,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="获取Wifi信息"
+                    android:text="@string/get_wifi_info"
                     android:textAllCaps="false" />
 
             </LinearLayout>
@@ -161,7 +162,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="设置用户信息" />
+                    android:text="@string/set_user_info" />
 
             </LinearLayout>
 

@@ -60,6 +60,9 @@ class PeripheralEggActivity : Activity() {
             }
         })
         controller?.deviceModel = deviceModel
+        addPrint("startConnect")
+        controller?.registDataChangeListener(dataChangeListener)
+        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         initClick()
     }
 

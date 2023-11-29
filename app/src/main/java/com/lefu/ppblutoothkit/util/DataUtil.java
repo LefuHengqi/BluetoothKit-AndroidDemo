@@ -2,6 +2,7 @@ package com.lefu.ppblutoothkit.util;
 
 import com.lefu.base.SettingManager;
 import com.peng.ppscale.business.device.PPUnitType;
+import com.peng.ppscale.vo.PPBodyBaseModel;
 import com.peng.ppscale.vo.PPBodyFatModel;
 import com.peng.ppscale.vo.PPDeviceModel;
 import com.peng.ppscale.vo.PPUserModel;
@@ -10,6 +11,7 @@ import com.peng.ppscale.vo.PPUserGender;
 public class DataUtil {
     private static DataUtil dataUtil;
     private PPBodyFatModel bodyDataModel;
+    private PPBodyBaseModel bodyBaseModel;
     private PPUserModel userModel;
     private PPDeviceModel deviceModel;
     PPUnitType unit = PPUnitType.Unit_KG;
@@ -71,5 +73,11 @@ public class DataUtil {
     }
 
 
+    public PPBodyBaseModel getBodyBaseModel() {
+        return bodyBaseModel;
+    }
 
+    public void setBodyBaseModel(PPBodyBaseModel bodyBaseModel) {
+        this.bodyBaseModel = bodyBaseModel;
+    }
 }

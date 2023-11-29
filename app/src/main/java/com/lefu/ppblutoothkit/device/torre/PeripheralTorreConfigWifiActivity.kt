@@ -33,7 +33,7 @@ class PeripheralTorreConfigWifiActivity : Activity() {
                 pwd = etWifiKey.text.toString()
             }
             val domainName = "http://nat.lefuenergy.com:10081"
-            configResultTV?.text = "开始配网"
+            configResultTV?.text = "@string/start_config_net"
             PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(ssid, pwd, domainName, configWifiInterface)
         }
 

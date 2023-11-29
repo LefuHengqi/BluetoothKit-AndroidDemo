@@ -96,7 +96,7 @@ public class ScanDeviceListActivity extends Activity {
         if (ppScale != null) {
             ppScale.stopSearch();
         }
-        tv_starts.setText("启动扫描");
+        tv_starts.setText(getString(R.string.start_scan));
         startScanDeviceList();
     }
 

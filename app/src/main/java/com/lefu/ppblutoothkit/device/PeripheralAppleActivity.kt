@@ -9,11 +9,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.UserinfoActivity
+import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.view.MsgDialog
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
@@ -24,6 +29,7 @@ import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleControll
 import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyBaseModel
 import com.peng.ppscale.vo.PPDeviceModel
+import com.peng.ppscale.vo.PPScaleDefine
 import com.peng.ppscale.vo.PPScaleSendState
 
 /**
@@ -31,8 +37,7 @@ import com.peng.ppscale.vo.PPScaleSendState
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralAppleActivity : Activity() {
-
+class PeripheralAppleActivity : AppCompatActivity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -65,6 +70,9 @@ class PeripheralAppleActivity : Activity() {
             }
         })
 
+        addPrint("startConnect")
+        controller?.registDataChangeListener(dataChangeListener)
+        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
 
         initClick()
 
@@ -203,10 +211,36 @@ class PeripheralAppleActivity : Activity() {
             weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             if (bodyBaseModel?.isHeartRating ?: false) {
                 //心率测量中
-                weightMeasureState?.text = "心率测量中"
+                weightMeasureState?.text = getString(R.string.heartrate_mesuring)
             } else {
                 //测量结束
-                weightMeasureState?.text = "测量完成"
+                weightMeasureState?.text = getString(R.string.measure_complete)
+                //这里要填称重用户的个人信息
+                val userModel = DataUtil.util().userModel
+                bodyBaseModel?.userModel = userModel
+
+                MsgDialog.init(supportFragmentManager)
+                    .setTitle(getString(R.string.tips))
+                    .setMessage(getString(R.string.is_body_fat_calculated))
+                    .setAnimStyle(R.style.dialog_)
+                    .setCancelableAll(true)
+                    .setNegativeButton(getString(R.string.cancel))
+                    .setPositiveButton(getString(R.string.confirm), View.OnClickListener {
+                        DataUtil.util().bodyBaseModel = bodyBaseModel
+                        if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect) {
+                            //4电极直流算法  24项数据
+                            val intent = Intent(this@PeripheralAppleActivity, Calculate4DCActivitiy::class.java)
+                            intent.putExtra("bodyDataModel", "bodyDataModel")
+                            startActivity(intent)
+                        } else {
+                            //4电极交流算法  24项数据
+                            val intent = Intent(this@PeripheralAppleActivity, Calculate4ACActivitiy::class.java)
+                            intent.putExtra("bodyDataModel", "bodyDataModel")
+                            startActivity(intent)
+                        }
+
+                    })
+                    .show()
 
             }
 

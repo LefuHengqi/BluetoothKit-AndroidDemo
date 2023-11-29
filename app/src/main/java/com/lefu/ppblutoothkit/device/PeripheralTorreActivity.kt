@@ -1,7 +1,6 @@
 package com.lefu.ppblutoothkit.device
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -12,10 +11,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.ToggleButton
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
@@ -24,6 +21,10 @@ import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.view.MsgDialog
+import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.business.ota.OnOTAStateListener
@@ -35,10 +36,7 @@ import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.PPBodyBaseModel
-import com.peng.ppscale.vo.PPBodyFatModel
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPUserModel
+import com.peng.ppscale.vo.*
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -46,7 +44,7 @@ import com.peng.ppscale.vo.PPUserModel
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralTorreActivity : Activity() {
+class PeripheralTorreActivity : AppCompatActivity() {
 
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
@@ -183,20 +181,20 @@ class PeripheralTorreActivity : Activity() {
         findViewById<Button>(R.id.device_set_startDFU).setOnClickListener {
             if (dfuFilePath.isNullOrBlank().not()) {
                 if (controller?.getTorreDeviceManager()?.isDFU?.not() ?: false) {
-                    addPrint("启动DFU升级")
+                    addPrint("Start DFU upgrade")
                     val isFullyDFUState = whetherFullyDFUToggleBtn?.isChecked ?: true //是否全量升级
                     controller?.getTorreDeviceManager()?.startDFU(isFullyDFUState, dfuFilePath, onDFUStateListener)
                 } else {
-                    //正在升级，请不要频繁调用
-                    addPrint("正在升级，请不要频繁调用")
+                    //正在升级，请不要频繁调用//Upgrading in progress, please do not call frequently
+                    addPrint("Upgrading in progress, please do not call frequently")
                 }
             } else {
                 //本地升级时未选则升级文件
-                addPrint("本地升级时未选则升级文件")
+                addPrint("Upgrade files if not selected during local upgrade")
             }
         }
         findViewById<Button>(R.id.device_set_startOTA).setOnClickListener {
-            addPrint("查询配网状态")
+            addPrint("Query distribution network status")
             controller?.getTorreDeviceManager()?.getWifiState(object : PPTorreConfigWifiInterface() {
                 /**
                  * 配网状态
@@ -206,21 +204,39 @@ class PeripheralTorreActivity : Activity() {
                  */
                 override fun configWifiState(state: Int) {
                     if (state == 1) {
-                        addPrint("设备已配网，启动用户升级")
+                        addPrint("The device has been connected to the network and the user upgrade has been initiated")
                         //已配网
                         controller?.getTorreDeviceManager()?.startUserOTA(otaStateListener)
                     } else {
                         //请先给设备配网
-                        addPrint("请先给设备配网")
+                        addPrint("Please first equip the device with a network")
                     }
                 }
             })
         }
+        val device_ota_layout = findViewById<LinearLayout>(R.id.device_ota_layout)
+        val device_dfu_layout = findViewById<LinearLayout>(R.id.device_dfu_layout)
         findViewById<Button>(R.id.device_set_startLocalOTA).setOnClickListener {
             //wifi 本地必须有Test的Wifi, 且密码是：12345678 秤会自动连接该Wifi
             //ssid: Test password: 12345678
             addPrint("startLocalOTA 本地必须有Test的Wifi, 且密码是：12345678 秤会自动连接该Wifi")
             controller?.getTorreDeviceManager()?.startLocalOTA(otaStateListener)
+        }
+        findViewById<ToggleButton>(R.id.developerModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
+            addPrint("developer Mode isChecked:$isChecked")
+            //0打开 1关闭
+            if (isChecked) {
+                if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                    device_ota_layout.visibility = View.VISIBLE
+                    device_dfu_layout.visibility = View.GONE
+                } else {
+                    device_dfu_layout.visibility = View.VISIBLE
+                    device_ota_layout.visibility = View.GONE
+                }
+            } else {
+                device_dfu_layout.visibility = View.GONE
+                device_ota_layout.visibility = View.GONE
+            }
         }
         findViewById<ToggleButton>(R.id.pregnancyModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
             addPrint("maternity mode isChecked:$isChecked")
@@ -316,19 +332,47 @@ class PeripheralTorreActivity : Activity() {
          */
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
             if (bodyBaseModel?.isHeartRating ?: false) {
-                addPrint("心率测量中...")
-                val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
+                addPrint(getString(R.string.heartrate_mesuring))
+                val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel?.deviceAccuracyType?.getType() ?: 2)
                 weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
                 weightMeasureState?.text = ""
             } else {
-                addPrint("测量完成")
+                addPrint(getString(R.string.measure_complete))
                 val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
                 weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
                 weightMeasureState?.text = ""
-                bodyBaseModel?.userModel = userModel //在调用计算库之前必须赋值成当前称重的用户的个人信息
+                //Before calling the computing library, it is necessary to assign the personal information of the user who is currently being weighed as a value
+                //在调用计算库之前必须赋值成当前称重的用户的个人信息
+                bodyBaseModel?.userModel = userModel
+                //Calling the calculation library to calculate body fat information
                 //调用计算库计算体脂信息
                 val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
                 addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
+
+                MsgDialog.init(supportFragmentManager)
+                    .setTitle(getString(R.string.tips))
+                    .setMessage(getString(R.string.is_body_fat_calculated))
+                    .setAnimStyle(R.style.dialog_)
+                    .setCancelableAll(true)
+                    .setNegativeButton(getString(R.string.cancel))
+                    .setPositiveButton(getString(R.string.confirm), View.OnClickListener() {
+                        DataUtil.util().bodyBaseModel = bodyBaseModel
+                        if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
+                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
+                        ) {
+                            //8电极交流算法  48项数据
+                            val intent = Intent(this@PeripheralTorreActivity, Calculate8Activitiy::class.java)
+                            intent.putExtra("bodyDataModel", "bodyDataModel")
+                            startActivity(intent)
+                        } else {
+                            //4电极交流算法  24项数据
+                            val intent = Intent(this@PeripheralTorreActivity, Calculate4ACActivitiy::class.java)
+                            intent.putExtra("bodyDataModel", "bodyDataModel")
+                            startActivity(intent)
+                        }
+                    })
+                    .show()
             }
 
         }
@@ -341,7 +385,7 @@ class PeripheralTorreActivity : Activity() {
          * 阻抗测量状态，
          */
         override fun onImpedanceFatting() {
-            weightMeasureState?.text = "阻抗测量中"
+            weightMeasureState?.text = getString(R.string.Impedance_measurement)
         }
 
         /**

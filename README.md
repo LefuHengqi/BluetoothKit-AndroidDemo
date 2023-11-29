@@ -184,20 +184,31 @@ android {
 **八电极计算体脂示例:**
 
 ```  
- //八电极计算类型    
-deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8   
+ //八电极计算类型
 val userModel = PPUserModel.Builder()    
-    .setSex(sex) //gender    
-  .setHeight(height)//height 100-220    
-  .setAge(age)//age 10-99    
-  .build()    
- val deviceModel = PPDeviceModel("", DeviceManager.CF568_CF577)//更换成你自己的设备蓝牙名称  
-deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8 deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {    
-PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005 } else {    
-PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01 } val bodyBaseModel = PPBodyBaseModel() bodyBaseModel.weight = UnitUtil.getWeight(weight) bodyBaseModel.deviceModel = deviceModel bodyBaseModel.userModel = userModel    
- bodyBaseModel.z100KhzLeftArmEnCode = z100KhzLeftArmEnCode bodyBaseModel.z100KhzLeftLegEnCode = z100KhzLeftLegEnCode bodyBaseModel.z100KhzRightArmEnCode = z100KhzRightArmEnCode bodyBaseModel.z100KhzRightLegEnCode = z100KhzRightLegEnCode bodyBaseModel.z100KhzTrunkEnCode = z100KhzTrunkEnCode bodyBaseModel.z20KhzLeftArmEnCode = z20KhzLeftArmEnCode bodyBaseModel.z20KhzLeftLegEnCode = z20KhzLeftLegEnCode bodyBaseModel.z20KhzRightArmEnCode = z20KhzRightArmEnCode bodyBaseModel.z20KhzRightLegEnCode = z20KhzRightLegEnCode bodyBaseModel.z20KhzTrunkEnCode = z20KhzTrunkEnCode    
- val fatModel = PPBodyFatModel(bodyBaseModel)    
- DataUtil.util().bodyDataModel = fatModel Log.d("liyp_", fatModel.toString())  
+      .setSex(PPUserGender.PPUserGenderFemale) //gender    
+      .setHeight(168)//height 100-220    
+      .setAge(35)//age 10-99    
+  .build()
+val weight = 83.00
+val deviceModel = PPDeviceModel("", "CF577")//更换成你自己的设备蓝牙名称  
+deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+val bodyBaseModel = PPBodyBaseModel()
+bodyBaseModel.weight = ((weight + 0.005) * 100).toInt() 
+bodyBaseModel.deviceModel = deviceModel 
+bodyBaseModel.userModel = userModel    
+bodyBaseModel.z100KhzLeftArmEnCode = 294794323L
+bodyBaseModel.z100KhzLeftLegEnCode = 806102147L 
+bodyBaseModel.z100KhzRightArmEnCode = 26360525L
+bodyBaseModel.z100KhzRightLegEnCode = 816581534L
+bodyBaseModel.z100KhzTrunkEnCode = 1080247226L
+bodyBaseModel.z20KhzLeftArmEnCode = 27983001L
+bodyBaseModel.z20KhzLeftLegEnCode = 837194050L
+bodyBaseModel.z20KhzRightArmEnCode = 1634195706L
+bodyBaseModel.z20KhzRightLegEnCode = 29868463L
+bodyBaseModel.z20KhzTrunkEnCode = 1881406429L
+val fatModel = PPBodyFatModel(bodyBaseModel)
+Log.d("liyp_", fatModel.toString())   
  ```   
 ### 1.3   四电极直流体脂计算 - 4DC - Calculate4DCActivitiy
 

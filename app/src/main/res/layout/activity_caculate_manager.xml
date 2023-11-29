@@ -20,7 +20,7 @@
             android:layout_height="@dimen/dimens_50dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="4DC"
+            android:text="@string/_4dc"
             android:textAllCaps="false" />
 
         <Button
@@ -30,7 +30,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/dimens_50dp"
             android:layout_marginEnd="8dp"
-            android:text="4AC"
+            android:text="@string/_4ac"
             android:textAllCaps="false" />
 
         <Button
@@ -40,7 +40,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/dimens_50dp"
             android:layout_marginEnd="8dp"
-            android:text="8AC"
+            android:text="@string/_8ac"
             android:textAllCaps="false" />
 
     </LinearLayout>

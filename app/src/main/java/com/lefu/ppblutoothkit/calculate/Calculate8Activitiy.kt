@@ -4,10 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Adapter
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import com.lefu.ppblutoothkit.R
-import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.util.DataUtil
+import com.lefu.ppblutoothkit.util.UnitUtil
+import com.lefu.ppscale.wifi.data.WifiDataVo.Data
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.vo.*
@@ -18,12 +24,76 @@ import kotlinx.android.synthetic.main.activity_calculate_8ac.*
  */
 class Calculate8Activitiy : Activity() {
 
+    var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8//CF577系列
+    var spinner: Spinner? = null
+
+    var deviceName: String = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculate_8ac)
-
         findViewById<Button>(R.id.calculateBtn).setOnClickListener {
             startCalculate()
+        }
+        spinner = findViewById<Spinner>(R.id.spinner)
+        val adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.add("Product1")
+        adapter.add("Product3")
+        adapter.add("Product4")
+        spinner?.setAdapter(adapter)
+        spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position == 0) {
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8//8电极算法, bhProduct=1--CF577
+                } else if (position == 1) {
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1//8电极算法，bhProduct =3--CF586
+                } else if (position == 2) {
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0//8电极算法，bhProduct =4--CF597
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        }
+        initData()
+    }
+
+    private fun initData() {
+        val tag = intent.getStringExtra("bodyDataModel")
+        if (tag != null) {
+            //显示称重完成后的数据
+            val bodyBaseModel = DataUtil.util().bodyBaseModel
+            deviceName = bodyBaseModel.deviceModel?.deviceName ?: ""
+            etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
+            etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
+            etAge.setText(bodyBaseModel?.userModel?.age.toString())
+            etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
+            z100KhzLeftArmEnCode.setText(bodyBaseModel?.z100KhzLeftArmEnCode.toString())
+            z100KhzLeftLegEnCode.setText(bodyBaseModel?.z100KhzLeftLegEnCode.toString())
+            z100KhzRightArmEnCode.setText(bodyBaseModel?.z100KhzRightArmEnCode.toString())
+            z100KhzRightLegEnCode.setText(bodyBaseModel?.z100KhzRightLegEnCode.toString())
+            z100KhzTrunkEnCode.setText(bodyBaseModel?.z100KhzTrunkEnCode.toString())
+            z20KhzLeftArmEnCode.setText(bodyBaseModel?.z20KhzLeftArmEnCode.toString())
+            z20KhzLeftLegEnCode.setText(bodyBaseModel?.z20KhzLeftLegEnCode.toString())
+            z20KhzRightArmEnCode.setText(bodyBaseModel?.z20KhzRightArmEnCode.toString())
+            z20KhzRightLegEnCode.setText(bodyBaseModel?.z20KhzRightLegEnCode.toString())
+            z20KhzTrunkEnCode.setText(bodyBaseModel?.z20KhzTrunkEnCode.toString())
+
+            calcuteType = bodyBaseModel?.deviceModel?.deviceCalcuteType
+            if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8) {
+                // 8电极交流算法, bhProduct=1--CF577
+                spinner?.setSelection(0)
+            } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1) {
+                // 8电极算法，bhProduct =3--CF586
+                spinner?.setSelection(1)
+            } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0) {
+                // 8电极算法，bhProduct =4--CF597
+                spinner?.setSelection(2)
+            }
         }
     }
 
@@ -36,28 +106,17 @@ class Calculate8Activitiy : Activity() {
         val height = etHeight.text?.toString()?.toInt() ?: 168
         val age = etAge.text?.toString()?.toInt() ?: 35
         val weight = etWeight.text?.toString()?.toDouble() ?: 83.00
-//"weight":"83.00",
-// "z100KhzLeftArmEnCode":"545156739",
-// "z100KhzLeftLegEnCode":"541890251",
-// "z100KhzRightArmEnCode":"828433987",
-// "z100KhzRightLegEnCode":"1352567256",
-// "z100KhzTrunkEnCode":"12179942",
-// "z20KhzLeftArmEnCode":"15600033",
-// "z20KhzLeftLegEnCode":"7027077",
-// "z20KhzRightArmEnCode":"24374673",
-// "z20KhzRightLegEnCode":"270243386",
-// "z20KhzTrunkEnCode":"12247378"}
-        val z100KhzLeftArmEnCode = z100KhzLeftArmEnCode.text?.toString()?.toLong() ?: 294794323
-        val z100KhzLeftLegEnCode = z100KhzLeftLegEnCode.text?.toString()?.toLong() ?: 806102147
-        val z100KhzRightArmEnCode = z100KhzRightArmEnCode.text?.toString()?.toLong() ?: 26360525
-        val z100KhzRightLegEnCode = z100KhzRightLegEnCode.text?.toString()?.toLong() ?: 816581534
-        val z100KhzTrunkEnCode = z100KhzTrunkEnCode.text?.toString()?.toLong() ?: 1080247226
-        val z20KhzLeftArmEnCode = z20KhzLeftArmEnCode.text?.toString()?.toLong() ?: 27983001
-        val z20KhzLeftLegEnCode = z20KhzLeftLegEnCode.text?.toString()?.toLong() ?: 837194050
-        val z20KhzRightArmEnCode = z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 1634195706
-        val z20KhzRightLegEnCode = z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463
-        val z20KhzTrunkEnCode = z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429
 
+        val z100KhzLeftArmEnCode = z100KhzLeftArmEnCode.text?.toString()?.toLong() ?: 294794323L
+        val z100KhzLeftLegEnCode = z100KhzLeftLegEnCode.text?.toString()?.toLong() ?: 806102147L
+        val z100KhzRightArmEnCode = z100KhzRightArmEnCode.text?.toString()?.toLong() ?: 26360525L
+        val z100KhzRightLegEnCode = z100KhzRightLegEnCode.text?.toString()?.toLong() ?: 816581534L
+        val z100KhzTrunkEnCode = z100KhzTrunkEnCode.text?.toString()?.toLong() ?: 1080247226L
+        val z20KhzLeftArmEnCode = z20KhzLeftArmEnCode.text?.toString()?.toLong() ?: 27983001L
+        val z20KhzLeftLegEnCode = z20KhzLeftLegEnCode.text?.toString()?.toLong() ?: 837194050L
+        val z20KhzRightArmEnCode = z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 1634195706L
+        val z20KhzRightLegEnCode = z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463L
+        val z20KhzTrunkEnCode = z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429L
 
 //        val age 	=	41
 //        val height 	=	168
@@ -80,13 +139,8 @@ class Calculate8Activitiy : Activity() {
             .setAge(age)//age 10-99
             .build()
 
-        val deviceModel = PPDeviceModel("", DeviceManager.CF568_CF577)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
-        deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
-            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
-        } else {
-            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
-        }
+        val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
+        deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.deviceModel = deviceModel

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_dialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="28dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        tools:text="Title" />
+
+    <TextView
+        android:id="@+id/msg_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:textColor="#848484"
+        android:textSize="16sp"
+        tools:text="Message"
+        />
+
+    <TextView
+        android:id="@+id/mTipsTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="注：接受后对方可以看您的体重等身体详细数据"
+        android:textColor="#758E93"
+        android:textSize="14sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:visibility="gone"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="20dp"
+        android:background="#d9d9d9"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/btn_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="28dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        >
+
+        <Button
+            android:id="@+id/neg_btn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/common_dialog_cancle_bg1"
+            android:gravity="center"
+            android:textColor="#14CCAD"
+            android:textSize="14sp"
+            tools:text="不允许"
+            />
+
+        <View
+            android:id="@+id/line_view"
+            android:layout_width="0.5dp"
+            android:layout_height="48dp"
+            android:background="#d9d9d9"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/pos_btn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/common_dialog_right_bg1"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            tools:text="允许" />
+    </LinearLayout>
+</LinearLayout>
