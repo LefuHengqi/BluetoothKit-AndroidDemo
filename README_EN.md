@@ -4,8 +4,7 @@
 
 Related documents
 
-[Lefu Open Platform](https://uniquehealth.lefuenergy.com/unique-open-web/#/document) | [PPBluetoothKit iOS SDK](https://uniquehealth.lefuenergy.com/unique-open-web/ #/document?url=https://lefuhengqi.apifox.cn/doc-2625647) | [PPBluetoothKit WeChat applet plug-in](https://uniquehealth.lefuenergy.com/unique-open-web/#/document?url =https://lefuhengqi.apifox.cn/doc-2625745)
-
+[Lefu Open Platform](https://uniquehealth.lefuenergy.com/unique-open-web/#/document) | [PPBluetoothKit iOS SDK](https://uniquehealth.lefuenergy.com/unique-open-web/#/document?url=https://lefuhengqi.apifox.cn/doc-2625647) | [PPBluetoothKit WeChat applet plug-in](https://uniquehealth.lefuenergy.com/unique-open-web/#/document?url=https://lefuhengqi.apifox.cn/doc-2625745)
 
 
 [Android sample program address](https://gitee.com/shenzhen-lfscale/bluetooth-kit-android-demo.git)
@@ -32,7 +31,9 @@ In order to allow customers to quickly implement weighing and corresponding func
 
 - The body fat calculation module supports 4-electrode AC algorithm, 4-electrode DC algorithm, and 8-electrode AC algorithm.
 
+### remind
 
+**Please be sure to replace the AppKey, AppSecret and config files when using your own App, otherwise your device may not be usable with your App**
 
 ### Commercial version program
 
@@ -50,7 +51,7 @@ In order to allow customers to quickly implement weighing and corresponding func
 
 
 
-- First go to [Lefu Open Platform] (https://uniquehealth.lefuenergy.com/unique-open-web/#/document) to apply for AppKey, AppSecret and config files
+- First go to [Lefu Open Platform](https://uniquehealth.lefuenergy.com/unique-open-web/#/document) to apply for AppKey, AppSecret and config files
 
 - Place the config file in the project's assets directory
 
@@ -85,7 +86,8 @@ In order to allow customers to quickly implement weighing and corresponding func
 
 ```    
  dependencies {    
- ​ //aar introduction ​ api(name: 'ppblutoothkit-3.2.5-20231129.115853-1', ext: 'aar') }    
+    //aar introduction ​ api(name: 'ppblutoothkit-3.2.5-20231129.115853-1', ext: 'aar') 
+ }    
  ```   
 
 
@@ -95,7 +97,10 @@ In order to allow customers to quickly implement weighing and corresponding func
 
 ```    
  android {    
- ​ packagingOptions { ​ exclude 'AndroidManifest.xml' ​ } }    
+    packagingOptions { 
+        exclude 'AndroidManifest.xml' 
+        } 
+    }    
  ```   
 
 
@@ -117,29 +122,18 @@ In order to allow customers to quickly implement weighing and corresponding func
 
 ### 1.1 Bluetooth permission related
 
-
-
 #### 1.1.1 Operating environment
-
-
 
 Due to the need for Bluetooth connection, the Demo needs to be run on a real device, Android phone 6.0 and above or HarmonyOS 2.0 and above
 
-
-
 #### 1.1.2 Agreements related to Bluetooth permissions
 
-
-
 During the use of the Demo, you need to turn on Bluetooth and turn on the positioning switch. Make sure to enable and authorize the necessary permissions: For precise positioning permissions and nearby device permissions, you can view the official Bluetooth permissions document. The document address is: [Instructions on Bluetooth permissions on the Google Developer Website] (https://developer.android.com/guide/topics/connectivity/bluetooth/permissions).
-
-
 
 - Accurate positioning permissions
 - Nearby device permissions
 - Position switch
 - Bluetooth switch
-
 
 ```    
  <manifest> 
@@ -159,11 +153,7 @@ During the use of the Demo, you need to turn on Bluetooth and turn on the positi
 
 ### 1.2 Conventions related to measuring body data
 
-
-
 #### 1.2.1 Precautions for weighing and fat measurement
-
-
 
 - The scale supports fat measurement
 
@@ -249,11 +239,11 @@ Based on the weight and impedance parsed by the Bluetooth protocol, plus the hei
 
 #### 1.1.3 Basic user information description PPUserModel
 
-| Parameters | Comments | Description |  
-| :-------- | :----- | :----: |   
-| userHeight| Height|All body fat scales|  
-| age| age|all body fat scales|  
-| sex| Gender|All body fat scales| 
+| Parameters | Comments |     Description     |  
+| :-------- | :----- |:-------------------:|   
+| userHeight| Height| All body fat scales |  
+| age| age| All body fat scales |  
+| sex| Gender| All body fat scales | 
 
 
 ### 1.2 Eight-electrode body fat calculation-Calculate8Activitiy
@@ -263,10 +253,10 @@ Based on the weight and impedance parsed by the Bluetooth protocol, plus the hei
 ```    
  //Eight-electrode calculation type    
  val userModel = PPUserModel.Builder()    
- .setSex(PPUserGender.PPUserGenderFemale) //gender    
- .setHeight(168)//height 100-220    
- .setAge(35)//age 10-99    
- .build()    
+    .setSex(PPUserGender.PPUserGenderFemale) //gender    
+    .setHeight(168)//height 100-220    
+    .setAge(35)//age 10-99    
+    .build()    
  val weight = 83.00    
  val deviceModel = PPDeviceModel("", "CF577")//Replace with your own device Bluetooth name    
  var calculateType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8//CF577 series    
@@ -303,7 +293,7 @@ Based on the weight and impedance parsed by the Bluetooth protocol, plus the hei
 ```
  val userModel = PPUserModel.Builder()    
 		 .setSex(sex) //gender    
- ​ 		 .setHeight(height)//height 100-220 ​ 
+         .setHeight(height)//height 100-220 ​ 
 		 .setAge(age)//age 10-99
 		 .build()    
  val deviceModel = PPDeviceModel("", DeviceManager.FL_SCALE)//Replace with your own device Bluetooth name    
@@ -325,10 +315,10 @@ Based on the weight and impedance parsed by the Bluetooth protocol, plus the hei
 
 ```    
  val userModel = PPUserModel.Builder()    
- .setSex(sex) //gender    
- .setHeight(height)//height 100-220    
- .setAge(age)//age 10-99    
- .build()    
+    .setSex(sex) //gender    
+    .setHeight(height)//height 100-220    
+    .setAge(age)//age 10-99    
+    .build()
  val deviceModel = PPDeviceModel("", DeviceManager.CF568)///Replace with your own device Bluetooth name    
  deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate    
  val bodyBaseModel = PPBodyBaseModel()    
@@ -396,17 +386,18 @@ Scanning the device will return a PPDeviceModel object. Through the device metho
  F[Process different business logic according to different classifications]-->H[Stop Bluetooth scanning<br>stopSearch]    
  ```   
 
-
 #### 1.2.1 Start scanning - startSearchDeviceList
 
-
-
 ```    
- /** * Get around bluetooth scale devices */    
- public void startScanDeviceList() { if (ppScale == null) { ppScale = new PPSearchManager();    
- }    
- //You can dynamically set the scan time in ms    
- ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface);    
+ /** 
+ * Get around bluetooth scale devices 
+ */    
+ public void startScanDeviceList() {
+    if (ppScale == null) {
+       ppScale = new PPSearchManager();    
+    }    
+    //You can dynamically set the scan time in ms    
+    ppScale.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface);    
  }    
  ```   
 **Processing scan results-PPSearchDeviceInfoInterface**
