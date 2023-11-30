@@ -15,7 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/connect_state" />
+            android:text="@string/connect_state"
+            android:textAllCaps="true" />
 
         <TextView
             android:id="@+id/functinonTypeTvState"
@@ -80,24 +81,26 @@
                 <Button
                     android:id="@+id/startConnectDevice"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:visibility="gone"
-                    android:text="@string/connect_device" />
+                    android:text="@string/connect_device"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/syncTime"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/sync_time" />
+                    android:text="@string/sync_time"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/readDeviceInfo"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/device_info" />
+                    android:text="@string/device_info"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
 
@@ -108,24 +111,27 @@
                 <Button
                     android:id="@+id/syncUnit"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/change_unit" />
+                    android:text="@string/change_unit"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/syncUserHistoryData"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/history_data" />
+                    android:text="@string/history_data"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/deleteHistory"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/clear_history" />
+                    android:text="@string/clear_history"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
 
@@ -151,6 +157,15 @@
                     android:text="@string/get_wifi_info"
                     android:textAllCaps="false" />
 
+                <Button
+                    android:id="@+id/readDeviceBattery"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/read_device_battery"
+                    android:textAllCaps="false" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -158,13 +173,37 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/setUserInfo"
+                    android:id="@+id/device_set_sync_log"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/set_user_info" />
+                    android:text="@string/sync_log"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/device_set_reset"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/reset"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/startKeepAlive"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/start_keep_alive"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/setUserInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_user_info"
+                android:textAllCaps="false" />
 
         </LinearLayout>
 

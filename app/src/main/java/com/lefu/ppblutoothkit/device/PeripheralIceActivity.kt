@@ -1,6 +1,5 @@
 package com.lefu.ppblutoothkit.device
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,13 +10,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
-import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
+import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
+import com.lefu.ppblutoothkit.util.DataUtil
+import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
 import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.PPScaleHelper
@@ -99,7 +99,10 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("readDeviceInfo")
             controller?.readDeviceInfo(object : PPDeviceInfoInterface() {
                 override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {
-                    addPrint(deviceModel.toString())
+                    addPrint("firmwareVersion: ${deviceModel?.firmwareVersion}")
+                    addPrint("serialNumber: ${deviceModel?.serialNumber}")
+                    addPrint("hardwareRevision: ${deviceModel?.hardwareVersion}")
+                    addPrint("softwareRevision: ${deviceModel?.softwareVersion}")
                 }
             })
         }
@@ -152,19 +155,27 @@ class PeripheralIceActivity : AppCompatActivity() {
             }
         }
         findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
-            addPrint("startConfigWifi")
+            addPrint("startConfigWifi pager")
             if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
-                controller?.disConnect()
-                val intent = Intent(this@PeripheralIceActivity, BleConfigWifiActivity::class.java)
-                intent.putExtra("address", deviceModel?.deviceMac)
-                startActivity(intent)
+                controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
+                    override fun readDevicePower(power: Int) {
+                        addPrint("power:%$power")
+                        if (power > 20) {
+                            PeripheralTorreSearchWifiListActivity.deviceModel = deviceModel
+                            startActivity(Intent(this@PeripheralIceActivity, PeripheralTorreSearchWifiListActivity::class.java))
+                        } else {
+                            addPrint("Low battery, please charge first")
+                        }
+                    }
+                })
             } else {
                 addPrint("device does not support")
             }
+
         }
         findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
             addPrint("getWifiInfo")
-            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType) ?: false) {
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
                 controller?.getWifiInfo(configWifiInfoInterface)
             } else {
                 addPrint("device does not support")
@@ -174,7 +185,58 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("start UserInfo pager")
             startActivity(Intent(this, UserinfoActivity::class.java))
         }
+        findViewById<Button>(R.id.readDeviceBattery).setOnClickListener {
+            addPrint("readDeviceBattery")
+            controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
+                override fun readDevicePower(power: Int) {
+                    addPrint("power:$power")
+                }
+            })
+        }
+        findViewById<Button>(R.id.device_set_sync_log).setOnClickListener {
+            addPrint("syncLog")
+            //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
+            val fileFath = filesDir.absolutePath + "/Log/DeviceLog"
+            controller?.syncLog(fileFath, deviceLogInterface)
+        }
+        findViewById<Button>(R.id.device_set_reset).setOnClickListener {
+            addPrint("resetDevice")
+            controller?.resetDevice(deviceSetInterface)
+        }
+        findViewById<Button>(R.id.startKeepAlive).setOnClickListener {
+            addPrint("startKeepAlive")
+            controller?.startKeepAlive()
+        }
+    }
 
+    val deviceSetInterface = object : PPDeviceSetInfoInterface {
+        override fun monitorResetStateSuccess() {
+            addPrint("monitorResetStateSuccess")
+        }
+
+        override fun monitorResetStateFail() {
+            addPrint("monitorResetStateFail")
+        }
+
+    }
+
+    val deviceLogInterface = object : PPDeviceLogInterface {
+        override fun syncLogStart() {
+            addPrint("syncLogStart")
+        }
+
+        override fun syncLoging(progress: Int) {
+            addPrint("syncLoging progress:$progress")
+        }
+
+        override fun syncLogEnd(logFilePath: String?) {
+
+            addPrint("syncLogEnd ")
+            addPrint("logFilePath: $logFilePath")
+
+            Toast.makeText(this@PeripheralIceActivity, "Sync Log Success", Toast.LENGTH_SHORT).show()
+            FileUtil.sendEmail(this@PeripheralIceActivity, logFilePath)
+        }
     }
 
     val dataChangeListener = object : PPDataChangeListener {

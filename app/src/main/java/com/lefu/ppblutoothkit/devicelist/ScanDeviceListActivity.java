@@ -20,6 +20,8 @@ import com.lefu.ppblutoothkit.device.PeripheralEggActivity;
 import com.lefu.ppblutoothkit.device.PeripheralFishActivity;
 import com.lefu.ppblutoothkit.device.PeripheralGrapesActivity;
 import com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity;
+import com.lefu.ppblutoothkit.device.PeripheralIceActivity;
+import com.lefu.ppblutoothkit.device.PeripheralJambulActivity;
 import com.lefu.ppblutoothkit.device.PeripheralTorreActivity;
 import com.lefu.ppblutoothkit.R;
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface;
@@ -138,6 +140,14 @@ public class ScanDeviceListActivity extends Activity {
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralHamburger) {
                 Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralHamburgerActivity.class);
                 PeripheralHamburgerActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralIceActivity.class);
+                PeripheralIceActivity.Companion.setDeviceModel(deviceModel);
+                startActivity(intent);
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralJambul) {
+                Intent intent = new Intent(ScanDeviceListActivity.this, PeripheralJambulActivity.class);
+                PeripheralJambulActivity.Companion.setDeviceModel(deviceModel);
                 startActivity(intent);
             }
         }

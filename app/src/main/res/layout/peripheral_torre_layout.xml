@@ -270,7 +270,7 @@
                 <Button
                     android:id="@+id/device_set_sync_log"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/sync_log"
                     android:textAllCaps="false" />
@@ -278,7 +278,7 @@
                 <Button
                     android:id="@+id/device_set_reset"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/reset"
                     android:textAllCaps="false" />
@@ -286,7 +286,7 @@
                 <Button
                     android:id="@+id/startKeepAlive"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/start_keep_alive"
                     android:textAllCaps="false" />
@@ -311,6 +311,13 @@
                     android:checked="true"
                     android:textOff=""
                     android:textOn="" />
+
+                <Button
+                    android:id="@+id/setUserInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/set_user_info"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
 
