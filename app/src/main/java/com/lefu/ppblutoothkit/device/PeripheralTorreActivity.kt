@@ -155,16 +155,29 @@ class PeripheralTorreActivity : AppCompatActivity() {
 //            controller?.getTorreDeviceManager()?.getWifiList(configWifiInterface)
 //        }
         findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
-            addPrint("startConfigWifi pager")
-            startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
+            if (PPScaleHelper.isFuncTypeWifi(PeripheralIceActivity.deviceModel?.deviceFuncType)) {
+                addPrint("startConfigWifi pager")
+                PeripheralTorreSearchWifiListActivity.deviceModel = PeripheralIceActivity.deviceModel
+                startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
+            } else {
+                addPrint("device does not support")
+            }
         }
         findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
             addPrint("getWifiSSID")
-            controller?.getTorreDeviceManager()?.getWifiSSID(configWifiInterface)
+            if (PPScaleHelper.isFuncTypeWifi(PeripheralIceActivity.deviceModel?.deviceFuncType)) {
+                controller?.getTorreDeviceManager()?.getWifiSSID(configWifiInterface)
+            } else {
+                addPrint("device does not support")
+            }
         }
         findViewById<Button>(R.id.getWifiMac).setOnClickListener {
             addPrint("getWifiMac")
-            controller?.getTorreDeviceManager()?.getWifiMac(configWifiInterface)
+            if (PPScaleHelper.isFuncTypeWifi(PeripheralIceActivity.deviceModel?.deviceFuncType)) {
+                controller?.getTorreDeviceManager()?.getWifiMac(configWifiInterface)
+            } else {
+                addPrint("device does not support")
+            }
         }
         findViewById<Button>(R.id.device_set_get_userinfo_list).setOnClickListener {
             addPrint("getUserList")
@@ -433,7 +446,10 @@ class PeripheralTorreActivity : AppCompatActivity() {
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface {
 
         override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {
-            addPrint("readDeviceInfoComplete ${deviceModel.toString()}")
+            addPrint("firmwareVersion: ${deviceModel?.firmwareVersion}")
+            addPrint("serialNumber: ${deviceModel?.serialNumber}")
+            addPrint("hardwareRevision: ${deviceModel?.hardwareVersion}")
+            addPrint("softwareRevision: ${deviceModel?.softwareVersion}")
         }
 
 
@@ -647,7 +663,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
             addPrint("syncLogEnd ")
             addPrint("logFilePath: $logFilePath")
 
-            Toast.makeText(this@PeripheralTorreActivity, "日志同步完成", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@PeripheralTorreActivity, "Sync Log Success", Toast.LENGTH_SHORT).show()
             FileUtil.sendEmail(this@PeripheralTorreActivity, logFilePath)
         }
     }

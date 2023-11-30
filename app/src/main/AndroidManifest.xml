@@ -77,6 +77,8 @@
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity" />
         <!--Ice-->
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralIceActivity" />
+        <!--Jambul-->
+        <activity android:name="com.lefu.ppblutoothkit.device.PeripheralJambulActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

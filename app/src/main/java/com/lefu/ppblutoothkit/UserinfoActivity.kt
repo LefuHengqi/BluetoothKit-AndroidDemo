@@ -18,11 +18,8 @@ import com.peng.ppscale.vo.PPUserModel
 class UserinfoActivity : Activity() {
     var height = 180
     var age = 18
-    var maternityMode = 0 //孕妇模式1  默认0
-    var sportMode = 0 //运动员模式1  默认0
     var unit = PPUnitType.Unit_KG
     var sex = PPUserGender.PPUserGenderMale
-    var group = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_userinfo)
@@ -35,8 +32,6 @@ class UserinfoActivity : Activity() {
             height = userModel.userHeight
             age = userModel.age
             sex = userModel.sex
-            sportMode = if (userModel.isAthleteMode) 1 else 0
-            maternityMode = if (userModel.isPregnantMode) 1 else 0
         }
         unit = DataUtil.util().unit
 
@@ -102,51 +97,6 @@ class UserinfoActivity : Activity() {
                 }
             }
         })
-
-        //用户组
-        val groupET = findViewById<EditText>(R.id.editText7)
-        groupET.setText("0")
-        groupET.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                val number = s.toString()
-                if (number.length > 0) {
-                    val group = number.toInt()
-                    this@UserinfoActivity.group = group
-                }
-            }
-        })
-
-        //孕妇模式
-        val maternityModeET = findViewById<EditText>(R.id.editText8)
-        maternityModeET.setText(maternityMode.toString())
-        maternityModeET.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                val number = s.toString()
-                if (number.length > 0) {
-                    val maternityMode = number.toInt()
-                    this@UserinfoActivity.maternityMode = maternityMode
-                }
-            }
-        })
-
-        //运动员模式
-        val sportModeET = findViewById<EditText>(R.id.editText9)
-        sportModeET.setText(sportMode.toString())
-        sportModeET.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                val number = s.toString()
-                if (number.length > 0) {
-                    val sportMode = number.toInt()
-                    this@UserinfoActivity.sportMode = sportMode
-                }
-            }
-        })
     }
 
     private fun onBtnClck() {
@@ -158,10 +108,7 @@ class UserinfoActivity : Activity() {
         val userModel = PPUserModel.Builder()
             .setAge(age)
             .setHeight(height)
-            .setGroupNum(group)
             .setSex(sex)
-            .setPregnantMode(maternityMode == 1) //孕妇模式 1  正常模式0  默认0
-            .setAthleteMode(sportMode == 1) //运动员模式 1  正常模式0  默认0
             .build()
         DataUtil.util().userModel = userModel
         DataUtil.util().unit = unit

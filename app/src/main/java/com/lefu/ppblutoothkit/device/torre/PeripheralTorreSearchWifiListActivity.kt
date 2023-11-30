@@ -12,7 +12,11 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
+import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
+import com.peng.ppscale.vo.PPDeviceModel
+import com.peng.ppscale.vo.PPScaleDefine
 import com.peng.ppscale.vo.PPWifiModel
 
 /**
@@ -31,6 +35,10 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
 
     //旋转动画
     var mRotateAnimator: ObjectAnimator? = null
+
+    companion object {
+        var deviceModel: PPDeviceModel? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +63,7 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
         mDeviceSearchWifAdapter.setOnClickInItemLisenter(object : WifiListAdapter.OnItemClickViewInsideListener {
             override fun onItemClickViewInside(position: Int, v: View?) {
                 cloneRotateAnimator()
+                PeripheralTorreConfigWifiActivity.deviceModel = deviceModel
                 PeripheralTorreConfigWifiActivity.ssid = mDeviceSearchWifAdapter.users.get(position).ssid ?: ""
                 startActivity(Intent(this@PeripheralTorreSearchWifiListActivity, PeripheralTorreConfigWifiActivity::class.java))
                 finish()
@@ -94,21 +103,45 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
     private fun loadWifList() {
         mLoadAnimaLL?.visibility = View.VISIBLE
         showRotateAnimator(mLoadAnimaIV)
-        //读取附近的wifi列表
-        PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.getWifiList(object : PPTorreConfigWifiInterface() {
-            override fun monitorWiFiListSuccess(wifiModels: List<PPWifiModel>?) {
-                cloneRotateAnimator()
-                mDeviceSearchWifAdapter.users = wifiModels?.toMutableList() ?: mutableListOf()
+        if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {
+            //读取附近的wifi列表
+            PPBlutoothPeripheralIceInstance.instance.controller?.getWifiList(object : PPConfigWifiInfoInterface {
+
+                override fun monitorWiFiListSuccess(wifiModels: MutableList<PPWifiModel>?) {
+                    cloneRotateAnimator()
+                    mDeviceSearchWifAdapter.users = wifiModels?.toMutableList() ?: mutableListOf()
 //                mDeviceSearchWifAdapter.notifyDataSetChanged()
-                mLoadAnimaLL?.visibility = View.GONE
-                mWifiRefreshSB?.visibility = View.VISIBLE
-            }
-        })
+                    mLoadAnimaLL?.visibility = View.GONE
+                    mWifiRefreshSB?.visibility = View.VISIBLE
+                }
+
+                override fun monitorWiFiListFail(state: Int?) {
+
+                }
+
+            })
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
+            //读取附近的wifi列表
+            PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.getWifiList(object : PPTorreConfigWifiInterface() {
+                override fun monitorWiFiListSuccess(wifiModels: List<PPWifiModel>?) {
+                    cloneRotateAnimator()
+                    mDeviceSearchWifAdapter.users = wifiModels?.toMutableList() ?: mutableListOf()
+//                mDeviceSearchWifAdapter.notifyDataSetChanged()
+                    mLoadAnimaLL?.visibility = View.GONE
+                    mWifiRefreshSB?.visibility = View.VISIBLE
+                }
+            })
+        }
+
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.exitConfigWifi()
+        if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {
+            PPBlutoothPeripheralIceInstance.instance.controller?.exitWifiList()
+        } else {
+            PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.exitConfigWifi()
+        }
     }
 
 }

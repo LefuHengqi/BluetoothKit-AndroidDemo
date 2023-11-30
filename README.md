@@ -35,20 +35,25 @@ A[进入开放平台] --> B[注册/登录] -- 个人信息入口--> C[获取AppK
 
 ```    
  //使用时请务必替换成你自己的AppKey/AppSecret，需要增加设备配置请联系我司销售顾问    
- val appKey = "" val appSecret = ""    
+ val appKey = "" 
+ val appSecret = ""    
  /*********************以下内容为SDK的配置项***************************************/    
  //SDK日志打印控制，true会打印    
-PPBlutoothKit.setDebug(BuildConfig.DEBUG) /** * SDK 初始化 所需参数需要自行到开放平台自行申请，请勿直接使用Demo中的参数，    
+ PPBlutoothKit.setDebug(BuildConfig.DEBUG) 
+/** 
+ * SDK 初始化 所需参数需要自行到开放平台自行申请，请勿直接使用Demo中的参数，    
  * @param appKey App的标识    
  * @param appSecret Appp的密钥    
  * @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK    
- */ PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
+ */ 
+ PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
  ```    
 ### 1.3 aar文件导入
 - 在需要引入sdk的module下的build.gradle中加入(最新版本请查看ppscalelib的module下的libs)
 ``` 
 dependencies { 
-	//aar引入 api(name: 'ppblutoothkit-3.1.0-20230829.165034-1', ext: 'aar') 
+	//aar引入
+	api(name: 'ppblutoothkit-3.2.5-20231129.115853-1', ext: 'aar') 
 }  
 ``` 
 
@@ -87,11 +92,19 @@ android {
 
 ``` 
 <manifest>    
- <!-- Request legacy Bluetooth permissions on older devices. --> <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" /> <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />    
- <!-- Needed only if your app looks for Bluetooth devices. If your app doesn't use Bluetooth scan results to derive physical location information, you can strongly assert that your app doesn't derive physical location. --> <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />    
- <!-- Needed only if your app makes the device discoverable to Bluetooth devices. --> <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />    
- <!-- Needed only if your app communicates with already-paired Bluetooth devices. --> <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />    
- <!-- Needed only if your app uses Bluetooth scan results to derive physical location. --> <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> ...</manifest>    
+    <!-- Request legacy Bluetooth permissions on older devices. --> 
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" /> 
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />    
+    <!-- Needed only if your app looks for Bluetooth devices. If your app doesn't use Bluetooth scan results to derive physical location information, you can strongly assert that your app doesn't derive physical location. --> 
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />    
+    <!-- Needed only if your app makes the device discoverable to Bluetooth devices. --> 
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />    
+    <!-- Needed only if your app communicates with already-paired Bluetooth devices. --> 
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />    
+    <!-- Needed only if your app uses Bluetooth scan results to derive physical location. --> 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
+ ...
+ </manifest>    
  ```   
 
 ### 1.2 测量身体数据相关约定
@@ -125,14 +138,14 @@ android {
 
 #### 1.1.1   PPBodyBaseModel
 
-| 参数 | 注释| 说明 |  
+| 参数 | 注释| 说明 | 
 | :--------  | :-----  | :----:  |  
 | weight | 体重 | 实际体重*100取整|  
 | impedance|四电极算法阻抗 |四电极算法字段|  
 | zTwoLegsDeCode|四电极脚对脚明文阻抗值 |四电极算法字段|  
 | userModel|用户基础信息对象 |PPUserModel|  
 | deviceModel-deviceCalcuteType| 对应设备的计算方式 |后面具体说明|  
-| isHeartRating| 是否正在测量心率 |心率测量状态|  
+| isHeartRating| 是否正在测量心率 |4&8共有字段|  
 | unit| 秤端的当前单位 |实时单位|  
 | heartRate| 心率 |秤端支持心率生效|  
 | isPlus| 是否是正数 |食物秤生效|  
@@ -179,20 +192,28 @@ android {
 | age| 年龄 |所有体脂秤|  
 | sex| 性别 |所有体脂秤|  
 
-### 1.2  八电极交流体脂计算 - 8AC - Calculate8Activitiy
+### 1.2  八电极体脂计算 - Calculate8Activitiy
 
 **八电极计算体脂示例:**
 
 ```  
- //八电极计算类型
+//八电极计算类型
 val userModel = PPUserModel.Builder()    
       .setSex(PPUserGender.PPUserGenderFemale) //gender    
       .setHeight(168)//height 100-220    
       .setAge(35)//age 10-99    
-  .build()
+      .build()
 val weight = 83.00
-val deviceModel = PPDeviceModel("", "CF577")//更换成你自己的设备蓝牙名称  
-deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+val deviceModel = PPDeviceModel("", "CF577")//更换成你自己的设备蓝牙名称
+var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8//CF577系列
+if (position == 0) {
+    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8//8电极算法, bhProduct=1--CF577
+} else if (position == 1) {
+    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1//8电极算法，bhProduct =3--CF586
+} else if (position == 2) {
+    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0//8电极算法，bhProduct =4--CF597
+}
+deviceModel.deviceCalcuteType = calcuteType
 val bodyBaseModel = PPBodyBaseModel()
 bodyBaseModel.weight = ((weight + 0.005) * 100).toInt() 
 bodyBaseModel.deviceModel = deviceModel 
@@ -210,7 +231,7 @@ bodyBaseModel.z20KhzTrunkEnCode = 1881406429L
 val fatModel = PPBodyFatModel(bodyBaseModel)
 Log.d("liyp_", fatModel.toString())   
  ```   
-### 1.3   四电极直流体脂计算 - 4DC - Calculate4DCActivitiy
+### 1.3   四电极直流体脂计算 - Calculate4DCActivitiy
 
 **四电极直流计算体脂示例:**
 
@@ -219,30 +240,39 @@ Log.d("liyp_", fatModel.toString())
     .setSex(sex) //gender    
 	.setHeight(height)//height 100-220    
 	.setAge(age)//age 10-99 
-.build()
+    .build()
 val deviceModel = PPDeviceModel("", DeviceManager.FL_SCALE)//更换成你自己的设备蓝牙名称  
-deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect val bodyBaseModel = PPBodyBaseModel() bodyBaseModel.weight = UnitUtil.getWeight(weight) bodyBaseModel.impedance = impedance bodyBaseModel.deviceModel = deviceModel bodyBaseModel.userModel = userModel bodyBaseModel.unit = PPUnitType.Unit_KG   
+deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect 
+val bodyBaseModel = PPBodyBaseModel() 
+bodyBaseModel.weight = UnitUtil.getWeight(weight) 
+bodyBaseModel.impedance = impedance 
+bodyBaseModel.deviceModel = deviceModel 
+bodyBaseModel.userModel = userModel 
+bodyBaseModel.unit = PPUnitType.Unit_KG   
 val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)   
-DataUtil.util().bodyDataModel = ppBodyFatModel 
 Log.d("liyp_", ppBodyFatModel.toString())
 ```  
 
-### 1.4  四电极交流体脂计算 - 4AC - Calculate4ACActivitiy
+### 1.4  四电极交流体脂计算 - Calculate4ACActivitiy
 
 **四电极交流计算体脂示例:**
 
 ```  
 val userModel = PPUserModel.Builder()    
     .setSex(sex) //gender    
-  .setHeight(height)//height 100-220    
-  .setAge(age)//age 10-99    
-  .build()    
+    .setHeight(height)//height 100-220    
+    .setAge(age)//age 10-99    
+    .build() 
  val deviceModel = PPDeviceModel("", DeviceManager.CF568)///更换成你自己的设备蓝牙名称  
-deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {    
-PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005 } else {    
-PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01 }    
- val bodyBaseModel = PPBodyBaseModel() bodyBaseModel.weight = UnitUtil.getWeight(weight) bodyBaseModel.impedance = impedance bodyBaseModel.deviceModel = deviceModel bodyBaseModel.userModel = userModel bodyBaseModel.unit = PPUnitType.Unit_KG    
- val ppBodyFatModel = PPBodyFatModel(bodyBaseModel) DataUtil.util().bodyDataModel = ppBodyFatModel Log.d("liyp_", ppBodyFatModel.toString())  
+ deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate   
+ val bodyBaseModel = PPBodyBaseModel()
+ bodyBaseModel.weight = UnitUtil.getWeight(weight)
+ bodyBaseModel.impedance = impedance 
+ bodyBaseModel.deviceModel = deviceModel 
+ bodyBaseModel.userModel = userModel 
+ bodyBaseModel.unit = PPUnitType.Unit_KG 
+ val ppBodyFatModel = PPBodyFatModel(bodyBaseModel) 
+ Log.d("liyp_", ppBodyFatModel.toString())  
 ```  
 
 ## Ⅳ. 设备扫描 - Device-ScanDeviceListActivity
@@ -253,7 +283,10 @@ PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01 }
 
 | 分类枚举 | 使用示例类 | 连接方式 | 设备类型 | 协议类型 |  
 |------|--------|--------|--------|-----|  
-| PeripheralApple | PeripheralAppleActivity | 连接 | 人体秤 | 2.x | | PeripheralBanana | PeripheralBananaActivity | 广播 | 人体秤 | 2.x | | PeripheralCoconut | PeripheralCoconutActivity | 连接 | 人体秤 | 3.x | | PeripheralDurian | PeripheralDutianActivity | 设备端计算的连接 | 人体秤 | 2.x |  
+| PeripheralApple | PeripheralAppleActivity | 连接 | 人体秤 | 2.x | 
+| PeripheralBanana | PeripheralBananaActivity | 广播 | 人体秤 | 2.x | 
+| PeripheralCoconut | PeripheralCoconutActivity | 连接 | 人体秤 | 3.x | 
+| PeripheralDurian | PeripheralDutianActivity | 设备端计算的连接 | 人体秤 | 2.x |  
 | PeripheralEgg | PeripheralEggActivity | 连接 | 厨房秤 | 2.x |  
 | PeripheralFish | PeripheralFishActivity | 连接 | 厨房秤 | 3.x |  
 | PeripheralGrapes | PeripheralGrapesActivity | 广播 | 厨房秤 | 2.x |  
@@ -314,11 +347,17 @@ public void onSearchDevice(PPDeviceModel ppDeviceModel, String data) {}
 * 蓝牙扫描和连接状态回调    
 * @param ppBleWorkState 蓝牙状态标识    
 * @param deviceModel 设备对象    
-*/ @Override public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {}  
+*/ 
+@Override 
+public void monitorBluetoothWorkState(PPBleWorkState ppBleWorkState, PPDeviceModel deviceModel) {
+    }  
 /**    
 * 系统蓝牙状态回调    
 * @param ppBleSwitchState 系统蓝牙状态标识    
-*/ @Override public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {}  
+*/ 
+@Override 
+public void monitorBluetoothSwitchState(PPBleSwitchState ppBleSwitchState) {
+    }  
 ```  
 
 #### 1.2.3 蓝牙状态PPBleWorkState
@@ -346,8 +385,13 @@ ppScale.stopSearch();
 
 ```    
  public void delayScan() {  
- new Handler(getMainLooper()).postDelayed(new Runnable() { @Override public void run() { if (isOnResume) { startScanDeviceList();              }   
-           }   
+    new Handler(getMainLooper()).postDelayed(new Runnable() {
+     @Override 
+     public void run() { 
+        if (isOnResume) { 
+            startScanDeviceList();     
+                }   
+            }   
      }, 1000);    
  }  
  ```   
@@ -422,6 +466,12 @@ A1-->B3[历史数据失败回调<br>monitorHistoryFail]
 2. 确保WiFi环境是2.4G或2.4/5G混合模式，不支持单5G模式
 3. 确保账号密码正确
 4. 确保秤端使用的Server地址与App使用的Server地址对应
+
+**注意**
+注意：域名在您自己的App中需要换成你App自己的服务器域名，并确保服务器已完成Wifi体脂秤相关功能开发，
+文档地址：https://uniquehealth.lefuenergy.com/unique-open-web/#/document
+找到"乐福体脂秤自建服务器接入方案"-> PeripheralApple 对应"V2.0协议设备"
+
 
 ```mermaid 
 graph TD 
@@ -629,19 +679,24 @@ A1-->B3[历史数据失败回调<br>monitorHistoryFail]
 - 确保账号密码正确
 - 确保秤端使用的Server地址与App使用的Server地址对应
 
+**注意**
+注意：域名在您自己的App中需要换成你App自己的服务器域名，并确保服务器已完成Wifi体脂秤相关功能开发，
+文档地址：https://uniquehealth.lefuenergy.com/unique-open-web/#/document
+找到"乐福体脂秤自建服务器接入方案"-> PeripheralIce/PeripheralTorre 对应"Torre系列产品"
+
 ```mermaid 
 graph TD 
-A[检测是否支持配网<br>PPScaleHelper.isFuncTypeWifi]--支持-->A1[获取Wifi列表<br>getWifiList<br>注册Wifi列表回调<br>PPTorreConfigWifiInterface]  
-A--不支持-->A2[处理UI展示]  
-A1-->B1[Wifi列表返回成功<br>monitorWiFiListSuccess]-->B2[为空-周围没有支持的Wifi]  
-B1-->B3[不为空]-->B4[展示Wifi列表]-->B5[用户选则一个Wifi]-->B6[输入密码]  
-B6-->D[开始下发配网信息<br>configWifi:domainName,ssid,password,configWifiInterface]-->C  
-D--用户在配网中途退出-->E[用户手动返回-退出配网<br>exitConfigWifi]  
-A1-->C[配网状态<br>configResult]  
-C-->C1[配网成功<br>CONFIG_STATE_SUCCESS]-->C11[返回入口,重新获取WifiSSID<br>getWifiSSID]  
-C-->C2[配网失败<br>详细看枚举类PPConfigStateMenu]-->C21[提示用户,排查原因]-->C22[重新配网]  
-C-->C3[退出配网状态<br>CONFIG_STATE_EXIT]  
-```  
+A[检测是否支持配网<br>PPScaleHelper.isFuncTypeWifi]--支持-->A1[获取Wifi列表<br>getWifiList<br>注册Wifi列表回调<br>PPConfigWifiInfoInterface] 
+A--不支持-->A2[处理UI展示] 
+A1-->B1[Wifi列表返回成功<br>monitorWiFiListSuccess]-->B2[为空-周围没有支持的Wifi] 
+B1-->B3[不为空]-->B4[展示Wifi列表]-->B5[用户选则一个Wifi]-->B6[输入密码] 
+B6-->D[开始下发服务器域名<br>sendModifyServerDomain:domainName, PPConfigWifiInfoInterface]-->F[服务器域名修改成功<br>monitorModifyServerDomainSuccess]
+F-->G[配置SSID和密码<br>configWifiData:ssid, pwd,PPConfigWifiInfoInterface]
+G-->H1[配置SSID和密码成功<br>monitorConfigSn]
+G-->H2[配置SSID和密码失败<br>monitorConfigFail]-->C21[提示用户,排查原因]-->C22[重新配网] 
+D--用户在配网中途退出-->E[用户手动返回-退出配网<br>exitConfigWifi] 
+A1-->C[Wifi列表返回失败<br>monitorWiFiListFail]-->C21
+```
 
 ### 2.10 PeripheralJambul功能说明 -PeripheralJambulActivity
 
@@ -710,12 +765,17 @@ G-->H1[用户同步失败<br>syncUserInfoFail]-->H11[提示用户]
 #### 2.11.3 完整的配网流程
 
 **前提：蓝牙已连接**  
-注意：
 
+注意：
 - 确保Server正常，路由器能正常连接到Server
 - 确保WiFi环境是2.4G或2.4/5G混合模式，不支持单5G模式
 - 确保账号密码正确
 - 确保秤端使用的Server地址与App使用的Server地址对应
+
+**注意**
+注意：域名在您自己的App中需要换成你App自己的服务器域名，并确保服务器已完成Wifi体脂秤相关功能开发，
+文档地址：https://uniquehealth.lefuenergy.com/unique-open-web/#/document
+找到"乐福体脂秤自建服务器接入方案"-> PeripheralIce/PeripheralTorre 对应"Torre系列产品"
 
 ```mermaid 
 graph TD 
@@ -792,10 +852,6 @@ B3-->D[将数据作为无主数据存储,让用户自己去认领数据]
 |游客历史数据| syncTouristHistory ||PPHistoryDataInterface|
 |恢复出厂| resetDevice |deviceFuncType|Boolean|true支持 false不支持|  
 |启动保活| startKeepAlive |||无需主动退出保活|  
-
-### 2.10 PeripheralIce功能说明 -PeripheralIceActivity
-
-### 2.11 PeripheralJambul功能说明 -PeripheralJambulActivity
 
 ## Ⅵ .实体类对象及具体参数说明
 

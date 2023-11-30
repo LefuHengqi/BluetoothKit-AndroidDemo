@@ -54,6 +54,7 @@
                 android:drawablePadding="16dp"
                 android:hint="@string/wifi_config_key_hint"
                 android:maxLines="1"
+                android:inputType="textPassword"
                 android:text=""
                 android:textAlignment="viewStart" />
 
