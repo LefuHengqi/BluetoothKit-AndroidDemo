@@ -21,7 +21,6 @@
         <activity android:name="com.lefu.ppscale.wifi.activity.BleConfigWifiActivity"></activity>
         <activity android:name="com.lefu.ppscale.wifi.activity.WifiBodyDataDetailActivity" />
         <activity android:name="com.lefu.ppscale.wifi.data.WifiDataListActivity" />
-        <activity android:name="com.lefu.ppscale.wifi.develop.DeveloperActivity" />
 
     </application>
 
