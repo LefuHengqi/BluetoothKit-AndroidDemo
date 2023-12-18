@@ -31,12 +31,12 @@ object FoodScaleCacluteHelper {
             val unit = Energy.toG(value, type, deviceModel.deviceAccuracyType)
             if (unit is EnergyUnitLbOz) {
                 val split = ":"
-                val values = unit.format().split(split.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val values = unit.format(type).split(split.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 val unitText = UnitUtil.unitText(context, type)
                 val units = unitText.split(split.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 values[0] + split + values[1] + units[0] + split + units[1]
             } else {
-                val num = unit.format()
+                val num = unit.format(type)
                 val unitText = UnitUtil.unitText(context, type)
                 num + unitText
             }
