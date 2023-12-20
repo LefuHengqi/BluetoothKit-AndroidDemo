@@ -155,9 +155,9 @@ class PeripheralTorreActivity : AppCompatActivity() {
 //            controller?.getTorreDeviceManager()?.getWifiList(configWifiInterface)
 //        }
         findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
-            if (PPScaleHelper.isFuncTypeWifi(PeripheralIceActivity.deviceModel?.deviceFuncType)) {
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
                 addPrint("startConfigWifi pager")
-                PeripheralTorreSearchWifiListActivity.deviceModel = PeripheralIceActivity.deviceModel
+                PeripheralTorreSearchWifiListActivity.deviceModel = deviceModel
                 startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
             } else {
                 addPrint("device does not support")
@@ -165,7 +165,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
             addPrint("getWifiSSID")
-            if (PPScaleHelper.isFuncTypeWifi(PeripheralIceActivity.deviceModel?.deviceFuncType)) {
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
                 controller?.getTorreDeviceManager()?.getWifiSSID(configWifiInterface)
             } else {
                 addPrint("device does not support")
@@ -173,7 +173,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.getWifiMac).setOnClickListener {
             addPrint("getWifiMac")
-            if (PPScaleHelper.isFuncTypeWifi(PeripheralIceActivity.deviceModel?.deviceFuncType)) {
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
                 controller?.getTorreDeviceManager()?.getWifiMac(configWifiInterface)
             } else {
                 addPrint("device does not support")
