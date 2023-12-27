@@ -243,8 +243,8 @@ class PeripheralTorreActivity : AppCompatActivity() {
                     device_ota_layout.visibility = View.VISIBLE
                     device_dfu_layout.visibility = View.GONE
                 } else {
-                    device_dfu_layout.visibility = View.VISIBLE
                     device_ota_layout.visibility = View.GONE
+                    device_dfu_layout.visibility = View.VISIBLE
                 }
             } else {
                 device_dfu_layout.visibility = View.GONE
