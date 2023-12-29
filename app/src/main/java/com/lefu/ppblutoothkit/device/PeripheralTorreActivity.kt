@@ -235,21 +235,12 @@ class PeripheralTorreActivity : AppCompatActivity() {
             addPrint("startLocalOTA 本地必须有Test的Wifi, 且密码是：12345678 秤会自动连接该Wifi")
             controller?.getTorreDeviceManager()?.startLocalOTA(otaStateListener)
         }
-        findViewById<ToggleButton>(R.id.developerModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
-            addPrint("developer Mode isChecked:$isChecked")
-            //0打开 1关闭
-            if (isChecked) {
-                if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
-                    device_ota_layout.visibility = View.VISIBLE
-                    device_dfu_layout.visibility = View.GONE
-                } else {
-                    device_ota_layout.visibility = View.GONE
-                    device_dfu_layout.visibility = View.VISIBLE
-                }
-            } else {
-                device_dfu_layout.visibility = View.GONE
-                device_ota_layout.visibility = View.GONE
-            }
+        if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+            device_ota_layout.visibility = View.VISIBLE
+            device_dfu_layout.visibility = View.GONE
+        } else {
+            device_ota_layout.visibility = View.GONE
+            device_dfu_layout.visibility = View.VISIBLE
         }
         findViewById<ToggleButton>(R.id.pregnancyModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
             addPrint("maternity mode isChecked:$isChecked")
