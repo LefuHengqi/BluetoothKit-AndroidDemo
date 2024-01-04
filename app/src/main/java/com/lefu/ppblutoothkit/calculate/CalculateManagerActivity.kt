@@ -15,6 +15,7 @@ class CalculateManagerActivity : Activity(), View.OnClickListener {
 
         findViewById<Button>(R.id.dc4).setOnClickListener(this)
         findViewById<Button>(R.id.ac4).setOnClickListener(this)
+        findViewById<Button>(R.id.ac4_2channel).setOnClickListener(this)
         findViewById<Button>(R.id.ac8).setOnClickListener(this)
 
         setTitle("Caculate")
@@ -27,6 +28,10 @@ class CalculateManagerActivity : Activity(), View.OnClickListener {
                 startActivity(Intent(this@CalculateManagerActivity, Calculate4DCActivitiy::class.java))
             }
             R.id.ac4 -> {
+                //4电极交流算法  24项数据
+                startActivity(Intent(this@CalculateManagerActivity, Calculate4AC2ChannelActivitiy::class.java))
+            }
+            R.id.ac4_2channel -> {
                 //4电极交流算法  24项数据
                 startActivity(Intent(this@CalculateManagerActivity, Calculate4ACActivitiy::class.java))
             }

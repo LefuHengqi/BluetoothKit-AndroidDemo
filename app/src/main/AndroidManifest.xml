@@ -54,6 +54,7 @@
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy" />
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy" />
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy" />
 
         <!--Torre-->
         <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity" />

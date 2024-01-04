@@ -121,6 +121,7 @@
     <string name="heartrate_mesuring">心率测量中...</string>
     <string name="measure_complete">测量完成</string>
     <string name="_4dc">4电极直流算法</string>
+    <string name="_4ac2channel">4电极双频算法</string>
     <string name="_4ac">4电极交流算法</string>
     <string name="_8ac">8电极算法</string>
     <string name="Impedance_measurement">阻抗测量中</string>

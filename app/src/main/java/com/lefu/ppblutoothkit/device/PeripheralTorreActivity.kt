@@ -551,7 +551,8 @@ class PeripheralTorreActivity : AppCompatActivity() {
     }
 
     val userInfoInterface = object : PPUserInfoInterface {
-        override fun getUserListSuccess(memberIDs: MutableList<String>?) {
+
+        override fun getUserListSuccess(memberIDs: List<String?>?) {
             addPrint("getUserListSuccess ${memberIDs.toString()}")
         }
 
