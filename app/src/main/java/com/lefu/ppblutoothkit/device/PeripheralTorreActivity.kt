@@ -24,6 +24,7 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.view.MsgDialog
+import com.peng.ppscale.PPBlutoothKit
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.device.PPUnitType
@@ -513,8 +514,14 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
     val onDFUStateListener = object : OnDFUStateListener {
 
+        override fun onDfuStart() {
+            addPrint("onDfuStart")
+            PPBlutoothKit.setDebug(false)
+        }
+
         override fun onDfuFail(errorType: String?) {
             addPrint("onDfuFail $errorType")
+            PPBlutoothKit.setDebug(true)
         }
 
         override fun onInfoOout(outInfo: String?) {
@@ -531,6 +538,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
         override fun onDfuSucess() {
             addPrint("onDfuSucess")
+            PPBlutoothKit.setDebug(true)
         }
 
     }
@@ -695,7 +703,6 @@ class PeripheralTorreActivity : AppCompatActivity() {
             //当单选选了一个文件后返回
             if (data.data != null) {
                 handleSingleDocument(data)
-            } else {
                 //多选
                 val clipData = data.clipData
                 if (clipData != null) {
@@ -724,6 +731,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         if (controller?.getTorreDeviceManager()?.isDFU ?: false) {
+            PPBlutoothKit.setDebug(true)
             controller?.getTorreDeviceManager()?.stopDFU()
         }
     }
