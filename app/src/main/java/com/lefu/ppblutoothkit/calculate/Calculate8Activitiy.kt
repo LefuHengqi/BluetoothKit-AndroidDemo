@@ -29,7 +29,6 @@ class Calculate8Activitiy : Activity() {
 
     var deviceName: String = ""
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculate_8ac)
@@ -42,15 +41,18 @@ class Calculate8Activitiy : Activity() {
         adapter.add("Product1")
         adapter.add("Product3")
         adapter.add("Product4")
+        adapter.add("Product0")
         spinner?.setAdapter(adapter)
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8//8电极算法, bhProduct=1--CF577
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8//8电极算法, bhProduct =1--CF577
                 } else if (position == 1) {
                     calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1//8电极算法，bhProduct =3--CF586
                 } else if (position == 2) {
                     calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0//8电极算法，bhProduct =4--CF597
+                } else if (position == 3) {
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2//8电极算法，bhProduct =0--CF610
                 }
             }
 
@@ -93,6 +95,9 @@ class Calculate8Activitiy : Activity() {
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0) {
                 // 8电极算法，bhProduct =4--CF597
                 spinner?.setSelection(2)
+            } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2) {
+                // 8电极算法，bhProduct =4--CF597
+                spinner?.setSelection(3)
             }
         }
     }

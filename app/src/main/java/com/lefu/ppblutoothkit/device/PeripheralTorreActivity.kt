@@ -521,7 +521,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
         override fun onDfuFail(errorType: String?) {
             addPrint("onDfuFail $errorType")
-            PPBlutoothKit.setDebug(true)
+//            PPBlutoothKit.setDebug(true)
         }
 
         override fun onInfoOout(outInfo: String?) {
@@ -538,7 +538,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
         override fun onDfuSucess() {
             addPrint("onDfuSucess")
-            PPBlutoothKit.setDebug(true)
+//            PPBlutoothKit.setDebug(true)
         }
 
     }
@@ -730,8 +730,8 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+//        PPBlutoothKit.setDebug(true)
         if (controller?.getTorreDeviceManager()?.isDFU ?: false) {
-            PPBlutoothKit.setDebug(true)
             controller?.getTorreDeviceManager()?.stopDFU()
         }
     }
