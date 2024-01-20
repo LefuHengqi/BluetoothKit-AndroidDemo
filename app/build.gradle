@@ -58,7 +58,6 @@ android {
         multiDexEnabled true
     }
 
-
     bundle {
         density {
             // Different APKs are generated for devices with different screen densities; true by default.

@@ -12,4 +12,9 @@
         android:title="导出设备日志"
         app:showAsAction="collapseActionView" />
 
+    <item
+        android:id="@+id/menu_item_export_test_log"
+        android:title="导出测试报告"
+        app:showAsAction="collapseActionView" />
+
 </menu>

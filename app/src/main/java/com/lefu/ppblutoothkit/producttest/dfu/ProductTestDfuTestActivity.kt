@@ -5,15 +5,15 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
+import com.lefu.ppblutoothkit.producttest.TestResultVo
 import com.lefu.ppblutoothkit.producttest.devicelist.ProductTestDeviceListActivity
 import com.lefu.ppblutoothkit.util.FilePermissionUtil
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
@@ -37,8 +38,11 @@ import com.peng.ppscale.vo.PPScaleDefine
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDeviceMacTv
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDeviceNameTv
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDfuFirmwareVersionTv
+import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDfuSelectFilePathBtn
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDfuTestNumEt
+import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mSelectDeviceBtn
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
+import kotlinx.android.synthetic.main.product_test_dfu_test_activity.startTestBtn
 
 
 class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
@@ -52,6 +56,9 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
     var controller: PPBlutoothPeripheralTorreController? =
         PPBlutoothPeripheralTorreInstance.instance.controller
     var toolbar: Toolbar? = null
+    var isTesting = false//是否正在测试
+    var testResultVo = TestResultVo()//测量结果
+    var allLen: Long = 1//固件总长
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -59,11 +66,12 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.product_test_dfu_test_activity)
         initToolbar()
-        findViewById<Button>(R.id.startTestBtn).setOnClickListener(this)
-        findViewById<TextView>(R.id.mDfuSelectFilePathBtn).setOnClickListener(this)
-        findViewById<TextView>(R.id.mSelectDeviceBtn).setOnClickListener(this)
+        startTestBtn?.setOnClickListener(this)
+        mDfuSelectFilePathBtn.setOnClickListener(this)
+        mSelectDeviceBtn.setOnClickListener(this)
 
         initLogView()
         initSpinnerView()
@@ -83,9 +91,19 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
 
                 R.id.menu_item_export_device_log -> {
                     addPrint("syncLog")
-                    //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
-                    val fileFath = filesDir.absolutePath + "/Log/DeviceLog"
-                    controller?.getTorreDeviceManager()?.syncLog(fileFath, deviceLogInterface)
+                    if (deviceModel != null && controller?.connectState() ?: false) {
+                        //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
+                        val fileFath = filesDir.absolutePath + "/Log/DeviceLog"
+                        controller?.getTorreDeviceManager()?.syncLog(fileFath, deviceLogInterface)
+                    } else {
+                        showToast("设备未连接")
+                    }
+                    true
+                }
+
+                R.id.menu_item_export_test_log -> {
+                    addPrint("Export test report")
+                    exportTestReport()
                     true
                 }
 
@@ -180,6 +198,13 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
                 if (dfuFileVo != null && dfuFileVo.packageVersion.isNullOrBlank().not()) {
                     mDfuFirmwareVersionTv?.text = dfuFileVo.packageVersion
                     addPrint("DFU File Info: $dfuFileVo")
+                    val dataVos = DfuHelper.getDfuFileByte(dfuFilePath)
+                    for (dataVo1 in dataVos) {
+                        allLen += dataVo1.data.size.toLong()
+                    }
+                    addPrint("DFU File All Len: $allLen")
+
+
                 } else {
                     mTestStateTv?.text = "固件解析失败"
                     addPrint("DFU 固件解析失败")
@@ -203,39 +228,76 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
             }
 
             R.id.startTestBtn -> {
-                if (dfuFilePath.isNullOrBlank().not()) {
-                    if (deviceModel != null && deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
-                        val totalNum = mDfuTestNumEt?.text?.toString()?.toInt() ?: 0//总次数
-                        if (totalNum > 0) {
-                            deviceModel?.let {
-                                mTestStateTv?.text = "开始连接"
-                                controller?.startConnect(it, bleStateInterface)
-                            }
-                        } else {
-                            showToast("请输入正确的OTA次数")
-                        }
-                    } else {
-                        mTestStateTv?.text = "请选则设备"
-                        addPrint("Error: Device type error or Device is null,Please select device")
-                    }
+                if (!isTesting) {
+                    startTest()
                 } else {
-                    mTestStateTv?.text = "未选择升级固件"
-                    //本地升级时未选则升级文件
-                    addPrint("Error: Upgrade files if not selected during local upgrade")
+                    isTesting = false
+                    startTestBtn?.setText("开始测试")
+                    testResultVo.endTime = System.currentTimeMillis()
+                    stopTest()
                 }
             }
 
             R.id.mSelectDeviceBtn -> {
                 ProductTestDeviceListActivity.filterName = deviceNickName ?: ""
                 ProductTestDeviceListActivity.searchType = 1
-                startActivity(
-                    Intent(
-                        this@ProductTestDfuTestActivity,
-                        ProductTestDeviceListActivity::class.java
-                    )
-                )
+                startActivity(Intent(this@ProductTestDfuTestActivity, ProductTestDeviceListActivity::class.java))
             }
         }
+    }
+
+    private fun stopTest() {
+        if (controller?.getTorreDeviceManager()?.isDFU == true) {
+            controller?.getTorreDeviceManager()?.stopDFU()
+        }
+        controller?.stopSeach()
+        controller?.disConnect()
+    }
+
+    private fun startTest() {
+        if (dfuFilePath.isNullOrBlank().not()) {
+            if (deviceModel != null && deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
+                val totalNum = mDfuTestNumEt?.text?.toString()?.toInt() ?: 0//总次数
+                if (totalNum > 0) {
+                    deviceModel?.let {
+                        isTesting = true
+                        currentNum =0
+                        startTestBtn?.setText("停止测试")
+                        if (controller?.connectState()?.not() == true) {
+                            addPrint("开始连接")
+                            mTestStateTv?.text = "开始连接"
+                            initResultVo(totalNum)
+                            controller?.startConnect(it, bleStateInterface)
+                        } else {
+                            addPrint("设备已连接")
+                        }
+                    }
+                } else {
+                    showToast("请输入正确的OTA次数")
+                }
+            } else {
+                mTestStateTv?.text = "请选则设备"
+                addPrint("Error: Device type error or Device is null,Please select device")
+            }
+        } else {
+            mTestStateTv?.text = "未选择升级固件"
+            //本地升级时未选则升级文件
+            addPrint("Error: Upgrade files if not selected during local upgrade")
+        }
+    }
+
+    private fun initResultVo(totalNum: Int) {
+        testResultVo.initObj()
+        testResultVo.deviceModel = deviceModel?.deviceName ?: ""
+        testResultVo.deviceMac = deviceModel?.deviceMac ?: ""
+        val model = Build.MODEL
+        val brand = Build.BRAND
+        Logger.d("手机型号 $model 手机品牌 $brand ")
+        testResultVo.phoneModel = "$brand $model"
+        testResultVo.firmwareVersion = mDfuFirmwareVersionTv?.text?.toString() ?: ""
+        testResultVo.packagesSize = allLen
+        testResultVo.planNum = totalNum
+        testResultVo.startTime = System.currentTimeMillis()
     }
 
     fun addPrint(msg: String) {
@@ -282,6 +344,7 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
                 mTestStateTv?.text = getString(R.string.scan_timeout)
                 addPrint(getString(R.string.scan_timeout))
+                testResultVo.endTime = System.currentTimeMillis()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 mTestStateTv?.text = getString(R.string.scanning)
                 addPrint(getString(R.string.scanning))
@@ -308,5 +371,9 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopTest()
+    }
 
 }
