@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BuildConfig
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.producttest.dfu.ProductTestDfuTestActivity
+import com.peng.ppscale.PPBlutoothKit
 
 
 class ProductTestManagerActivity : Activity(), View.OnClickListener {
@@ -22,18 +23,15 @@ class ProductTestManagerActivity : Activity(), View.OnClickListener {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = "ProductTest V" + BuildConfig.VERSION_NAME
         toolbar.setTitleTextColor(Color.WHITE)
+        //产测程序，默认开启日志功能
+        PPBlutoothKit.setDebug(true)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.torreDfuTest -> {
                 //4电极直流算法
-                startActivity(
-                    Intent(
-                        this@ProductTestManagerActivity,
-                        ProductTestDfuTestActivity::class.java
-                    )
-                )
+                startActivity(Intent(this@ProductTestManagerActivity, ProductTestDfuTestActivity::class.java))
             }
         }
     }

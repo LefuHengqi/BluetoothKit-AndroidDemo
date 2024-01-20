@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
@@ -72,6 +73,25 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
         toolbar = findViewById(R.id.toolbar)
         toolbar?.title = "TestDFU"
         toolbar?.setTitleTextColor(Color.WHITE)
+        toolbar?.inflateMenu(R.menu.toolbar_menu)
+        toolbar?.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_item_export_app_log -> {
+                    startUploadLog()
+                    true
+                }
+
+                R.id.menu_item_export_device_log -> {
+                    addPrint("syncLog")
+                    //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
+                    val fileFath = filesDir.absolutePath + "/Log/DeviceLog"
+                    controller?.getTorreDeviceManager()?.syncLog(fileFath, deviceLogInterface)
+                    true
+                }
+
+                else -> super.onOptionsItemSelected(it)
+            }
+        }
     }
 
     private fun initSpinnerView() {

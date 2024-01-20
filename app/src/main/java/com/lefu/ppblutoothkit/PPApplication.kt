@@ -2,8 +2,11 @@ package com.lefu.ppblutoothkit
 
 import android.app.Application
 import com.lefu.base.SettingManager
+import com.lefu.ppblutoothkit.util.LogUtils
+import com.lefu.ppblutoothkit.util.log.MyQueueLinkedUtils
 import com.lefu.ppscale.db.dao.DBManager
 import com.peng.ppscale.PPBlutoothKit
+import com.peng.ppscale.util.OnLogCallBack
 
 class PPApplication : Application() {
 
@@ -17,15 +20,36 @@ class PPApplication : Application() {
         DBManager.initGreenDao(this)
         //SP缓存
         SettingManager.get(this)
+        //日志写入文件
+        MyQueueLinkedUtils.start(this)
+        PPBlutoothKit.setDebugLogCallBack(object : OnLogCallBack() {
+            override fun logd(s: String?, s1: String?) {
+                s1?.let { LogUtils.writeBluetoothLog(it) }
+            }
+
+            override fun logv(s: String?, s1: String?) {
+//                LogUtils.INSTANCE.writeBluetoothLog(s1);
+            }
+
+            override fun logw(s: String?, s1: String?) {
+                s1?.let { LogUtils.writeBluetoothLog(it) }
+            }
+
+            override fun loge(s: String?, s1: String?) {
+                s1?.let { LogUtils.writeBluetoothLog(it) }
+            }
+        })
         /*********************以下内容为SDK的配置项***************************************/
         //SDK日志打印控制，true会打印
         PPBlutoothKit.setDebug(BuildConfig.DEBUG)
         /**
          * SDK 初始化 所需参数需要自行到开放平台自行申请，请勿直接使用Demo中的参数，
+         * Demo中的参数仅供Demo使用
          * @param appKey App的标识
          * @param appSecret Appp的密钥
          * @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK
          */
         PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
     }
+
 }
