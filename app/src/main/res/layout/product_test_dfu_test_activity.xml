@@ -13,26 +13,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dimens_20dp"
-        android:layout_marginTop="@dimen/dimens_10dp"
+        android:layout_marginTop="@dimen/dimens_20dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/mDeviceNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="当前设备："
-                android:textColor="@android:color/black" />
+                android:text="蓝牙名称"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_sp16"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/mDeviceMac"
+                android:id="@+id/mDeviceMacTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FF:FF:FF:FF:FF:FF"
-                android:textColor="@android:color/holo_blue_light" />
+                android:text="Mac"
+                android:textColor="@android:color/darker_gray" />
 
         </LinearLayout>
 
@@ -52,7 +56,7 @@
                 android:id="@+id/mTestStateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="未开始"
+                android:text="未选择设备"
                 android:textColor="@android:color/holo_blue_light" />
 
         </LinearLayout>
@@ -64,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dimens_20dp"
+        android:layout_marginTop="@dimen/dimens_5dp"
         android:orientation="horizontal">
 
         <TextView
@@ -91,6 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dimens_20dp"
+        android:layout_marginTop="@dimen/dimens_5dp"
         android:orientation="horizontal">
 
         <TextView

@@ -5,9 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -23,7 +21,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.BuildConfig
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppblutoothkit.producttest.devicelist.ProductTestDeviceListActivity
@@ -31,11 +28,14 @@ import com.lefu.ppblutoothkit.util.FilePermissionUtil
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
+import com.peng.ppscale.business.torre.dfu.DfuHelper
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPScaleDefine
-import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDeviceMac
+import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDeviceMacTv
+import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDeviceNameTv
+import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDfuFirmwareVersionTv
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDfuTestNumEt
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
@@ -50,6 +50,7 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
     var deviceNickName: String? = null//设备类型过滤器，所填内容必须包含在蓝牙名称里面
     var controller: PPBlutoothPeripheralTorreController? =
         PPBlutoothPeripheralTorreInstance.instance.controller
+    var toolbar: Toolbar? = null
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -68,9 +69,9 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
     }
 
     private fun initToolbar() {
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.title = "TestDFU"
-        toolbar.setTitleTextColor(Color.WHITE)
+        toolbar = findViewById(R.id.toolbar)
+        toolbar?.title = "TestDFU"
+        toolbar?.setTitleTextColor(Color.WHITE)
     }
 
     private fun initSpinnerView() {
@@ -111,8 +112,21 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        updateDeviceStateUI()
+    }
+
+    private fun updateDeviceStateUI() {
         if (deviceModel != null) {
-            mDeviceMac?.text = deviceModel?.deviceMac
+            mDeviceMacTv?.text = deviceModel?.deviceMac
+            mDeviceNameTv?.text = deviceModel?.deviceName
+        } else {
+            mTestStateTv?.text = "未选择设备"
+            return
+        }
+        if (dfuFilePath.isNullOrEmpty()) {
+            mTestStateTv?.text = "未选择固件"
+        } else {
+            mTestStateTv?.text = "未开始"
         }
     }
 
@@ -137,19 +151,19 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == REQUEST_CODE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//            if (Environment.isExternalStorageManager()) {
-//                FilePermissionUtil.performFileSearch(this, REQUEST_CODE)
-//            } else {
-//                showToast("存储权限获取失败")
-//            }
-//        } else
         if (resultCode == AppCompatActivity.RESULT_OK && data != null) {
             //当单选选了一个文件后返回
             if (data.data != null) {
-                dfuFilePath =
-                    FilePermissionUtil.handleSingleDocument(this@ProductTestDfuTestActivity, data)
+                dfuFilePath = FilePermissionUtil.handleSingleDocument(this@ProductTestDfuTestActivity, data)
                 addPrint("DFU 文件解压路径：$dfuFilePath")
+                val dfuFileVo = DfuHelper.getDfuFile(dfuFilePath)
+                if (dfuFileVo != null && dfuFileVo.packageVersion.isNullOrBlank().not()) {
+                    mDfuFirmwareVersionTv?.text = dfuFileVo.packageVersion
+                    addPrint("DFU File Info: $dfuFileVo")
+                } else {
+                    mTestStateTv?.text = "固件解析失败"
+                    addPrint("DFU 固件解析失败")
+                }
                 //多选
 //                val clipData = data.clipData
 //                if (clipData != null) {
@@ -171,18 +185,23 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
             R.id.startTestBtn -> {
                 if (dfuFilePath.isNullOrBlank().not()) {
                     if (deviceModel != null && deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
-                        val totalNum = mDfuTestNumEt?.text.toString().toInt()//总次数
+                        val totalNum = mDfuTestNumEt?.text?.toString()?.toInt() ?: 0//总次数
                         if (totalNum > 0) {
                             deviceModel?.let {
+                                mTestStateTv?.text = "开始连接"
                                 controller?.startConnect(it, bleStateInterface)
                             }
+                        } else {
+                            showToast("请输入正确的OTA次数")
                         }
                     } else {
+                        mTestStateTv?.text = "请选则设备"
                         addPrint("Error: Device type error or Device is null,Please select device")
                     }
                 } else {
+                    mTestStateTv?.text = "未选择升级固件"
                     //本地升级时未选则升级文件
-                    addPrint("Upgrade files if not selected during local upgrade")
+                    addPrint("Error: Upgrade files if not selected during local upgrade")
                 }
             }
 

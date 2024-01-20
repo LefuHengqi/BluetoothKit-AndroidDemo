@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/dimens_50dp"
-        android:gravity="center"
+        android:layout_marginVertical="@dimen/dimens_50dp"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <Button
@@ -24,6 +25,7 @@
             android:layout_marginEnd="8dp"
             android:text="TorreDFU压测"
             android:textAllCaps="false" />
+
 
     </LinearLayout>
 
