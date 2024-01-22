@@ -12,8 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimens_100dp"
         android:layout_marginHorizontal="@dimen/dimens_50dp"
+        android:layout_marginTop="@dimen/dimens_100dp"
         android:orientation="vertical">
 
         <Button
@@ -43,7 +43,8 @@
             android:layout_marginTop="@dimen/dimens_50dp"
             android:layout_marginEnd="8dp"
             android:text="产测工具"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:visibility="gone" />
 
     </LinearLayout>
 
