@@ -1,4 +1,4 @@
-package com.lefu.ppscale.wifi.net.okhttp;
+package com.lefu.ppblutoothkit.okhttp;
 
 import com.lefu.ppscale.wifi.BuildConfig;
 
@@ -29,7 +29,7 @@ public class NetUtil {
     public static String SAVE_WIFI_GROUP = GET_URL() + "/lefu/wifi/app/saveWifiGroup";
     //下发给秤的域名，用于秤访问服务器；自己项目中，请使用你自己的
 //    public static String SCALE_DOMAIN = "http://120.79.144.170:8288";
-    public static String SCALE_DOMAIN = "http://health-api.duoduiduo.com";
+    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082";
 
 
 }

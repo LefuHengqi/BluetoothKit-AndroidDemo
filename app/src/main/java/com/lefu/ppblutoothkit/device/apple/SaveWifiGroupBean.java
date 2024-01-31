@@ -1,6 +1,8 @@
-package com.lefu.ppscale.wifi.net.okhttp.vo;
+package com.lefu.ppblutoothkit.device.apple;
 
-public class SaveWifiGroupBean {
+import java.io.Serializable;
+
+public class SaveWifiGroupBean implements Serializable {
 
     int code;
 

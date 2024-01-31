@@ -1,4 +1,4 @@
-package com.lefu.ppscale.wifi.activity;
+package com.lefu.ppblutoothkit.device.apple;
 
 import android.os.Bundle;
 import android.widget.TextView;

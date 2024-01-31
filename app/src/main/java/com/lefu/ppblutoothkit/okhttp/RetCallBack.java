@@ -1,4 +1,4 @@
-package com.lefu.ppscale.wifi.net.okhttp;
+package com.lefu.ppblutoothkit.okhttp;
 
 import android.text.TextUtils;
 
@@ -14,7 +14,7 @@ import okhttp3.Response;
 public abstract class RetCallBack<T> extends Callback<T> {
     private Class<T> tClass;
 
-    protected RetCallBack(Class<T> clazz) {
+    public RetCallBack(Class<T> clazz) {
         this.tClass = clazz;
     }
 

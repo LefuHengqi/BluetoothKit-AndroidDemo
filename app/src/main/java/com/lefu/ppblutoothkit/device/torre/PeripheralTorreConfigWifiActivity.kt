@@ -9,13 +9,13 @@ import android.widget.TextView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
+import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.peng.ppscale.business.ble.configWifi.PPConfigStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPScaleDefine
-import com.peng.ppscale.vo.PPWifiModel
 
 class PeripheralTorreConfigWifiActivity : Activity() {
 
@@ -45,7 +45,8 @@ class PeripheralTorreConfigWifiActivity : Activity() {
             //注意：域名在您自己的App中需要换成你App自己的服务器域名，并确保服务器已完成Wifi体脂秤相关功能开发，
             //https://uniquehealth.lefuenergy.com/unique-open-web/#/document
             //找到"乐福体脂秤自建服务器接入方案"-> PeripheralIce/PeripheralTorre 对应"Torre系列产品"
-            val domainName = "http://nat.lefuenergy.com:10082"
+//            val domainName = "http://nat.lefuenergy.com:10082"
+            val domainName = NetUtil.SCALE_DOMAIN
 //            val domainName = "http://test-mirrorapi.ruleye.com"
             configResultTV?.text =getString(R.string.start_config_net)
             if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {

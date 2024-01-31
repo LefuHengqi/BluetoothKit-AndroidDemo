@@ -1,6 +1,5 @@
-package com.lefu.ppscale.wifi.adapter;
+package com.lefu.ppblutoothkit.device.apple;
 
-import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
 import com.lefu.ppscale.wifi.R;
 import com.lefu.ppscale.wifi.data.WifiDataBean;
-import com.lefu.ppscale.wifi.data.WifiDataVo;
 import com.lefu.ppscale.wifi.util.WifiUtil;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.util.PPUtil;

@@ -1,4 +1,4 @@
-package com.lefu.ppscale.wifi.net.okhttp;
+package com.lefu.ppblutoothkit.okhttp;
 
 import com.zhy.http.okhttp.OkHttpUtils;
 

@@ -1,6 +1,5 @@
 package com.lefu.ppblutoothkit.device
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -17,9 +16,8 @@ import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.view.MsgDialog
-import com.lefu.ppscale.wifi.activity.BleConfigWifiActivity
+import com.lefu.ppblutoothkit.device.apple.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.*
@@ -160,7 +158,6 @@ class PeripheralAppleActivity : AppCompatActivity() {
         findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
             addPrint("startConfigWifi")
             if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
-                controller?.disConnect()
                 val intent = Intent(this@PeripheralAppleActivity, BleConfigWifiActivity::class.java)
                 intent.putExtra("address", deviceModel?.deviceMac)
                 startActivity(intent)

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -13,9 +12,6 @@ import android.widget.Spinner
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
-import com.lefu.ppscale.wifi.data.WifiDataVo.Data
-import com.peng.ppscale.business.device.DeviceManager
-import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_calculate_8ac.*
 

@@ -1,4 +1,4 @@
-package com.lefu.ppscale.wifi.activity
+package com.lefu.ppblutoothkit.device.apple
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,41 +12,28 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.lefu.base.SettingManager
-import com.lefu.ppscale.db.dao.DBManager
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppscale.wifi.R
-import com.lefu.ppscale.wifi.net.okhttp.DataTask
-import com.lefu.ppscale.wifi.net.okhttp.NetUtil
-import com.lefu.ppscale.wifi.net.okhttp.RetCallBack
-import com.lefu.ppscale.wifi.net.okhttp.vo.SaveWifiGroupBean
+import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppscale.wifi.util.WifiUtil
-import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
-import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
-import com.peng.ppscale.business.ble.listener.PPBleStateInterface
-import com.peng.ppscale.business.ble.listener.ProtocalFilterImpl
-import com.peng.ppscale.business.state.PPBleSwitchState
-import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.util.Logger
-import com.peng.ppscale.vo.PPDeviceModel
-import okhttp3.Call
 import java.lang.ref.WeakReference
 import java.util.*
 
 class BleConfigWifiActivity : AppCompatActivity() {
     var RET_CODE_SYSTEM_WIFI_SETTINGS = 8161
     private var etWifiName: EditText? = null
-    private var etWifiKey: EditText? = null
+    var etWifiKey: EditText? = null
     var mWifiUtil: WifiUtil? = null
     private var is2_4G = false //2.4G false    非2.4G true
     private var spHintTimer: Timer? = null
     private var spHintTimerTask: TimerTask? = null
     private var tvHint: TextView? = null
     private var tvOthers: TextView? = null
-    private var snTv: TextView? = null
-    private var address: String? = null
-    private var ssid: String? = null
-    var scaleDomain = NetUtil.SCALE_DOMAIN
-    private var tvNext: TextView? = null
+    var snTv: TextView? = null
+    var address: String? = null
+    var ssid: String? = null
+    var tvNext: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wifi_config)
@@ -92,100 +79,18 @@ class BleConfigWifiActivity : AppCompatActivity() {
     private fun startNextStep() {
         tvNext!!.isEnabled = false
         snTv!!.text = ""
-        val protocalFilter = ProtocalFilterImpl()
-        protocalFilter.configWifiInfoInterface = object : PPConfigWifiInfoInterface {
-            override fun monitorConfigSn(sn: String?, deviceModel: PPDeviceModel?) {
-                tvNext!!.isEnabled = true
-                //拿到sn 处理业务逻辑
-                Logger.e("xxxxxxxxxxxx-$sn")
-                Logger.e("xxxxxxxxxxxx-deviceName = " + deviceModel!!.deviceName + " mac = " + deviceModel.deviceMac)
-                stopPPScale()
-                snTv!!.text = "sn:$sn"
-                val map: MutableMap<String, String?> = HashMap()
-                map["sn"] = sn
-                map["uid"] = SettingManager.get().uid
-                DataTask.post(NetUtil.SAVE_WIFI_GROUP, map, object : RetCallBack<SaveWifiGroupBean>(SaveWifiGroupBean::class.java) {
-                    override fun onError(call: Call, e: Exception, id: Int) {
-                        Toast.makeText(this@BleConfigWifiActivity, R.string.config_wifi_fail, Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onResponse(response: SaveWifiGroupBean?, p1: Int) {
-                        response?.let {
-                            if (response.isStatus) {
-                                Toast.makeText(this@BleConfigWifiActivity, R.string.config_wifi_success, Toast.LENGTH_SHORT).show()
-                                val device = DBManager.manager().getDevice(address)
-                                if (device != null) {
-                                    device.sn = sn
-                                    device.ssid = ssid
-                                    DBManager.manager().updateDevice(device)
-                                }
-                                finish()
-                            } else {
-                                val content = if (TextUtils.isEmpty(response.msg)) getString(R.string.config_wifi_fail) else response.msg
-                                Toast.makeText(this@BleConfigWifiActivity, content, Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-                })
-            }
-
-            override fun monitorConfigSsid(ssid: String?, deviceModel: PPDeviceModel?) {}
-            override fun monitorConfigPassword(password: String?, deviceModel: PPDeviceModel?) {}
-            override fun monitorModifyServerDomainSuccess() {
-                Logger.d("Domain下发成功，开始下发配网")
-                //wifi秤配网
-                startConfigWifi(null)
-            }
-            override fun monitorModifyServerIpSuccess() {}
-            override fun monitorConfigFail() {}
-        }
-        //        ppScale.connectAddress(address);
-    }
-
-    var bleStateInterface: PPBleStateInterface = object : PPBleStateInterface() {
-        override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState, ppDeviceModel: PPDeviceModel) {
-            if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
-                Logger.d(getString(R.string.device_connected))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
-                Logger.d(getString(R.string.device_connecting))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
-                Logger.d(getString(R.string.device_disconnected))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
-                Logger.d(getString(R.string.stop_scanning))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
-                Logger.d(getString(R.string.stop_scanning))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
-                Logger.d(getString(R.string.scanning))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
-                Logger.d(getString(R.string.Writable))
-                sendModifyServerDomain()
-            } else {
-                Logger.e(getString(R.string.bluetooth_status_is_abnormal))
-            }
-        }
-
-        override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState) {
-            if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
-                Logger.e(getString(R.string.system_bluetooth_disconnect))
-                Toast.makeText(this@BleConfigWifiActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
-            } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
-                Logger.d(getString(R.string.system_blutooth_on))
-                Toast.makeText(this@BleConfigWifiActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
-            } else {
-                Logger.e(getString(R.string.system_bluetooth_abnormal))
-            }
-        }
+        sendModifyServerDomain()
     }
 
     /**
      * 绑定时请确保WIFI是2.4G，并且账号密码正确
      */
-    private fun startConfigWifi(sendResultCallBack: PPBleSendResultCallBack?) {
-        ssid = etWifiName!!.text.toString()
-        val password = etWifiKey!!.text.toString()
-        //        if (ppScale != null) {
-//            ppScale.configWifi(ssid, password, sendResultCallBack);
-//        }
+    fun startConfigWifi() {
+        ssid = etWifiName?.text.toString()
+        val password = etWifiKey?.text.toString()
+        ssid?.let {
+            PPBlutoothPeripheralAppleInstance.instance.controller?.configWifiData(it, password, configWifiInfoInterface)
+        }
     }
 
     /**
@@ -193,21 +98,13 @@ class BleConfigWifiActivity : AppCompatActivity() {
      */
     private fun sendModifyServerDomain() {
         Handler().postDelayed({
-            //                if (ppScale != null && !TextUtils.isEmpty(scaleDomain)) {
-//                    ppScale.sendModifyServerDNS(scaleDomain);
-//                } else {
-//                    startConfigWifi(null);
-//                }
+            var scaleDomain = NetUtil.SCALE_DOMAIN
+            if (!TextUtils.isEmpty(scaleDomain)) {
+                PPBlutoothPeripheralAppleInstance.instance.controller?.sendModifyServerDomain(scaleDomain, configWifiInfoInterface)
+            } else {
+                startConfigWifi()
+            }
         }, 500)
-    }
-
-    private fun stopPPScale() {
-//        if (ppScale != null) {
-////            ppScale.stopWifiConfig();
-////            ppScale.disConnect();
-//            ppScale.stopSearch();
-//            ppScale = null;
-//        }
     }
 
     override fun onPostResume() {
@@ -227,7 +124,6 @@ class BleConfigWifiActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        stopPPScale()
         stopSplashHint()
     }
 
@@ -332,6 +228,7 @@ class BleConfigWifiActivity : AppCompatActivity() {
                             }
                         }
                     }
+
                     else -> {}
                 }
             }

@@ -89,6 +89,10 @@
         <activity
             android:name=".producttest.devicelist.ProductTestDeviceListActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".device.apple.BleConfigWifiActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".device.apple.WifiBodyDataDetailActivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
