@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import com.lefu.ppblutoothkit.calculate.CalculateManagerActivity
 import com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity
-import com.lefu.ppblutoothkit.producttest.ProductTestManagerActivity
 import com.peng.ppscale.PPBlutoothKit
 
 class MainActivity : BasePermissionActivity(), View.OnClickListener {
@@ -23,7 +22,6 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
         initToolbar()
         findViewById<Button>(R.id.searchDevice).setOnClickListener(this)
         findViewById<Button>(R.id.caculateBodyFat).setOnClickListener(this)
-        findViewById<Button>(R.id.productionTestTools).setOnClickListener(this)
 
         requestLocationPermission()
 
@@ -63,31 +61,6 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
 
             R.id.caculateBodyFat -> {
                 startActivity(Intent(this@MainActivity, CalculateManagerActivity::class.java))
-            }
-
-            R.id.productionTestTools -> {
-                if (PPBlutoothKit.isBluetoothOpened()) {
-                    startActivity(Intent(this@MainActivity, ProductTestManagerActivity::class.java))
-                } else {
-                    if (ActivityCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.BLUETOOTH_CONNECT
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return
-                    }
-                    val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                    startActivityForResult(intent, 0x002)
-//                    PPBlutoothKit.openBluetooth()
-                }
-
             }
         }
     }
