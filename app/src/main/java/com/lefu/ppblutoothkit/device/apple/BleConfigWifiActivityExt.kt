@@ -25,6 +25,8 @@ val BleConfigWifiActivity.configWifiInfoInterface: PPConfigWifiInfoInterface
             val map: MutableMap<String, String?> = HashMap()
             map["sn"] = sn
             map["uid"] = SettingManager.get().uid
+            //All networks need to be equipped with network interfaces that are compatible with the body fat scale,
+
             DataTask.post(NetUtil.SAVE_WIFI_GROUP, map, object : RetCallBack<SaveWifiGroupBean>(SaveWifiGroupBean::class.java) {
 
                 override fun onResponse(response: SaveWifiGroupBean?, p1: Int) {
@@ -37,7 +39,6 @@ val BleConfigWifiActivity.configWifiInfoInterface: PPConfigWifiInfoInterface
                                 device.ssid = ssid ?: ""
                                 DBManager.manager().updateDevice(device)
                             }
-                            finish()
                         } else {
                             val content = if (TextUtils.isEmpty(response.msg)) getString(R.string.config_wifi_fail) else response.msg
                             Toast.makeText(this@configWifiInfoInterface, content, Toast.LENGTH_SHORT).show()

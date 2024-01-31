@@ -39,7 +39,7 @@ public class SettingManager {
     }
 
     public String getUid() {
-        return spf.getString(UID, "");
+        return spf.getString(UID, "0");
     }
 
     public void setUid(String uid) {
