@@ -1,4 +1,4 @@
-package com.lefu.ppscale.wifi.data;
+package com.lefu.ppblutoothkit.device.apple;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alibaba.fastjson.JSON;
 import com.lefu.base.SettingManager;
 import com.lefu.ppscale.wifi.R;
-import com.lefu.ppscale.wifi.activity.WifiBodyDataDetailActivity;
-import com.lefu.ppscale.wifi.adapter.WifiDataListAdapter;
-import com.lefu.ppscale.wifi.net.okhttp.DataTask;
-import com.lefu.ppscale.wifi.net.okhttp.NetUtil;
-import com.lefu.ppscale.wifi.net.okhttp.RetCallBack;
+import com.lefu.ppscale.wifi.data.WifiDataBean;
+import com.lefu.ppblutoothkit.okhttp.DataTask;
+import com.lefu.ppblutoothkit.okhttp.NetUtil;
+import com.lefu.ppblutoothkit.okhttp.RetCallBack;
 import com.peng.ppscale.vo.PPUserModel;
 
 import java.util.ArrayList;
@@ -59,10 +58,8 @@ public class WifiDataListActivity extends AppCompatActivity {
     }
 
     private void initData() {
-
         Map<String, String> map = new HashMap<>();
         map.put("uid", SettingManager.get().getUid());
-
         DataTask.get(NetUtil.GET_SCALE_WEIGHTS, map, new RetCallBack<WifiDataVo>(WifiDataVo.class) {
 
             @Override

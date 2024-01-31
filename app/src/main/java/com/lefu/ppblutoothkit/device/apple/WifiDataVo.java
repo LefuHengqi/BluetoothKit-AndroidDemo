@@ -1,4 +1,4 @@
-package com.lefu.ppscale.wifi.data;
+package com.lefu.ppblutoothkit.device.apple;
 
 import java.io.Serializable;
 import java.util.List;

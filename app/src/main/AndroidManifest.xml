@@ -80,6 +80,19 @@
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralIceActivity" />
         <!--Jambul-->
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralJambulActivity" />
+        <activity
+            android:name=".producttest.ProductTestManagerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".producttest.dfu.ProductTestDfuTestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".producttest.devicelist.ProductTestDeviceListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".device.apple.BleConfigWifiActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".device.apple.WifiBodyDataDetailActivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
