@@ -118,7 +118,7 @@ class PeripheralCoconutActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData")
-            if (controller?.isSupportHistoryData(PeripheralAppleActivity.deviceModel) ?: false) {
+            if (controller?.isSupportHistoryData(deviceModel) ?: false) {
                 controller?.getHistoryData(object : PPHistoryDataInterface() {
                     override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
                         addPrint("monitorHistoryData weight: ${bodyBaseModel?.weight}" + " dateTime:$dateTime")
@@ -138,20 +138,16 @@ class PeripheralCoconutActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.deleteHistory).setOnClickListener {
             addPrint("deleteHistory")
-            if (controller?.isSupportHistoryData(PeripheralAppleActivity.deviceModel) ?: false) {
-                if (controller?.isSupportHistoryData(deviceModel) ?: false) {
-                    controller?.deleteHistoryData(object : PPBleSendResultCallBack {
-                        override fun onResult(sendState: PPScaleSendState?) {
-                            if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                                addPrint("deleteHistory success")
-                            } else {
-                                addPrint("deleteHistory fail")
-                            }
+            if (controller?.isSupportHistoryData(deviceModel) ?: false) {
+                controller?.deleteHistoryData(object : PPBleSendResultCallBack {
+                    override fun onResult(sendState: PPScaleSendState?) {
+                        if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                            addPrint("deleteHistory success")
+                        } else {
+                            addPrint("deleteHistory fail")
                         }
-                    })
-                } else {
-                    addPrint("device does not support")
-                }
+                    }
+                })
             } else {
                 addPrint("device does not support")
             }

@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/dimens_10dp"
+        android:layout_marginVertical="10dp"
         android:gravity="center_vertical">
 
         <TextView
@@ -34,7 +34,7 @@
             android:id="@+id/weightMeasureState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dimens_30dp"
+            android:layout_marginEnd="30dp"
             android:text="state" />
 
     </LinearLayout>
@@ -90,6 +90,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textAllCaps="false"
                     android:text="@string/sync_time" />
 
                 <Button
@@ -97,6 +98,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textAllCaps="false"
                     android:text="@string/device_info" />
 
             </LinearLayout>
@@ -110,6 +112,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textAllCaps="false"
                     android:text="@string/change_unit" />
 
                 <Button
@@ -117,6 +120,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textAllCaps="false"
                     android:text="@string/history_data" />
 
                 <Button
@@ -125,6 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textAllCaps="false"
                     android:text="@string/clear_history" />
 
             </LinearLayout>
@@ -162,6 +167,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textAllCaps="false"
                     android:text="@string/set_user_info" />
 
             </LinearLayout>

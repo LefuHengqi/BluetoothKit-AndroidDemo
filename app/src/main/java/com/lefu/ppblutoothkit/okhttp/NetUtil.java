@@ -32,7 +32,9 @@ public class NetUtil {
     //下发给秤的域名，用于秤访问服务器；自己项目中，请使用你自己的
     //The domain name issued to the scale for accessing the server; In your own project, please use your own
 //    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082";
-    public static String SCALE_DOMAIN = "http://health-api.duoduiduo.com";
+//    public static String SCALE_DOMAIN = "http://health-api.duoduiduo.com";
+
+    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082";
 
 
 }
