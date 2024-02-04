@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:paddingStart="@dimen/dimens_10dp"
         android:text="@string/login_back"
-        android:textColor="@color/color_record"
+        android:textColor="#999999"
         android:textSize="@dimen/text_sp13"
         android:visibility="gone" />
 
@@ -33,7 +33,7 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:textColor="@color/color_home_title_tab"
+        android:textColor="#333333"
         android:layout_marginStart="@dimen/dimens_80dp"
         android:layout_marginEnd="@dimen/dimens_80dp"
         android:textSize="@dimen/text_sp16" />

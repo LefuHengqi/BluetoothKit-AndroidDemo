@@ -84,6 +84,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".device.apple.WifiBodyDataDetailActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".device.apple.WifiDataListActivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

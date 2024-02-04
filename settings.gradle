@@ -1,5 +1,5 @@
 include ':app'
-include ':BleWifiScaleDemo'
+//include ':BleWifiScaleDemo'
 include ':body_sl_master'
 include ':data_db'
 include ':base'

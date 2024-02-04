@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSON;
 import com.lefu.base.SettingManager;
-import com.lefu.ppscale.wifi.R;
-import com.lefu.ppscale.wifi.data.WifiDataBean;
+import com.lefu.ppblutoothkit.R;
+import com.lefu.ppblutoothkit.device.apple.data.WifiDataBean;
 import com.lefu.ppblutoothkit.okhttp.DataTask;
 import com.lefu.ppblutoothkit.okhttp.NetUtil;
 import com.lefu.ppblutoothkit.okhttp.RetCallBack;

@@ -102,8 +102,48 @@
     <string name="_4dc">4-electrode DC algorithm</string>
     <string name="_4ac">4-electrode AC algorithm</string>
     <string name="_8ac">8-electrode algorithm</string>
+    <string name="_4ac2channel">4-electrode dual frequency algorithm</string>
     <string name="Impedance_measurement">Impedance measurement</string>
     <string name="tips">Warm tips</string>
     <string name="is_body_fat_calculated">Whether to calculate body fat</string>
+
+    <string name="warn_title">Cozy Hint</string>
+    <string name="config_wifi">Configure WiFi</string>
+    <string name="lock_data_received">Lock data has been received</string>
+    <string name="later_to_say_again">Talk later</string>
+    <string name="not_my_data">Not my data</string>
+
+    <string name="config_wifi_detail">You can choose to configure the WIFI of the device now or later in the device list</string>
+    <string name="no_longer_prompt">Do not remind again</string>
+    <string name="go_to_config_wifi">The device you are currently using is a Bluetooth WIFI scale, but you have not yet configured the network, do you need to configure it?</string>
+    <string name="login_back">Back</string>
+    <string name="wifi_config_title">Select the Wi-Fi for devices to work with</string>
+    <string name="wifi_config_5g_hint">Your 5G network is not currently supported, please set up Wi-Fi and switch to another network</string>
+
+    <string name="wifi_config_key_hint">Enter Wi-Fi password</string>
+    <string name="wifi_config_other">Change other Wi-Fi</string>
+    <string name="select_device_type_next">Next</string>
+    <string name="wifi_config_disconnected">The network is disconnected</string>
+    <string name="scan_time_out">scan timeout</string>
+    <string name="scan_cancle">cancel scanning </string>
+    <string name="data_list">data list</string>
+    <string name="config_wifi_fail">distribution network failed</string>
+    <string name="config_wifi_success">distribution network success</string>
+    <string name="corfirm_delete">Are you sure to delete?</string>
+    <string name="prompt">prompt</string>
+    <string name="determine">OK</string>
+    <string name="cancel">cancel</string>
+    <string name="dns_sent_successfully">Domain sent successfully </string>
+    <string name="service_ip_sent_successfully">Send SeviceIp successfully</string>
+    <string name="modify_serverip">modify ServerIP</string>
+    <string name="modify_server_domain">modify Server Domain</string>
+    <string name="server_ip">server IP</string>
+    <string name="server_dns">server DNS</string>
+    <string name="reconnection">Reconnect</string>
+    <string name="clear_ssid">clear SSID</string>
+    <string name="to_config_the_network">to the distribution network</string>
+    <string name="clear_fail">clear failure </string>
+    <string name="clear_success">cleared successfully</string>
+    <string name="setting">Settings</string>
 
 </resources>

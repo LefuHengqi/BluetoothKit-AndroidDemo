@@ -12,10 +12,10 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
-import com.lefu.ppscale.wifi.R
 import com.lefu.ppblutoothkit.okhttp.NetUtil
-import com.lefu.ppscale.wifi.util.WifiUtil
+import com.lefu.ppblutoothkit.device.apple.util.WifiUtil
 import com.peng.ppscale.util.Logger
 import java.lang.ref.WeakReference
 import java.util.*

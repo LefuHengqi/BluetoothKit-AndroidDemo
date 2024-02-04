@@ -10,11 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.alibaba.fastjson.JSON;
+import com.lefu.ppblutoothkit.R;
 import com.lefu.ppscale.db.dao.DBManager;
 import com.lefu.ppscale.db.dao.DeviceModel;
-import com.lefu.ppscale.wifi.R;
-import com.lefu.ppscale.wifi.data.WifiDataBean;
-import com.lefu.ppscale.wifi.util.WifiUtil;
+import com.lefu.ppblutoothkit.device.apple.data.WifiDataBean;
+import com.lefu.ppblutoothkit.device.apple.util.WifiUtil;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.util.PPUtil;
 import com.peng.ppscale.vo.PPScaleDefine;

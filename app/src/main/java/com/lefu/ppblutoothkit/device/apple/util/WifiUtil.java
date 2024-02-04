@@ -1,4 +1,4 @@
-package com.lefu.ppscale.wifi.util;
+package com.lefu.ppblutoothkit.device.apple.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

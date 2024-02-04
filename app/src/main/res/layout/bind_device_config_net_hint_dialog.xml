@@ -44,7 +44,7 @@
         android:layout_height="@dimen/dimens_40dp"
         android:gravity="center"
         android:text="@string/config_wifi"
-        android:textColor="@color/back_font"
+        android:textColor="#4c4c4c"
         android:textSize="@dimen/text_14sp" />
 
     <View

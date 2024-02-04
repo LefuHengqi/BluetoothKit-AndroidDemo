@@ -14,10 +14,7 @@
     <string name="data_details">数据详情</string>
     <string name="blutooth_distribution_net">蓝牙配网</string>
     <string name="binding_device">绑定设备</string>
-    <string name="function_list_wifi">WiFi功能列表</string>
     <string name="equipment_management">设备管理</string>
-    <string name="scan_device">扫描设备</string>
-    <string name="eadHistoryList">读取历史数据</string>
     <string name="unit_normal">
          0：表示KG 1 表示LB
          2：表示ST 3 表示斤
@@ -31,7 +28,6 @@
     <string name="sport_mode_tag">0默认 1运动员模式</string>
     <string name="please_select_function">请选择功能</string>
     <string name="bmdj">闭目单脚</string>
-    <string name="ota">OTA Upgrade</string>
     <string name="measure_weight">测量体重</string>
     <string name="whether_to_save_the_">是否保存当前体重</string>
     <string name="is_this_your_data">这是您的数据么？</string>
@@ -44,7 +40,6 @@
     <string name="stop_scanning">停止扫描</string>
     <string name="scan_timeout">扫描超时</string>
     <string name="scanning">扫描中</string>
-    <string name="Connectable">可连接</string>
     <string name="writable">可以写</string>
     <string name="bluetooth_status_is_abnormal">蓝牙状态异常</string>
     <string name="system_bluetooth_disconnect">系统蓝牙断开</string>
@@ -58,7 +53,6 @@
     <string name="hint">提示</string>
     <string name="simulated_body_fat_calculation">模拟体脂计算</string>
     <string name="bluetooth_status">蓝牙状态: </string>
-
 
     <string name="user_info_edit">用户信息编辑</string>
     <string name="function_food_scale">食物秤称重</string>
@@ -127,5 +121,44 @@
     <string name="Impedance_measurement">阻抗测量中</string>
     <string name="tips">温馨提示</string>
     <string name="is_body_fat_calculated">是否计算体脂</string>
+
+    <string name="warn_title">温馨提示</string>
+    <string name="lock_data_received">已接收到锁定数据</string>
+    <string name="config_wifi">配置WiFi</string>
+    <string name="later_to_say_again">稍后再说</string>
+    <string name="not_my_data">不是我的数据</string>
+
+    <string name="no_longer_prompt">不再提示</string>
+    <string name="config_wifi_detail">您可以选择现在对设备进行WIFI配置，也可以稍后在设备列表中进行</string>
+    <string name="go_to_config_wifi">您当前使用的设备为蓝牙WIFI秤，但您尚未配网，是否需要进行配置？</string>
+
+    <string name="login_back">Back</string>
+    <string name="wifi_config_title">Select the Wi-Fi for devices to work with</string>
+    <string name="wifi_config_5g_hint">Your 5G network is not currently supported, please set up Wi-Fi and switch to another network</string>
+    <string name="wifi_config_key_hint">Enter Wi-Fi password</string>
+    <string name="wifi_config_other">Change other Wi-Fi</string>
+    <string name="select_device_type_next">Next</string>
+    <string name="wifi_config_disconnected">The network is disconnected</string>
+    <string name="scan_time_out">扫描超时</string>
+    <string name="scan_cancle">取消扫描</string>
+    <string name="data_list">数据列表</string>
+    <string name="config_wifi_fail">配网失败</string>
+    <string name="config_wifi_success">配网成功</string>
+    <string name="corfirm_delete">确定删除?</string>
+    <string name="prompt">提示</string>
+    <string name="determine">确定</string>
+    <string name="cancel">取消</string>
+    <string name="dns_sent_successfully">发送域名成功</string>
+    <string name="service_ip_sent_successfully">发送SeviceIp成功</string>
+    <string name="modify_serverip">修改ServerIP</string>
+    <string name="modify_server_domain">修改Server域名</string>
+    <string name="server_ip">服务端IP</string>
+    <string name="server_dns">服务端DNS</string>
+    <string name="reconnection">重连</string>
+    <string name="clear_ssid">清除SSID</string>
+    <string name="to_config_the_network">去配网</string>
+    <string name="clear_fail">清除失败</string>
+    <string name="clear_success">清除成功</string>
+    <string name="setting">设置</string>
 
 </resources>

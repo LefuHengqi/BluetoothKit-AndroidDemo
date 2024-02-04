@@ -5,9 +5,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.lefu.ppscale.wifi.R;
-import com.lefu.ppscale.wifi.data.BodyFataDataModel;
-import com.lefu.ppscale.wifi.data.WifiDataBean;
+import com.lefu.ppblutoothkit.R;
+import com.lefu.ppblutoothkit.device.apple.data.BodyFataDataModel;
+import com.lefu.ppblutoothkit.device.apple.data.WifiDataBean;
 import com.peng.ppscale.business.device.DeviceManager;
 import com.peng.ppscale.business.device.PPUnitType;
 import com.peng.ppscale.vo.PPBodyBaseModel;

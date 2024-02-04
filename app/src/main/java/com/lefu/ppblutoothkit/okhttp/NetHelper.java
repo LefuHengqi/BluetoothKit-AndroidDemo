@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.lefu.ppscale.db.dao.DeviceModel;
-import com.lefu.ppscale.wifi.R;
 
 import java.util.HashMap;
 import java.util.Map;

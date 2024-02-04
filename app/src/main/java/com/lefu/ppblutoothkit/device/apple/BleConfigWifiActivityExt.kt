@@ -3,8 +3,8 @@ package com.lefu.ppblutoothkit.device.apple
 import android.text.TextUtils
 import android.widget.Toast
 import com.lefu.base.SettingManager
+import com.lefu.ppblutoothkit.R
 import com.lefu.ppscale.db.dao.DBManager
-import com.lefu.ppscale.wifi.R
 import com.lefu.ppblutoothkit.okhttp.DataTask
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.okhttp.RetCallBack
