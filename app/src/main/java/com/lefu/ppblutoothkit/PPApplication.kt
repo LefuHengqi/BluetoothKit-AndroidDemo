@@ -10,9 +10,11 @@ import com.peng.ppscale.util.OnLogCallBack
 
 class PPApplication : Application() {
 
-    //使用时请务必替换成你自己的AppKey/AppSecret，需要增加设备配置请联系我司销售人员
-    val appKey = "lefu35768440e41a2fdf"
-    val appSecret = "IULNd/zBWP71d9bf80i7zrP47py2qFicwVvYEeG5kZo="
+    companion object {
+        //使用时请务必替换成你自己的AppKey/AppSecret，需要增加设备配置请联系我司销售人员
+        const val appKey = "lefub60060202a15ac8a"
+        const val appSecret = "UCzWzna/eazehXaz8kKAC6WVfcL25nIPYlV9fXYzqDM="
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -49,7 +51,9 @@ class PPApplication : Application() {
          * @param appSecret Appp的密钥
          * @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK
          */
-        PPBlutoothKit.initSdk(this, appKey, appSecret, "lefu.config")
+        PPBlutoothKit.initSdk(this, appKey, Companion.appSecret, "lefu.config")
+
     }
+
 
 }

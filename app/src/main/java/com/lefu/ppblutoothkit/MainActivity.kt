@@ -12,7 +12,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import com.lefu.ppblutoothkit.calculate.CalculateManagerActivity
 import com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity
+import com.lefu.ppblutoothkit.okhttp.DataTask
+import com.lefu.ppblutoothkit.okhttp.NetUtil
+import com.lefu.ppblutoothkit.okhttp.RetCallBack
+import com.lefu.ppblutoothkit.vo.DemoDeviceConfigVo
 import com.peng.ppscale.PPBlutoothKit
+import okhttp3.Call
 
 class MainActivity : BasePermissionActivity(), View.OnClickListener {
 
@@ -20,6 +25,7 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         initToolbar()
+        initDeviceConfig()
         findViewById<Button>(R.id.searchDevice).setOnClickListener(this)
         findViewById<Button>(R.id.caculateBodyFat).setOnClickListener(this)
 
@@ -63,6 +69,29 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
                 startActivity(Intent(this@MainActivity, CalculateManagerActivity::class.java))
             }
         }
+    }
+
+
+    /**
+     * 拉取设备配置信息，仅供Demo使用，与AppKey配套使用,
+     * 在你自己的App中，请使用：PPBlutoothKit.initSdk(this, appKey, Companion.appSecret, "lefu.config")
+     *
+     */
+    private fun initDeviceConfig() {
+        val map: MutableMap<String, String> = HashMap()
+        DataTask.get(NetUtil.GET_SCALE_CONFIG + PPApplication.appKey, map, object : RetCallBack<DemoDeviceConfigVo>(DemoDeviceConfigVo::class.java) {
+            override fun onError(call: Call, e: Exception, id: Int) {}
+            override fun onResponse(configVo: DemoDeviceConfigVo?, p1: Int) {
+
+                configVo?.let {
+                    if (configVo.code == 200 && configVo.msg.isNullOrEmpty().not()) {
+                        configVo.msg?.let { it1 -> PPBlutoothKit.setNetConfig(this@MainActivity, PPApplication.appKey, PPApplication.appSecret, it1) }
+                    }
+                }
+
+            }
+        })
+
     }
 
 
