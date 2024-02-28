@@ -38,6 +38,7 @@ class Calculate8Activitiy : Activity() {
         adapter.add("Product3")
         adapter.add("Product4")
         adapter.add("Product0")
+        adapter.add("Product5")
         spinner?.setAdapter(adapter)
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -46,9 +47,11 @@ class Calculate8Activitiy : Activity() {
                 } else if (position == 1) {
                     calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1//8电极算法，bhProduct =3--CF586
                 } else if (position == 2) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0//8电极算法，bhProduct =4--CF597
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0//8电极算法，bhProduct =4 --CF597
                 } else if (position == 3) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2//8电极算法，bhProduct =0--CF610
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2//8电极算法，bhProduct =0 --CF610
+                } else if (position == 4) {
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3//8电极算法，bhProduct =5 --CF577_N1
                 }
             }
 
@@ -86,43 +89,46 @@ class Calculate8Activitiy : Activity() {
                 // 8电极交流算法, bhProduct=1--CF577
                 spinner?.setSelection(0)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1) {
-                // 8电极算法，bhProduct =3--CF586
+                // 8电极算法，bhProduct =3 --CF586
                 spinner?.setSelection(1)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0) {
-                // 8电极算法，bhProduct =4--CF597
+                // 8电极算法，bhProduct =4 --CF597
                 spinner?.setSelection(2)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2) {
-                // 8电极算法，bhProduct =4--CF597
+                // 8电极算法，bhProduct =0 --CF610
                 spinner?.setSelection(3)
+            } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3) {
+                // 8电极算法，bhProduct =5 --CF577_N1
+                spinner?.setSelection(4)
             }
         }
     }
 
     private fun startCalculate() {
-//        val sex = if (etSex.text?.toString()?.toInt() == 0) {
-//            PPUserGender.PPUserGenderFemale
-//        } else {
-//            PPUserGender.PPUserGenderMale
-//        }
-//        val height = etHeight.text?.toString()?.toInt() ?: 168
-//        val age = etAge.text?.toString()?.toInt() ?: 35
-//        val weight = etWeight.text?.toString()?.toDouble() ?: 83.00
+        val sex = if (etSex.text?.toString()?.toInt() == 0) {
+            PPUserGender.PPUserGenderFemale
+        } else {
+            PPUserGender.PPUserGenderMale
+        }
+        val height = etHeight.text?.toString()?.toInt() ?: 168
+        val age = etAge.text?.toString()?.toInt() ?: 35
+        val weight = etWeight.text?.toString()?.toDouble() ?: 83.00
 
-//        val z100KhzLeftArmEnCode = z100KhzLeftArmEnCode.text?.toString()?.toLong() ?: 294794323L
-//        val z100KhzLeftLegEnCode = z100KhzLeftLegEnCode.text?.toString()?.toLong() ?: 806102147L
-//        val z100KhzRightArmEnCode = z100KhzRightArmEnCode.text?.toString()?.toLong() ?: 26360525L
-//        val z100KhzRightLegEnCode = z100KhzRightLegEnCode.text?.toString()?.toLong() ?: 816581534L
-//        val z100KhzTrunkEnCode = z100KhzTrunkEnCode.text?.toString()?.toLong() ?: 1080247226L
-//        val z20KhzLeftArmEnCode = z20KhzLeftArmEnCode.text?.toString()?.toLong() ?: 27983001L
-//        val z20KhzLeftLegEnCode = z20KhzLeftLegEnCode.text?.toString()?.toLong() ?: 837194050L
-//        val z20KhzRightArmEnCode = z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 1634195706L
-//        val z20KhzRightLegEnCode = z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463L
-//        val z20KhzTrunkEnCode = z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429L
+        val z100KhzLeftArmEnCode = z100KhzLeftArmEnCode.text?.toString()?.toLong() ?: 294794323L
+        val z100KhzLeftLegEnCode = z100KhzLeftLegEnCode.text?.toString()?.toLong() ?: 806102147L
+        val z100KhzRightArmEnCode = z100KhzRightArmEnCode.text?.toString()?.toLong() ?: 26360525L
+        val z100KhzRightLegEnCode = z100KhzRightLegEnCode.text?.toString()?.toLong() ?: 816581534L
+        val z100KhzTrunkEnCode = z100KhzTrunkEnCode.text?.toString()?.toLong() ?: 1080247226L
+        val z20KhzLeftArmEnCode = z20KhzLeftArmEnCode.text?.toString()?.toLong() ?: 27983001L
+        val z20KhzLeftLegEnCode = z20KhzLeftLegEnCode.text?.toString()?.toLong() ?: 837194050L
+        val z20KhzRightArmEnCode = z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 1634195706L
+        val z20KhzRightLegEnCode = z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463L
+        val z20KhzTrunkEnCode = z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429L
 
-        val age 	=	27
-        val height 	=	180
-        val weight 	=	77.65
-        val sex 	=	PPUserGender.PPUserGenderMale
+//        val age 	=	27
+//        val height 	=	180
+//        val weight 	=	77.65
+//        val sex 	=	PPUserGender.PPUserGenderMale
 //        val z100KhzLeftArmEnCode 	=	1365273936L
 //        val z100KhzLeftLegEnCode 	=	537581477L
 //        val z100KhzRightArmEnCode 	=	1362153929L
@@ -134,16 +140,16 @@ class Calculate8Activitiy : Activity() {
 //        val z20KhzRightLegEnCode 	=	837068764L
 //        val z20KhzTrunkEnCode 	=	14330286L
 
-        val z100KhzLeftArmEnCode=569602315L
-        val z100KhzLeftLegEnCode=809255489L
-        val z100KhzRightArmEnCode=2895252L
-        val z100KhzRightLegEnCode=1886303910L
-        val z100KhzTrunkEnCode=4345946L
-        val z20KhzLeftArmEnCode=538898029L
-        val z20KhzLeftLegEnCode=1100272835L
-        val z20KhzRightArmEnCode=1374763886L
-        val z20KhzRightLegEnCode=1615689850L
-        val z20KhzTrunkEnCode=1620566014L
+//        val z100KhzLeftArmEnCode=569602315L
+//        val z100KhzLeftLegEnCode=809255489L
+//        val z100KhzRightArmEnCode=2895252L
+//        val z100KhzRightLegEnCode=1886303910L
+//        val z100KhzTrunkEnCode=4345946L
+//        val z20KhzLeftArmEnCode=538898029L
+//        val z20KhzLeftLegEnCode=1100272835L
+//        val z20KhzRightArmEnCode=1374763886L
+//        val z20KhzRightLegEnCode=1615689850L
+//        val z20KhzTrunkEnCode=1620566014L
 
         val userModel = PPUserModel.Builder()
             .setSex(sex) //gender
