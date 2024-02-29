@@ -29,11 +29,11 @@ class CalculateManagerActivity : Activity(), View.OnClickListener {
             }
             R.id.ac4 -> {
                 //4电极交流算法  24项数据
-                startActivity(Intent(this@CalculateManagerActivity, Calculate4AC2ChannelActivitiy::class.java))
+                startActivity(Intent(this@CalculateManagerActivity, Calculate4ACActivitiy::class.java))
             }
             R.id.ac4_2channel -> {
-                //4电极交流算法  24项数据
-                startActivity(Intent(this@CalculateManagerActivity, Calculate4ACActivitiy::class.java))
+                //4电极交流双频算法
+                startActivity(Intent(this@CalculateManagerActivity, Calculate4AC2ChannelActivitiy::class.java))
             }
             R.id.ac8 -> {
                 //8电极交流算法  48项数据

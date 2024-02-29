@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_calculate_8ac.etWeight
 class Calculate4ACActivitiy : Activity() {
 
     var deviceName: String = ""
+    var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0//4电极新版计算库
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +49,7 @@ class Calculate4ACActivitiy : Activity() {
             etAge.setText(bodyBaseModel?.userModel?.age.toString())
             etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
             etImpedance.setText(bodyBaseModel?.impedance.toString())
+            calcuteType = bodyBaseModel?.deviceModel?.deviceCalcuteType
         }
     }
 
@@ -69,7 +71,7 @@ class Calculate4ACActivitiy : Activity() {
             .build()
 
         val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
+        deviceModel.deviceCalcuteType = calcuteType  ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0
         deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
             PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
         } else {
