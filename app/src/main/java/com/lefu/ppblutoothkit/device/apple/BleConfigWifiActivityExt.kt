@@ -8,6 +8,7 @@ import com.lefu.ppscale.db.dao.DBManager
 import com.lefu.ppblutoothkit.okhttp.DataTask
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.okhttp.RetCallBack
+import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.vo.PPDeviceModel
@@ -58,10 +59,46 @@ val BleConfigWifiActivity.configWifiInfoInterface: PPConfigWifiInfoInterface
             startConfigWifi()
         }
 
-        override fun monitorConfigFail() {
-            Logger.e("configwifi  monitorConfigFail")
+        override fun monitorConfigFail(stateMenu: PPConfigWifiAppleStateMenu?) {
+            when (stateMenu) {
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_LOW_BATTERY_LEVEL -> {
+                    addPrint("Config wifi fail because: Low battery level")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_REGIST_FAIL -> {
+                    addPrint("Config wifi fail because: login has failed")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_GET_CONFIG_FAIL -> {
+                    addPrint("Config wifi fail because: Failed to obtain configuration")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_ROUTER_FAIL -> {
+                    addPrint("Config wifi fail because: Unable to find route")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_PASSWORD_ERR -> {
+                    addPrint("Config wifi fail because: Password error")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_OTHER_FAIL -> {
+                    addPrint("Config wifi fail because: Other errors (app can be ignored)")
+                }
+
+                else -> {
+                    addPrint("Config wifi fail")
+                }
+            }
         }
     }
+
+fun addPrint(msg: String) {
+    if (msg.isNotEmpty()) {
+        Logger.e("$msg")
+    }
+}
+
+
 
 
 

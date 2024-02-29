@@ -11,6 +11,7 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.peng.ppscale.business.ble.configWifi.PPConfigStateMenu
+import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.util.Logger
@@ -92,10 +93,38 @@ class PeripheralTorreConfigWifiActivity : Activity() {
             }
         }
 
-        override fun monitorConfigFail() {
-            Logger.e("configwifi  monitorConfigFail")
-            configResultTV?.text = "configResult monitorConfigFail"
+        override fun monitorConfigFail(stateMenu: PPConfigWifiAppleStateMenu?) {
+            when (stateMenu) {
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_LOW_BATTERY_LEVEL -> {
+                    configResultTV?.text = "Config wifi fail because: Low battery level"
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_REGIST_FAIL -> {
+                    configResultTV?.text = "Config wifi fail because: login has failed"
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_GET_CONFIG_FAIL -> {
+                    configResultTV?.text = "Config wifi fail because: Failed to obtain configuration"
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_ROUTER_FAIL -> {
+                    configResultTV?.text = "Config wifi fail because: Unable to find route"
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_PASSWORD_ERR -> {
+                    configResultTV?.text = "Config wifi fail because: Password error"
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_OTHER_FAIL -> {
+                    configResultTV?.text = "Config wifi fail because: Other errors (app can be ignored)"
+                }
+
+                else -> {
+                    configResultTV?.text = "Config wifi fail because: Other errors"
+                }
+            }
         }
+
     }
 
     override fun onBackPressed() {

@@ -19,6 +19,7 @@ import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
 import com.lefu.ppblutoothkit.view.MsgDialog
 import com.lefu.ppblutoothkit.device.apple.BleConfigWifiActivity
 import com.peng.ppscale.business.ble.PPScaleHelper
+import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.state.PPBleSwitchState
@@ -268,6 +269,38 @@ class PeripheralAppleActivity : AppCompatActivity() {
 
         override fun monitorModifyServerDomainSuccess() {
             addPrint("ModifyServerDNSSuccess")
+        }
+
+        override fun monitorConfigFail(stateMenu: PPConfigWifiAppleStateMenu?) {
+            when (stateMenu) {
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_LOW_BATTERY_LEVEL -> {
+                    addPrint("Config wifi fail because: Low battery level")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_REGIST_FAIL -> {
+                    addPrint("Config wifi fail because: login has failed")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_GET_CONFIG_FAIL -> {
+                    addPrint("Config wifi fail because: Failed to obtain configuration")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_ROUTER_FAIL -> {
+                    addPrint("Config wifi fail because: Unable to find route")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_PASSWORD_ERR -> {
+                    addPrint("Config wifi fail because: Password error")
+                }
+
+                PPConfigWifiAppleStateMenu.CONFIG_STATE_OTHER_FAIL -> {
+                    addPrint("Config wifi fail because: Other errors (app can be ignored)")
+                }
+
+                else -> {
+                    addPrint("Config wifi fail")
+                }
+            }
         }
 
     }
