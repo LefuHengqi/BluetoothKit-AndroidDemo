@@ -98,7 +98,7 @@ class BleConfigWifiActivity : AppCompatActivity() {
      */
     private fun sendModifyServerDomain() {
         Handler().postDelayed({
-            var scaleDomain = NetUtil.SCALE_DOMAIN
+            var scaleDomain = NetUtil.getScaleDomain()
             if (!TextUtils.isEmpty(scaleDomain)) {
                 PPBlutoothPeripheralAppleInstance.instance.controller?.sendModifyServerDomain(scaleDomain, configWifiInfoInterface)
             } else {

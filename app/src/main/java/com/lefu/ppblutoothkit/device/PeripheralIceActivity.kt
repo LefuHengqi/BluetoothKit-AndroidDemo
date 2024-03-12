@@ -16,6 +16,7 @@ import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
+import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FilePermissionUtil
 import com.lefu.ppblutoothkit.util.FileUtil
@@ -43,7 +44,9 @@ class PeripheralIceActivity : AppCompatActivity() {
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
-
+    private val mCurrentHostUrl by lazy {
+        findViewById<TextView>(R.id.mCurrentHostUrl)
+    }
     var controller: PPBlutoothPeripheralIceController? = PPBlutoothPeripheralIceInstance.instance.controller
 
     companion object {
@@ -207,6 +210,15 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("startKeepAlive")
             controller?.startKeepAlive()
         }
+        findViewById<Button>(R.id.setNetHost).setOnClickListener {
+            addPrint("setNetHost")
+            startActivity(Intent(this, SetHostActivity::class.java))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mCurrentHostUrl?.text = "当前域名：${NetUtil.getScaleDomain()}"
     }
 
     val deviceSetInterface = object : PPDeviceSetInfoInterface {

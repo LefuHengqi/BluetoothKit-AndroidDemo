@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.lefu.ppblutoothkit">
-    <!--蓝牙相关权限-->
+    <!-- 蓝牙相关权限 -->
     <uses-permission
         android:name="android.permission.BLUETOOTH"
         android:maxSdkVersion="30" />
@@ -13,14 +13,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-
-    <!--存储相关权限-->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" /> <!-- 存储相关权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name="com.lefu.ppblutoothkit.PPApplication"
@@ -33,31 +32,40 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-
+        <activity
+            android:name=".device.SetHostActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.lefu.ppblutoothkit.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity android:name="com.lefu.ppblutoothkit.calculate.BodyDataDetailActivity" />
         <activity android:name="com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity" />
-        <activity android:name="com.lefu.ppblutoothkit.UserinfoActivity" />
-
-        <!--Calculate-->
+        <activity android:name="com.lefu.ppblutoothkit.UserinfoActivity" /> <!-- Calculate -->
         <activity android:name="com.lefu.ppblutoothkit.calculate.CalculateManagerActivity" />
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy" />
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy" />
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy" />
-        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy" />
-
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy" /> <!-- Torre -->
+<!--        <activity android:name=".torre.PeripheralTorreConfigWifiActivity" />-->
+<!--        <activity android:name=".torre.PeripheralTorreSearchWifiListActivity" />-->
+<!--        <activity android:name=".PeripheralTorreActivity" /> &lt;!&ndash; Apple &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralAppleActivity" /> &lt;!&ndash; Banana &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralBananaActivity" /> &lt;!&ndash; Coconut &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralCoconutActivity" /> &lt;!&ndash; Dutian &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralDutianActivity" /> &lt;!&ndash; Egg &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralEggActivity" /> &lt;!&ndash; Fish &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralFishActivity" /> &lt;!&ndash; Grapes &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralGrapesActivity" /> &lt;!&ndash; Hamburger &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralHamburgerActivity" /> &lt;!&ndash; Ice &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralIceActivity" /> &lt;!&ndash; Jambul &ndash;&gt;-->
+<!--        <activity android:name=".PeripheralJambulActivity" />-->
         <!--Torre-->
         <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity" />
         <activity android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity" />
@@ -82,25 +90,25 @@
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralIceActivity" />
         <!--Jambul-->
         <activity android:name="com.lefu.ppblutoothkit.device.PeripheralJambulActivity" />
-        <activity android:name=".device.apple.BleConfigWifiActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".device.apple.WifiBodyDataDetailActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".device.apple.WifiDataListActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".device.apple.BleConfigWifiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".device.apple.WifiBodyDataDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".device.apple.WifiDataListActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-
         </provider>
-
     </application>
 
 </manifest>

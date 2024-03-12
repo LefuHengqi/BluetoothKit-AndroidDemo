@@ -90,16 +90,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:text="@string/sync_time" />
+                    android:text="@string/sync_time"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/readDeviceInfo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:text="@string/device_info" />
+                    android:text="@string/device_info"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
 
@@ -112,16 +112,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:text="@string/change_unit" />
+                    android:text="@string/change_unit"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/syncUserHistoryData"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:text="@string/history_data" />
+                    android:text="@string/history_data"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/deleteHistory"
@@ -129,8 +129,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textAllCaps="false"
-                    android:text="@string/clear_history" />
+                    android:text="@string/clear_history"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
 
@@ -167,11 +167,27 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:text="@string/set_user_info" />
+                    android:text="@string/set_user_info"
+                    android:textAllCaps="false" />
 
+                <Button
+                    android:id="@+id/setNetHost"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="设置域名"
+                    android:textAllCaps="false" />
             </LinearLayout>
-
+            <TextView
+                android:id="@+id/mCurrentHostUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="当前的域名"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="@dimen/text_sp16"
+                android:layout_marginTop="@dimen/dimens_12dp"
+                android:layout_marginStart="@dimen/dimens_4dp"
+                />
         </LinearLayout>
 
 

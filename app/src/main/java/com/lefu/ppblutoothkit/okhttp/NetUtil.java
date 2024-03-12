@@ -46,6 +46,11 @@ public class NetUtil {
 //    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082";
 //    public static String SCALE_DOMAIN = "http://health-api.duoduiduo.com";
 
+    public static String getScaleDomain(){
+        return SCALE_DOMAIN;
+    }
 
-
+    public static void setScaleDomain(String host){
+        SCALE_DOMAIN = host;
+    }
 }
