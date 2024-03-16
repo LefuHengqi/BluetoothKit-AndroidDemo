@@ -47,7 +47,7 @@ class PeripheralTorreConfigWifiActivity : Activity() {
             //https://uniquehealth.lefuenergy.com/unique-open-web/#/document
             //找到"乐福体脂秤自建服务器接入方案"-> PeripheralIce/PeripheralTorre 对应"Torre系列产品"
 //            val domainName = "http://nat.lefuenergy.com:10082"
-            val domainName = NetUtil.SCALE_DOMAIN
+            val domainName = NetUtil.getScaleDomain()
 //            val domainName = "http://test-mirrorapi.ruleye.com"
             configResultTV?.text =getString(R.string.start_config_net)
             if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {

@@ -18,6 +18,7 @@ import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
 import com.lefu.ppblutoothkit.view.MsgDialog
 import com.lefu.ppblutoothkit.device.apple.BleConfigWifiActivity
+import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
@@ -42,7 +43,9 @@ class PeripheralAppleActivity : AppCompatActivity() {
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
-
+    private val mCurrentHostUrl by lazy {
+        findViewById<TextView>(R.id.mCurrentHostUrl)
+    }
     var controller: PPBlutoothPeripheralAppleController? = PPBlutoothPeripheralAppleInstance.instance.controller
 
     companion object {
@@ -178,7 +181,16 @@ class PeripheralAppleActivity : AppCompatActivity() {
             addPrint("start UserInfo pager")
             startActivity(Intent(this, UserinfoActivity::class.java))
         }
+        findViewById<Button>(R.id.setNetHost).setOnClickListener {
+            addPrint("setNetHost")
+            startActivity(Intent(this, SetHostActivity::class.java))
+        }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mCurrentHostUrl?.text = "当前域名：${NetUtil.getScaleDomain()}"
     }
 
     val dataChangeListener = object : PPDataChangeListener {
