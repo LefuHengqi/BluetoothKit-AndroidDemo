@@ -532,7 +532,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
         override fun onDfuStart() {
             addPrint("onDfuStart")
-            PPBlutoothKit.setDebug(false)
+//            PPBlutoothKit.setDebug(false)
         }
 
         override fun onDfuFail(errorType: String?) {
