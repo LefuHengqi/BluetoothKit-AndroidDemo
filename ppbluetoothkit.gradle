@@ -14,7 +14,6 @@ android {
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 31
         versionCode LIB_VERSION_CODE as int
         versionName LIB_VERSION
 
