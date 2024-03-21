@@ -203,20 +203,17 @@ class ScanDeviceListActivity : Activity() {
          */
         override fun monitorBluetoothWorkState(
             ppBleWorkState: PPBleWorkState,
-            deviceModel: PPDeviceModel
+            deviceModel: PPDeviceModel?
         ) {
             if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 Logger.d(getString(R.string.stop_scanning))
-                tv_starts!!.text =
-                    getString(R.string.bluetooth_status) + getString(R.string.stop_scanning)
+                tv_starts?.text = getString(R.string.bluetooth_status) + getString(R.string.stop_scanning)
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
                 Logger.d(getString(R.string.scan_timeout))
-                tv_starts!!.text =
-                    getString(R.string.bluetooth_status) + getString(R.string.scan_timeout)
+                tv_starts?.text = getString(R.string.bluetooth_status) + getString(R.string.scan_timeout)
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 Logger.d(getString(R.string.scanning))
-                tv_starts!!.text =
-                    getString(R.string.bluetooth_status) + getString(R.string.scanning)
+                tv_starts?.text = getString(R.string.bluetooth_status) + getString(R.string.scanning)
             } else {
             }
         }
