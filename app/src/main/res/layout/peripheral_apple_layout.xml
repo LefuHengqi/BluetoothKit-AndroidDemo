@@ -82,16 +82,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/connect_device"
-                    android:visibility="gone" />
+                    android:text="@string/connect_device" />
 
                 <Button
-                    android:id="@+id/syncTime"
+                    android:id="@+id/startReceiveBroadcastData"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sync_time"
-                    android:textAllCaps="false" />
+                    android:text="广播数据" />
 
                 <Button
                     android:id="@+id/readDeviceInfo"
@@ -137,6 +135,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/syncTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sync_time"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/startConfigWifi"

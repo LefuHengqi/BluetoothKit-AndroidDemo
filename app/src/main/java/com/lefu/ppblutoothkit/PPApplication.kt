@@ -30,7 +30,7 @@ class PPApplication : Application() {
             }
 
             override fun logv(s: String?, s1: String?) {
-//                LogUtils.INSTANCE.writeBluetoothLog(s1);
+//                s1?.let { LogUtils.writeBluetoothLog(it) }
             }
 
             override fun logw(s: String?, s1: String?) {

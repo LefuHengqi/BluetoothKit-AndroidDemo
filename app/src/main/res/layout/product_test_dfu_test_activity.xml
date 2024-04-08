@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        app:layout_collapseMode="pin" />
+        android:theme="@style/ToolbarTheme"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/ToolbarPopupTheme" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,30 +30,32 @@
                 android:id="@+id/mDeviceNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="蓝牙名称"
+                android:text="设备名称"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/text_sp16"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_sp16" />
 
             <TextView
                 android:id="@+id/mDeviceMacTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mac"
-                android:textColor="@android:color/darker_gray" />
+                android:textColor="@android:color/black" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimens_20dp"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:gravity="end"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="当前状态："
+                android:layout_gravity="end"
+                android:text="当前状态"
                 android:textColor="@android:color/black" />
 
             <TextView

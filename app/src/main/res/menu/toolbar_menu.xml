@@ -10,6 +10,7 @@
     <item
         android:id="@+id/menu_item_export_device_log"
         android:title="导出设备日志"
+        android:visible="false"
         app:showAsAction="collapseActionView" />
 
     <item

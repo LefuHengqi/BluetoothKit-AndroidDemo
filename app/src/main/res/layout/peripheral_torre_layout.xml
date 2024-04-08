@@ -82,8 +82,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/connect_device"
-                    android:visibility="gone" />
+                    android:text="@string/connect_device" />
 
                 <Button
                     android:id="@+id/startMeasureBtn"
@@ -308,7 +307,21 @@
                     android:layout_width="@dimen/size_dp58"
                     android:layout_height="@dimen/size_dp30"
                     android:background="@drawable/tone_switch_selector"
-                    android:checked="true"
+                    android:checked="false"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="工厂模式" />
+
+                <ToggleButton
+                    android:id="@+id/switchModeToggleBtn"
+                    android:layout_width="@dimen/size_dp58"
+                    android:layout_height="@dimen/size_dp30"
+                    android:background="@drawable/tone_switch_selector"
+                    android:checked="false"
                     android:textOff=""
                     android:textOn="" />
 
@@ -351,8 +364,8 @@
                 android:id="@+id/device_dfu_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"

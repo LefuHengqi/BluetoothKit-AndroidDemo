@@ -262,6 +262,16 @@ class PeripheralTorreActivity : AppCompatActivity() {
             //0打开 1关闭
             controller?.getTorreDeviceManager()?.controlImpendance(if (isChecked) 0 else 1, modeChangeInterface)
         }
+        findViewById<ToggleButton>(R.id.switchModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
+            addPrint("maternity mode isChecked:$isChecked")
+            /**
+             * 模式切换
+             * @param type 0设置 1获取
+             * @param mode 模式切换 0工厂 1用户
+             * @param sendResultCallBack
+             */
+            controller?.getTorreDeviceManager()?.switchMode(0, if (isChecked) 0 else 1, null)
+        }
         findViewById<Button>(R.id.device_set_clearUser).setOnClickListener {
             addPrint("clear Device User Info")
             controller?.getTorreDeviceManager()?.clearDeviceUserInfo(clearDataInterface)

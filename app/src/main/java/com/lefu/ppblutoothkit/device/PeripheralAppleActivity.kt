@@ -72,9 +72,11 @@ class PeripheralAppleActivity : AppCompatActivity() {
             }
         })
 
-        addPrint("startConnect")
         controller?.registDataChangeListener(dataChangeListener)
-        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+        deviceModel?.let { it1 ->
+            addPrint("startConnect")
+            controller?.startConnect(it1, bleStateInterface)
+        }
 
         initClick()
 
@@ -82,9 +84,15 @@ class PeripheralAppleActivity : AppCompatActivity() {
 
     fun initClick() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
+            controller?.stopSeach()
             addPrint("startConnect")
             controller?.registDataChangeListener(dataChangeListener)
             deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+        }
+        findViewById<Button>(R.id.startReceiveBroadcastData).setOnClickListener {
+            addPrint("startReceiveBroadcastData")
+            controller?.registDataChangeListener(dataChangeListener)
+            deviceModel?.let { it1 -> controller?.startSearch(it1.deviceMac, bleStateInterface) }
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
@@ -328,6 +336,12 @@ class PeripheralAppleActivity : AppCompatActivity() {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 device_set_connect_state?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
+                device_set_connect_state?.text = getString(R.string.can_be_connected)
+                addPrint(getString(R.string.can_be_connected))
+                //如果你想扫描到设备后，直接连接，可调用下面两行。
+//                controller?.stopSeach()
+//                deviceModel?.let { controller?.startConnect(it, this) }
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 device_set_connect_state?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))
@@ -346,7 +360,7 @@ class PeripheralAppleActivity : AppCompatActivity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectFailed) {
-                addPrint(getString(R.string.writable))
+//                addPrint(getString(R.string.writable))
             }
         }
 

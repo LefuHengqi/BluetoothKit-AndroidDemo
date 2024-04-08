@@ -6,6 +6,12 @@
     android:orientation="vertical"
     tools:context="com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary" />
+
     <TextView
         android:id="@+id/tv_starts"
         android:layout_width="wrap_content"
@@ -14,9 +20,13 @@
         android:text="@string/bluetooth_status"
         android:textColor="@android:color/black" />
 
-    <ListView
-        android:id="@+id/list_View"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/deviceListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimens_12dp"
+        android:layout_marginEnd="@dimen/dimens_12dp"
+        tools:itemCount="3"
+        tools:listitem="@layout/activity_scan_list_item" />
 
 </LinearLayout>
