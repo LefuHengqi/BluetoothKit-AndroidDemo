@@ -8,11 +8,11 @@ static def releaseTime() {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.lefu.ppblutoothkit"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 33
         versionCode LIB_VERSION_CODE as int
         versionName LIB_VERSION
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -23,6 +23,8 @@ android {
         exclude 'META-INF/body_sl_release.kotlin_module'
         exclude 'META-INF/body_sl_release.kotlin_module'
         exclude 'AndroidManifest.xml'
+
+        //以下代码是Demo需要使用的，在你们的项目中不需要使用
         //直流秤
         pickFirst 'lib/armeabi-v7a/libsl.so'
         pickFirst 'lib/arm64-v8a/libsl.so'
@@ -37,6 +39,16 @@ android {
         pickFirst 'lib/arm64-v8a/libbh1BodyComposition.so'
         pickFirst 'lib/x86_64/libbh1BodyComposition.so'
         pickFirst 'lib/x86/libbh1BodyComposition.so'
+        pickFirst 'lib/armeabi-v7a/libbh2BodyComposition.so'
+        pickFirst 'lib/arm64-v8a/libbh2BodyComposition.so'
+        pickFirst 'lib/x86_64/libbh2BodyComposition.so'
+        pickFirst 'lib/x86/libbh2BodyComposition.so'
+        pickFirst 'lib/armeabi-v7a/libbh3BodyComposition.so'
+        pickFirst 'lib/arm64-v8a/libbh3BodyComposition.so'
+        pickFirst 'lib/x86_64/libbh3BodyComposition.so'
+        pickFirst 'lib/x86/libbh3BodyComposition.so'
+
+
     }
 
     buildTypes {
