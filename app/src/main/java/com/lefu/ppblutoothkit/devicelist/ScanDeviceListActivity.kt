@@ -185,7 +185,7 @@ class ScanDeviceListActivity : Activity() {
         if (ppDeviceModel != null) {
             adapter?.let {
                 if (data != null) {
-                    analyticalData(ppDeviceModel,data)
+//                    analyticalData(ppDeviceModel,data)
                 }
                 if (it.data.isEmpty().not()) {
                     for (i in it.data.indices) {

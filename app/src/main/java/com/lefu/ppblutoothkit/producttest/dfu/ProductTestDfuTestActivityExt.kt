@@ -26,8 +26,7 @@ fun ProductTestDfuTestActivity.startDfu(dfuFilePath: String) {
     addPrint("startDfu currentNum:$currentNum dfuFilePath:$dfuFilePath")
     if (controller?.getTorreDeviceManager()?.isDFU?.not() ?: false) {
         addPrint("Start DFU upgrade")
-        val isFullyDFUState = true //是否全量升级
-        controller?.getTorreDeviceManager()?.startDFU(isFullyDFUState, dfuFilePath, onDFUStateListener)
+        controller?.getTorreDeviceManager()?.startDFU(dfuFilePath, onDFUStateListener)
     } else {
         //正在升级，请不要频繁调用//Upgrading in progress, please do not call frequently
         addPrint("Upgrading in progress, please do not call frequently")
