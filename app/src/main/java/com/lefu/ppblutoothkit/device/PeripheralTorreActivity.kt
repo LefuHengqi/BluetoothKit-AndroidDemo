@@ -294,6 +294,17 @@ class PeripheralTorreActivity : AppCompatActivity() {
              */
             controller?.getTorreDeviceManager()?.switchMode(0, if (isChecked) 0 else 1, null)
         }
+        findViewById<ToggleButton>(R.id.switchDemoModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
+            addPrint("maternity mode isChecked:$isChecked")
+            /**
+             * 设置/获取演示模式状态
+             *
+             * @param type  1设置  2获取
+             * @param state 0x00：关闭演示模式 0x01：打开演示模式
+             */
+            controller?.getTorreDeviceManager()?.demoModeSwitch(1, if (isChecked) 1 else 0, modeChangeInterface)
+        }
+
         findViewById<Button>(R.id.device_set_clearUser).setOnClickListener {
             addPrint("clear Device User Info")
             controller?.getTorreDeviceManager()?.clearDeviceUserInfo(clearDataInterface)
@@ -557,6 +568,27 @@ class PeripheralTorreActivity : AppCompatActivity() {
          */
         override fun bindStateCallBack(type: Int, state: Int) {
             addPrint("bindStateCallBack type $type state$state")
+        }
+
+        /**
+         * 设置/获取演示模式状态
+         *
+         * @param type  1设置  2获取
+         * @param state 0x00：关闭演示模式
+         *              0x01：打开演示模式
+         * @param state 0x00：设置成功
+         *              0x01：设置失败
+         */
+        override fun demoModeSwitchCallBack(type: Int, state: Int) {
+            if (type == 1) {
+                if (state == 0) {
+                    addPrint("设置成功")
+                    Toast.makeText(this@PeripheralTorreActivity, "设置成功", Toast.LENGTH_SHORT).show()
+                } else {
+                    addPrint("设置失败")
+                    Toast.makeText(this@PeripheralTorreActivity, "设置失败", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

@@ -260,6 +260,14 @@
                     android:text="@string/set_light"
                     android:textAllCaps="false" />
 
+                <Button
+                    android:id="@+id/startKeepAlive"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/start_keep_alive"
+                    android:textAllCaps="false" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -282,12 +290,14 @@
                     android:text="@string/reset"
                     android:textAllCaps="false" />
 
+
+
                 <Button
-                    android:id="@+id/startKeepAlive"
+                    android:id="@+id/setUserInfo"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/start_keep_alive"
+                    android:text="@string/set_user_info"
                     android:textAllCaps="false" />
 
             </LinearLayout>
@@ -325,12 +335,20 @@
                     android:textOff=""
                     android:textOn="" />
 
-                <Button
-                    android:id="@+id/setUserInfo"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/set_user_info"
-                    android:textAllCaps="false" />
+                    android:text="演示模式" />
+
+                <ToggleButton
+                    android:id="@+id/switchDemoModeToggleBtn"
+                    android:layout_width="@dimen/size_dp58"
+                    android:layout_height="@dimen/size_dp30"
+                    android:background="@drawable/tone_switch_selector"
+                    android:checked="false"
+                    android:textOff=""
+                    android:textOn="" />
+
 
             </LinearLayout>
 
