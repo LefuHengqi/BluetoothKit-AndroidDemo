@@ -47,7 +47,10 @@ android {
         pickFirst 'lib/arm64-v8a/libbh3BodyComposition.so'
         pickFirst 'lib/x86_64/libbh3BodyComposition.so'
         pickFirst 'lib/x86/libbh3BodyComposition.so'
-
+        pickFirst 'lib/armeabi-v7a/libbh4BodyComposition.so'
+        pickFirst 'lib/arm64-v8a/libbh4BodyComposition.so'
+        pickFirst 'lib/x86_64/libbh4BodyComposition.so'
+        pickFirst 'lib/x86/libbh4BodyComposition.so'
 
     }
 

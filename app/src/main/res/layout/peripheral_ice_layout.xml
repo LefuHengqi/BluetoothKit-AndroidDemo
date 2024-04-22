@@ -83,8 +83,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/connect_device"
-                    android:visibility="gone" />
+                    android:text="@string/connect_device" />
 
                 <Button
                     android:id="@+id/syncTime"
@@ -220,6 +219,81 @@
                     android:textAllCaps="false" />
             </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/device_ota_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OTA:" />
+
+                <Button
+                    android:id="@+id/device_set_startLocalOTA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/start_local_ota" />
+
+                <Button
+                    android:id="@+id/device_set_startOTA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/start_user_ota" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/device_dfu_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DFU:" />
+
+                    <Button
+                        android:id="@+id/device_set_getFilePath"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="选则DFU文件" />
+
+                    <Button
+                        android:id="@+id/device_set_startDFU"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/start_dfu"
+                        android:textAllCaps="false" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/is_full_upgrade" />
+
+                    <ToggleButton
+                        android:id="@+id/whetherFullyDFUToggleBtn"
+                        android:layout_width="@dimen/size_dp58"
+                        android:layout_height="@dimen/size_dp30"
+                        android:background="@drawable/tone_switch_selector"
+                        android:checked="true"
+                        android:textOff=""
+                        android:textOn="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/mCurrentHostUrl"
                 android:layout_width="match_parent"
@@ -228,8 +302,10 @@
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="@dimen/text_sp16"
                 android:layout_marginTop="@dimen/dimens_12dp"
-                android:layout_marginStart="@dimen/dimens_4dp"
-                />
+                android:layout_marginStart="@dimen/dimens_4dp" />
+
+
+
         </LinearLayout>
 
 
