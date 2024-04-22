@@ -62,13 +62,11 @@ class Calculate4DCActivitiy : Activity() {
         val age = etAge.text?.toString()?.toInt() ?: 28
         val weight = etWeight.text?.toString()?.toDouble() ?: 70.00
         val impedance = etImpedance.text?.toString()?.toLong() ?: 4195332L
-
         val userModel = PPUserModel.Builder()
             .setSex(sex) //gender
             .setHeight(height)//height 100-220
             .setAge(age)//age 10-99
             .build()
-
         val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
         deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect
         deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
@@ -82,7 +80,6 @@ class Calculate4DCActivitiy : Activity() {
         bodyBaseModel.deviceModel = deviceModel
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
-
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
 
         DataUtil.util().bodyDataModel = ppBodyFatModel
