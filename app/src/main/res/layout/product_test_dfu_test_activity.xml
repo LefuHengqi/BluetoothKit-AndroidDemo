@@ -187,8 +187,33 @@
 
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/dimens_20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="工厂模式" />
+
+        <ToggleButton
+            android:id="@+id/switchModeToggleBtn"
+            android:layout_width="@dimen/size_dp58"
+            android:layout_height="@dimen/size_dp30"
+            android:background="@drawable/tone_switch_selector"
+            android:checked="false"
+            android:textOff=""
+            android:textOn="" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_20dp"
         android:layout_marginHorizontal="@dimen/dimens_20dp">
 
         <Button
@@ -199,6 +224,7 @@
             android:textColor="@android:color/black" />
 
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

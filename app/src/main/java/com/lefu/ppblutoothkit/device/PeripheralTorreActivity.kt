@@ -44,6 +44,7 @@ import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
+import com.peng.ppscale.data.PPBodyDetailModel
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.util.PPUtil
@@ -209,9 +210,30 @@ class PeripheralTorreActivity : AppCompatActivity() {
         findViewById<Button>(R.id.device_set_startDFU).setOnClickListener {
             if (dfuFilePath.isNullOrBlank().not()) {
                 if (controller?.getTorreDeviceManager()?.isDFU?.not() ?: false) {
-                    addPrint("Start DFU upgrade")
                     val isFullyDFUState = whetherFullyDFUToggleBtn?.isChecked ?: true //是否全量升级
-                    controller?.getTorreDeviceManager()?.startDFU(isFullyDFUState, dfuFilePath, onDFUStateListener)
+                    if (isFullyDFUState) {
+                        addPrint("Start full upgrade")
+                        controller?.getTorreDeviceManager()?.startDFU(dfuFilePath, onDFUStateListener)
+                    } else {
+                        addPrint("readDeviceInfo")
+                        controller?.getTorreDeviceManager()?.readDeviceInfoFromCharacter(object : PPTorreDeviceModeChangeInterface {
+                            /**
+                             * 设备信息返回
+                             *
+                             * @param deviceModel
+                             */
+//                            override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {}
+                            override fun onReadDeviceInfo(deviceModel: PPDeviceModel?) {
+                                if (deviceModel != null && deviceModel.firmwareVersion != null) {
+                                    addPrint("firmwareVersion: ${deviceModel.firmwareVersion}")
+                                    addPrint("Start smart DFU upgrade")
+                                    controller?.getTorreDeviceManager()?.startSmartDFU(dfuFilePath, deviceModel.firmwareVersion, onDFUStateListener)
+                                } else {
+                                    addPrint("deviceModel or firmwareVersion is null ")
+                                }
+                            }
+                        })
+                    }
                 } else {
                     //正在升级，请不要频繁调用//Upgrading in progress, please do not call frequently
                     addPrint("Upgrading in progress, please do not call frequently")
@@ -272,6 +294,17 @@ class PeripheralTorreActivity : AppCompatActivity() {
              */
             controller?.getTorreDeviceManager()?.switchMode(0, if (isChecked) 0 else 1, null)
         }
+        findViewById<ToggleButton>(R.id.switchDemoModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
+            addPrint("maternity mode isChecked:$isChecked")
+            /**
+             * 设置/获取演示模式状态
+             *
+             * @param type  1设置  2获取
+             * @param state 0x00：关闭演示模式 0x01：打开演示模式
+             */
+            controller?.getTorreDeviceManager()?.demoModeSwitch(1, if (isChecked) 1 else 0, modeChangeInterface)
+        }
+
         findViewById<Button>(R.id.device_set_clearUser).setOnClickListener {
             addPrint("clear Device User Info")
             controller?.getTorreDeviceManager()?.clearDeviceUserInfo(clearDataInterface)
@@ -463,7 +496,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface {
 
-        override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {
+        override fun onReadDeviceInfo(deviceModel: PPDeviceModel?) {
             addPrint("firmwareVersion: ${deviceModel?.firmwareVersion}")
             addPrint("serialNumber: ${deviceModel?.serialNumber}")
             addPrint("hardwareRevision: ${deviceModel?.hardwareVersion}")
@@ -535,6 +568,27 @@ class PeripheralTorreActivity : AppCompatActivity() {
          */
         override fun bindStateCallBack(type: Int, state: Int) {
             addPrint("bindStateCallBack type $type state$state")
+        }
+
+        /**
+         * 设置/获取演示模式状态
+         *
+         * @param type  1设置  2获取
+         * @param state 0x00：关闭演示模式
+         *              0x01：打开演示模式
+         * @param state 0x00：设置成功
+         *              0x01：设置失败
+         */
+        override fun demoModeSwitchCallBack(type: Int, state: Int) {
+            if (type == 1) {
+                if (state == 0) {
+                    addPrint("设置成功")
+                    Toast.makeText(this@PeripheralTorreActivity, "设置成功", Toast.LENGTH_SHORT).show()
+                } else {
+                    addPrint("设置失败")
+                    Toast.makeText(this@PeripheralTorreActivity, "设置失败", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

@@ -43,7 +43,7 @@ class PPApplication : Application() {
         })
         /*********************以下内容为SDK的配置项***************************************/
         //SDK日志打印控制，true会打印
-        PPBlutoothKit.setDebug(BuildConfig.DEBUG)
+        PPBlutoothKit.setDebug(true)
         /**
          * SDK 初始化 所需参数需要自行到开放平台自行申请，请勿直接使用Demo中的参数，
          * Demo中的参数仅供Demo使用

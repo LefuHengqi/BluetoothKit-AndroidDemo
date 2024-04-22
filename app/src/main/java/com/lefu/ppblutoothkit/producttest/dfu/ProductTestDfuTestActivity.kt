@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -76,6 +77,21 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
 
         initLogView()
         initSpinnerView()
+
+        findViewById<ToggleButton>(R.id.switchModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
+            if (controller?.connectState()?.not() == true) {
+                addPrint("maternity mode isChecked:$isChecked")
+                /**
+                 * 模式切换
+                 * @param type 0设置 1获取
+                 * @param mode 模式切换 0工厂 1用户
+                 * @param sendResultCallBack
+                 */
+                controller?.getTorreDeviceManager()?.switchMode(0, if (isChecked) 0 else 1, null)
+            } else {
+                addPrint("设备已连接")
+            }
+        }
     }
 
     fun getDeviceList(): List<String> {
@@ -264,7 +280,7 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
                 if (totalNum > 0) {
                     deviceModel?.let {
                         isTesting = true
-                        currentNum =0
+                        currentNum = 0
                         startTestBtn?.setText("停止测试")
                         if (controller?.connectState()?.not() == true) {
                             addPrint("开始连接")
