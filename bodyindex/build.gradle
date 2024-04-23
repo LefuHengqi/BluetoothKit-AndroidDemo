@@ -6,11 +6,11 @@ plugins {
 
 android {
 //    namespace 'com.lefu.bodyindex'
-    compileSdkVersion 34
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 31
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

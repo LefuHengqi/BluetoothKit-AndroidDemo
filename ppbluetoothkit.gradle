@@ -59,6 +59,7 @@ dependencies {
 //    api(project(":lefulib:bh1BodyComposition"))
 //    api(project(":lefulib:bh2BodyComposition"))
 //    api(project(":lefulib:bh3BodyComposition"))
+//    api(project(":lefulib:bh4BodyComposition"))
 //    api(project(":lefulib:bhBodyComposition"))
 //    api(project(":lefulib:bluetoothkit"))
 //    api(project(":lefulib:body_sl"))
