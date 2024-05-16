@@ -96,6 +96,7 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
 
     fun getDeviceList(): List<String> {
         val options = ArrayList<String>()
+        options.add("All")
         options.add("eufy")
         options.add("S400 Pro")
         options.add("S400")
@@ -150,7 +151,11 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
                 parent: AdapterView<*>?, view: View?, position: Int,
                 id: Long
             ) {
-                deviceNickName = getDeviceList().get(position)
+                if (position == 0) {
+                    deviceNickName = ""
+                } else {
+                    deviceNickName = getDeviceList().get(position)
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -328,27 +333,27 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
 
     fun showToast(msg: String) {
         addPrint(msg)
-        Toast.makeText(
-            this@ProductTestDfuTestActivity,
-            msg,
-            Toast.LENGTH_SHORT
-        ).show()
+        Toast.makeText(this@ProductTestDfuTestActivity, msg, Toast.LENGTH_SHORT).show()
     }
 
     val bleStateInterface = object : PPBleStateInterface() {
-        override fun monitorBluetoothWorkState(
-            ppBleWorkState: PPBleWorkState?,
-            deviceModel: PPDeviceModel?
-        ) {
+        override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState?, deviceModel: PPDeviceModel?) {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 mTestStateTv?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
+                mTestStateTv?.text = getString(R.string.device_be_connected)
+                addPrint(getString(R.string.device_be_connected))
+                deviceModel?.let { controller?.startConnect(it, this) }
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 mTestStateTv?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
                 mTestStateTv?.text = getString(R.string.device_disconnected)
                 addPrint(getString(R.string.device_disconnected))
+                if (isTesting) {
+                    reSearchAndConnectDevice()
+                }
             } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 mTestStateTv?.text = getString(R.string.stop_scanning)
                 addPrint(getString(R.string.stop_scanning))

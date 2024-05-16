@@ -146,4 +146,6 @@
     <string name="clear_success">cleared successfully</string>
     <string name="setting">Settings</string>
 
+    <string name="can_be_connected">Can Be Connected</string>
+
 </resources>

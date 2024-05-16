@@ -65,8 +65,6 @@ val ProductTestDfuTestActivity.onDFUStateListener: OnDFUStateListener
 //            PPBlutoothKit.setDebug(true)
             testResultVo.successNum = currentNum
             if (currentNum < totalNum) {
-                mTestStateTv?.text = getString(R.string.scanning)
-                reSearchAndConnectDevice()
             } else {
                 onAllDfuSuccess()
             }
@@ -77,9 +75,15 @@ val ProductTestDfuTestActivity.onDFUStateListener: OnDFUStateListener
  * 搜索连接
  */
 fun ProductTestDfuTestActivity.reSearchAndConnectDevice() {
-    addPrint("reSearchAndConnectDevice")
-    ProductTestDfuTestActivity.deviceModel?.let {
-        controller?.startSearch(it.deviceMac, bleStateInterface)
+    testResultVo.successNum = currentNum
+    if (currentNum < totalNum) {
+        mTestStateTv?.text = getString(R.string.scanning)
+        addPrint("reSearchAndConnectDevice")
+        ProductTestDfuTestActivity.deviceModel?.let {
+            controller?.startSearch(it.deviceMac, bleStateInterface)
+        }
+    } else {
+        onAllDfuSuccess()
     }
 }
 

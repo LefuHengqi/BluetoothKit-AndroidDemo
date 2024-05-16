@@ -340,8 +340,8 @@ class PeripheralAppleActivity : AppCompatActivity() {
                 device_set_connect_state?.text = getString(R.string.can_be_connected)
                 addPrint(getString(R.string.can_be_connected))
                 //如果你想扫描到设备后，直接连接，可调用下面两行。
-//                controller?.stopSeach()
-//                deviceModel?.let { controller?.startConnect(it, this) }
+                controller?.stopSeach()
+                deviceModel?.let { controller?.startConnect(it, this) }
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 device_set_connect_state?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))

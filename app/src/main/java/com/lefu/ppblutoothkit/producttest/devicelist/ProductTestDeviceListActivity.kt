@@ -62,13 +62,14 @@ class ProductTestDeviceListActivity : Activity() {
         tv_starts!!.text = getString(R.string.bluetooth_status) + getString(R.string.scanning)
         adapter?.setOnItemClickListener { adapter, view, position ->
             if (position >= 0 && adapter.data.size > position) {
-                if (filterName.isEmpty()) {
-                    onStartDeviceSetPager(position)
+                if (searchType == 1) {
+                    val deviceModel = adapter?.getItem(position) as DeviceVo
+                    ProductTestDfuTestActivity.deviceModel = deviceModel.deviceModel
+                    finish()
                 } else {
-                    if (searchType == 1) {
-                        val deviceModel = adapter?.getItem(position) as DeviceVo
-                        ProductTestDfuTestActivity.deviceModel = deviceModel.deviceModel
-                        finish()
+                    if (filterName.isEmpty()) {
+                        onStartDeviceSetPager(position)
+                    } else {
                     }
                 }
             }

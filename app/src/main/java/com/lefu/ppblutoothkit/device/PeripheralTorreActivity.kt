@@ -337,6 +337,9 @@ class PeripheralTorreActivity : AppCompatActivity() {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 device_set_connect_state?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
+                addPrint("startConnect")
+                deviceModel?.let { it1 -> controller?.startConnect(it1, this) }
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 device_set_connect_state?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))

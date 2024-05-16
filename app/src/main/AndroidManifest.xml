@@ -58,10 +58,14 @@
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.CalculateManagerActivity"
             android:screenOrientation="fullSensor" />
-        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy" />
-        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy" />
-        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy" />
-        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy" /> <!-- Torre -->
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy"
+            android:screenOrientation="fullSensor" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy"
+            android:screenOrientation="fullSensor" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy"
+            android:screenOrientation="fullSensor" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy"
+            android:screenOrientation="fullSensor" /> <!-- Torre -->
         <!--        <activity android:name=".torre.PeripheralTorreConfigWifiActivity" />-->
         <!--        <activity android:name=".torre.PeripheralTorreSearchWifiListActivity" />-->
         <!--        <activity android:name=".PeripheralTorreActivity" /> &lt;!&ndash; Apple &ndash;&gt;-->
@@ -78,7 +82,8 @@
         <!--Torre-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="fullSensor"
+            />
         <activity
             android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity"
             android:screenOrientation="fullSensor" />
@@ -141,7 +146,7 @@
             android:screenOrientation="fullSensor" />
         <activity
             android:name=".producttest.dfu.ProductTestDfuTestActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".producttest.devicelist.ProductTestDeviceListActivity"
             android:screenOrientation="fullSensor" />
