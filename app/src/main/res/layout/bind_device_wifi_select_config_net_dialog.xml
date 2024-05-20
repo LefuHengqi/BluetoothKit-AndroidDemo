@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimens_60dp"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_round_8_white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/bind_device_select_config_net_id_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_12dp"
+        android:layout_marginBottom="@dimen/dimens_20dp"
+        android:gravity="center_horizontal"
+        android:text="@string/warn_title"
+        android:textColor="@color/back_font"
+        android:textSize="@dimen/text_16sp" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/dimens_40dp"
+        android:layout_marginEnd="@dimen/dimens_40dp"
+        android:layout_marginBottom="@dimen/dimens_30dp"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/dimens_3dp"
+        android:textColor="@color/back_font"
+        android:textSize="@dimen/text_14sp"
+        tools:text="@string/lock_data_received" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_05dp"
+        android:background="@color/line_gray" />
+
+    <TextView
+        android:id="@+id/bind_device_select_config_net_id_to_config_net"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_40dp"
+        android:gravity="center"
+        android:text="@string/config_wifi"
+        android:textColor="@color/back_font"
+        android:textSize="@dimen/text_14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_05dp"
+        android:background="@color/line_gray" />
+
+    <TextView
+        android:id="@+id/bind_device_select_config_net_id_submit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_40dp"
+        android:gravity="center"
+        android:text="@string/later_to_say_again"
+        android:textColor="@color/back_font"
+        android:textSize="@dimen/text_14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_05dp"
+        android:background="@color/line_gray" />
+
+    <TextView
+        android:id="@+id/bind_device_select_config_net_id_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_40dp"
+        android:gravity="center"
+        android:text="@string/not_my_data"
+        android:textColor="@color/back_font"
+        android:textSize="@dimen/text_14sp" />
+
+
+</LinearLayout>

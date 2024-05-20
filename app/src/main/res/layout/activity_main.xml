@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/simulatedBodyFatCalculationBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimens_50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/simulated_body_fat_calculation"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/userInfoBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimens_50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/user_info_edit"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/bindingDeviceBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/binding_device"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/scaleWeightBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/weigh_on_the_scale"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/functionFoodScale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/function_food_scale"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/deviceManagerBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimens_50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/equipment_management"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/functionListBleBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/function_list_ble"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</LinearLayout>

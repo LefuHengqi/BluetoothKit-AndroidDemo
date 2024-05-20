@@ -1,0 +1,54 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven'
+}
+
+android {
+//    namespace 'com.lefu.bodyindex'
+    compileSdkVersion 31
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 31
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+//    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation 'androidx.core:core-ktx:1.3.0'
+    implementation(project(":ppscalelib"))
+}
+
+//uploadArchives {
+//    repositories.mavenDeployer {
+////        Ubuntu本地仓库路径， Windows 为(url:"file://D://***/***/***/")
+////        repository(url: "file:/home/pen/develop/other/")
+////        String deployPath = "C:/liyp/Android/workspace/PPScale-Android/ppscale/"
+//        String deployPath = getProjectDir().absolutePath + "/../ppscale-android-maven/"
+//        repository(url: "file://${deployPath}")
+//        pom.groupId = GROUP_ID
+//        pom.artifactId = ARTIFACT_ID_BODY_INDEX
+//        pom.version = LIB_VERSION
+//        pom.packaging = 'aar'
+//    }
+//}
+
+

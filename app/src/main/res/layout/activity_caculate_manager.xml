@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/dimens_50dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/dc4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimens_50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/_4dc"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/ac4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimens_50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/dimens_50dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/_4ac"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/ac4_2channel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimens_50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/dimens_50dp"
+            android:text="@string/_4ac2channel"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/ac8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/dimens_50dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/_8ac"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</LinearLayout>

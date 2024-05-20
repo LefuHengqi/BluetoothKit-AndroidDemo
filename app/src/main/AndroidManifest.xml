@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.lefu.ppblutoothkit">
+    <!-- 蓝牙相关权限 -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <!-- 存储相关权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:name="com.lefu.ppblutoothkit.PPApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".device.SetHostActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name="com.lefu.ppblutoothkit.MainActivity"
+            android:exported="true"
+            android:screenOrientation="fullSensor">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.lefu.ppblutoothkit.calculate.BodyDataDetailActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name="com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name="com.lefu.ppblutoothkit.UserinfoActivity"
+            android:screenOrientation="fullSensor" /> <!-- Calculate -->
+        <activity
+            android:name="com.lefu.ppblutoothkit.calculate.CalculateManagerActivity"
+            android:screenOrientation="fullSensor" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy"
+            android:screenOrientation="fullSensor" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy"
+            android:screenOrientation="fullSensor" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy"
+            android:screenOrientation="fullSensor" />
+        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy"
+            android:screenOrientation="fullSensor" /> <!-- Torre -->
+        <!--        <activity android:name=".torre.PeripheralTorreConfigWifiActivity" />-->
+        <!--        <activity android:name=".torre.PeripheralTorreSearchWifiListActivity" />-->
+        <!--        <activity android:name=".PeripheralTorreActivity" /> &lt;!&ndash; Apple &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralAppleActivity" /> &lt;!&ndash; Banana &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralBananaActivity" /> &lt;!&ndash; Coconut &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralCoconutActivity" /> &lt;!&ndash; Dutian &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralDutianActivity" /> &lt;!&ndash; Egg &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralEggActivity" /> &lt;!&ndash; Fish &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralFishActivity" /> &lt;!&ndash; Grapes &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralGrapesActivity" /> &lt;!&ndash; Hamburger &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralHamburgerActivity" /> &lt;!&ndash; Ice &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralIceActivity" /> &lt;!&ndash; Jambul &ndash;&gt;-->
+        <!--        <activity android:name=".PeripheralJambulActivity" />-->
+        <!--Torre-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity"
+            android:screenOrientation="fullSensor"
+            />
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Apple-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralAppleActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Banana-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralBananaActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Coconut-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralCoconutActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Dutian-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralDutianActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Egg-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralEggActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Fish-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralFishActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Grapes-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralGrapesActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Hamburger-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Ice-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralIceActivity"
+            android:screenOrientation="fullSensor" />
+        <!--Jambul-->
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralJambulActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".device.apple.BleConfigWifiActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".device.apple.WifiBodyDataDetailActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".device.apple.WifiDataListActivity"
+            android:screenOrientation="fullSensor" />
+
+        <!--Product Test Module-->
+        <activity
+            android:name=".producttest.ProductTestManagerActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".producttest.dfu.ProductTestDfuTestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".producttest.devicelist.ProductTestDeviceListActivity"
+            android:screenOrientation="fullSensor" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

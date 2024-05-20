@@ -1,0 +1,166 @@
+<resources>
+    <string name="app_name">UniqueTool</string>
+    <string name="height">身高（厘米）</string>
+    <string name="_30_220">取值范围：30-220</string>
+    <string name="value_range_30_220">取值范围：30-220</string>
+    <string name="age">年龄（岁）</string>
+    <string name="unit">单位</string>
+    <string name="gender">性别</string>
+    <string name="user_group">用户组</string>
+    <string name="maternity_mode">孕妇模式</string>
+    <string name="sport_mode">运动员模式</string>
+    <string name="this_weighing_infomation">本次称重信息：（详细信息请点击数据详情）</string>
+    <string name="body_weight_">体重：</string>
+    <string name="data_details">数据详情</string>
+    <string name="blutooth_distribution_net">蓝牙配网</string>
+    <string name="binding_device">绑定设备</string>
+    <string name="equipment_management">设备管理</string>
+    <string name="unit_normal">
+         0：表示KG 1 表示LB
+         2：表示ST 3 表示斤
+         4：表示g 5 表示lb:oz
+         6：表示oz 7 表示ml(water)
+         8: 表示ml（milk）</string>
+    <string name="sex_normal">0为女，1为男</string>
+    <string name="value_range_age">取值范围：10-99</string>
+    <string name="value_range_group">取值范围：0-9</string>
+    <string name="maternity_mode_tag">0默认 1孕妇模式</string>
+    <string name="sport_mode_tag">0默认 1运动员模式</string>
+    <string name="please_select_function">请选择功能</string>
+    <string name="bmdj">闭目单脚</string>
+    <string name="measure_weight">测量体重</string>
+    <string name="whether_to_save_the_">是否保存当前体重</string>
+    <string name="is_this_your_data">这是您的数据么？</string>
+    <string name="corfirm">确定</string>
+    <string name="cancle">取消</string>
+
+    <string name="device_connected">设备已连接</string>
+    <string name="device_connecting">设备连接中</string>
+    <string name="device_disconnected">设备已断开</string>
+    <string name="stop_scanning">停止扫描</string>
+    <string name="scan_timeout">扫描超时</string>
+    <string name="scanning">扫描中</string>
+    <string name="device_be_connected">可以连接</string>
+    <string name="writable">可以写</string>
+    <string name="bluetooth_status_is_abnormal">蓝牙状态异常</string>
+    <string name="system_bluetooth_disconnect">系统蓝牙断开</string>
+    <string name="system_blutooth_on">系统蓝牙打开</string>
+    <string name="system_bluetooth_abnormal">系统蓝牙异常</string>
+    <string name="connect">连接</string>
+
+    <string name="developer_mode">开发者模式</string>
+    <string name="device_not_supported">设备不支持</string>
+    <string name="confirm_delete">确定删除?</string>
+    <string name="hint">提示</string>
+    <string name="simulated_body_fat_calculation">模拟体脂计算</string>
+    <string name="bluetooth_status">蓝牙状态: </string>
+
+    <string name="user_info_edit">用户信息编辑</string>
+    <string name="function_food_scale">食物秤称重</string>
+    <string name="weigh_on_the_scale">体脂秤称重</string>
+    <string name="function_list_ble">扫描附近设备列表</string>
+    <string name="current_weight">当前重量</string>
+
+    <string name="string_unit_kg">kg</string>
+    <string name="string_unit_g">g</string>
+    <string name="string_unit_lb">lb</string>
+    <!--  don not modify the split style  -->
+    <string name="string_unit_lb_oz">lb:oz</string>
+    <string name="string_unit_fl_oz_water">fl.oz(water)</string>
+    <string name="string_unit_fl_oz_milk">fl.oz(milk)</string>
+    <string name="string_unit_ml">ml</string>
+    <string name="string_unit_oz">oz</string>
+    <string name="string_unit_water">water</string>
+    <string name="string_unit_water_ml">ml(water)</string>
+    <string name="string_unit_milk">milk</string>
+    <string name="string_unit_milk_ml">ml(milk)</string>
+    <string name="save">保存</string>
+
+    <string name="confirm">确定</string>
+    <string name="connect_device">连接设备</string>
+    <string name="sync_time">同步时间</string>
+    <string name="device_info">设备信息</string>
+    <string name="change_unit">切换单位</string>
+    <string name="history_data">历史数据</string>
+    <string name="clear_history">清除历史</string>
+    <string name="start_config_net">开始配网</string>
+    <string name="get_wifi_info">获取Wifi信息</string>
+    <string name="set_user_info">设置用户信息</string>
+    <string name="connect_state">连接状态</string>
+    <string name="start_scan">启动扫描</string>
+    <string name="stop_scan">停止扫描</string>
+    <string name="start_measure">启动测量</string>
+    <string name="stop_measure">停止测量</string>
+    <string name="sync_all_user_info">同步所有用户数据</string>
+    <string name="delete_all_user_info">删除所有用户数据</string>
+    <string name="confirm_current_user">确认当前用户</string>
+    <string name="get_user_list">获取用户列表</string>
+    <string name="get_ssid">获取SSID</string>
+    <string name="get_wifi_mac">获取WifiMac</string>
+    <string name="clear_user_info">清除用户</string>
+    <string name="get_unit">获取单位</string>
+    <string name="read_device_battery">获取电量</string>
+    <string name="read_light">获取亮度</string>
+    <string name="sync_user_history">用户历史数据</string>
+    <string name="sync_tourist_history">游客历史数据</string>
+    <string name="set_light">设置亮度</string>
+    <string name="sync_log">同步日志</string>
+    <string name="reset">恢复出厂</string>
+    <string name="start_keep_alive">启动保活</string>
+    <string name="pregnant_woman_mode">孕妇模式</string>
+    <string name="start_local_ota">本地升级</string>
+    <string name="start_user_ota">用户升级</string>
+    <string name="start_dfu">启动DFU升级</string>
+    <string name="is_full_upgrade">是否全量升级</string>
+    <string name="caculate_type">计算类型:</string>
+    <string name="heartrate_mesuring">心率测量中...</string>
+    <string name="measure_complete">测量完成</string>
+    <string name="_4dc">4电极直流算法</string>
+    <string name="_4ac2channel">4电极双频算法</string>
+    <string name="_4ac">4电极交流算法</string>
+    <string name="_8ac">8电极算法</string>
+    <string name="Impedance_measurement">阻抗测量中</string>
+    <string name="tips">温馨提示</string>
+    <string name="is_body_fat_calculated">是否计算体脂</string>
+
+    <string name="warn_title">温馨提示</string>
+    <string name="lock_data_received">已接收到锁定数据</string>
+    <string name="config_wifi">配置WiFi</string>
+    <string name="later_to_say_again">稍后再说</string>
+    <string name="not_my_data">不是我的数据</string>
+
+    <string name="no_longer_prompt">不再提示</string>
+    <string name="config_wifi_detail">您可以选择现在对设备进行WIFI配置，也可以稍后在设备列表中进行</string>
+    <string name="go_to_config_wifi">您当前使用的设备为蓝牙WIFI秤，但您尚未配网，是否需要进行配置？</string>
+
+    <string name="login_back">Back</string>
+    <string name="wifi_config_title">Select the Wi-Fi for devices to work with</string>
+    <string name="wifi_config_5g_hint">Your 5G network is not currently supported, please set up Wi-Fi and switch to another network</string>
+    <string name="wifi_config_key_hint">Enter Wi-Fi password</string>
+    <string name="wifi_config_other">Change other Wi-Fi</string>
+    <string name="select_device_type_next">Next</string>
+    <string name="wifi_config_disconnected">The network is disconnected</string>
+    <string name="scan_time_out">扫描超时</string>
+    <string name="scan_cancle">取消扫描</string>
+    <string name="data_list">数据列表</string>
+    <string name="config_wifi_fail">配网失败</string>
+    <string name="config_wifi_success">配网成功</string>
+    <string name="corfirm_delete">确定删除?</string>
+    <string name="prompt">提示</string>
+    <string name="determine">确定</string>
+    <string name="cancel">取消</string>
+    <string name="dns_sent_successfully">发送域名成功</string>
+    <string name="service_ip_sent_successfully">发送SeviceIp成功</string>
+    <string name="modify_serverip">修改ServerIP</string>
+    <string name="modify_server_domain">修改Server域名</string>
+    <string name="server_ip">服务端IP</string>
+    <string name="server_dns">服务端DNS</string>
+    <string name="reconnection">重连</string>
+    <string name="clear_ssid">清除SSID</string>
+    <string name="to_config_the_network">去配网</string>
+    <string name="clear_fail">清除失败</string>
+    <string name="clear_success">清除成功</string>
+    <string name="setting">设置</string>
+    <string name="can_be_connected">可连接</string>
+
+</resources>

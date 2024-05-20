@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UniqueTool</string>
+    <string name="height">Height (cm)</string>
+    <string name="_30_220">Range: 30-220</string>
+    <string name="value_range_30_220">Range: 30-220</string>
+    <string name="age">age)</string>
+    <string name="unit">unit</string>
+    <string name="gender">gender</string>
+    <string name="user_group">user group</string>
+    <string name="maternity_mode">Maternity mode</string>
+    <string name="sport_mode">Athlete mode</string>
+    <string name="this_weighing_infomation">The weighing information :( For more information, please click on the data details)</string>
+    <string name="body_weight_">body weight:</string>
+    <string name="data_details">Data details</string>
+    <string name="blutooth_distribution_net">Bluetooth distribution network</string>
+    <string name="binding_device">Binding Equipment</string>
+    <string name="equipment_management">Device Management</string>
+    <string name="unit_normal">0：KG, 1: LB
+         2：ST ,3: 斤
+         4：g, 5：lb:oz
+         6：oz 7：ml(water)
+         8: ml（milk）</string>
+    <string name="sex_normal">0 for women and 1 for men</string>
+    <string name="value_range_age">Range: 10-99</string>
+    <string name="value_range_group">Range: 0-9</string>
+    <string name="maternity_mode_tag">0 default   1 pregnant woman mode</string>
+    <string name="sport_mode_tag">0 default  1 athlete mode</string>
+    <string name="please_select_function">Please select</string>
+    <string name="bmdj">Eyes closed one leg</string>
+    <string name="measure_weight">Measurement of body weight</string>
+    <string name="whether_to_save_the_">Whether to save the current weight</string>
+    <string name="is_this_your_data">This is what your data?</string>
+    <string name="corfirm">determine</string>
+    <string name="cancle">cancel</string>
+    <string name="device_connected">The device is connected</string>
+    <string name="device_connecting">Device connection</string>
+    <string name="device_disconnected">Device disconnected</string>
+    <string name="stop_scanning">Stop scanning</string>
+    <string name="scan_timeout">Scan timeout</string>
+    <string name="scanning">Scan</string>
+    <string name="writable">Writable</string>
+    <string name="bluetooth_status_is_abnormal">Bluetooth is abnormal</string>
+    <string name="system_bluetooth_disconnect">Disconnect the Bluetooth system</string>
+    <string name="system_blutooth_on">Open the Bluetooth system</string>
+    <string name="system_bluetooth_abnormal">Bluetooth system abnormalities</string>
+    <string name="connect">connect</string>
+
+    <string name="developer_mode">Developer mode</string>
+    <string name="device_not_supported">Device not supported</string>
+    <string name="confirm_delete">Are you sure to delete?</string>
+    <string name="hint">hint</string>
+    <string name="simulated_body_fat_calculation">Simulated body fat calculation</string>
+    <string name="bluetooth_status">Bluetooth Status: </string>
+
+    <string name="user_info_edit">User Info Edit</string>
+    <string name="function_food_scale">Food scales</string>
+    <string name="weigh_on_the_scale">Weigh on the body fat scale</string>
+    <string name="function_list_ble">Scan list of nearby devices</string>
+    <string name="current_weight">Current weight</string>
+    <string name="save">Save</string>
+
+    <string name="confirm">Confirm</string>
+    <string name="connect_device">Connect device</string>
+    <string name="sync_time">Synchronization time</string>
+    <string name="device_info">Device information</string>
+    <string name="change_unit">Switch unit</string>
+    <string name="history_data">Historical data</string>
+    <string name="clear_history">Clear history</string>
+    <string name="start_config_net">Network Config</string>
+    <string name="get_wifi_info">Wifi information</string>
+    <string name="set_user_info">Set User info</string>
+    <string name="connect_state">Connection status</string>
+    <string name="start_scan">Start scan</string>
+    <string name="stop_scan">Stop scanning</string>
+    <string name="start_measure">Start measurement</string>
+    <string name="stop_measure">Stop measurement</string>
+    <string name="sync_all_user_info">Synchronize user</string>
+    <string name="delete_all_user_info">Delete user</string>
+    <string name="confirm_current_user">Current user</string>
+    <string name="get_user_list">Get user list</string>
+    <string name="get_ssid">Get SSID</string>
+    <string name="get_wifi_mac">Get WifiMac</string>
+    <string name="clear_user_info">Clear user</string>
+    <string name="get_unit">Get unit</string>
+    <string name="read_device_battery">Get battery</string>
+    <string name="read_light">Get brightness</string>
+    <string name="sync_user_history">User history</string>
+    <string name="sync_tourist_history">Tourist historical</string>
+    <string name="set_light">Set brightness</string>
+    <string name="sync_log">Sync log</string>
+    <string name="reset">Factory reset</string>
+    <string name="start_keep_alive">Start keep alive</string>
+    <string name="pregnant_woman_mode">Pregnant woman mode</string>
+    <string name="start_local_ota">Local upgrade</string>
+    <string name="start_user_ota">User upgrade</string>
+    <string name="start_dfu">Start DFU upgrade</string>
+    <string name="is_full_upgrade">Upgrade in full</string>
+    <string name="caculate_type">Calculation type:</string>
+    <string name="heartrate_mesuring">Heart rate measuring...</string>
+    <string name="measure_complete">Measurement completed</string>
+    <string name="_4dc">4-electrode DC algorithm</string>
+    <string name="_4ac">4-electrode AC algorithm</string>
+    <string name="_8ac">8-electrode algorithm</string>
+    <string name="_4ac2channel">4-electrode dual frequency algorithm</string>
+    <string name="Impedance_measurement">Impedance measurement</string>
+    <string name="tips">Warm tips</string>
+    <string name="is_body_fat_calculated">Whether to calculate body fat</string>
+
+    <string name="warn_title">Cozy Hint</string>
+    <string name="config_wifi">Configure WiFi</string>
+    <string name="lock_data_received">Lock data has been received</string>
+    <string name="later_to_say_again">Talk later</string>
+    <string name="not_my_data">Not my data</string>
+
+    <string name="config_wifi_detail">You can choose to configure the WIFI of the device now or later in the device list</string>
+    <string name="no_longer_prompt">Do not remind again</string>
+    <string name="go_to_config_wifi">The device you are currently using is a Bluetooth WIFI scale, but you have not yet configured the network, do you need to configure it?</string>
+    <string name="login_back">Back</string>
+    <string name="wifi_config_title">Select the Wi-Fi for devices to work with</string>
+    <string name="wifi_config_5g_hint">Your 5G network is not currently supported, please set up Wi-Fi and switch to another network</string>
+
+    <string name="wifi_config_key_hint">Enter Wi-Fi password</string>
+    <string name="wifi_config_other">Change other Wi-Fi</string>
+    <string name="select_device_type_next">Next</string>
+    <string name="wifi_config_disconnected">The network is disconnected</string>
+    <string name="scan_time_out">scan timeout</string>
+    <string name="scan_cancle">cancel scanning </string>
+    <string name="data_list">data list</string>
+    <string name="config_wifi_fail">distribution network failed</string>
+    <string name="config_wifi_success">distribution network success</string>
+    <string name="corfirm_delete">Are you sure to delete?</string>
+    <string name="prompt">prompt</string>
+    <string name="determine">OK</string>
+    <string name="cancel">cancel</string>
+    <string name="dns_sent_successfully">Domain sent successfully </string>
+    <string name="service_ip_sent_successfully">Send SeviceIp successfully</string>
+    <string name="modify_serverip">modify ServerIP</string>
+    <string name="modify_server_domain">modify Server Domain</string>
+    <string name="server_ip">server IP</string>
+    <string name="server_dns">server DNS</string>
+    <string name="reconnection">Reconnect</string>
+    <string name="clear_ssid">clear SSID</string>
+    <string name="to_config_the_network">to the distribution network</string>
+    <string name="clear_fail">clear failure </string>
+    <string name="clear_success">cleared successfully</string>
+    <string name="setting">Settings</string>
+
+    <string name="can_be_connected">Can Be Connected</string>
+
+</resources>
