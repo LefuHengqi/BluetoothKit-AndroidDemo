@@ -342,9 +342,15 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
                 mTestStateTv?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
-                mTestStateTv?.text = getString(R.string.device_be_connected)
-                addPrint(getString(R.string.device_be_connected))
-                deviceModel?.let { controller?.startConnect(it, this) }
+                if (Companion.deviceModel != null) {
+                    deviceModel?.let {
+                        if (deviceModel.deviceMac.equals(Companion.deviceModel!!.deviceMac)) {
+                            mTestStateTv?.text = getString(R.string.device_be_connected)
+                            addPrint(getString(R.string.device_be_connected))
+                            controller?.startConnect(it, this)
+                        }
+                    }
+                }
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 mTestStateTv?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))

@@ -35,11 +35,11 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".device.SetHostActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.MainActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,24 +48,24 @@
         </activity>
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.BodyDataDetailActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.UserinfoActivity"
-            android:screenOrientation="fullSensor" /> <!-- Calculate -->
+            android:screenOrientation="portrait" /> <!-- Calculate -->
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.CalculateManagerActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy"
-            android:screenOrientation="fullSensor" /> <!-- Torre -->
+            android:screenOrientation="portrait" /> <!-- Torre -->
         <!--        <activity android:name=".torre.PeripheralTorreConfigWifiActivity" />-->
         <!--        <activity android:name=".torre.PeripheralTorreSearchWifiListActivity" />-->
         <!--        <activity android:name=".PeripheralTorreActivity" /> &lt;!&ndash; Apple &ndash;&gt;-->
@@ -82,74 +82,74 @@
         <!--Torre-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="portrait"
             />
         <activity
             android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Apple-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralAppleActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Banana-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralBananaActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Coconut-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralCoconutActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Dutian-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralDutianActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Egg-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralEggActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Fish-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralFishActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Grapes-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralGrapesActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Hamburger-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Ice-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralIceActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <!--Jambul-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralJambulActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".device.apple.BleConfigWifiActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".device.apple.WifiBodyDataDetailActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".device.apple.WifiDataListActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
 
         <!--Product Test Module-->
         <activity
             android:name=".producttest.ProductTestManagerActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".producttest.dfu.ProductTestDfuTestActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".producttest.devicelist.ProductTestDeviceListActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
