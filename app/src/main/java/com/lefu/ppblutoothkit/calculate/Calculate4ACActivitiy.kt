@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_calculate_8ac.etWeight
 class Calculate4ACActivitiy : Activity() {
 
     var deviceName: String = ""
-    var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0//4电极新版计算库
+    var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate//4电极新版计算库
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -18,10 +18,13 @@ import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.okhttp.RetCallBack
 import com.lefu.ppblutoothkit.producttest.ProductTestManagerActivity
 import com.lefu.ppblutoothkit.producttest.dfu.ProductTestDfuTestActivity
+import com.lefu.ppblutoothkit.util.DeviceUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.vo.DemoDeviceConfigVo
 import com.peng.ppscale.PPBlutoothKit
+import com.peng.ppscale.PPBlutoothKit.TAG
 import com.peng.ppscale.util.Logger
+import com.peng.ppscale.util.PPUtilHelper
 import com.peng.ppscale.vo.PPWifiModel
 import okhttp3.Call
 import java.io.File
@@ -45,6 +48,7 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
         requestLocationPermission()
 
     }
+
 
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
@@ -112,6 +116,14 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
             }
 
             R.id.caculateBodyFat -> {
+
+                val a= 6425
+                val b = 6130
+
+                val c =  a/100f - b/100f
+
+                Logger.d("$TAG kgtost2Point2d: $c")
+
                 startActivity(Intent(this@MainActivity, CalculateManagerActivity::class.java))
             }
 

@@ -25,6 +25,7 @@ import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
+import com.lefu.ppblutoothkit.producttest.dfu.ProductTestDfuTestActivity
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
@@ -53,6 +54,7 @@ import com.peng.ppscale.vo.PPBodyFatModel
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPScaleDefine
 import com.peng.ppscale.vo.PPUserModel
+import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -337,6 +339,17 @@ class PeripheralTorreActivity : AppCompatActivity() {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 device_set_connect_state?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
+                addPrint("startConnect")
+                if (Companion.deviceModel != null) {
+                    deviceModel?.let {
+                        if (deviceModel.deviceMac.equals(Companion.deviceModel!!.deviceMac)) {
+                            mTestStateTv?.text = getString(R.string.device_be_connected)
+                            addPrint(getString(R.string.device_be_connected))
+                            controller?.startConnect(it, this)
+                        }
+                    }
+                }
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 device_set_connect_state?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))
@@ -816,10 +829,14 @@ class PeripheralTorreActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         controller?.stopSeach()
         controller?.disConnect()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 
