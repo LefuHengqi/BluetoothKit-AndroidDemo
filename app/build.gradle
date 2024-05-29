@@ -13,8 +13,8 @@ android {
         applicationId "com.lefu.ppblutoothkit"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode LIB_VERSION_CODE as int
-        versionName LIB_VERSION
+        versionCode APP_VERSION_CODE as int
+        versionName APP_VERSION
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     packagingOptions {

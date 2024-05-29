@@ -31,7 +31,12 @@ class TestResultVo : Serializable {
     }
 
     override fun toString(): String {
-        return "TestResultVo(startTime=$startTime, endTime=$endTime, packagesSize=$packagesSize, deviceModel='$deviceModel', deviceMac='$deviceMac', phoneModel='$phoneModel', firmwareVersion='$firmwareVersion', testNum=$testNum, planNum=$planNum, successNum=$successNum)"
+        return "TestResultVo(startTime=$startTime, " +
+                "endTime=$endTime, packagesSize=$packagesSize, " +
+                "deviceModel='$deviceModel', deviceMac='$deviceMac', " +
+                "phoneModel='$phoneModel', firmwareVersion='$firmwareVersion', " +
+                "testNum=$testNum, planNum=$planNum, " +
+                "successNum=$successNum"
     }
 
 

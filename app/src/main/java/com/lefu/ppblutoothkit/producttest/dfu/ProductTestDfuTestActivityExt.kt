@@ -12,6 +12,7 @@ import com.peng.ppscale.util.Logger
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mDfuTestCurrentNumTv
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.startTestBtn
+import kotlinx.coroutines.delay
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -43,9 +44,6 @@ val ProductTestDfuTestActivity.onDFUStateListener: OnDFUStateListener
 
         override fun onDfuFail(errorType: String?) {
             addPrint("onDfuFail $errorType")
-//            PPBlutoothKit.setDebug(true)
-            currentNum = 0
-            testResultVo.endTime = System.currentTimeMillis()
         }
 
         override fun onInfoOout(outInfo: String?) {
@@ -114,50 +112,6 @@ val ProductTestDfuTestActivity.deviceLogInterface: PPDeviceLogInterface
         }
     }
 
-
-fun ProductTestDfuTestActivity.startUploadLog() {
-    Logger.d("$TAG 上传日志")
-    var logDirectory: File? = File(filesDir, "/Log/AppLog")
-    logDirectory?.let {
-        fileList?.clear()
-        val files = processFiles(it)
-        if (files.isNullOrEmpty().not()) {
-            files?.let {
-                val file = it.get(files.size - 1)
-                var fileName = file!!.name
-                Logger.d("$TAG 上传日志 path:${file.absolutePath}")
-                val lastIndex = fileName.lastIndexOf(".")
-                if (lastIndex != -1) {
-                    val substring = fileName.substring(0, lastIndex)
-                    fileName = "${substring}_${System.currentTimeMillis()}.txt"
-                    Logger.d("$TAG 上传日志 传给服务器的名字 fileName：$fileName")
-                }
-
-                FileUtil.sendEmail(this@startUploadLog, file.absolutePath)
-            }
-        } else {
-            Logger.e("$TAG 日志导出 日志列表为空 logDirectory path:${logDirectory.absolutePath}")
-        }
-
-    }
-}
-
-// 递归处理文件的方法
-fun processFiles(directory: File): MutableList<File?>? {
-    val files = directory.listFiles()
-    if (files != null) {
-        for (file in files) {
-            if (file.isDirectory) {
-                // 如果是文件夹，则递归处理该文件夹
-                processFiles(file)
-            } else {
-                // 如果是文件，则按照之前的逻辑进行处理
-                fileList?.add(file)
-            }
-        }
-    }
-    return fileList
-}
 
 /**
  * 分享报告

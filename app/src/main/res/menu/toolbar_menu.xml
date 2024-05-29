@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/menu_item_export_app_log"
-        android:title="导出App日志"
+        android:title="App日志"
         app:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/menu_item_export_device_log"
-        android:title="导出设备日志"
-        android:visible="false"
+        android:title="设备日志"
+        android:visible="true"
         app:showAsAction="collapseActionView" />
 
     <item

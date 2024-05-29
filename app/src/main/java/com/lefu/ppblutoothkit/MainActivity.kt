@@ -8,29 +8,21 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import com.lefu.ppblutoothkit.calculate.CalculateManagerActivity
 import com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity
+import com.lefu.ppblutoothkit.log.LogActivity
 import com.lefu.ppblutoothkit.okhttp.DataTask
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.okhttp.RetCallBack
 import com.lefu.ppblutoothkit.producttest.ProductTestManagerActivity
-import com.lefu.ppblutoothkit.producttest.dfu.ProductTestDfuTestActivity
-import com.lefu.ppblutoothkit.util.DeviceUtil
-import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.vo.DemoDeviceConfigVo
 import com.peng.ppscale.PPBlutoothKit
 import com.peng.ppscale.PPBlutoothKit.TAG
 import com.peng.ppscale.util.Logger
-import com.peng.ppscale.util.PPUtilHelper
-import com.peng.ppscale.vo.PPWifiModel
 import okhttp3.Call
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class MainActivity : BasePermissionActivity(), View.OnClickListener {
 
@@ -58,29 +50,17 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
         toolbar?.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.main_menu_item_export_app_log -> {
-                    var logDirectory: File? = File(filesDir, "/Log/AppLog")
-                    logDirectory?.let {
-                        fileList.clear()
-                        val processFiles = processFiles(it)
-                        if (processFiles.isNullOrEmpty().not()) {
-                            FileUtil.sendEmail(this@MainActivity, processFiles.get(processFiles.size - 1).absolutePath)
-                        }
-                    }
+                    //                    startUploadLog()
+                    LogActivity.logType = 0
+                    val intent = Intent(this, LogActivity::class.java)
+                    startActivity(intent)
                     true
                 }
 
                 R.id.main_menu_item_clear_app_log -> {
-                    val logDirectory: File? = File(filesDir, "/Log/AppLog")
-                    logDirectory?.let {
-                        fileList.clear()
-                        val processFiles = processFiles(it)
-                        if (processFiles.isNullOrEmpty().not()) {
-                            processFiles.forEach {
-                                it.delete()
-                            }
-                        }
-                    }
-                    Toast.makeText(this@MainActivity, "清除App日志成功", Toast.LENGTH_SHORT).show()
+                    LogActivity.logType = 1//deviceLog
+                    val intent = Intent(this, LogActivity::class.java)
+                    startActivity(intent)
                     true
                 }
 
