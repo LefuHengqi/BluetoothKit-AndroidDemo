@@ -59,7 +59,7 @@ class ScanDeviceListActivity : Activity() {
 
     private fun initToolbar() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar?.title = "搜索设备"
+        toolbar?.title = getString(R.string.search_device)
         toolbar?.setTitleTextColor(Color.WHITE)
     }
 
@@ -145,7 +145,7 @@ class ScanDeviceListActivity : Activity() {
             ppScale = PPSearchManager()
         }
         //You can dynamically set the scan time in ms
-        ppScale!!.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface)
+        ppScale?.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface)
     }
 
     /**
@@ -261,8 +261,9 @@ class ScanDeviceListActivity : Activity() {
     var bleStateInterface: PPBleStateInterface = object : PPBleStateInterface() {
         /**
          * 蓝牙扫描和连接状态回调
-         * @param ppBleWorkState 蓝牙状态标识
-         * @param deviceModel 设备对象
+         * Bluetooth scanning and connection status callback
+         * @param ppBleWorkState 蓝牙状态标识/Bluetooth status indicator
+         * @param deviceModel 设备对象/Device Object
          */
         override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState, deviceModel: PPDeviceModel?) {
             if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
@@ -279,8 +280,8 @@ class ScanDeviceListActivity : Activity() {
         }
 
         /**
-         * 系统蓝牙状态回调
-         * @param ppBleSwitchState 系统蓝牙状态标识
+         * 系统蓝牙状态回调/System Bluetooth status callback
+         * @param ppBleSwitchState 系统蓝牙状态标识/System Bluetooth status indicator
          */
         override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState) {
             if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {

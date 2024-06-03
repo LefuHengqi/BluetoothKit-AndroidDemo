@@ -4,82 +4,67 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dimens_10dp"
     android:background="#eeeeee"
+    android:orientation="vertical"
     android:padding="@dimen/dimens_20dp">
 
+    <TextView
+        android:id="@+id/device_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="5sp"
+        android:gravity="center_vertical"
+        android:text="Scale"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/device_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="5sp"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="2"
-            android:text="Scale"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/device_mac"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_weight="2"
             android:text="08:00:00:08:00:00" />
 
         <TextView
-            android:id="@+id/device_AdvLen"
-            android:layout_width="match_parent"
+            android:id="@+id/device_rssi"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="" />
-        <TextView
-            android:id="@+id/device_StartLen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/device_Weight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="" />
+            android:layout_weight="1"
+            android:text="RSSI: " />
 
     </LinearLayout>
 
+
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/device_rssi"
-            android:layout_width="wrap_content"
+            android:id="@+id/device_AdvLen"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="RSSI: " />
-
-        <TextView
-            android:id="@+id/device_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:text="" />
 
         <TextView
             android:id="@+id/device_sign"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="08:00:00:08:00:00" />
+            android:layout_weight="1"
+            android:text="" />
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/device_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
 
 </LinearLayout>

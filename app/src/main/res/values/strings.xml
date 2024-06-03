@@ -163,5 +163,8 @@
     <string name="clear_success">清除成功</string>
     <string name="setting">设置</string>
     <string name="can_be_connected">可连接</string>
+    <string name="search_device">搜索设备</string>
+
+
 
 </resources>

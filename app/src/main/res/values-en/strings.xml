@@ -147,5 +147,6 @@
     <string name="setting">Settings</string>
 
     <string name="can_be_connected">Can Be Connected</string>
+    <string name="search_device">Search for devices</string>
 
 </resources>

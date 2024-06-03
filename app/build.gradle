@@ -12,7 +12,6 @@ android {
     defaultConfig {
         applicationId "com.lefu.ppblutoothkit"
         minSdkVersion 21
-        targetSdkVersion 33
         versionCode APP_VERSION_CODE as int
         versionName APP_VERSION
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -98,7 +97,7 @@ android {
     android.applicationVariants.all { variant ->
         if (variant.buildType.name.equals('release')) {
             variant.outputs.all {
-                outputFileName = "PPBluetoothKit_${variant.versionName}_${releaseTime()}.apk"
+                outputFileName = "UniqueTool_${variant.versionName}_${releaseTime()}.apk"
                 assemble.doLast {
                     println "${outputFile.parent}"
                     print "$rootDir" + File.separator + "apk"
@@ -118,7 +117,7 @@ android {
                         include "*.txt"
                         into "$rootDir" + File.separator + "mapping" + File.separator + "${android.defaultConfig.versionName}"
                         rename {
-                            "PPBluetoothKit_${variant.versionName}_mapping.txt"
+                            "UniqueTool_${variant.versionName}_mapping.txt"
                         }
                     }
 

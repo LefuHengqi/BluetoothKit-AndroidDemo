@@ -829,15 +829,10 @@ class PeripheralTorreActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         controller?.stopSeach()
         controller?.disConnect()
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
 
 }

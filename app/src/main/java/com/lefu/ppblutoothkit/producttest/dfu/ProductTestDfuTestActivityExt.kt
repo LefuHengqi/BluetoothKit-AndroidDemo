@@ -44,6 +44,12 @@ val ProductTestDfuTestActivity.onDFUStateListener: OnDFUStateListener
 
         override fun onDfuFail(errorType: String?) {
             addPrint("onDfuFail $errorType")
+            if (errorType == "-1") {
+                if (isTesting) {
+                    addPrint("onDfuFail reStartDfu")
+                    dfuFilePath?.let { startDfu(it) }
+                }
+            }
         }
 
         override fun onInfoOout(outInfo: String?) {
