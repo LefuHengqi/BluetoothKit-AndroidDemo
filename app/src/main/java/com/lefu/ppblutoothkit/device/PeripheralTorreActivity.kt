@@ -327,6 +327,18 @@ class PeripheralTorreActivity : AppCompatActivity() {
             addPrint("readLight")
             controller?.getTorreDeviceManager()?.getLight(deviceSetInterface)
         }
+        findViewById<Button>(R.id.getLanguage).setOnClickListener {
+            addPrint("getLanguage")
+            //0x00：中文简体
+            //0x01：英文
+            //0x02：中文繁体
+            //0x03：日语
+            //0x04：西班牙语
+            //0x05：葡萄牙语
+            //0x06：阿拉伯语
+            //0x07：韩语
+            controller?.getTorreDeviceManager()?.getLanguage(deviceSetInterface)
+        }
         findViewById<Button>(R.id.getUnit).setOnClickListener {
             addPrint("getUnit")
             controller?.getTorreDeviceManager()?.getUnit(modeChangeInterface)
@@ -780,6 +792,19 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
         override fun monitorLightReviseFail() {
             addPrint("monitorLightReviseFail")
+        }
+
+        override fun monitorLanguageReviseSuccess() {
+            addPrint("monitorLanguageReviseSuccess")
+        }
+
+        override fun monitorLanguageReviseFail() {
+            addPrint("monitorLanguageReviseFail")
+        }
+
+        override fun monitorLanguageValueChange(language: Int) {
+            //0x00：中文简体 //0x01：英文 //0x02：中文繁体 //0x03：日语 //0x04：西班牙语  //0x05：葡萄牙语  //0x06：阿拉伯语  //0x07：韩语
+            addPrint("monitorLanguageRevise language:$language")
         }
 
     }

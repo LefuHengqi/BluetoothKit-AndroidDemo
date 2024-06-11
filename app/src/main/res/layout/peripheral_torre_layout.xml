@@ -300,6 +300,16 @@
                     android:text="@string/set_user_info"
                     android:textAllCaps="false" />
 
+                <Button
+                    android:id="@+id/getLanguage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/read_language"
+                    android:textAllCaps="false" />
+
+
+
             </LinearLayout>
 
             <LinearLayout
