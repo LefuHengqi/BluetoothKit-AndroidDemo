@@ -381,6 +381,7 @@ class PeripheralIceActivity : AppCompatActivity() {
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
+                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
                         ) {
                             //8电极交流算法  48项数据
                             val intent = Intent(this@PeripheralIceActivity, Calculate8Activitiy::class.java)
