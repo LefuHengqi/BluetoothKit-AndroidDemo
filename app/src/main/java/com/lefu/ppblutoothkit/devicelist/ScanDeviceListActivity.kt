@@ -148,7 +148,7 @@ class ScanDeviceListActivity : Activity() {
             ppScale = PPSearchManager()
         }
         //You can dynamically set the scan time in ms
-        ppScale!!.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface)
+        ppScale?.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface)
     }
 
     /**
@@ -263,7 +263,7 @@ class ScanDeviceListActivity : Activity() {
 
     var bleStateInterface: PPBleStateInterface = object : PPBleStateInterface() {
         /**
-         * 蓝牙扫描和连接状态回调
+         * 蓝牙扫描状态回调
          * @param ppBleWorkState 蓝牙状态标识
          * @param deviceModel 设备对象
          */

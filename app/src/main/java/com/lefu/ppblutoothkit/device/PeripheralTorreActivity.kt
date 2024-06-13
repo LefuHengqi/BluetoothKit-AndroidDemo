@@ -377,8 +377,6 @@ class PeripheralTorreActivity : AppCompatActivity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 device_set_connect_state?.text = getString(R.string.scanning)
                 addPrint(getString(R.string.scanning))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
-                addPrint(getString(R.string.writable))
             }
         }
 
@@ -392,6 +390,11 @@ class PeripheralTorreActivity : AppCompatActivity() {
             }
         }
 
+        /**
+         * PeripheralTorre 类型设备特有
+         * PeripheralTorre设备在monitorMtuChange()后发送蓝牙指令
+         * 其他的PeripheralType 设备要在PPBleWorkStateWritable中下发数据
+         */
         override fun monitorMtuChange(deviceModel: PPDeviceModel?) {
             addPrint("monitorMtuChange mtu:${deviceModel?.mtu}")
         }
