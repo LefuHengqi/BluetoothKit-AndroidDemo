@@ -1,7 +1,7 @@
 # Android SDK 概述
 
 # 快速链接
-
+### 中文文档
 1. [Android SDK 概述](https://xinzhiyun.feishu.cn/docx/SbKCdKZhJobiNYxQLEdc7XgUnYc)
 2. [Android SDK 集成方式](https://xinzhiyun.feishu.cn/docx/OD4rdSlWrobDIZxn0CBcD68bn1c)
 3. [ Android SDK 设备扫描](https://xinzhiyun.feishu.cn/docx/SE2GdDxg1odTT5xgSbscB0F7nv7)
@@ -11,6 +11,7 @@
 7. [Android 示例程序地址](https://github.com/LefuHengqi/BluetoothKit-AndroidDemo)
 8. [乐福开放平台](https://uniquehealth.lefuenergy.com/unique-open-web/#/home)
 
+### English Word
 1. [Android SDK Overview](https://xinzhiyun.feishu.cn/docx/M6g2d4WAMoPCErxsUZAckymRnbd)
 2. [Android SDK Integration](https://xinzhiyun.feishu.cn/docx/Lw0idhnjYoqZsqxtxvfcGuS8nac)
 3. [Android SDK Device Scanning](https://xinzhiyun.feishu.cn/docx/MOkZdHf0fo4S4YxqWjycaXJPnXf)
