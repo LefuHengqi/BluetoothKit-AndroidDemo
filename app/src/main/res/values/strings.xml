@@ -47,6 +47,7 @@
     <string name="system_blutooth_on">系统蓝牙打开</string>
     <string name="system_bluetooth_abnormal">系统蓝牙异常</string>
     <string name="connect">连接</string>
+    <string name="connect_fail">连接失败</string>
 
     <string name="developer_mode">开发者模式</string>
     <string name="device_not_supported">设备不支持</string>
@@ -163,5 +164,6 @@
     <string name="setting">设置</string>
     <string name="can_be_connected">可连接</string>
     <string name="read_language">读取语言</string>
+    <string name="search_device">搜索设备</string>
 
 </resources>

@@ -148,4 +148,5 @@
 
     <string name="can_be_connected">Can Be Connected</string>
     <string name="read_language">Read Language</string>
+    <string name="search_device">Search for devices</string>
 </resources>

@@ -452,6 +452,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
+                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
                         ) {
                             //8电极交流算法  48项数据
                             val intent = Intent(this@PeripheralTorreActivity, Calculate8Activitiy::class.java)
@@ -857,15 +858,10 @@ class PeripheralTorreActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         controller?.stopSeach()
         controller?.disConnect()
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
 
 }

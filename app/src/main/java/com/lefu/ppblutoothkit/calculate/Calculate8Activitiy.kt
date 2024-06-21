@@ -34,11 +34,12 @@ class Calculate8Activitiy : Activity() {
         spinner = findViewById<Spinner>(R.id.spinner)
         val adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        adapter.add("Product1")
-        adapter.add("Product3")
-        adapter.add("Product4")
-        adapter.add("Product0")
-        adapter.add("Product5")
+        adapter.add("Product1-CF577")
+        adapter.add("Product3-CF586")
+        adapter.add("Product4-CF597")
+        adapter.add("Product0-CF610")
+        adapter.add("Product5-CF577_N1")
+        adapter.add("Product6-CF597_N")
         spinner?.setAdapter(adapter)
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -52,6 +53,8 @@ class Calculate8Activitiy : Activity() {
                     calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2//8电极算法，bhProduct =0 --CF610
                 } else if (position == 4) {
                     calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3//8电极算法，bhProduct =5 --CF577_N1
+                } else if (position == 5) {
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4//8电极算法，bhProduct =6 --CF597_N
                 }
             }
 
@@ -100,6 +103,9 @@ class Calculate8Activitiy : Activity() {
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3) {
                 // 8电极算法，bhProduct =5 --CF577_N1
                 spinner?.setSelection(4)
+            } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4) {
+                // 8电极算法，bhProduct =6 --CF597_N
+                spinner?.setSelection(5)
             }
         }
     }

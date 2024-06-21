@@ -58,13 +58,17 @@
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.CalculateManagerActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy"
+        <activity
+            android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy"
             android:screenOrientation="portrait" />
-        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy"
+        <activity
+            android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy"
             android:screenOrientation="portrait" />
-        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy"
+        <activity
+            android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy"
             android:screenOrientation="portrait" />
-        <activity android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy"
+        <activity
+            android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy"
             android:screenOrientation="portrait" /> <!-- Torre -->
         <!--        <activity android:name=".torre.PeripheralTorreConfigWifiActivity" />-->
         <!--        <activity android:name=".torre.PeripheralTorreSearchWifiListActivity" />-->
@@ -82,8 +86,7 @@
         <!--Torre-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity"
             android:screenOrientation="portrait" />
@@ -149,6 +152,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".producttest.devicelist.ProductTestDeviceListActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".log.LogActivity"
             android:screenOrientation="portrait" />
 
         <provider

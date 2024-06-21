@@ -11,7 +11,8 @@ import com.peng.ppscale.util.OnLogCallBack
 class PPApplication : Application() {
 
     companion object {
-        //使用时请务必替换成你自己的AppKey/AppSecret，需要增加设备配置请联系我司销售人员
+        //使用时请务必替换成你自己的AppKey/AppSecret，需要增加设备配置请查看：
+        // https://xinzhiyun.feishu.cn/wiki/XU4ZwABN0iFWU0kr0cpcxy9onMd?from=from_copylink
         const val appKey = "lefub60060202a15ac8a"
         const val appSecret = "UCzWzna/eazehXaz8kKAC6WVfcL25nIPYlV9fXYzqDM="
     }

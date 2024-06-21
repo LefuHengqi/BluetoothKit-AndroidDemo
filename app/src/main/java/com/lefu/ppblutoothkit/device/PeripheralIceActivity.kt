@@ -1,14 +1,23 @@
 package com.lefu.ppblutoothkit.device
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
@@ -24,9 +33,12 @@ import com.lefu.ppblutoothkit.view.MsgDialog
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.*
+import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
+import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralIce.PPBlutoothPeripheralIceController
+import com.peng.ppscale.util.Logger
 import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyBaseModel
 import com.peng.ppscale.vo.PPDeviceModel
@@ -44,6 +56,11 @@ class PeripheralIceActivity : AppCompatActivity() {
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
+    var dfuFilePath: String? = null//本地文件升级时使用
+    private var whetherFullyDFUToggleBtn: ToggleButton? = null//控制是否全量升级，true开启全量
+
+    val REQUEST_CODE = 1024
+
     private val mCurrentHostUrl by lazy {
         findViewById<TextView>(R.id.mCurrentHostUrl)
     }
@@ -59,6 +76,7 @@ class PeripheralIceActivity : AppCompatActivity() {
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
+        whetherFullyDFUToggleBtn = findViewById<ToggleButton>(R.id.whetherFullyDFUToggleBtn)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
         val nestedScrollViewLog = findViewById<NestedScrollView>(R.id.nestedScrollViewLog)
@@ -214,6 +232,70 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("setNetHost")
             startActivity(Intent(this, SetHostActivity::class.java))
         }
+        findViewById<Button>(R.id.device_set_startOTA).setOnClickListener {
+            addPrint("Query distribution network status")
+            //电量低于20%时提醒用户
+            controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
+                override fun readDevicePower(power: Int) {
+                    Logger.d("设备电量检测结果打印，如果低于20%拦截并提示用户充电  power：$power")
+                    if (power < 20) {
+                        addPrint("设备电量低")
+                    } else {
+                        controller?.startUserOTA(object : OnOTAStateListener() {
+                            override fun onStartUpdate() {
+                                addPrint("onStartUpdate")
+                            }
+
+                            /**
+                             * @param state 0普通的失败 1设备已在升级中不能再次启动升级 2设备低电量无法启动升级 3未配网 4 充电中
+                             */
+                            override fun onUpdateFail(state: Int) {
+                                addPrint("onUpdateFail")
+                            }
+
+                            override fun onUpdateSucess() {
+                                addPrint("onUpdateSucess")
+                            }
+                        })
+                    }
+                }
+            })
+        }
+        findViewById<Button>(R.id.device_set_startLocalOTA).setOnClickListener {
+            addPrint("Query distribution network status")
+            //电量低于20%时提醒用户
+            controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
+                override fun readDevicePower(power: Int) {
+                    Logger.d("设备电量检测结果打印，如果低于20%拦截并提示用户充电  power：$power")
+                    if (power < 20) {
+                        addPrint("设备电量低")
+                    } else {
+                        controller?.startLocalOTA(object : OnOTAStateListener() {
+                            override fun onStartUpdate() {
+                                addPrint("onStartUpdate")
+                            }
+
+                            /**
+                             * @param state 0普通的失败 1设备已在升级中不能再次启动升级 2设备低电量无法启动升级 3未配网 4 充电中
+                             */
+                            override fun onUpdateFail(state: Int) {
+                                addPrint("onUpdateFail")
+                            }
+
+                            override fun onUpdateSucess() {
+                                addPrint("onUpdateSucess")
+                            }
+                        })
+                    }
+                }
+            })
+        }
+//        val device_ota_layout = findViewById<LinearLayout>(R.id.device_ota_layout)
+//        if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+//            device_ota_layout.visibility = View.VISIBLE
+//        } else {
+//            device_ota_layout.visibility = View.GONE
+//        }
     }
 
     override fun onResume() {
@@ -299,6 +381,7 @@ class PeripheralIceActivity : AppCompatActivity() {
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
+                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
                         ) {
                             //8电极交流算法  48项数据
                             val intent = Intent(this@PeripheralIceActivity, Calculate8Activitiy::class.java)
@@ -343,6 +426,11 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("ModifyServerDNSSuccess")
         }
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+//        PPBlutoothKit.setDebug(true)
     }
 
     fun addPrint(msg: String) {

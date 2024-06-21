@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
@@ -33,7 +32,6 @@ import com.peng.ppscale.search.PPSearchManager
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPScaleDefine
-import kotlinx.android.synthetic.main.activity_splash.searchDevice
 
 class ScanDeviceListActivity : Activity() {
     var ppScale: PPSearchManager? = null
@@ -61,7 +59,7 @@ class ScanDeviceListActivity : Activity() {
 
     private fun initToolbar() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar?.title = "搜索设备"
+        toolbar?.title = getString(R.string.search_device)
         toolbar?.setTitleTextColor(Color.WHITE)
     }
 
@@ -124,8 +122,7 @@ class ScanDeviceListActivity : Activity() {
                 PeripheralIceActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralJambul) {
-                val intent =
-                    Intent(this@ScanDeviceListActivity, PeripheralJambulActivity::class.java)
+                val intent = Intent(this@ScanDeviceListActivity, PeripheralJambulActivity::class.java)
                 PeripheralJambulActivity.deviceModel = deviceModel
                 startActivity(intent)
             }
@@ -263,9 +260,10 @@ class ScanDeviceListActivity : Activity() {
 
     var bleStateInterface: PPBleStateInterface = object : PPBleStateInterface() {
         /**
-         * 蓝牙扫描状态回调
-         * @param ppBleWorkState 蓝牙状态标识
-         * @param deviceModel 设备对象
+         * 蓝牙扫描和连接状态回调
+         * Bluetooth scanning and connection status callback
+         * @param ppBleWorkState 蓝牙状态标识/Bluetooth status indicator
+         * @param deviceModel 设备对象/Device Object
          */
         override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState, deviceModel: PPDeviceModel?) {
             if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
@@ -282,8 +280,8 @@ class ScanDeviceListActivity : Activity() {
         }
 
         /**
-         * 系统蓝牙状态回调
-         * @param ppBleSwitchState 系统蓝牙状态标识
+         * 系统蓝牙状态回调/System Bluetooth status callback
+         * @param ppBleSwitchState 系统蓝牙状态标识/System Bluetooth status indicator
          */
         override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState) {
             if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {

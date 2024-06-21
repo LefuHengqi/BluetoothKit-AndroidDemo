@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
+import com.lefu.ppblutoothkit.log.LogActivity
 import com.lefu.ppblutoothkit.producttest.TestResultVo
 import com.lefu.ppblutoothkit.producttest.devicelist.ProductTestDeviceListActivity
 import com.lefu.ppblutoothkit.util.FilePermissionUtil
@@ -34,6 +35,7 @@ import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.dfu.DfuHelper
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
+import com.peng.ppscale.search.PPSearchManager
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPScaleDefine
@@ -61,6 +63,8 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
     var isTesting = false//是否正在测试
     var testResultVo = TestResultVo()//测量结果
     var allLen: Long = 1//固件总长
+
+    var ppSearchManager = PPSearchManager()
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -112,19 +116,25 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
         toolbar?.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_item_export_app_log -> {
-                    startUploadLog()
+//                    startUploadLog()
+                    LogActivity.logType = 0
+                    val intent = Intent(this, LogActivity::class.java)
+                    startActivity(intent)
                     true
                 }
 
                 R.id.menu_item_export_device_log -> {
-                    addPrint("syncLog")
-                    if (deviceModel != null && controller?.connectState() ?: false) {
-                        //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
-                        val fileFath = filesDir.absolutePath + "/Log/DeviceLog"
-                        controller?.getTorreDeviceManager()?.syncLog(fileFath, deviceLogInterface)
-                    } else {
-                        showToast("设备未连接")
-                    }
+                    LogActivity.logType = 1
+                    val intent = Intent(this, LogActivity::class.java)
+                    startActivity(intent)
+
+//                    if (deviceModel != null && controller?.connectState() ?: false) {
+//                        //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
+//                        val fileFath = filesDir.absolutePath + "/Log/DeviceLog"
+//                        controller?.getTorreDeviceManager()?.syncLog(fileFath, deviceLogInterface)
+//                    } else {
+//                        showToast("设备未连接")
+//                    }
                     true
                 }
 
@@ -182,6 +192,7 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         updateDeviceStateUI()
+        ppSearchManager.registerBluetoothStateListener(bleStateInterface)
     }
 
     private fun updateDeviceStateUI() {
@@ -255,7 +266,6 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
                 if (!isTesting) {
                     startTest()
                 } else {
-                    isTesting = false
                     startTestBtn?.setText("开始测试")
                     testResultVo.endTime = System.currentTimeMillis()
                     stopTest()
@@ -271,6 +281,7 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
     }
 
     private fun stopTest() {
+        isTesting = false
         if (controller?.getTorreDeviceManager()?.isDFU == true) {
             controller?.getTorreDeviceManager()?.stopDFU()
         }
@@ -300,7 +311,7 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
                     showToast("请输入正确的OTA次数")
                 }
             } else {
-                mTestStateTv?.text = "请选则设备"
+                mTestStateTv?.text = "请选择设备"
                 addPrint("Error: Device type error or Device is null,Please select device")
             }
         } else {
@@ -367,19 +378,34 @@ class ProductTestDfuTestActivity : Activity(), View.OnClickListener {
                 mTestStateTv?.text = getString(R.string.scan_timeout)
                 addPrint(getString(R.string.scan_timeout))
                 testResultVo.endTime = System.currentTimeMillis()
+                if (isTesting) {
+                    reSearchAndConnectDevice()
+                }
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 mTestStateTv?.text = getString(R.string.scanning)
                 addPrint(getString(R.string.scanning))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
+            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectFailed) {
+                if (isTesting) {
+                    addPrint(getString(R.string.connect_fail))
+                    reSearchAndConnectDevice()
+                }
             }
         }
 
         override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState?) {
+            addPrint("ppBleSwitchState:$ppBleSwitchState isTesting:$isTesting")
             if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
                 addPrint(getString(R.string.system_bluetooth_disconnect))
+                if (isTesting) {
+                    addPrint("dfuFail ppBleSwitchState:$ppBleSwitchState isTesting:$isTesting")
+                }
             } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
                 addPrint(getString(R.string.system_blutooth_on))
+                if (isTesting) {
+                    reSearchAndConnectDevice()
+                }
             }
         }
 
