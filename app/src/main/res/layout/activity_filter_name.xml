@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_58dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimens_10dp"
+        android:theme="@style/ToolbarTheme"
+        app:popupTheme="@style/ToolbarPopupTheme" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimens_16dp"
+        android:layout_marginTop="@dimen/dimens_50dp">
+
+        <EditText
+            android:id="@+id/et_filterName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="FilterName"
+            android:lines="1"
+            android:maxLength="12"
+            android:maxLines="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimens_16dp"
+        android:layout_marginTop="@dimen/dimens_50dp"
+        android:orientation="vertical">
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="80" />
+
+        <TextView
+            android:id="@+id/seekBarTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/dimens_10dp"
+            android:text="80dBm"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

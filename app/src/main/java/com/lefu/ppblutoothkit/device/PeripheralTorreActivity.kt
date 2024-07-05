@@ -25,11 +25,9 @@ import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
-import com.lefu.ppblutoothkit.producttest.dfu.ProductTestDfuTestActivity
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
-import com.peng.ppscale.PPBlutoothKit
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
@@ -45,7 +43,6 @@ import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
-import com.peng.ppscale.data.PPBodyDetailModel
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.util.PPUtil

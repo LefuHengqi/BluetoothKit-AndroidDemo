@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.lefu.ppblutoothkit.BuildConfig
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.PeripheralAppleActivity
 import com.lefu.ppblutoothkit.device.PeripheralBananaActivity
@@ -24,6 +25,7 @@ import com.lefu.ppblutoothkit.device.PeripheralIceActivity
 import com.lefu.ppblutoothkit.device.PeripheralJambulActivity
 import com.lefu.ppblutoothkit.device.PeripheralTorreActivity
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
+import com.lefu.ppblutoothkit.filter.FilterNameActivity
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPSearchDeviceInfoInterface
 import com.peng.ppscale.business.state.PPBleSwitchState
@@ -32,6 +34,8 @@ import com.peng.ppscale.search.PPSearchManager
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.vo.PPDeviceModel
 import com.peng.ppscale.vo.PPScaleDefine
+import kotlinx.android.synthetic.main.activity_device_list.startFilterName
+import kotlinx.android.synthetic.main.activity_device_list.startRefresh
 
 class ScanDeviceListActivity : Activity() {
     var ppScale: PPSearchManager? = null
@@ -39,10 +43,15 @@ class ScanDeviceListActivity : Activity() {
     private var adapter: DeviceListAdapter? = null
     private var tv_starts: TextView? = null
 
+    companion object {
+        var inputName = ""
+        var filterSign = -80
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device_list)
-        initToolbar()
+        initView()
         tv_starts = findViewById(R.id.tv_starts)
         tv_starts?.setOnClickListener(View.OnClickListener { reStartScan() })
         adapter = DeviceListAdapter()
@@ -57,18 +66,30 @@ class ScanDeviceListActivity : Activity() {
         }
     }
 
-    private fun initToolbar() {
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar?.title = getString(R.string.search_device)
-        toolbar?.setTitleTextColor(Color.WHITE)
+    private fun initView() {
+        val toolbar: TextView? = findViewById(R.id.titleTv)
+        toolbar?.text = "${getString(R.string.app_name)}V${BuildConfig.VERSION_NAME}"
+
+        startRefresh?.setOnClickListener(View.OnClickListener { reStartScan() })
+
+        startFilterName?.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, FilterNameActivity::class.java)
+            startActivityForResult(intent, 0x01)
+        })
     }
 
     private fun reStartScan() {
-        if (ppScale != null) {
-            ppScale!!.stopSearch()
-        }
-        tv_starts!!.text = getString(R.string.start_scan)
+        ppScale?.stopSearch()
+        tv_starts?.text = getString(R.string.start_scan)
+        adapter?.setNewData(null)
         startScanDeviceList()
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+//        reStartScan()
+        adapter?.setNewData(null)
     }
 
     private fun onStartDeviceSetPager(position: Int) {
@@ -132,9 +153,7 @@ class ScanDeviceListActivity : Activity() {
     override fun onPause() {
         super.onPause()
         isOnResume = false
-        if (ppScale != null) {
-            ppScale!!.stopSearch()
-        }
+        ppScale?.stopSearch()
     }
 
     /**
@@ -181,28 +200,29 @@ class ScanDeviceListActivity : Activity() {
          */
         if (ppDeviceModel != null) {
             adapter?.let {
-                if (data != null) {
-//                    analyticalData(ppDeviceModel,data)
-                }
-                if (it.data.isEmpty().not()) {
-                    for (i in it.data.indices) {
-                        val deviceVo = it.data.get(i)
-                        if (deviceVo != null) {
-                            deviceVo.deviceModel?.let { device ->
-                                if (device.deviceMac == ppDeviceModel.deviceMac) {
-                                    device.rssi = ppDeviceModel.rssi
-                                    adapter?.notifyItemChanged(i)
-                                    return@PPSearchDeviceInfoInterface
+                if (inputName.isEmpty() || ppDeviceModel.deviceName.contains(inputName, true)) {
+                    if (ppDeviceModel.rssi < filterSign) {
+                        return@PPSearchDeviceInfoInterface
+                    }
+                    if (it.data.isEmpty().not()) {
+                        for (i in it.data.indices) {
+                            val deviceVo = it.data.get(i)
+                            if (deviceVo != null) {
+                                deviceVo.deviceModel?.let { device ->
+                                    if (device.deviceMac == ppDeviceModel.deviceMac) {
+                                        device.rssi = ppDeviceModel.rssi
+                                        adapter?.notifyItemChanged(i)
+                                        return@PPSearchDeviceInfoInterface
+                                    }
                                 }
                             }
                         }
                     }
+                    val deviceVo = DeviceVo()
+                    deviceVo.deviceModel = ppDeviceModel
+                    it.addData(deviceVo)
                 }
-                val deviceVo = DeviceVo()
-                deviceVo.deviceModel = ppDeviceModel
-                it.addData(deviceVo)
             }
-
         }
     }
 
@@ -296,8 +316,6 @@ class ScanDeviceListActivity : Activity() {
             }
         }
     }
-
-
 
 
 }

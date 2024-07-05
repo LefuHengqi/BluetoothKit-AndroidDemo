@@ -16,31 +16,25 @@ import com.lefu.ppblutoothkit.log.LogActivity
 import com.lefu.ppblutoothkit.okhttp.DataTask
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.okhttp.RetCallBack
-import com.lefu.ppblutoothkit.producttest.ProductTestManagerActivity
 import com.lefu.ppblutoothkit.vo.DemoDeviceConfigVo
 import com.peng.ppscale.PPBlutoothKit
 import com.peng.ppscale.PPBlutoothKit.TAG
 import com.peng.ppscale.util.Logger
 import okhttp3.Call
-import java.io.File
 
 class MainActivity : BasePermissionActivity(), View.OnClickListener {
 
-    val fileList: MutableList<File> = ArrayList() //存包序号，防止重复接收数据
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        setContentView(R.layout.activity_main)
         initToolbar()
         initDeviceConfig()
         findViewById<Button>(R.id.searchDevice).setOnClickListener(this)
         findViewById<Button>(R.id.caculateBodyFat).setOnClickListener(this)
-        findViewById<Button>(R.id.productionTestTools).setOnClickListener(this)
 
         requestLocationPermission()
 
     }
-
 
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
@@ -49,16 +43,16 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
         toolbar?.inflateMenu(R.menu.main_toolbar_menu)
         toolbar?.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.main_menu_item_export_app_log -> {
-                    //                    startUploadLog()
+                R.id.menu_item_export_app_log -> {
+//                    startUploadLog()
                     LogActivity.logType = 0
                     val intent = Intent(this, LogActivity::class.java)
                     startActivity(intent)
                     true
                 }
 
-                R.id.main_menu_item_clear_app_log -> {
-                    LogActivity.logType = 1//deviceLog
+                R.id.menu_item_export_device_log -> {
+                    LogActivity.logType = 1
                     val intent = Intent(this, LogActivity::class.java)
                     startActivity(intent)
                     true
@@ -106,20 +100,6 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
 
                 startActivity(Intent(this@MainActivity, CalculateManagerActivity::class.java))
             }
-
-            R.id.productionTestTools -> {
-                if (PPBlutoothKit.isBluetoothOpened()) {
-                    startActivity(Intent(this@MainActivity, ProductTestManagerActivity::class.java))
-                } else {
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                        return
-                    }
-                    val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                    startActivityForResult(intent, 0x002)
-//                    PPBlutoothKit.openBluetooth()
-                }
-
-            }
         }
     }
 
@@ -144,28 +124,5 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
         })
 
     }
-
-    // 递归处理文件的方法
-    fun processFiles(directory: File): MutableList<File> {
-        val files = directory.listFiles()
-        if (files != null) {
-            for (file in files) {
-                if (file.isDirectory) {
-                    // 如果是文件夹，则递归处理该文件夹
-                    processFiles(file)
-                } else {
-                    // 如果是文件，则按照之前的逻辑进行处理
-//                    val createdTime = file.lastModified()
-//                    val date = Date(createdTime)
-//                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-//                    val dateString = dateFormat.format(date)
-                    Logger.d("log share logPath:${file.absolutePath}")
-                    fileList.add(file)
-                }
-            }
-        }
-        return fileList
-    }
-
 
 }

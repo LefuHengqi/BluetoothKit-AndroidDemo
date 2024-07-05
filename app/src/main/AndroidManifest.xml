@@ -143,19 +143,12 @@
             android:name=".device.apple.WifiDataListActivity"
             android:screenOrientation="portrait" />
 
-        <!--Product Test Module-->
         <activity
-            android:name=".producttest.ProductTestManagerActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".producttest.dfu.ProductTestDfuTestActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".producttest.devicelist.ProductTestDeviceListActivity"
+            android:name=".log.LogActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".log.LogActivity"
+            android:name=".filter.FilterNameActivity"
             android:screenOrientation="portrait" />
 
         <provider
