@@ -1,7 +1,6 @@
 package com.lefu.ppblutoothkit.device.instance
 
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
-import com.peng.ppscale.vo.PPDeviceModel
 
 class PPBlutoothPeripheralTorreInstance {
 

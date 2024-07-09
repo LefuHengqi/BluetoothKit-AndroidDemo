@@ -1,7 +1,7 @@
 package com.lefu.ppblutoothkit.device.apple.data;
 
-import com.peng.ppscale.vo.PPBodyBaseModel;
-import com.peng.ppscale.vo.PPBodyFatModel;
+import com.lefu.ppbase.PPBodyBaseModel;
+import com.lefu.ppcalculate.PPBodyFatModel;
 
 import java.io.Serializable;
 

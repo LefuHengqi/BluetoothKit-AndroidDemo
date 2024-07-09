@@ -10,7 +10,7 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.util.log.LFLogFileUtils
 import com.lefu.ppblutoothkit.view.MsgDialog
-import com.peng.ppscale.util.Logger
+import com.lefu.ppbase.util.Logger
 import java.io.File
 
 class LogActivity : FragmentActivity() {

@@ -15,8 +15,8 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPScaleDefine
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
 import com.peng.ppscale.vo.PPWifiModel
 
 /**

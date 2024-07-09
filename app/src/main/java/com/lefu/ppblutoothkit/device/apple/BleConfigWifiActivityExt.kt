@@ -2,7 +2,7 @@ package com.lefu.ppblutoothkit.device.apple
 
 import android.text.TextUtils
 import android.widget.Toast
-import com.lefu.base.SettingManager
+import com.lefu.ppblutoothkit.util.SettingManager
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppscale.db.dao.DBManager
 import com.lefu.ppblutoothkit.okhttp.DataTask
@@ -10,8 +10,8 @@ import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.okhttp.RetCallBack
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
-import com.peng.ppscale.util.Logger
-import com.peng.ppscale.vo.PPDeviceModel
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.PPDeviceModel
 import java.util.HashMap
 
 val BleConfigWifiActivity.configWifiInfoInterface: PPConfigWifiInfoInterface

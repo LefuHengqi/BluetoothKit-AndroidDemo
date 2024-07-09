@@ -10,6 +10,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
+import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
@@ -20,11 +24,11 @@ import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
-import com.peng.ppscale.business.device.PPUnitType
+import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralCoconut.PPBlutoothPeripheralCoconutController
-import com.peng.ppscale.util.PPUtil
+import com.lefu.ppbase.util.PPUtil
 import com.peng.ppscale.vo.*
 
 /**

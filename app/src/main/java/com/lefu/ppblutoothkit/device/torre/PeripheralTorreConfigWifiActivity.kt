@@ -14,9 +14,9 @@ import com.peng.ppscale.business.ble.configWifi.PPConfigStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
-import com.peng.ppscale.util.Logger
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPScaleDefine
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
 
 class PeripheralTorreConfigWifiActivity : Activity() {
 

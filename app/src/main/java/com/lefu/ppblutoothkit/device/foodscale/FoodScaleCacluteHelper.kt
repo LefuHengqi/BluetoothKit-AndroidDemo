@@ -2,13 +2,13 @@ package com.lefu.ppblutoothkit.device.foodscale
 
 import android.content.Context
 import com.lefu.ppblutoothkit.util.UnitUtil
-import com.peng.ppscale.business.device.PPUnitType
+import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.util.DeviceType
 import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.util.Energy
 import com.peng.ppscale.util.EnergyUnitLbOz
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPScaleDefine
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
 
 object FoodScaleCacluteHelper {
 

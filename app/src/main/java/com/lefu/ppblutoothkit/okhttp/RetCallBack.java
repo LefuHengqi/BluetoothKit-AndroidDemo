@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 
 import com.alibaba.fastjson.JSON;
-import com.peng.ppscale.util.Logger;
+import com.lefu.ppbase.util.Logger;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.io.IOException;

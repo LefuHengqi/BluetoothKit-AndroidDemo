@@ -1,12 +1,11 @@
 package com.lefu.ppblutoothkit.util;
 
-import com.lefu.base.SettingManager;
-import com.peng.ppscale.business.device.PPUnitType;
-import com.peng.ppscale.vo.PPBodyBaseModel;
-import com.peng.ppscale.vo.PPBodyFatModel;
-import com.peng.ppscale.vo.PPDeviceModel;
-import com.peng.ppscale.vo.PPUserModel;
-import com.peng.ppscale.vo.PPUserGender;
+import com.lefu.ppbase.vo.PPUnitType;
+import com.lefu.ppbase.PPBodyBaseModel;
+import com.lefu.ppcalculate.PPBodyFatModel;
+import com.lefu.ppbase.PPDeviceModel;
+import com.lefu.ppbase.vo.PPUserModel;
+import com.lefu.ppbase.vo.PPUserGender;
 
 public class DataUtil {
     private static DataUtil dataUtil;

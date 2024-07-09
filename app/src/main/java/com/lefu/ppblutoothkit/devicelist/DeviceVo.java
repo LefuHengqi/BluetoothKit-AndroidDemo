@@ -1,6 +1,6 @@
 package com.lefu.ppblutoothkit.devicelist;
 
-import com.peng.ppscale.vo.PPDeviceModel;
+import com.lefu.ppbase.PPDeviceModel;
 
 import java.io.Serializable;
 

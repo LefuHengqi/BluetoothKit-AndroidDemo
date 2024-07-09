@@ -18,7 +18,7 @@ import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralGrapes.PPBlutoothPeripheralGrapesController
 import com.peng.ppscale.vo.LFFoodScaleGeneral
-import com.peng.ppscale.vo.PPDeviceModel
+import com.lefu.ppbase.PPDeviceModel
 
 /**
  * 对应的协议: 2.x

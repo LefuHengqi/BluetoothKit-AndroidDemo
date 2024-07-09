@@ -7,13 +7,13 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import com.lefu.ppblutoothkit.util.DataUtil
-import com.peng.ppscale.business.device.PPUnitType
+import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.util.ByteUtil
-import com.peng.ppscale.util.PPUtil
+import com.lefu.ppbase.util.PPUtil
 import com.peng.ppscale.util.UnitUtil
-import com.peng.ppscale.util.UserUtil
-import com.peng.ppscale.vo.PPUserGender
-import com.peng.ppscale.vo.PPUserModel
+import com.lefu.ppbase.util.UserUtil
+import com.lefu.ppbase.vo.PPUserGender
+import com.lefu.ppbase.vo.PPUserModel
 
 class UserinfoActivity : Activity() {
     var height = 180

@@ -1,4 +1,4 @@
-package com.lefu.base;
+package com.lefu.ppblutoothkit.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

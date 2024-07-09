@@ -1,13 +1,12 @@
 package com.lefu.ppblutoothkit.devicelist;
 
-import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lefu.ppblutoothkit.R;
-import com.peng.ppscale.vo.PPDeviceModel;
-import com.peng.ppscale.vo.PPScaleDefine;
+import com.lefu.ppbase.PPDeviceModel;
+import com.lefu.ppbase.PPScaleDefine;
 
 import java.util.Locale;
 

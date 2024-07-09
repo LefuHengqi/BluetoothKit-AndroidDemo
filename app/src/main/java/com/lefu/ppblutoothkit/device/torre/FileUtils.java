@@ -15,7 +15,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.peng.ppscale.util.Logger;
+import com.lefu.ppbase.util.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;

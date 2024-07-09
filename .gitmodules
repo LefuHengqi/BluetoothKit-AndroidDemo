@@ -1,6 +1,6 @@
-[submodule "ppblutoothkit"]
-	path = ppblutoothkit
+[submodule "ppbluetoothkit"]
+	path = ppbluetoothkit
 	url = https://gitee.com/shenzhen-lfscale/bluetooth-kit-android.git
-[submodule "lefulib"]
-	path = lefulib
-	url = https://gitee.com/shenzhen-lfscale/bluetooth-kit-android-sdk-lib.git
+[submodule "ppsdkkit"]
+	path = ppsdkkit
+	url = https://gitee.com/shenzhen-lfscale/ppsdkkit-android.git

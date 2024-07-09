@@ -16,9 +16,9 @@ import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralBanana.PPBlutoothPeripheralBananaController
-import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.PPBodyBaseModel
-import com.peng.ppscale.vo.PPDeviceModel
+import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppbase.PPDeviceModel
 
 /**
  * 对应的协议: 2.x

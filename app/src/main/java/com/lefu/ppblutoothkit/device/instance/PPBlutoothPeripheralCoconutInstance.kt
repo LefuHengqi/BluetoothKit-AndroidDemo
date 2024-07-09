@@ -1,7 +1,6 @@
 package com.lefu.ppblutoothkit.device.instance
 
 import com.peng.ppscale.device.PeripheralCoconut.PPBlutoothPeripheralCoconutController
-import com.peng.ppscale.vo.PPDeviceModel
 
 class PPBlutoothPeripheralCoconutInstance {
 

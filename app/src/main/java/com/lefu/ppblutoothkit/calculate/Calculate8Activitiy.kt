@@ -9,10 +9,15 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.vo.PPUserGender
+import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
-import com.peng.ppscale.vo.*
+import com.lefu.ppcalculate.PPBodyFatModel
 import kotlinx.android.synthetic.main.activity_calculate_8ac.*
 
 /**

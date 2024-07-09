@@ -9,13 +9,13 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSON;
-import com.lefu.base.SettingManager;
+import com.lefu.ppblutoothkit.util.SettingManager;
 import com.lefu.ppblutoothkit.R;
 import com.lefu.ppblutoothkit.device.apple.data.WifiDataBean;
 import com.lefu.ppblutoothkit.okhttp.DataTask;
 import com.lefu.ppblutoothkit.okhttp.NetUtil;
 import com.lefu.ppblutoothkit.okhttp.RetCallBack;
-import com.peng.ppscale.vo.PPUserModel;
+import com.lefu.ppbase.vo.PPUserModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

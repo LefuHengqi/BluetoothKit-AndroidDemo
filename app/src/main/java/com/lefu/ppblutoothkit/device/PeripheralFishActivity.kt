@@ -10,23 +10,18 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralEggInstance
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralFishInstance
 import com.lefu.ppblutoothkit.R
-import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.device.foodscale.FoodScaleCacluteHelper
 import com.peng.ppscale.business.ble.listener.FoodScaleDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
-import com.peng.ppscale.business.device.PPUnitType
+import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralFish.PPBlutoothPeripheralFishController
-import com.peng.ppscale.util.Energy
-import com.peng.ppscale.util.EnergyUnitLbOz
 import com.peng.ppscale.vo.LFFoodScaleGeneral
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPScaleDefine
+import com.lefu.ppbase.PPDeviceModel
 import com.peng.ppscale.vo.PPScaleSendState
 
 /**

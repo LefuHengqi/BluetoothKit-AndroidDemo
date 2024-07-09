@@ -17,9 +17,9 @@ import com.lefu.ppblutoothkit.okhttp.DataTask
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.okhttp.RetCallBack
 import com.lefu.ppblutoothkit.vo.DemoDeviceConfigVo
-import com.peng.ppscale.PPBlutoothKit
-import com.peng.ppscale.PPBlutoothKit.TAG
-import com.peng.ppscale.util.Logger
+import com.peng.ppscale.PPBluetoothKit
+import com.peng.ppscale.PPBluetoothKit.TAG
+import com.lefu.ppbase.util.Logger
 import okhttp3.Call
 
 class MainActivity : BasePermissionActivity(), View.OnClickListener {
@@ -66,7 +66,7 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.searchDevice -> {
-                if (PPBlutoothKit.isBluetoothOpened()) {
+                if (PPBluetoothKit.isBluetoothOpened()) {
                     startActivity(Intent(this@MainActivity, ScanDeviceListActivity::class.java))
                 } else {
                     if (ActivityCompat.checkSelfPermission(
@@ -116,7 +116,7 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
 
                 configVo?.let {
                     if (configVo.code == 200 && configVo.msg.isNullOrEmpty().not()) {
-                        configVo.msg?.let { it1 -> PPBlutoothKit.setNetConfig(this@MainActivity, PPApplication.appKey, PPApplication.appSecret, it1) }
+                        configVo.msg?.let { it1 -> PPBluetoothKit.setNetConfig(this@MainActivity, PPApplication.appKey, PPApplication.appSecret, it1) }
                     }
                 }
 

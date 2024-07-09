@@ -9,10 +9,10 @@ import com.lefu.ppblutoothkit.R;
 import com.lefu.ppblutoothkit.device.apple.data.BodyFataDataModel;
 import com.lefu.ppblutoothkit.device.apple.data.WifiDataBean;
 import com.peng.ppscale.business.device.DeviceManager;
-import com.peng.ppscale.business.device.PPUnitType;
-import com.peng.ppscale.vo.PPBodyBaseModel;
-import com.peng.ppscale.vo.PPDeviceModel;
-import com.peng.ppscale.vo.PPUserModel;
+import com.lefu.ppbase.vo.PPUnitType;
+import com.lefu.ppbase.PPBodyBaseModel;
+import com.lefu.ppbase.PPDeviceModel;
+import com.lefu.ppbase.vo.PPUserModel;
 
 public class WifiBodyDataDetailActivity extends AppCompatActivity {
 

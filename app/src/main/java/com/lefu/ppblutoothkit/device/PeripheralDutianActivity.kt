@@ -9,15 +9,21 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
+import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDutianInstance
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
+import com.lefu.ppcalculate.PPBodyFatModel
 import com.peng.ppscale.business.ble.listener.*
-import com.peng.ppscale.business.device.PPUnitType
+import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralDurian.PPBlutoothPeripheralDutianController
-import com.peng.ppscale.util.PPUtil
+import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppbase.vo.PPBodyFatInScaleVo
+import com.lefu.ppcalculate.calcute.CalculateHelper4
 import com.peng.ppscale.vo.*
 
 
@@ -118,9 +124,10 @@ class PeripheralDutianActivity : Activity() {
 
         }
 
-        override fun monitorLockDataByCalculateInScale(bodyFatModel: PPBodyFatModel?) {
-            bodyFatModel?.let {
-                val bodyBaseModel = it.ppBodyBaseModel;
+        override fun monitorLockDataByCalculateInScale(bodyFatInScaleVo: PPBodyFatInScaleVo?) {
+            bodyFatInScaleVo?.let {
+//                val bodyFatModel = CalculateHelper4.calcuteTypeInScale(bodyFatInScaleVo)
+                val bodyBaseModel = it.ppBodyBaseModel
                 val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
                 weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
                 weightMeasureState?.text = ""

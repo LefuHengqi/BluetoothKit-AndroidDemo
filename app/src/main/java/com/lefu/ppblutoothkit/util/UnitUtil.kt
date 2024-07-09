@@ -2,7 +2,7 @@ package com.lefu.ppblutoothkit.util
 
 import android.content.Context
 import com.lefu.ppblutoothkit.R
-import com.peng.ppscale.business.device.PPUnitType
+import com.lefu.ppbase.vo.PPUnitType
 
 object UnitUtil {
 

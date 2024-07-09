@@ -2,13 +2,11 @@ package com.lefu.ppblutoothkit.devicelist
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lefu.ppblutoothkit.BuildConfig
@@ -31,9 +29,9 @@ import com.peng.ppscale.business.ble.listener.PPSearchDeviceInfoInterface
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.search.PPSearchManager
-import com.peng.ppscale.util.Logger
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPScaleDefine
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
 import kotlinx.android.synthetic.main.activity_device_list.startFilterName
 import kotlinx.android.synthetic.main.activity_device_list.startRefresh
 

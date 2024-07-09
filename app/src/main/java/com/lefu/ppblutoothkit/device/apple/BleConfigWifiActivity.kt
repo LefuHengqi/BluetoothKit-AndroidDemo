@@ -16,7 +16,7 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.device.apple.util.WifiUtil
-import com.peng.ppscale.util.Logger
+import com.lefu.ppbase.util.Logger
 import java.lang.ref.WeakReference
 import java.util.*
 

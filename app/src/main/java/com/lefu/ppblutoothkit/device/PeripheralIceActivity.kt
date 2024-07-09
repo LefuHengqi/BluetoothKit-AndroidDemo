@@ -1,23 +1,15 @@
 package com.lefu.ppblutoothkit.device
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
@@ -27,7 +19,6 @@ import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
-import com.lefu.ppblutoothkit.util.FilePermissionUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
 import com.peng.ppscale.business.ble.PPScaleHelper
@@ -36,13 +27,12 @@ import com.peng.ppscale.business.ble.listener.*
 import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
-import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralIce.PPBlutoothPeripheralIceController
-import com.peng.ppscale.util.Logger
-import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.PPBodyBaseModel
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPScaleDefine
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
 import com.peng.ppscale.vo.PPScaleSendState
 
 /**

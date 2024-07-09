@@ -36,7 +36,7 @@ import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
 import com.peng.ppscale.business.ble.listener.PPTorreDeviceModeChangeInterface
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface
-import com.peng.ppscale.business.device.PPUnitType
+import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
@@ -44,13 +44,13 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
-import com.peng.ppscale.util.Logger
-import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.PPBodyBaseModel
-import com.peng.ppscale.vo.PPBodyFatModel
-import com.peng.ppscale.vo.PPDeviceModel
-import com.peng.ppscale.vo.PPScaleDefine
-import com.peng.ppscale.vo.PPUserModel
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppcalculate.PPBodyFatModel
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.vo.PPUserModel
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**

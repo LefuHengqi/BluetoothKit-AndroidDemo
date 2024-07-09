@@ -4,10 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.peng.ppscale.util.Logger;
+import com.lefu.ppbase.util.Logger;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

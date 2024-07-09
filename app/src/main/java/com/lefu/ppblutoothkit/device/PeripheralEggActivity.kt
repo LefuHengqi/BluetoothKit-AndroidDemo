@@ -15,12 +15,12 @@ import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralEggInstance
 import com.peng.ppscale.business.ble.listener.FoodScaleDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
-import com.peng.ppscale.business.device.PPUnitType
+import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralEgg.PPBlutoothPeripheralEggController
 import com.peng.ppscale.vo.LFFoodScaleGeneral
-import com.peng.ppscale.vo.PPDeviceModel
+import com.lefu.ppbase.PPDeviceModel
 import com.peng.ppscale.vo.PPScaleSendState
 
 /**

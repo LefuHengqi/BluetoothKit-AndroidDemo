@@ -10,7 +10,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.peng.ppscale.util.Logger;
+import com.lefu.ppbase.util.Logger;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

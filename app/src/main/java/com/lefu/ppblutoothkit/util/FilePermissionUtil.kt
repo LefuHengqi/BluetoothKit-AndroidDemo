@@ -11,7 +11,7 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.lefu.ppblutoothkit.device.torre.ZipFileUtil
-import com.peng.ppscale.util.Logger
+import com.lefu.ppbase.util.Logger
 
 object FilePermissionUtil {
 
