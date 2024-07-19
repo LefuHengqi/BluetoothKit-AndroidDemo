@@ -33,7 +33,7 @@
                 android:ems="10"
                 android:hint="@string/value_range_30_220"
                 android:inputType="number"
-                android:text="170"
+                android:text="180"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -63,7 +63,7 @@
                 android:ems="10"
                 android:hint="@string/value_range_age"
                 android:inputType="number"
-                android:text="28"
+                android:text="18"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -99,7 +99,7 @@
                 android:ems="8"
                 android:hint="0.0kg"
                 android:inputType="numberDecimal"
-                android:text="66.25"
+                android:text="84.2"
                 android:textSize="12sp" />
 
         </LinearLayout>

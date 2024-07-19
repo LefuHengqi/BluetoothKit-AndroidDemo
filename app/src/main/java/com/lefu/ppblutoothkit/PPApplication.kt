@@ -41,6 +41,10 @@ class PPApplication : Application() {
             override fun loge(s: String?, s1: String?) {
                 s1?.let { LogUtils.writeBluetoothLog(it) }
             }
+
+            override fun logi(s: String?, s1: String?) {
+                s1?.let { LogUtils.writeBluetoothLog(it) }
+            }
         })
         /*********************以下内容为SDK的配置项***************************************/
         //SDK日志打印控制，true会打印
