@@ -16,6 +16,7 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.PeripheralAppleActivity
 import com.lefu.ppblutoothkit.device.PeripheralBananaActivity
 import com.lefu.ppblutoothkit.device.PeripheralCoconutActivity
+import com.lefu.ppblutoothkit.device.PeripheralDorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralDutianActivity
 import com.lefu.ppblutoothkit.device.PeripheralEggActivity
 import com.lefu.ppblutoothkit.device.PeripheralFishActivity
@@ -100,6 +101,11 @@ class ScanDeviceListActivity : Activity() {
                 val intent =
                     Intent(this@ScanDeviceListActivity, PeripheralTorreActivity::class.java)
                 PeripheralTorreActivity.deviceModel = deviceModel
+                startActivity(intent)
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre) {
+                val intent =
+                    Intent(this@ScanDeviceListActivity, PeripheralDorreActivity::class.java)
+                PeripheralDorreActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralApple) {
                 val intent =

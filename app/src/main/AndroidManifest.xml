@@ -93,6 +93,9 @@
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralDorreActivity"
+            android:screenOrientation="portrait" />
         <!--Apple-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralAppleActivity"
