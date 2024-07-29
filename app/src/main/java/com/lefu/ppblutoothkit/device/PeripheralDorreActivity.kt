@@ -24,7 +24,6 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
-import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
@@ -163,6 +162,15 @@ class PeripheralDorreActivity : AppCompatActivity() {
         findViewById<Button>(R.id.startKeepAlive).setOnClickListener {
             addPrint("startKeepAlive")
             controller?.getTorreDeviceManager()?.startKeepAlive()
+
+        }
+        findViewById<Button>(R.id.getUserInfoEditState).setOnClickListener {
+            addPrint("getUserInfoEditState")
+            controller?.getTorreDeviceManager()?.getUserInfoEditState(modeChangeInterface)
+        }
+        findViewById<Button>(R.id.setUserInfoEditState).setOnClickListener {
+            addPrint("setUserInfoEditState")
+            controller?.getTorreDeviceManager()?.setUserInfoEditState(true, modeChangeInterface)
         }
         findViewById<Button>(R.id.device_set_getFilePath).setOnClickListener {
             addPrint("check sdCard read and write permission")
@@ -577,6 +585,17 @@ class PeripheralDorreActivity : AppCompatActivity() {
                     Toast.makeText(this@PeripheralDorreActivity, "设置失败", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        /**
+         * 设置/获取设备用户信息修改标识
+         *
+         * @param type  0x01：设置  0x02：获取
+         * @param state 0x00：设置成功 0x01：设置失败
+         * 0x00：设备用户信息未本地修改 0x01：设备用户信息本地修改过
+         */
+        override fun userInfoEditStateCallBack(type: Int, state: Int) {
+            addPrint("userInfoEditStateCallBack type $type state$state")
         }
     }
 
