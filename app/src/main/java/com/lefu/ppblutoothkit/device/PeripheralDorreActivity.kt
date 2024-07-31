@@ -84,8 +84,8 @@ class PeripheralDorreActivity : AppCompatActivity() {
         setContentView(R.layout.peripheral_dorre_layout)
 
         userModel = DataUtil.util().userModel
-        userModel?.userID = "1006451068@qq.com"
-        userModel?.memberID = "4C2D82A7-AA9B-46F2-99BB-8B82A1F63626"
+        userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
+        userModel?.memberID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.userName = "AB"
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
