@@ -80,9 +80,18 @@
                 <Button
                     android:id="@+id/startConnectDevice"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/connect_device" />
+
+                <Button
+                    android:id="@+id/getRGBMode"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="获取RGB模式"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/device_set_clearUser"
@@ -96,7 +105,7 @@
                 <Button
                     android:id="@+id/syncTime"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/sync_time"
                     android:textAllCaps="false" />

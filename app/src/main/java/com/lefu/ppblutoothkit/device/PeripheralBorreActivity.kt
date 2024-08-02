@@ -83,7 +83,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContentView(R.layout.peripheral_dorre_layout)
+        setContentView(R.layout.peripheral_borre_layout)
 
         userModel = DataUtil.util().userModel
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
@@ -115,6 +115,10 @@ class PeripheralBorreActivity : AppCompatActivity() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
             deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+        }
+        findViewById<Button>(R.id.getRGBMode).setOnClickListener {
+            addPrint("getRGBMode")
+            deviceModel?.let { it1 -> controller?.getTorreDeviceManager()?.getRGBMode(modeChangeInterface) }
         }
         findViewById<Button>(R.id.device_set_light).setOnClickListener {
             val light = (Math.random() * 100).toInt()
@@ -590,6 +594,10 @@ class PeripheralBorreActivity : AppCompatActivity() {
          */
         override fun userInfoEditStateCallBack(type: Int, state: Int) {
             addPrint("userInfoEditStateCallBack type $type state$state")
+        }
+
+        override fun getRGBModeCallBack(lightEnable: Int, lightMode: Int, defaultHex: String, againHex: String, lossHex: String) {
+            addPrint("getRGBModeCallBack lightEnable:$lightEnable lightMode:$lightMode\ndefaultHex:$defaultHex againHex:$againHex lossHex:$lossHex")
         }
     }
 
