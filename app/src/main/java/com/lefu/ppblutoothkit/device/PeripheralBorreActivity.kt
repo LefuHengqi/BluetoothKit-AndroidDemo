@@ -116,16 +116,6 @@ class PeripheralBorreActivity : AppCompatActivity() {
             addPrint("startConnect")
             deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         }
-        findViewById<Button>(R.id.startMeasureBtn).setOnClickListener {
-            addPrint("startMeasure")
-            controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
-            controller?.getTorreDeviceManager()?.startMeasure() {}
-        }
-        findViewById<Button>(R.id.stopMeasureBtn).setOnClickListener {
-            addPrint("stopMeasure")
-            controller?.getTorreDeviceManager()?.unRegistDataChangeListener()
-            controller?.getTorreDeviceManager()?.stopMeasure() {}
-        }
         findViewById<Button>(R.id.device_set_light).setOnClickListener {
             val light = (Math.random() * 100).toInt()
             addPrint("setLight light:$light")
@@ -175,14 +165,6 @@ class PeripheralBorreActivity : AppCompatActivity() {
             addPrint("startKeepAlive")
             controller?.getTorreDeviceManager()?.startKeepAlive()
 
-        }
-        findViewById<Button>(R.id.getUserInfoEditState).setOnClickListener {
-            addPrint("getUserInfoEditState")
-            controller?.getTorreDeviceManager()?.getUserInfoEditState(modeChangeInterface)
-        }
-        findViewById<Button>(R.id.setUserInfoEditState).setOnClickListener {
-            addPrint("setUserInfoEditState")
-            controller?.getTorreDeviceManager()?.setUserInfoEditState(true, modeChangeInterface)
         }
         findViewById<Button>(R.id.device_set_getFilePath).setOnClickListener {
             addPrint("check sdCard read and write permission")

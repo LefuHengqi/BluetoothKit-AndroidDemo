@@ -85,19 +85,12 @@
                     android:text="@string/connect_device" />
 
                 <Button
-                    android:id="@+id/startMeasureBtn"
+                    android:id="@+id/device_set_clearUser"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/start_measure"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/stopMeasureBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/stop_measure"
+                    android:gravity="center"
+                    android:text="@string/clear_user_info"
                     android:textAllCaps="false" />
 
                 <Button
@@ -108,9 +101,7 @@
                     android:text="@string/sync_time"
                     android:textAllCaps="false" />
 
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -190,39 +181,6 @@
                     android:textAllCaps="false" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/device_set_clearUser"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/clear_user_info"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/setUserInfoEditState"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="设置用户信息变化"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/getUserInfoEditState"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="获取用户信息变化"
-                    android:textAllCaps="false" />
-
-            </LinearLayout>
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
