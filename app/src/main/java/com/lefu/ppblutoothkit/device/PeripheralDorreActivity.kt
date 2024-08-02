@@ -42,7 +42,7 @@ import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
-import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralDorreController
+import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.util.PPUtil
 import com.peng.ppscale.vo.PPBodyBaseModel

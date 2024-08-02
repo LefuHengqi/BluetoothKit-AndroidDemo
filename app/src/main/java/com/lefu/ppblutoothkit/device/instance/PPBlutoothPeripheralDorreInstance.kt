@@ -1,6 +1,6 @@
 package com.lefu.ppblutoothkit.device.instance
 
-import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralDorreController
+import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
 
 class PPBlutoothPeripheralDorreInstance {
 
