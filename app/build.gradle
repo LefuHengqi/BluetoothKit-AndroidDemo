@@ -161,8 +161,12 @@ dependencies {
     //SDK
 //    implementation project(':ppscalelib')
 
-    api 'com.lefu.ppbasekit:ppbasekit:4.0.1.9'
-    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.1.9'
-    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.1.9'
+//    api 'com.lefu.ppbasekit:ppbasekit:4.0.1.9'
+//    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.1.9'
+//    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.1.9'
+
+    api(project(":ppsdkkit:ppbasekit"))
+    api(project(":ppsdkkit:ppbluetoothkit"))
+    api(project(":ppsdkkit:ppcalculatekit"))
 
 }

@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dimens_10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/device_set_connect_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/connect_state" />
+
+        <TextView
+            android:id="@+id/functinonTypeTvState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/current_weight" />
+
+        <TextView
+            android:id="@+id/weightTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:text="0.0" />
+
+        <TextView
+            android:id="@+id/weightMeasureState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_30dp"
+            android:text="state" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_weight="0.6"
+        android:background="#11000000"
+        android:orientation="vertical">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollViewLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <TextView
+                android:id="@+id/logTxt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp" />
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/startConnectDevice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/connect_device" />
+
+                <Button
+                    android:id="@+id/startMeasureBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/start_measure"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/stopMeasureBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/stop_measure"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/syncTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sync_time"
+                    android:textAllCaps="false" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/device_set_sync_userinfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/sync_all_user_info"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/deleteUserinfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/delete_all_user_info"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/device_set_confirm_current_userinfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/confirm_current_user"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/device_set_get_userinfo_list"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/get_user_list"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/getUnit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/get_unit"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/readDeviceInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/device_info"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/readDeviceBattery"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/read_device_battery"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/readLight"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/read_light"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/device_set_clearUser"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/clear_user_info"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/setUserInfoEditState"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="设置用户信息变化"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/getUserInfoEditState"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="获取用户信息变化"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/syncUserHistoryData"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/sync_user_history"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/syncTouristHistoryData"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/sync_tourist_history"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/device_set_light"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/set_light"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/startKeepAlive"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/start_keep_alive"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/device_set_sync_log"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/sync_log"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/device_set_reset"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/reset"
+                    android:textAllCaps="false" />
+
+
+                <Button
+                    android:id="@+id/setUserInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/set_user_info"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/getLanguage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/read_language"
+                    android:textAllCaps="false" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pregnant_woman_mode" />
+
+                <ToggleButton
+                    android:id="@+id/pregnancyModeToggleBtn"
+                    android:layout_width="@dimen/size_dp58"
+                    android:layout_height="@dimen/size_dp30"
+                    android:background="@drawable/tone_switch_selector"
+                    android:checked="false"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="工厂模式" />
+
+                <ToggleButton
+                    android:id="@+id/switchModeToggleBtn"
+                    android:layout_width="@dimen/size_dp58"
+                    android:layout_height="@dimen/size_dp30"
+                    android:background="@drawable/tone_switch_selector"
+                    android:checked="false"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="演示模式" />
+
+                <ToggleButton
+                    android:id="@+id/switchDemoModeToggleBtn"
+                    android:layout_width="@dimen/size_dp58"
+                    android:layout_height="@dimen/size_dp30"
+                    android:background="@drawable/tone_switch_selector"
+                    android:checked="false"
+                    android:textOff=""
+                    android:textOn="" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/device_ota_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OTA:" />
+
+                <Button
+                    android:id="@+id/device_set_startLocalOTA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/start_local_ota" />
+
+                <Button
+                    android:id="@+id/device_set_startOTA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/start_user_ota" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/device_dfu_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DFU:" />
+
+                    <Button
+                        android:id="@+id/device_set_getFilePath"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="选则DFU文件" />
+
+                    <Button
+                        android:id="@+id/device_set_startDFU"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/start_dfu"
+                        android:textAllCaps="false" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/is_full_upgrade" />
+
+                    <ToggleButton
+                        android:id="@+id/whetherFullyDFUToggleBtn"
+                        android:layout_width="@dimen/size_dp58"
+                        android:layout_height="@dimen/size_dp30"
+                        android:background="@drawable/tone_switch_selector"
+                        android:checked="true"
+                        android:textOff=""
+                        android:textOn="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>
