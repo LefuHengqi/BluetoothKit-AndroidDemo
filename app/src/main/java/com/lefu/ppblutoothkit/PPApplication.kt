@@ -37,6 +37,11 @@ class PPApplication : Application() {
                 s1?.let { LogUtils.writeBluetoothLog(it) }
             }
 
+            override fun logi(s: String?, s1: String?) {
+
+                s1?.let { LogUtils.writeBluetoothLog(it) }
+            }
+
             override fun logv(s: String?, s1: String?) {
 //                s1?.let { LogUtils.writeBluetoothLog(it) }
             }
@@ -62,7 +67,7 @@ class PPApplication : Application() {
          * @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK
          */
         PPBluetoothKit.initSdk(this, appKey, appSecret, "lefu.config")
-        /**z
+        /**
          * PPCalculateKit 计算库初始化
          */
         PPCalculateKit.initSdk(this)

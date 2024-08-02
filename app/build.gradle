@@ -16,11 +16,16 @@ android {
         versionName APP_VERSION
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
+    /******************************以下Demo配置项，你的项目中无需引入*************************************/
     packagingOptions {
         exclude 'res/values/values.xml'
+        exclude 'R.txt'
+        exclude 'proguard.txt'
         exclude 'META-INF/proguard/coroutines.pro'
         exclude 'META-INF/body_sl_release.kotlin_module'
-        exclude 'META-INF/body_sl_release.kotlin_module'
+        exclude 'META-INF/ppbasekit_debug.kotlin_module'
+        exclude 'META-INF/ppcalculatekit_debug.kotlin_module'
+        exclude 'META-INF/ppbluetoothkit_debug.kotlin_module'
         exclude 'AndroidManifest.xml'
 
         //以下代码是Demo需要使用的，在你们的项目中不需要使用
@@ -52,6 +57,7 @@ android {
         pickFirst 'lib/x86/libbh4BodyComposition.so'
 
     }
+    /******************************以上Demo配置项，你的项目中无需引入*************************************/
 
     buildTypes {
         release {
@@ -87,12 +93,6 @@ android {
             enableSplit true
         }
     }
-
-    //资源混淆冲突时开启
-//    configurations.all {
-//        resolutionStrategy.force 'androidx.core:core:1.3.1'
-//        resolutionStrategy.force 'androidx.constraintlayout:constraintlayout:1.1.3'
-//    }
 
     android.applicationVariants.all { variant ->
         if (variant.buildType.name.equals('release')) {
@@ -159,6 +159,10 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.76'
 
     //SDK
-    implementation project(':ppscalelib')
+//    implementation project(':ppscalelib')
+
+    api 'com.lefu.ppbasekit:ppbasekit:4.0.1.9'
+    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.1.9'
+    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.1.9'
 
 }

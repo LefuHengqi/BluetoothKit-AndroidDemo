@@ -18,8 +18,6 @@ import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.okhttp.RetCallBack
 import com.lefu.ppblutoothkit.vo.DemoDeviceConfigVo
 import com.peng.ppscale.PPBluetoothKit
-import com.peng.ppscale.PPBluetoothKit.TAG
-import com.lefu.ppbase.util.Logger
 import okhttp3.Call
 
 class MainActivity : BasePermissionActivity(), View.OnClickListener {
@@ -66,38 +64,20 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.searchDevice -> {
-                if (PPBluetoothKit.isBluetoothOpened()) {
-                    startActivity(Intent(this@MainActivity, ScanDeviceListActivity::class.java))
-                } else {
-                    if (ActivityCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.BLUETOOTH_CONNECT
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return
+                if (isHasBluetoothPermissions()) {
+                    if (PPBluetoothKit.isBluetoothOpened()) {
+                        startActivity(Intent(this@MainActivity, ScanDeviceListActivity::class.java))
+                    } else {
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                            return
+                        }
+                        val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                        startActivityForResult(intent, 0x001)
                     }
-                    val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                    startActivityForResult(intent, 0x001)
-//                    PPBlutoothKit.openBluetooth()
                 }
             }
 
             R.id.caculateBodyFat -> {
-
-                val a= 6425
-                val b = 6130
-
-                val c =  a/100f - b/100f
-
-                Logger.d("$TAG kgtost2Point2d: $c")
-
                 startActivity(Intent(this@MainActivity, CalculateManagerActivity::class.java))
             }
         }
