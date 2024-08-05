@@ -46,8 +46,8 @@ class Calculate4ACActivitiy : Activity() {
         val tag = intent.getStringExtra("bodyDataModel")
         if (tag != null) {
             //显示称重完成后的数据
-            val bodyBaseModel = DataUtil.util().bodyBaseModel
-            deviceName = bodyBaseModel.deviceModel?.deviceName ?: ""
+            val bodyBaseModel = DataUtil.bodyBaseModel
+            deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
             etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
             etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
             etAge.setText(bodyBaseModel?.userModel?.age.toString())
@@ -91,7 +91,7 @@ class Calculate4ACActivitiy : Activity() {
 
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
 
-        DataUtil.util().bodyDataModel = ppBodyFatModel
+        DataUtil.bodyDataModel = ppBodyFatModel
         Log.d("liyp_", ppBodyFatModel.toString())
 
         val intent = Intent(this, BodyDataDetailActivity::class.java)

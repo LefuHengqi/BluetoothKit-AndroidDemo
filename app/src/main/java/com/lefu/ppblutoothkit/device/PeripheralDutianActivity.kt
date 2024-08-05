@@ -57,7 +57,7 @@ class PeripheralDutianActivity : Activity() {
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
         val nestedScrollViewLog = findViewById<NestedScrollView>(R.id.nestedScrollViewLog)
 
-        userModel = DataUtil.util().userModel
+        userModel = DataUtil.getUserModel()
 
         logTxt?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

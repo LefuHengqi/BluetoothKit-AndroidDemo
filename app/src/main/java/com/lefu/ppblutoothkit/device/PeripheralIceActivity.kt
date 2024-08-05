@@ -119,7 +119,7 @@ class PeripheralIceActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
             addPrint("syncUnit")
-            controller?.syncUnit(DataUtil.util().unit, object : PPBleSendResultCallBack {
+            controller?.syncUnit(DataUtil.unit, object : PPBleSendResultCallBack {
                 override fun onResult(sendState: PPScaleSendState?) {
                     if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                         addPrint("syncUnit send success")
@@ -351,7 +351,7 @@ class PeripheralIceActivity : AppCompatActivity() {
             weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
 
             //这里要填称重用户的个人信息
-            val userModel = DataUtil.util().userModel
+            val userModel = DataUtil.getUserModel()
             bodyBaseModel?.userModel = userModel
             if (bodyBaseModel?.isHeartRating ?: false) {
                 //心率测量中
@@ -366,7 +366,7 @@ class PeripheralIceActivity : AppCompatActivity() {
                     .setCancelableAll(true)
                     .setNegativeButton(getString(R.string.cancel))
                     .setPositiveButton(getString(R.string.confirm), View.OnClickListener {
-                        DataUtil.util().bodyBaseModel = bodyBaseModel
+                        DataUtil.bodyBaseModel = bodyBaseModel
                         if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1

@@ -16,7 +16,7 @@ public class BodyDataDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body_data_detail);
         TextView textView = findViewById(R.id.data_detail);
-        PPBodyFatModel bodyData = DataUtil.util().getBodyDataModel();
+        PPBodyFatModel bodyData = DataUtil.INSTANCE.getBodyDataModel();
         if (bodyData != null) {
             textView.setText(bodyData.toString());
         }

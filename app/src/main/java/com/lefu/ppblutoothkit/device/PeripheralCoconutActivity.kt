@@ -70,7 +70,7 @@ class PeripheralCoconutActivity : AppCompatActivity() {
                 nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
             }
         })
-        userModel = DataUtil.util().userModel
+        userModel = DataUtil.getUserModel()
         addPrint("startConnect")
         controller?.registDataChangeListener(dataChangeListener)
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
@@ -199,7 +199,7 @@ class PeripheralCoconutActivity : AppCompatActivity() {
             weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
 
             //这里要填称重用户的个人信息
-            val userModel = DataUtil.util().userModel
+            val userModel = DataUtil.getUserModel()
             bodyBaseModel?.userModel = userModel
             if (bodyBaseModel?.isHeartRating ?: false) {
                 //心率测量中
@@ -214,7 +214,7 @@ class PeripheralCoconutActivity : AppCompatActivity() {
                     .setCancelableAll(true)
                     .setNegativeButton(getString(R.string.cancel))
                     .setPositiveButton(getString(R.string.confirm), View.OnClickListener {
-                        DataUtil.util().bodyBaseModel = bodyBaseModel
+                        DataUtil.bodyBaseModel = bodyBaseModel
                         if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect) {
                             //4电极直流算法  24项数据
                             val intent = Intent(this@PeripheralCoconutActivity, Calculate4DCActivitiy::class.java)

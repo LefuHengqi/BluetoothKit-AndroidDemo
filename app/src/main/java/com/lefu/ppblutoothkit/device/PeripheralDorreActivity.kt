@@ -83,7 +83,7 @@ class PeripheralDorreActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.peripheral_dorre_layout)
 
-        userModel = DataUtil.util().userModel
+        userModel = DataUtil.getUserModel()
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.memberID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.userName = "AB"
@@ -423,7 +423,7 @@ class PeripheralDorreActivity : AppCompatActivity() {
                     .setCancelableAll(true)
                     .setNegativeButton(getString(R.string.cancel))
                     .setPositiveButton(getString(R.string.confirm), View.OnClickListener() {
-                        DataUtil.util().bodyBaseModel = bodyBaseModel
+                        DataUtil.bodyBaseModel = bodyBaseModel
                         if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1

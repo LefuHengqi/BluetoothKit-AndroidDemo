@@ -26,14 +26,14 @@ class UserinfoActivity : Activity() {
 
         onBtnClck()
 
-        val userModel = DataUtil.util().userModel
+        val userModel = DataUtil.getUserModel()
 
         if (userModel != null) {
             height = userModel.userHeight
             age = userModel.age
             sex = userModel.sex
         }
-        unit = DataUtil.util().unit
+        unit = DataUtil.unit
 
         // 身高
         val heightET = findViewById<EditText>(R.id.editText3)
@@ -110,8 +110,8 @@ class UserinfoActivity : Activity() {
             .setHeight(height)
             .setSex(sex)
             .build()
-        DataUtil.util().userModel = userModel
-        DataUtil.util().unit = unit
+        DataUtil.setUserModel(userModel)
+        DataUtil.unit = unit
     }
 
     fun onSave(view: View) {

@@ -84,7 +84,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.peripheral_torre_layout)
 
-        userModel = DataUtil.util().userModel
+        userModel = DataUtil.getUserModel()
         userModel?.userID = "1006451068@qq.com"
         userModel?.memberID = "4C2D82A7-AA9B-46F2-99BB-8B82A1F63626"
         userModel?.userName = "AB"
@@ -443,7 +443,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
                     .setCancelableAll(true)
                     .setNegativeButton(getString(R.string.cancel))
                     .setPositiveButton(getString(R.string.confirm), View.OnClickListener() {
-                        DataUtil.util().bodyBaseModel = bodyBaseModel
+                        DataUtil.bodyBaseModel = bodyBaseModel
                         if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1

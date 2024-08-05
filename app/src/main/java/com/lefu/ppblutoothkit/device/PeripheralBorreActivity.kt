@@ -28,10 +28,10 @@ import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
@@ -51,7 +51,6 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralBorreController
-import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
@@ -85,7 +84,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.peripheral_borre_layout)
 
-        userModel = DataUtil.util().userModel
+        userModel = DataUtil.getUserModel()
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.memberID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.userName = "AB"
@@ -401,36 +400,10 @@ class PeripheralBorreActivity : AppCompatActivity() {
                 bodyBaseModel?.userModel = userModel
                 //Calling the calculation library to calculate body fat information
                 //调用计算库计算体脂信息
+                Logger.d("PeripheralBorreActivity 四电极 双频 impedance:${bodyBaseModel?.impedance} impedance100EnCode:${bodyBaseModel?.ppImpedance100EnCode}")
                 val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
                 addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
-
-                MsgDialog.init(supportFragmentManager)
-                    .setTitle(getString(R.string.tips))
-                    .setMessage(getString(R.string.is_body_fat_calculated))
-                    .setAnimStyle(R.style.dialog_)
-                    .setCancelableAll(true)
-                    .setNegativeButton(getString(R.string.cancel))
-                    .setPositiveButton(getString(R.string.confirm), View.OnClickListener() {
-                        DataUtil.util().bodyBaseModel = bodyBaseModel
-                        if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
-                        ) {
-                            //8电极交流算法  48项数据
-                            val intent = Intent(this@PeripheralBorreActivity, Calculate8Activitiy::class.java)
-                            intent.putExtra("bodyDataModel", "bodyDataModel")
-                            startActivity(intent)
-                        } else {
-                            //4电极交流算法  24项数据
-                            val intent = Intent(this@PeripheralBorreActivity, Calculate4ACActivitiy::class.java)
-                            intent.putExtra("bodyDataModel", "bodyDataModel")
-                            startActivity(intent)
-                        }
-                    })
-                    .show()
+                bodyBaseModel?.let { showCalculateDialog(deviceModel, it) }
             }
 
         }
@@ -468,6 +441,44 @@ class PeripheralBorreActivity : AppCompatActivity() {
             addPrint("有新的历史数据")
         }
 
+    }
+
+    private fun showCalculateDialog(deviceModel: PPDeviceModel, bodyBaseModel: PPBodyBaseModel) {
+        DataUtil.bodyBaseModel = bodyBaseModel
+        Logger.d("DataUtil.bodyBaseModel:${DataUtil.bodyBaseModel.hashCode()} bodyBaseModel:${bodyBaseModel.hashCode()}")
+        Logger.d("PeripheralBorreActivity showCalculateDialog 四电极 双频 impedance:${bodyBaseModel.impedance} impedance100EnCode:${bodyBaseModel.ppImpedance100EnCode}")
+        MsgDialog.init(supportFragmentManager)
+            .setTitle(getString(R.string.tips))
+            .setMessage(getString(R.string.is_body_fat_calculated))
+            .setAnimStyle(R.style.dialog_)
+            .setCancelableAll(true)
+            .setNegativeButton(getString(R.string.cancel))
+            .setPositiveButton(getString(R.string.confirm), View.OnClickListener() {
+                if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
+                ) {
+                    //8电极交流算法  48项数据
+                    val intent = Intent(this@PeripheralBorreActivity, Calculate8Activitiy::class.java)
+                    intent.putExtra("bodyDataModel", "bodyDataModel")
+                    startActivity(intent)
+                } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1) {
+                    Logger.d("PeripheralBorreActivity 四电极 双频 impedance1:${DataUtil.bodyBaseModel?.impedance} impedance100EnCode:${DataUtil.bodyBaseModel?.ppImpedance100EnCode}")
+                    //4电极交流算法  24项数据
+                    val intent = Intent(this@PeripheralBorreActivity, Calculate4AC2ChannelActivitiy::class.java)
+                    intent.putExtra("bodyDataModel", "bodyDataModel")
+                    startActivity(intent)
+                } else {
+                    //4电极交流算法  24项数据
+                    val intent = Intent(this@PeripheralBorreActivity, Calculate4ACActivitiy::class.java)
+                    intent.putExtra("bodyDataModel", "bodyDataModel")
+                    startActivity(intent)
+                }
+            })
+            .show()
     }
 
     fun addPrint(msg: String) {

@@ -116,10 +116,10 @@ class PeripheralAppleActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
             addPrint("syncUnit")
-            val userModel = DataUtil.util().userModel
+            val userModel = DataUtil.getUserModel()
 
             userModel?.let { it1 ->
-                controller?.syncUnit(DataUtil.util().unit, it1, object : PPBleSendResultCallBack {
+                controller?.syncUnit(DataUtil.unit, it1, object : PPBleSendResultCallBack {
                     override fun onResult(sendState: PPScaleSendState?) {
                         if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                             addPrint("syncUnit send success")
@@ -234,7 +234,7 @@ class PeripheralAppleActivity : AppCompatActivity() {
                 //测量结束
                 weightMeasureState?.text = getString(R.string.measure_complete)
                 //这里要填称重用户的个人信息
-                val userModel = DataUtil.util().userModel
+                val userModel = DataUtil.getUserModel()
                 bodyBaseModel?.userModel = userModel
 
                 MsgDialog.init(supportFragmentManager)
@@ -244,7 +244,7 @@ class PeripheralAppleActivity : AppCompatActivity() {
                     .setCancelableAll(true)
                     .setNegativeButton(getString(R.string.cancel))
                     .setPositiveButton(getString(R.string.confirm), View.OnClickListener {
-                        DataUtil.util().bodyBaseModel = bodyBaseModel
+                        DataUtil.bodyBaseModel = bodyBaseModel
                         if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect) {
                             //4电极直流算法  24项数据
                             val intent = Intent(this@PeripheralAppleActivity, Calculate4DCActivitiy::class.java)

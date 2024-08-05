@@ -17,6 +17,8 @@ import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.util.DeviceUtil
 import kotlinx.android.synthetic.main.activity_calculate_4ac.*
+import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.etImpedance1
+import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.etImpedance2
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etAge
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etHeight
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etSex
@@ -31,7 +33,7 @@ class Calculate4AC2ChannelActivitiy : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calculate_4ac)
+        setContentView(R.layout.activity_calculate_4ac2channel)
 
         findViewById<Button>(R.id.calculateBtn).setOnClickListener {
             startCalculate()
@@ -45,13 +47,14 @@ class Calculate4AC2ChannelActivitiy : Activity() {
         val tag = intent.getStringExtra("bodyDataModel")
         if (tag != null) {
             //显示称重完成后的数据
-            val bodyBaseModel = DataUtil.util().bodyBaseModel
-            deviceName = bodyBaseModel.deviceModel?.deviceName ?: ""
+            val bodyBaseModel = DataUtil.bodyBaseModel
+            deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
             etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
             etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
             etAge.setText(bodyBaseModel?.userModel?.age.toString())
             etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
-            etImpedance.setText(bodyBaseModel?.impedance.toString())
+            etImpedance1.setText(bodyBaseModel?.impedance.toString())
+            etImpedance2.setText(bodyBaseModel?.ppImpedance100EnCode.toString())
         }
     }
 
@@ -64,7 +67,8 @@ class Calculate4AC2ChannelActivitiy : Activity() {
         val height = etHeight.text?.toString()?.toInt() ?: 180
         val age = etAge.text?.toString()?.toInt() ?: 28
         val weight = etWeight.text?.toString()?.toDouble() ?: 70.00
-        val impedance = etImpedance.text?.toString()?.toLong() ?: 4195332L
+        val impedance1 = etImpedance1.text?.toString()?.toLong() ?: 4195332L
+        val impedance2 = etImpedance2.text?.toString()?.toLong() ?: 4195332L
 
         val userModel = PPUserModel.Builder()
             .setSex(sex) //gender
@@ -79,17 +83,17 @@ class Calculate4AC2ChannelActivitiy : Activity() {
         } else {
             PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
         }
-
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
-        bodyBaseModel.impedance = impedance
+        bodyBaseModel.impedance = impedance1
+        bodyBaseModel.ppImpedance100EnCode = impedance2
         bodyBaseModel.deviceModel = deviceModel
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
 
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
 
-        DataUtil.util().bodyDataModel = ppBodyFatModel
+        DataUtil.bodyDataModel = ppBodyFatModel
         Log.d("liyp_", ppBodyFatModel.toString())
 
         val intent = Intent(this, BodyDataDetailActivity::class.java)
