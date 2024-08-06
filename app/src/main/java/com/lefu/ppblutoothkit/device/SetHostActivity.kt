@@ -19,6 +19,7 @@ class SetHostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_host)
+        mEnterHostEdit.setText(NetUtil.getScaleDomain())
         mEnterHostBtn.setOnClickListener {
             mEnterHostEdit.text.trim().toString().let {
                 if (it.isNotEmpty()) {
