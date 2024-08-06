@@ -51,6 +51,8 @@ import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPUserModel
+import com.lefu.ppblutoothkit.okhttp.NetUtil
+import kotlinx.android.synthetic.main.peripheral_torre_layout.mCurrentHostUrl
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
@@ -206,6 +208,10 @@ class PeripheralTorreActivity : AppCompatActivity() {
             addPrint("check sdCard read and write permission")
             requestPermission()
         }
+        findViewById<Button>(R.id.setNetHost).setOnClickListener {
+            addPrint("setNetHost")
+            startActivity(Intent(this, SetHostActivity::class.java))
+        }
         findViewById<Button>(R.id.device_set_startDFU).setOnClickListener {
             if (dfuFilePath.isNullOrBlank().not()) {
                 if (controller?.getTorreDeviceManager()?.isDFU?.not() ?: false) {
@@ -274,9 +280,11 @@ class PeripheralTorreActivity : AppCompatActivity() {
         if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
             device_ota_layout.visibility = View.VISIBLE
             device_dfu_layout.visibility = View.GONE
+            mCurrentHostUrl.visibility = View.VISIBLE
         } else {
             device_ota_layout.visibility = View.GONE
             device_dfu_layout.visibility = View.VISIBLE
+            mCurrentHostUrl.visibility = View.GONE
         }
         findViewById<ToggleButton>(R.id.pregnancyModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
             addPrint("maternity mode isChecked:$isChecked")
@@ -341,6 +349,11 @@ class PeripheralTorreActivity : AppCompatActivity() {
             controller?.getTorreDeviceManager()?.getUnit(modeChangeInterface)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mCurrentHostUrl?.text = "当前域名：${NetUtil.getScaleDomain()}"
     }
 
     val bleStateInterface = object : PPBleStateInterface() {

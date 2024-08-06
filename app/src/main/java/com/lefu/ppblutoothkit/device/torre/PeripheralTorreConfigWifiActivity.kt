@@ -55,6 +55,7 @@ class PeripheralTorreConfigWifiActivity : Activity() {
                 if (mDomain.contains("http://")) {
                     mDomain = domainName.replace("http://", "")
                 }
+                Logger.e("configwifi domainName: $domainName")
                 PPBlutoothPeripheralIceInstance.instance.controller?.sendModifyServerDomain(mDomain, configWifiInfoInterface)
             } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
                 PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)

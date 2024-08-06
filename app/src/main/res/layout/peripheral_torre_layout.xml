@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -184,12 +185,11 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/device_set_clearUser"
+                    android:id="@+id/setNetHost"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/clear_user_info"
+                    android:text="设置域名"
                     android:textAllCaps="false" />
 
             </LinearLayout>
@@ -308,7 +308,14 @@
                     android:text="@string/read_language"
                     android:textAllCaps="false" />
 
-
+                <Button
+                    android:id="@+id/device_set_clearUser"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/clear_user_info"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
 
@@ -359,7 +366,6 @@
                     android:textOff=""
                     android:textOn="" />
 
-
             </LinearLayout>
 
             <LinearLayout
@@ -393,7 +399,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -433,9 +440,22 @@
                         android:textOff=""
                         android:textOn="" />
 
+
+
                 </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/mCurrentHostUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="当前的域名"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="@dimen/text_sp16"
+                android:layout_marginTop="@dimen/dimens_12dp"
+                android:layout_marginStart="@dimen/dimens_4dp"
+                />
 
         </LinearLayout>
 
