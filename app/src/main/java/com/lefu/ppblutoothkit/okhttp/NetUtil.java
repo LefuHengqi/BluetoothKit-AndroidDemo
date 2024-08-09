@@ -30,10 +30,10 @@ public class NetUtil {
     //Binding WiFi to users requires your own server, which will only be used for demonstration purposes
     public static String SAVE_WIFI_GROUP = GET_URL() + "/lefu/wifi/app/saveWifiGroup";
 
-
-
-
-    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082";
+//    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082";
+//    public static String SCALE_DOMAIN = "http://ddi-bm-staging.buzud.com/api/v1.0/scale";
+//    public static String SCALE_DOMAIN = "http://ddi-bm-staging.buzud.com:80/api/v1.0/scale";
+    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082/api/v1.0/scale";
 
     /**
      * 拉取设备配置信息，仅供Demo使用，与AppKey配套使用,

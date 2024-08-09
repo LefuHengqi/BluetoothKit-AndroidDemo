@@ -67,8 +67,8 @@ class Calculate4DCActivitiy : Activity() {
         val impedance = etImpedance.text?.toString()?.toLong() ?: 4195332L
         val userModel = PPUserModel.Builder()
             .setSex(sex) //gender
-            .setHeight(height)//height 100-220
-            .setAge(age)//age 10-99
+            .setHeight(height)//height 90-220
+            .setAge(age)//age 6-99
             .build()
         val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
         deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect

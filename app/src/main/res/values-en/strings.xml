@@ -22,7 +22,7 @@
          6：oz 7：ml(water)
          8: ml（milk）</string>
     <string name="sex_normal">0 for women and 1 for men</string>
-    <string name="value_range_age">Range: 10-99</string>
+    <string name="value_range_age">Range: 6-99</string>
     <string name="value_range_group">Range: 0-9</string>
     <string name="maternity_mode_tag">0 default   1 pregnant woman mode</string>
     <string name="sport_mode_tag">0 default  1 athlete mode</string>

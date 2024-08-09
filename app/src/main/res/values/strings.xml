@@ -22,7 +22,7 @@
          6：表示oz 7 表示ml(water)
          8: 表示ml（milk）</string>
     <string name="sex_normal">0为女，1为男</string>
-    <string name="value_range_age">取值范围：10-99</string>
+    <string name="value_range_age">取值范围：6-99</string>
     <string name="value_range_group">取值范围：0-9</string>
     <string name="maternity_mode_tag">0默认 1孕妇模式</string>
     <string name="sport_mode_tag">0默认 1运动员模式</string>
