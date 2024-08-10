@@ -19,6 +19,7 @@ import com.peng.ppscale.util.DeviceUtil
 import kotlinx.android.synthetic.main.activity_calculate_4ac.*
 import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.etImpedance1
 import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.etImpedance2
+import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.sportModeEt
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etAge
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etHeight
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etSex
@@ -50,6 +51,7 @@ class Calculate4AC2ChannelActivitiy : Activity() {
             val bodyBaseModel = DataUtil.bodyBaseModel
             deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
             etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
+            sportModeEt.setText(if (bodyBaseModel?.userModel?.isAthleteMode == false) "0" else "1")
             etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
             etAge.setText(bodyBaseModel?.userModel?.age.toString())
             etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
@@ -64,6 +66,9 @@ class Calculate4AC2ChannelActivitiy : Activity() {
         } else {
             PPUserGender.PPUserGenderMale
         }
+
+        val isAthleteMode = sportModeEt.text?.toString()?.toInt() == 1
+
         val height = etHeight.text?.toString()?.toInt() ?: 180
         val age = etAge.text?.toString()?.toInt() ?: 28
         val weight = etWeight.text?.toString()?.toDouble() ?: 70.00
@@ -74,6 +79,7 @@ class Calculate4AC2ChannelActivitiy : Activity() {
             .setSex(sex) //gender
             .setHeight(height)//height 90-220
             .setAge(age)//age 6-99
+            .setAthleteMode(isAthleteMode)
             .build()
 
         val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
