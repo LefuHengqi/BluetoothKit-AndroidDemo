@@ -119,10 +119,28 @@ class PeripheralBorreActivity : AppCompatActivity() {
             addPrint("getRGBMode")
             deviceModel?.let { it1 -> controller?.getTorreDeviceManager()?.getRGBMode(modeChangeInterface) }
         }
-        findViewById<Button>(R.id.device_set_light).setOnClickListener {
-            val light = (Math.random() * 100).toInt()
-            addPrint("setLight light:$light")
-            controller?.getTorreDeviceManager()?.setLight(light, deviceSetInterface)
+        findViewById<Button>(R.id.device_set_SevenWeighInfo).setOnClickListener {
+
+//    public double bodyfat;//放大10倍,243 = 24.3
+//    public int heartRate;//心率(bmp)
+//    public double muscleRate;//放大10倍,960 = 96
+//    public double muscle;//放大10倍,243 = 24.3
+//    public double bone;//放大10倍,960 = 96
+//    public double boneRate;//放大10倍,960 = 96
+//    public double waterRate;//放大10倍,960 = 96
+            userModel?.PIndex =2
+            userModel?.bmi = 20.2
+            userModel?.bodyfat = 20.2
+            userModel?.heartRate = 80
+            userModel?.muscleRate = 20.2
+            userModel?.muscle = 20.2
+            userModel?.bone = 20.2
+            userModel?.boneRate = 20.2
+            userModel?.waterRate = 20.2
+
+            addPrint("syncUserInfo userName:${userModel?.userName}")
+            controller?.getTorreDeviceManager()?.syncUserSevenWeighInfo(userModel, userInfoInterface)
+
         }
         findViewById<Button>(R.id.device_set_sync_log).setOnClickListener {
             addPrint("syncLog")
@@ -693,6 +711,14 @@ class PeripheralBorreActivity : AppCompatActivity() {
 
         override fun confirmCurrentUserInfoFail() {
             addPrint("confirmCurrentUserInfoFail")
+        }
+
+        override fun syncUserSevenWeightInfoSuccess() {
+            addPrint("syncUserSevenWeightInfoSuccess")
+        }
+
+        override fun syncUserSevenWeightInfoFail() {
+            addPrint("syncUserSevenWeightInfoFail")
         }
 
     }

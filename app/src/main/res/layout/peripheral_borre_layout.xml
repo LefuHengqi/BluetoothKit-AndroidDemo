@@ -212,11 +212,11 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/device_set_light"
+                    android:id="@+id/device_set_SevenWeighInfo"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/set_light"
+                    android:text="7天数据"
                     android:textAllCaps="false" />
 
                 <Button
