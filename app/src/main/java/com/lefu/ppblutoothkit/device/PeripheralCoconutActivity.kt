@@ -19,13 +19,18 @@ import com.lefu.ppblutoothkit.view.MsgDialog
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
+import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
 import com.peng.ppscale.business.device.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralCoconut.PPBlutoothPeripheralCoconutController
 import com.peng.ppscale.util.PPUtil
-import com.peng.ppscale.vo.*
+import com.peng.ppscale.vo.PPBodyBaseModel
+import com.peng.ppscale.vo.PPDeviceModel
+import com.peng.ppscale.vo.PPScaleDefine
+import com.peng.ppscale.vo.PPScaleSendState
+import com.peng.ppscale.vo.PPUserModel
 
 /**
  * 对应的协议: 3.x
@@ -152,6 +157,24 @@ class PeripheralCoconutActivity : AppCompatActivity() {
                 addPrint("device does not support")
             }
         }
+        findViewById<Button>(R.id.getLightIntensity).setOnClickListener {
+            addPrint("getLightIntensity")
+            if (deviceModel?.devicePowerType == PPScaleDefine.PPDevicePowerType.PPDevicePowerTypeSolar) {
+                controller?.readDeviceBattery(ppDeviceInfoInterface)
+            } else {
+                addPrint("getLightIntensity: Does not support get Light Intensity")
+            }
+        }
+    }
+
+    private val ppDeviceInfoInterface = object : PPDeviceInfoInterface() {
+        override fun onLightIntensityChange(intensity: Int) {
+            addPrint("getLightIntensity intensity:$intensity")
+        }
+
+        override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {}
+
+        override fun readDevicePower(power: Int) {}
     }
 
     private fun syncUserAndUnitData() {

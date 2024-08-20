@@ -70,7 +70,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:orientation="vertical">
 
             <LinearLayout
@@ -80,7 +79,6 @@
                 <Button
                     android:id="@+id/startConnectDevice"
                     android:layout_width="0dp"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/connect_device" />
@@ -133,6 +131,13 @@
                     android:text="@string/clear_history" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/getLightIntensity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="光照强度" />
 
         </LinearLayout>
 
