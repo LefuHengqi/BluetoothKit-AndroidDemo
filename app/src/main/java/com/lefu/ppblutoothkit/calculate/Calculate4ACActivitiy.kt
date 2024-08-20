@@ -10,6 +10,7 @@ import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.peng.ppscale.business.device.DeviceManager
 import com.peng.ppscale.business.device.PPUnitType
+import com.peng.ppscale.data.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_calculate_4ac.*
@@ -86,7 +87,7 @@ class Calculate4ACActivitiy : Activity() {
         bodyBaseModel.unit = PPUnitType.Unit_KG
 
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
-
+        ppBodyFatModel.bodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
         DataUtil.util().bodyDataModel = ppBodyFatModel
         Log.d("liyp_", ppBodyFatModel.toString())
 

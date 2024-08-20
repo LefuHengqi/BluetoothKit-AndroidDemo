@@ -12,6 +12,7 @@ import android.widget.Spinner
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
+import com.peng.ppscale.data.PPBodyDetailModel
 import com.peng.ppscale.vo.*
 import kotlinx.android.synthetic.main.activity_calculate_8ac.*
 
@@ -182,7 +183,7 @@ class Calculate8Activitiy : Activity() {
         bodyBaseModel.z20KhzTrunkEnCode = z20KhzTrunkEnCode
 
         val fatModel = PPBodyFatModel(bodyBaseModel)
-
+        fatModel.bodyDetailModel = PPBodyDetailModel(fatModel)
         DataUtil.util().bodyDataModel = fatModel
         Log.d("liyp_", fatModel.toString())
 
