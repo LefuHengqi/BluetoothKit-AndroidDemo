@@ -432,11 +432,13 @@ class PeripheralTorreActivity : AppCompatActivity() {
          */
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
             if (bodyBaseModel?.isHeartRating ?: false) {
+                //isHeartRating： 心率是否测量中  true心率测量中/重量测量完成/阻抗测量完成  false心率测量结束/测量完成
                 addPrint(getString(R.string.heartrate_mesuring))
                 val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel?.deviceAccuracyType?.getType() ?: 2)
                 weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
                 weightMeasureState?.text = ""
             } else {
+                //心率测量完成/阻抗测量完成/测量完成
                 addPrint(getString(R.string.measure_complete))
                 val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
                 weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
