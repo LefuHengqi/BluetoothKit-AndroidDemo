@@ -43,6 +43,7 @@ import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
+import com.peng.ppscale.business.torre.vo.PPScaleState
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
 import com.peng.ppscale.util.Logger
 import com.peng.ppscale.util.PPUtil
@@ -399,6 +400,15 @@ class PeripheralTorreActivity : AppCompatActivity() {
     }
 
     val dataChangeListener = object : PPDataChangeListener {
+
+        /**
+         * 设备状态
+         *
+         *
+         */
+        override fun monitorScaleState(scaleState: PPScaleState?) {
+
+        }
 
         /**
          * 监听过程数据
