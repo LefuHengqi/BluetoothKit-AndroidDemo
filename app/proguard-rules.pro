@@ -115,6 +115,10 @@ public static java.lang.String TABLENAME;
 
 # ppscale
 -keep class com.peng.ppscale.vo.** {*;}
+-keep class com.lefu.ppcalculate.data.** {*;}
+-keep class com.lefu.ppbase.vo.** {*;}
+-keep class com.peng.ppscale.util.** {*;}
+-keep class com.lefu.ppbase.util.** {*;}
 -keep class com.peng.ppscale.business.torre.vo.** {*;}
 -keep class com.besthealth.bhBodyComposition.** {*;}
 -keep class com.besthealth.bh1BodyComposition.** {*;}
