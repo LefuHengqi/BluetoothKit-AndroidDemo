@@ -15,6 +15,7 @@ import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.vo.PPUnitType
+import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
 import kotlinx.android.synthetic.main.activity_calculate_4ac.*
 import kotlinx.android.synthetic.main.activity_calculate_8ac.etAge
@@ -84,6 +85,8 @@ class Calculate4DCActivitiy : Activity() {
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
+
+        ppBodyFatModel.bodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
 
         DataUtil.bodyDataModel = ppBodyFatModel
         Log.d("liyp_", ppBodyFatModel.toString())
