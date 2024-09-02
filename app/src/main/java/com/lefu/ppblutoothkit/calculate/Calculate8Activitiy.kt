@@ -186,6 +186,7 @@ class Calculate8Activitiy : Activity() {
         fatModel.bodyDetailModel = PPBodyDetailModel(fatModel)
         DataUtil.util().bodyDataModel = fatModel
         Log.d("liyp_", fatModel.toString())
+        Log.d("liyp_",  fatModel.bodyDetailModel.toString())
 
         val intent = Intent(this@Calculate8Activitiy, BodyDataDetailActivity::class.java)
         startActivity(intent)
