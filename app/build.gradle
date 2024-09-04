@@ -4,7 +4,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 static def releaseTime() {
-    return new Date().format("yyyy-MM-dd_HH_mm", TimeZone.getTimeZone("UTC"))
+    def utcDate = new Date()
+    def chinaTimeZone = TimeZone.getTimeZone("Asia/Shanghai") // 使用亚洲/上海时区代表中国时间
+    def formattedDate = utcDate.format("yyyy-MM-dd_HH_mm", chinaTimeZone)
+    return formattedDate
 }
 
 android {
@@ -61,11 +64,13 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
