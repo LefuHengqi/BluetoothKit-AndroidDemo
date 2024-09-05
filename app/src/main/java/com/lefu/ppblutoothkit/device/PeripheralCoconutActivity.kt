@@ -190,7 +190,7 @@ class PeripheralCoconutActivity : AppCompatActivity() {
         })
     }
 
-    val dataChangeListener = object : PPDataChangeListener {
+    val dataChangeListener = object : PPDataChangeListener() {
 
         /**
          * 监听过程数据
@@ -202,10 +202,6 @@ class PeripheralCoconutActivity : AppCompatActivity() {
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
             weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             weightMeasureState?.text = ""
-        }
-
-        override fun monitorDataFail(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-
         }
 
         /**

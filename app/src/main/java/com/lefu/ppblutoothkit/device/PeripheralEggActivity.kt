@@ -55,7 +55,7 @@ class PeripheralEggActivity : Activity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s: Editable?) {
+            override fun afterTextChanged(s: Editable?) {2
                 nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
             }
         })

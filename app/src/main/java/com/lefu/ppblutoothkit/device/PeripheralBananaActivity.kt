@@ -81,7 +81,7 @@ class PeripheralBananaActivity : Activity() {
         }
     }
 
-    val dataChangeListener = object : PPDataChangeListener {
+    val dataChangeListener = object : PPDataChangeListener() {
 
         /**
          * 监听过程数据

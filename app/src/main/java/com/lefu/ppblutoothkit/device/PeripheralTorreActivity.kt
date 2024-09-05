@@ -399,7 +399,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
     }
 
-    val dataChangeListener = object : PPDataChangeListener {
+    val dataChangeListener = object : PPDataChangeListener() {
 
         /**
          * 设备状态

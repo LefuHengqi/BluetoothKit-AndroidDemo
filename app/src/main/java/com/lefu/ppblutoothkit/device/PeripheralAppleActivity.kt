@@ -201,7 +201,7 @@ class PeripheralAppleActivity : AppCompatActivity() {
         mCurrentHostUrl?.text = "当前域名：${NetUtil.getScaleDomain()}"
     }
 
-    val dataChangeListener = object : PPDataChangeListener {
+    val dataChangeListener = object : PPDataChangeListener() {
 
         /**
          * 监听过程数据
@@ -213,10 +213,6 @@ class PeripheralAppleActivity : AppCompatActivity() {
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
             weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             weightMeasureState?.text = ""
-        }
-
-        override fun monitorDataFail(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-
         }
 
         /**
