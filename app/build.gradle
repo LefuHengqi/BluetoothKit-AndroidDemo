@@ -15,8 +15,8 @@ android {
     defaultConfig {
         applicationId "com.lefu.ppblutoothkit"
         minSdkVersion 21
-        versionCode APP_VERSION_CODE as int
-        versionName APP_VERSION
+        versionCode LIB_VERSION_CODE as int
+        versionName LIB_VERSION
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     /******************************以下Demo配置项，你的项目中无需引入*************************************/
@@ -64,13 +64,13 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -140,7 +140,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 //    implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
@@ -166,12 +166,12 @@ dependencies {
     //SDK
 //    implementation project(':ppscalelib')
 
-//    api 'com.lefu.ppbasekit:ppbasekit:4.0.1.9'
-//    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.1.9'
-//    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.1.9'
+    api 'com.lefu.ppbasekit:ppbasekit:4.0.3.1'
+    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.3.1'
+    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.3.1'
 
-    api(project(":ppsdkkit:ppbasekit"))
-    api(project(":ppsdkkit:ppbluetoothkit"))
-    api(project(":ppsdkkit:ppcalculatekit"))
+//    api(project(":ppsdkkit:ppbasekit"))
+//    api(project(":ppsdkkit:ppbluetoothkit"))
+//    api(project(":ppsdkkit:ppcalculatekit"))
 
 }

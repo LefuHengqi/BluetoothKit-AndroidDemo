@@ -11,8 +11,6 @@ def fileName
 
 def GROUP_ID = "com.lefu.ppbasekit"
 def ARTIFACT_ID = "ppbasekit"
-def LIB_VERSION = "4.0.2"
-def LIB_VERSION_CODE = "108"
 
 android {
     compileSdkVersion 31

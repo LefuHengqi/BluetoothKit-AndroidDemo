@@ -1,6 +1,5 @@
 include ':app'
 include ':data_db'
-//include ':ppscalelib'
 //非对外的module
 include ':ppsdkkit:ppbluetoothkit'
 include ':ppsdkkit:ppcalculatekit'
