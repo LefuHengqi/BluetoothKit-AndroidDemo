@@ -30,6 +30,8 @@ import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.peng.ppscale.vo.PPScaleSendState
 
 /**
@@ -248,6 +250,12 @@ class PeripheralAppleActivity : AppCompatActivity() {
                         if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect) {
                             //4电极直流算法  24项数据
                             val intent = Intent(this@PeripheralAppleActivity, Calculate4DCActivitiy::class.java)
+                            intent.putExtra("bodyDataModel", "bodyDataModel")
+                            startActivity(intent)
+                        } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1) {
+                            Logger.i("PeripheralAppleActivity 四电极 双频 impedance1:${DataUtil.bodyBaseModel?.impedance} impedance100EnCode:${DataUtil.bodyBaseModel?.ppImpedance100EnCode}")
+                            //4电极交流算法  24项数据
+                            val intent = Intent(this@PeripheralAppleActivity, Calculate4AC2ChannelActivitiy::class.java)
                             intent.putExtra("bodyDataModel", "bodyDataModel")
                             startActivity(intent)
                         } else {
