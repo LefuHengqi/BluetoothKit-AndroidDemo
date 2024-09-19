@@ -128,7 +128,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
 //    public double bone;//放大10倍,960 = 96
 //    public double boneRate;//放大10倍,960 = 96
 //    public double waterRate;//放大10倍,960 = 96
-            userModel?.PIndex =2
+            userModel?.PIndex = 2
             userModel?.bmi = 20.2
             userModel?.bodyfat = 20.2
             userModel?.heartRate = 80
@@ -452,13 +452,6 @@ class PeripheralBorreActivity : AppCompatActivity() {
             addPrint("关机")
         }
 
-        /**
-         * 历史数据发生改变,目前只在Torre设备上生效
-         */
-        override fun onHistoryDataChange() {
-            addPrint("有新的历史数据")
-        }
-
     }
 
     private fun showCalculateDialog(deviceModel: PPDeviceModel, bodyBaseModel: PPBodyBaseModel) {
@@ -723,32 +716,6 @@ class PeripheralBorreActivity : AppCompatActivity() {
 
     }
 
-    val configWifiInterface = object : PPTorreConfigWifiInterface() {
-
-        /**
-         * @param ssid
-         * @param state 0 成功 1失败
-         */
-        override fun readDeviceSsidCallBack(ssid: String?, state: Int) {
-            addPrint("readDeviceSsidCallBack ssid:$ssid state:$state")
-        }
-
-        override fun readDeviceWifiMacCallBack(wifiMac: String) {
-            addPrint("readDeviceWifiMacCallBack wifiMac $wifiMac")
-        }
-
-        /**
-         * 配网状态
-         * 0x00：未配网（设备端恢复出厂或APP解除设备配网后状态）
-         * 0x01：已配网（APP已配网状态）
-         *
-         * @param state
-         */
-        override fun configWifiState(state: Int) {
-            addPrint("configWifiState state:$state")
-        }
-    }
-
     val touristHistoryDataInterface = object : PPHistoryDataInterface() {
 
         override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
@@ -761,6 +728,13 @@ class PeripheralBorreActivity : AppCompatActivity() {
 
         override fun monitorHistoryFail() {
             addPrint("touristHistoryDataFail")
+        }
+
+        /**
+         * 历史数据发生改变,目前只在Torre/Borre/Dorre设备上生效
+         */
+        override fun onHistoryChange() {
+            addPrint("There is new historical data available")
         }
 
     }

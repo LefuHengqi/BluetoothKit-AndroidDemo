@@ -473,13 +473,6 @@ class PeripheralDorreActivity : AppCompatActivity() {
             addPrint("关机")
         }
 
-        /**
-         * 历史数据发生改变,目前只在Torre设备上生效
-         */
-        override fun onHistoryDataChange() {
-            addPrint("有新的历史数据")
-        }
-
     }
 
     fun addPrint(msg: String) {
@@ -732,6 +725,13 @@ class PeripheralDorreActivity : AppCompatActivity() {
 
         override fun monitorHistoryFail() {
             addPrint("touristHistoryDataFail")
+        }
+
+        /**
+         * 历史数据发生改变,目前只在Torre/Borre/Dorre设备上生效
+         */
+        override fun onHistoryChange() {
+            addPrint("There is new historical data available")
         }
 
     }
