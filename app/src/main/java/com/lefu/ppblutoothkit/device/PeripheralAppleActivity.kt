@@ -33,6 +33,7 @@ import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.util.Logger
 import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.peng.ppscale.vo.PPScaleSendState
+import kotlinx.android.synthetic.main.peripheral_apple_layout.wifiConfigLayout
 
 /**
  * 对应的协议: 2.x
@@ -106,6 +107,24 @@ class PeripheralAppleActivity : AppCompatActivity() {
                         addPrint("syncTime send fail")
                     }
                 }
+            })
+        }
+        findViewById<Button>(R.id.getDeviceTime).setOnClickListener {
+            addPrint("getDeviceTime")
+            controller?.getDeviceTime(object : PPBleSendResultCallBack {
+                override fun onResult(sendState: PPScaleSendState?) {
+                    if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                        addPrint("getDeviceTime send success")
+                    } else {
+                        addPrint("getDeviceTime send fail")
+                    }
+                }
+            }, object : PPDeviceInfoInterface() {
+
+                override fun getDeviceTime(time: String?) {
+                    addPrint("deviceTime:$time")
+                }
+
             })
         }
         findViewById<Button>(R.id.readDeviceInfo).setOnClickListener {
@@ -200,7 +219,12 @@ class PeripheralAppleActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        mCurrentHostUrl?.text = "当前域名：${NetUtil.getScaleDomain()}"
+        if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+            wifiConfigLayout?.visibility = View.VISIBLE
+            mCurrentHostUrl?.text = "当前域名：${NetUtil.getScaleDomain()}"
+        } else {
+            wifiConfigLayout?.visibility = View.GONE
+        }
     }
 
     val dataChangeListener = object : PPDataChangeListener {

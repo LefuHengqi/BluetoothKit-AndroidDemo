@@ -145,28 +145,12 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/startConfigWifi"
+                    android:id="@+id/getDeviceTime"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/start_config_net"
+                    android:text="@string/device_time"
                     android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/getWifiInfo"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/get_wifi_info"
-                    android:textAllCaps="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
                 <Button
                     android:id="@+id/setUserInfo"
@@ -176,26 +160,61 @@
                     android:text="@string/set_user_info"
                     android:textAllCaps="false" />
 
-                <Button
-                    android:id="@+id/setNetHost"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="设置域名"
-                    android:textAllCaps="false" />
             </LinearLayout>
-            <TextView
-                android:id="@+id/mCurrentHostUrl"
+
+            <LinearLayout
+                android:id="@+id/wifiConfigLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="当前的域名"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="@dimen/text_sp16"
-                android:layout_marginTop="@dimen/dimens_12dp"
-                android:layout_marginStart="@dimen/dimens_4dp"
-                />
-        </LinearLayout>
+                android:orientation="vertical"
+                android:visibility="gone">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/startConfigWifi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/start_config_net"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/getWifiInfo"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/get_wifi_info"
+                        android:textAllCaps="false" />
+
+
+                    <Button
+                        android:id="@+id/setNetHost"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="设置域名"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mCurrentHostUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimens_4dp"
+                    android:layout_marginTop="@dimen/dimens_12dp"
+                    android:text="当前的域名"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_sp16" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

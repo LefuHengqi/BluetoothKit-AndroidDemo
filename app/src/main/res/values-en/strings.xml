@@ -65,6 +65,7 @@
     <string name="confirm">Confirm</string>
     <string name="connect_device">Connect device</string>
     <string name="sync_time">Synchronization time</string>
+    <string name="device_time">Device Time</string>
     <string name="device_info">Device information</string>
     <string name="change_unit">Switch unit</string>
     <string name="history_data">Historical data</string>

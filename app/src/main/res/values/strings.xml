@@ -80,6 +80,7 @@
     <string name="confirm">确定</string>
     <string name="connect_device">连接设备</string>
     <string name="sync_time">同步时间</string>
+    <string name="device_time">设备时间</string>
     <string name="device_info">设备信息</string>
     <string name="change_unit">切换单位</string>
     <string name="history_data">历史数据</string>

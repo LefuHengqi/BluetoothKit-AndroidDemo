@@ -18,6 +18,7 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppcalculate.PPBodyFatModel
+import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import kotlinx.android.synthetic.main.activity_calculate_8ac.*
 
 /**
@@ -187,6 +188,9 @@ class Calculate8Activitiy : Activity() {
         bodyBaseModel.z20KhzTrunkEnCode = z20KhzTrunkEnCode
 
         val fatModel = PPBodyFatModel(bodyBaseModel)
+
+        val ppDetailModel = PPBodyDetailModel(fatModel)
+        Log.d("liyp_", ppDetailModel.toString())
 
         DataUtil.bodyDataModel = fatModel
         Log.d("liyp_", fatModel.toString())

@@ -86,7 +86,9 @@ class Calculate4DCActivitiy : Activity() {
         bodyBaseModel.unit = PPUnitType.Unit_KG
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
 
-        ppBodyFatModel.bodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
+        val bodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
+
+        Log.d("liyp_", bodyDetailModel.toString())
 
         DataUtil.bodyDataModel = ppBodyFatModel
         Log.d("liyp_", ppBodyFatModel.toString())

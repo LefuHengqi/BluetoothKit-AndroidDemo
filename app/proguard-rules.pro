@@ -113,7 +113,7 @@
 public static java.lang.String TABLENAME;
 }
 
-# ppscale
+#ppscale
 -keep class com.peng.ppscale.vo.** {*;}
 -keep class com.peng.ppscale.util.** {*;}
 -keep class com.peng.ppscale.business.torre.vo.** {*;}
