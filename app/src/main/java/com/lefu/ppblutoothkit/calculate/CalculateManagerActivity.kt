@@ -2,9 +2,11 @@ package com.lefu.ppblutoothkit.calculate
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.R
 
 class CalculateManagerActivity : Activity(), View.OnClickListener {
@@ -18,7 +20,9 @@ class CalculateManagerActivity : Activity(), View.OnClickListener {
         findViewById<Button>(R.id.ac4_2channel).setOnClickListener(this)
         findViewById<Button>(R.id.ac8).setOnClickListener(this)
 
-        setTitle("Caculate")
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.title = "Calculate"
+        toolbar?.setTitleTextColor(Color.WHITE)
     }
 
     override fun onClick(v: View?) {

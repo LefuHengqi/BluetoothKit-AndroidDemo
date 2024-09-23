@@ -156,4 +156,6 @@
     <string name="query_domain_name">Query domain name</string>
     <string name="current_domain_name">Current domain name</string>
     <string name="delete_wifi_config">Delete WiFi configuration</string>
+    <string name="calculation_results">Calculation results</string>
+
 </resources>

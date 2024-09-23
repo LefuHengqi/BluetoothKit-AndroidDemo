@@ -2,6 +2,7 @@ package com.lefu.ppblutoothkit.calculate
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
@@ -34,6 +36,11 @@ class Calculate8Activitiy : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculate_8ac)
+
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.title = getString(R.string._8ac)
+        toolbar?.setTitleTextColor(Color.WHITE)
+
         findViewById<Button>(R.id.calculateBtn).setOnClickListener {
             startCalculate()
         }

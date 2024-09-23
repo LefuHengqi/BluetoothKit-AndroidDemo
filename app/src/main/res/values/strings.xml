@@ -170,5 +170,9 @@
     <string name="query_domain_name">查询域名</string>
     <string name="current_domain_name">当前的域名</string>
     <string name="delete_wifi_config">删除Wifi配置</string>
+    <string name="calculation_results">计算结果</string>
+    <string name="copy">复制</string>
+    <string name="body_data_status">身体数据状态</string>
+    <string name="copied_to_clipboard">已复制到剪贴版</string>
 
 </resources>

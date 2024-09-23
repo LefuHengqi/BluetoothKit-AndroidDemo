@@ -28,7 +28,7 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
         initToolbar()
         initDeviceConfig()
         findViewById<Button>(R.id.searchDevice).setOnClickListener(this)
-        findViewById<Button>(R.id.caculateBodyFat).setOnClickListener(this)
+        findViewById<Button>(R.id.calculateBodyFat).setOnClickListener(this)
 
         requestLocationPermission()
 
@@ -77,7 +77,7 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
                 }
             }
 
-            R.id.caculateBodyFat -> {
+            R.id.calculateBodyFat -> {
                 startActivity(Intent(this@MainActivity, CalculateManagerActivity::class.java))
             }
         }

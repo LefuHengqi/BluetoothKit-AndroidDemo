@@ -2,9 +2,11 @@ package com.lefu.ppblutoothkit.calculate
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
@@ -38,6 +40,10 @@ class Calculate4ACActivitiy : Activity() {
         findViewById<Button>(R.id.calculateBtn).setOnClickListener {
             startCalculate()
         }
+
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.title = getString(R.string._4ac)
+        toolbar?.setTitleTextColor(Color.WHITE)
 
         initData()
     }
@@ -76,7 +82,7 @@ class Calculate4ACActivitiy : Activity() {
             .build()
 
         val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.deviceCalcuteType = calcuteType  ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0
+        deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0
         deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
             PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
         } else {
