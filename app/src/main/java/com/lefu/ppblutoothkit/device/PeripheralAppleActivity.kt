@@ -214,6 +214,11 @@ class PeripheralAppleActivity : AppCompatActivity() {
             addPrint("setNetHost")
             startActivity(Intent(this, SetHostActivity::class.java))
         }
+        findViewById<Button>(R.id.getDeviceDomain).setOnClickListener {
+            addPrint("getDeviceDomain")
+            //专订功能不是所有的Wifi秤都支持
+            controller?.getDeviceDomain(configWifiInfoInterface)
+        }
 
     }
 
@@ -321,6 +326,10 @@ class PeripheralAppleActivity : AppCompatActivity() {
 
         override fun monitorModifyServerDomainSuccess() {
             addPrint("ModifyServerDNSSuccess")
+        }
+
+        override fun getDeviceDomainSuccess(domain: String?) {
+            addPrint("getDeviceDomainSuccess domain:$domain")
         }
 
         override fun monitorConfigFail(stateMenu: PPConfigWifiAppleStateMenu?) {

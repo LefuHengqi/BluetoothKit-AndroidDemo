@@ -166,5 +166,8 @@
     <string name="can_be_connected">可连接</string>
     <string name="read_language">读取语言</string>
     <string name="search_device">搜索设备</string>
+    <string name="set_domain_name">设置域名</string>
+    <string name="query_domain_name">查询域名</string>
+    <string name="current_domain_name">当前的域名</string>
 
 </resources>

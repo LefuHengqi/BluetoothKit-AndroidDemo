@@ -152,4 +152,8 @@
     <string name="can_be_connected">Can Be Connected</string>
     <string name="read_language">Read Language</string>
     <string name="search_device">Search for devices</string>
+    <string name="set_domain_name">Set Domain Name</string>
+    <string name="query_domain_name">Query domain name</string>
+    <string name="current_domain_name">Current domain name</string>
+
 </resources>
