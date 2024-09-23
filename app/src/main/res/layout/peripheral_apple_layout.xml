@@ -200,7 +200,6 @@
                         android:text="@string/get_wifi_info"
                         android:textAllCaps="false" />
 
-
                 </LinearLayout>
 
 
@@ -218,19 +217,20 @@
                         android:textAllCaps="false" />
 
                     <Button
+                        android:id="@+id/deleteWifiConfig"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAllCaps="false"
-                        android:visibility="invisible" />
+                        android:text="@string/delete_wifi_config" />
 
                     <Button
+                        android:id="@+id/device_set_reset"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:textAllCaps="false"
-                        android:visibility="invisible" />
+                        android:text="@string/reset"
+                        android:textAllCaps="false" />
 
                 </LinearLayout>
 

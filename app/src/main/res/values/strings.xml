@@ -169,5 +169,6 @@
     <string name="set_domain_name">设置域名</string>
     <string name="query_domain_name">查询域名</string>
     <string name="current_domain_name">当前的域名</string>
+    <string name="delete_wifi_config">删除Wifi配置</string>
 
 </resources>

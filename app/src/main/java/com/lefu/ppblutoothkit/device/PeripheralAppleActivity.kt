@@ -219,6 +219,33 @@ class PeripheralAppleActivity : AppCompatActivity() {
             //专订功能不是所有的Wifi秤都支持
             controller?.getDeviceDomain(configWifiInfoInterface)
         }
+        findViewById<Button>(R.id.deleteWifiConfig).setOnClickListener {
+            addPrint("deleteWifiConfig")
+            //专订功能不是所有的Wifi秤都支持
+            controller?.sendDeleteWifiConfig(configWifiInfoInterface)
+        }
+
+        findViewById<Button>(R.id.device_set_reset).setOnClickListener {
+            addPrint("device reset")
+            //恢复默认值(工厂的SSID：null和Password：null)，同时清除所有的历史数据，秤端时间恢复成出厂默认时间。等同于一台新秤。
+            controller?.sendResetDevice(object : PPDeviceSetInfoInterface {
+                override fun monitorResetStateSuccess() {
+                    addPrint("monitorResetStateSuccess")
+                }
+
+                override fun monitorResetStateFail() {
+                    addPrint("monitorResetStateFail")
+                }
+            }, object : PPBleSendResultCallBack {
+                override fun onResult(sendState: PPScaleSendState?) {
+                    if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                        addPrint("send rest cmd success")
+                    } else {
+                        addPrint("send rest cmd fail")
+                    }
+                }
+            })
+        }
 
     }
 
