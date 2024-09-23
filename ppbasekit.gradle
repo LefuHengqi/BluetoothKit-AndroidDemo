@@ -66,7 +66,7 @@ apply plugin: 'maven'
 
 uploadArchives {
     repositories.mavenDeployer {
-        String deployPath = getProjectDir().absolutePath + "/../../maven/ppbasekit/"
+        String deployPath = getProjectDir().absolutePath + "/../../maven/"
         repository(url: "file://${deployPath}")
         pom.groupId = GROUP_ID
         pom.artifactId = ARTIFACT_ID
