@@ -169,13 +169,26 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("startConfigWifi pager")
             if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
                 controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
-                    override fun readDevicePower(power: Int) {
-                        addPrint("power:%$power")
-                        if (power > 20) {
-                            PeripheralTorreSearchWifiListActivity.deviceModel = deviceModel
-                            startActivity(Intent(this@PeripheralIceActivity, PeripheralTorreSearchWifiListActivity::class.java))
-                        } else {
-                            addPrint("Low battery, please charge first")
+
+                    /**
+                     * 设备电量返回/Device power return
+                     *
+                     * @param power -1失败，0-100  /  -1 for failure, 0-100
+                     * @param state -1不支持 0正常 1充电中  /  -1 Not supported 0 Normal 1 Charging
+                     */
+                    override fun readDevicePower(power: Int, state: Int) {
+                        if (state == -1) {
+                            addPrint("The device does not support reading battery level")
+                        } else if (state == 0) {
+                            addPrint("readDevicePower power:$power")
+                            if (power > 20) {
+                                PeripheralTorreSearchWifiListActivity.deviceModel = deviceModel
+                                startActivity(Intent(this@PeripheralIceActivity, PeripheralTorreSearchWifiListActivity::class.java))
+                            } else {
+                                addPrint("Low battery, please charge first")
+                            }
+                        } else if (state == 1) {
+                            addPrint("The device is charging")
                         }
                     }
                 })
@@ -199,8 +212,20 @@ class PeripheralIceActivity : AppCompatActivity() {
         findViewById<Button>(R.id.readDeviceBattery).setOnClickListener {
             addPrint("readDeviceBattery")
             controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
-                override fun readDevicePower(power: Int) {
-                    addPrint("power:$power")
+                /**
+                 * 设备电量返回/Device power return
+                 *
+                 * @param power -1失败，0-100  /  -1 for failure, 0-100
+                 * @param state -1不支持 0正常 1充电中  /  -1 Not supported 0 Normal 1 Charging
+                 */
+                override fun readDevicePower(power: Int, state: Int) {
+                    if (state == -1) {
+                        addPrint("The device does not support reading battery level")
+                    } else if (state == 0) {
+                        addPrint("readDevicePower power:$power")
+                    } else if (state == 1) {
+                        addPrint("The device is charging")
+                    }
                 }
             })
         }
@@ -226,27 +251,40 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("Query distribution network status")
             //电量低于20%时提醒用户
             controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
-                override fun readDevicePower(power: Int) {
-                    Logger.d("设备电量检测结果打印，如果低于20%拦截并提示用户充电  power：$power")
-                    if (power < 20) {
-                        addPrint("设备电量低")
-                    } else {
-                        controller?.startUserOTA(object : OnOTAStateListener() {
-                            override fun onStartUpdate() {
-                                addPrint("onStartUpdate")
-                            }
 
-                            /**
-                             * @param state 0普通的失败 1设备已在升级中不能再次启动升级 2设备低电量无法启动升级 3未配网 4 充电中
-                             */
-                            override fun onUpdateFail(state: Int) {
-                                addPrint("onUpdateFail")
-                            }
+                /**
+                 * 设备电量返回/Device power return
+                 *
+                 * @param power -1失败，0-100  /  -1 for failure, 0-100
+                 * @param state -1不支持 0正常 1充电中  /  -1 Not supported 0 Normal 1 Charging
+                 */
+                override fun readDevicePower(power: Int, state: Int) {
+                    if (state == -1) {
+                        addPrint("The device does not support reading battery level")
+                    } else if (state == 0) {
+                        Logger.d("设备电量检测结果打印，如果低于20%拦截并提示用户充电  power：$power")
+                        if (power < 20) {
+                            addPrint("设备电量低")
+                        } else {
+                            controller?.startUserOTA(object : OnOTAStateListener() {
+                                override fun onStartUpdate() {
+                                    addPrint("onStartUpdate")
+                                }
 
-                            override fun onUpdateSucess() {
-                                addPrint("onUpdateSucess")
-                            }
-                        })
+                                /**
+                                 * @param state 0普通的失败 1设备已在升级中不能再次启动升级 2设备低电量无法启动升级 3未配网 4 充电中
+                                 */
+                                override fun onUpdateFail(state: Int) {
+                                    addPrint("onUpdateFail")
+                                }
+
+                                override fun onUpdateSucess() {
+                                    addPrint("onUpdateSucess")
+                                }
+                            })
+                        }
+                    } else if (state == 1) {
+                        addPrint("The device is charging")
                     }
                 }
             })
@@ -255,29 +293,44 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("Query distribution network status")
             //电量低于20%时提醒用户
             controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
-                override fun readDevicePower(power: Int) {
-                    Logger.d("设备电量检测结果打印，如果低于20%拦截并提示用户充电  power：$power")
-                    if (power < 20) {
-                        addPrint("设备电量低")
-                    } else {
-                        controller?.startLocalOTA(object : OnOTAStateListener() {
-                            override fun onStartUpdate() {
-                                addPrint("onStartUpdate")
-                            }
 
-                            /**
-                             * @param state 0普通的失败 1设备已在升级中不能再次启动升级 2设备低电量无法启动升级 3未配网 4 充电中
-                             */
-                            override fun onUpdateFail(state: Int) {
-                                addPrint("onUpdateFail")
-                            }
 
-                            override fun onUpdateSucess() {
-                                addPrint("onUpdateSucess")
-                            }
-                        })
+                /**
+                 * 设备电量返回/Device power return
+                 *
+                 * @param power -1失败，0-100  /  -1 for failure, 0-100
+                 * @param state -1不支持 0正常 1充电中  /  -1 Not supported 0 Normal 1 Charging
+                 */
+                override fun readDevicePower(power: Int, state : Int) {
+                    if (state == -1) {
+                        addPrint("The device does not support reading battery level")
+                    } else if (state == 0) {
+                        Logger.d("设备电量检测结果打印，如果低于20%拦截并提示用户充电  power：$power")
+                        if (power < 20) {
+                            addPrint("设备电量低")
+                        } else {
+                            controller?.startLocalOTA(object : OnOTAStateListener() {
+                                override fun onStartUpdate() {
+                                    addPrint("onStartUpdate")
+                                }
+
+                                /**
+                                 * @param state 0普通的失败 1设备已在升级中不能再次启动升级 2设备低电量无法启动升级 3未配网 4 充电中
+                                 */
+                                override fun onUpdateFail(state: Int) {
+                                    addPrint("onUpdateFail")
+                                }
+
+                                override fun onUpdateSucess() {
+                                    addPrint("onUpdateSucess")
+                                }
+                            })
+                        }
+                    } else if (state == 1) {
+                        addPrint("The device is charging")
                     }
                 }
+
             })
         }
 //        val device_ota_layout = findViewById<LinearLayout>(R.id.device_ota_layout)

@@ -162,15 +162,15 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.6.0'
     implementation 'com.alibaba:fastjson:1.2.76'
 
-    //基础模块，必须
-    api 'com.lefu.ppbasekit:ppbasekit:4.0.3.4'
-    //蓝牙协议模块，集成设备和解析体重信息
-    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.3.4'
-    //体脂计算库，根据需要引入
-    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.3.4'
+//    //基础模块，必须/Basic module, must
+//    api 'com.lefu.ppbasekit:ppbasekit:4.0.3.5'
+//    //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
+//    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.3.5'
+//    //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
+//    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.3.5'
 
-//    api(project(":ppsdkkit:ppbasekit"))
-//    api(project(":ppsdkkit:ppbluetoothkit"))
-//    api(project(":ppsdkkit:ppcalculatekit"))
+    api(project(":ppsdkkit:ppbasekit"))
+    api(project(":ppsdkkit:ppbluetoothkit"))
+    api(project(":ppsdkkit:ppcalculatekit"))
 
 }
