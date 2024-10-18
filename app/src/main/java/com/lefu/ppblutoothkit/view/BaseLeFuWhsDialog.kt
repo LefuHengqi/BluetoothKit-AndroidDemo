@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.res.Configuration
 import android.graphics.Point
 import android.os.Bundle
+import android.os.Parcel
 import android.os.Parcelable
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -17,7 +18,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.lefu.ppblutoothkit.R
 
-import kotlinx.android.parcel.Parcelize
 
 /**
  *    author : whs
@@ -317,7 +317,7 @@ abstract class BaseLeFuWhsDialog<T : BaseLeFuWhsDialog<T>> : DialogFragment() {
     abstract class UnParcelableParams(var fragmentManager: FragmentManager? = null,
                                       var view: View? = null)
 
-    @Parcelize
+
     class BaseDialogParams(
         @LayoutRes var layoutRes: Int = 0,
         var widthScale: Float = 0f,
@@ -330,11 +330,62 @@ abstract class BaseLeFuWhsDialog<T : BaseLeFuWhsDialog<T>> : DialogFragment() {
         var verticalMargin: Float = 0f,
 
         var gravity: Int = Gravity.CENTER,
-        var tag: String = "LeFuDialog",
+        var tag: String? = "LeFuDialog",
         var cancelable: Boolean = true,
         var cancelableOutside: Boolean = true,
         var backgroundDrawableRes: Int = R.drawable.def_dialog_bg,
         var animStyle: Int = 0,
         var needKeyboardViewId: Int = 0
-    ) : UnParcelableParams(), Parcelable
+    ) : UnParcelableParams(), Parcelable {
+        constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readFloat(),
+            parcel.readFloat(),
+            parcel.readFloat(),
+            parcel.readFloat(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readFloat(),
+            parcel.readInt(),
+            parcel.readString(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readInt()
+        ) {
+        }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeInt(layoutRes)
+            parcel.writeFloat(widthScale)
+            parcel.writeFloat(widthDp)
+            parcel.writeFloat(heightScale)
+            parcel.writeFloat(heightDp)
+            parcel.writeByte(if (keepWidthScale) 1 else 0)
+            parcel.writeByte(if (keepHeightScale) 1 else 0)
+            parcel.writeFloat(verticalMargin)
+            parcel.writeInt(gravity)
+            parcel.writeString(tag)
+            parcel.writeByte(if (cancelable) 1 else 0)
+            parcel.writeByte(if (cancelableOutside) 1 else 0)
+            parcel.writeInt(backgroundDrawableRes)
+            parcel.writeInt(animStyle)
+            parcel.writeInt(needKeyboardViewId)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<BaseDialogParams> {
+            override fun createFromParcel(parcel: Parcel): BaseDialogParams {
+                return BaseDialogParams(parcel)
+            }
+
+            override fun newArray(size: Int): Array<BaseDialogParams?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 }

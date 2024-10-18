@@ -1,7 +1,6 @@
 package com.lefu.ppblutoothkit.util.log
 
 import android.content.Context
-import com.lefu.ppblutoothkit.BuildConfig
 import com.lefu.ppblutoothkit.util.LogUtils
 import java.io.File
 import java.io.FileInputStream
@@ -73,7 +72,8 @@ object LFLogFileUtils {
         }
 
         //日志文件
-        return File(path, "Android_${BuildConfig.VERSION_NAME}_${curDate}.txt")
+//        return File(path, "Android_${BuildConfig.VERSION_NAME}_${curDate}.txt")
+        return File(path, "Android_111_${curDate}.txt")
 
     }
 

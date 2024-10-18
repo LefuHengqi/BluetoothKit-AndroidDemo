@@ -5,11 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lefu.ppblutoothkit.BuildConfig
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.PeripheralAppleActivity
 import com.lefu.ppblutoothkit.device.PeripheralBananaActivity
@@ -34,14 +34,14 @@ import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppblutoothkit.device.PeripheralBorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralDorreActivity
-import kotlinx.android.synthetic.main.activity_device_list.startFilterName
-import kotlinx.android.synthetic.main.activity_device_list.startRefresh
 
 class ScanDeviceListActivity : Activity() {
     var ppScale: PPSearchManager? = null
     var isOnResume = false //页面可见时再重新发起扫描
     private var adapter: DeviceListAdapter? = null
     private var tv_starts: TextView? = null
+    private var startFilterName: ImageView? = null
+    private var startRefresh: ImageView? = null
 
     companion object {
         var inputName = ""
@@ -53,6 +53,8 @@ class ScanDeviceListActivity : Activity() {
         setContentView(R.layout.activity_device_list)
         initView()
         tv_starts = findViewById(R.id.tv_starts)
+        startFilterName = findViewById(R.id.startFilterName)
+        startRefresh = findViewById(R.id.startRefresh)
         tv_starts?.setOnClickListener(View.OnClickListener { reStartScan() })
         adapter = DeviceListAdapter()
         val deviceListRecyclerView = findViewById<RecyclerView>(R.id.deviceListRecyclerView)
@@ -68,7 +70,7 @@ class ScanDeviceListActivity : Activity() {
 
     private fun initView() {
         val toolbar: TextView? = findViewById(R.id.titleTv)
-        toolbar?.text = "${getString(R.string.app_name)}V${BuildConfig.VERSION_NAME}"
+//        toolbar?.text = "${getString(R.string.app_name)}V${BuildConfig.VERSION_NAME}"
 
         startRefresh?.setOnClickListener(View.OnClickListener { reStartScan() })
 

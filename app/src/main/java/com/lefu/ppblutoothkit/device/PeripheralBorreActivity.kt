@@ -51,7 +51,6 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralBorreController
-import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -63,6 +62,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
 
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
+    private var mTestStateTv: TextView? = null
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
@@ -90,6 +90,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
         userModel?.userName = "AB"
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
+        mTestStateTv = findViewById<TextView>(R.id.mTestStateTv)
         logTxt = findViewById<TextView>(R.id.logTxt)
         whetherFullyDFUToggleBtn = findViewById<ToggleButton>(R.id.whetherFullyDFUToggleBtn)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)

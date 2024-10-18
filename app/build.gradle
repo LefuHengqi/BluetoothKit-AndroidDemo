@@ -1,7 +1,8 @@
-apply plugin: 'com.android.application'
-apply plugin: 'org.greenrobot.greendao'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'org.greenrobot.greendao'
+}
 
 static def releaseTime() {
     def utcDate = new Date()
@@ -11,10 +12,13 @@ static def releaseTime() {
 }
 
 android {
-    compileSdkVersion 33
+    namespace "com.lefu.ppblutoothkit"
+    compileSdk 34
+
     defaultConfig {
         applicationId "com.lefu.ppblutoothkit"
-        minSdkVersion 21
+        minSdk 21
+        targetSdk 34
         versionCode LIB_VERSION_CODE as int
         versionName LIB_VERSION
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -30,47 +34,18 @@ android {
         exclude 'META-INF/ppcalculatekit_debug.kotlin_module'
         exclude 'META-INF/ppbluetoothkit_debug.kotlin_module'
         exclude 'AndroidManifest.xml'
-
-        //以下代码是Demo需要使用的，在你们的项目中不需要使用
-        //直流秤
-        pickFirst 'lib/armeabi-v7a/libsl.so'
-        pickFirst 'lib/arm64-v8a/libsl.so'
-        pickFirst 'lib/x86_64/libsl.so'
-        pickFirst 'lib/x86/libsl.so'
-        //交流秤
-        pickFirst 'lib/armeabi-v7a/libbhBodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbhBodyComposition.so'
-        pickFirst 'lib/x86_64/libbhBodyComposition.so'
-        pickFirst 'lib/x86/libbhBodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh1BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh1BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh1BodyComposition.so'
-        pickFirst 'lib/x86/libbh1BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh2BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh2BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh2BodyComposition.so'
-        pickFirst 'lib/x86/libbh2BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh3BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh3BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh3BodyComposition.so'
-        pickFirst 'lib/x86/libbh3BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh4BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh4BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh4BodyComposition.so'
-        pickFirst 'lib/x86/libbh4BodyComposition.so'
-
     }
     /******************************以上Demo配置项，你的项目中无需引入*************************************/
 
     buildTypes {
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -97,6 +72,15 @@ android {
             // We're gonna use the same APK for all languages.
             enableSplit true
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17 // 或者使用 VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_17 // 或者使用 VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "17" // 或者 "1.8"
     }
 
     android.applicationVariants.all { variant ->
@@ -142,20 +126,20 @@ android {
 dependencies {
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'com.google.android.material:material:1.12.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
     implementation project(':data_db')
 
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
 
     implementation files('libs\\iopp-1.0.3.jar')
     implementation files('libs\\okhttputils-2_6_2.jar')
@@ -163,14 +147,14 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.76'
 
     //基础模块，必须/Basic module, must
-//    api 'com.lefu.ppbasekit:ppbasekit:4.0.4.1'
-//    //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
-//    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.4.1'
-//    //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
-//    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.4.1'
+    api 'com.lefu.ppbasekit:ppbasekit:4.0.4.2'
+    //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
+    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.4.2'
+    //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
+    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.4.2'
 
-    api(project(":ppsdkkit:ppbasekit"))
-    api(project(":ppsdkkit:ppbluetoothkit"))
-    api(project(":ppsdkkit:ppcalculatekit"))
+//    api(project(":ppsdkkit:ppbasekit"))
+//    api(project(":ppsdkkit:ppbluetoothkit"))
+//    api(project(":ppsdkkit:ppcalculatekit"))
 
 }

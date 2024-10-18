@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +34,6 @@ import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.util.Logger
 import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.peng.ppscale.vo.PPScaleSendState
-import kotlinx.android.synthetic.main.peripheral_apple_layout.wifiConfigLayout
 
 /**
  * 对应的协议: 2.x
@@ -46,10 +46,15 @@ class PeripheralAppleActivity : AppCompatActivity() {
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
+
+
+    private var wifiConfigLayout: LinearLayout? = null
+
     private val mCurrentHostUrl by lazy {
         findViewById<TextView>(R.id.mCurrentHostUrl)
     }
-    var controller: PPBlutoothPeripheralAppleController? = PPBlutoothPeripheralAppleInstance.instance.controller
+    var controller: PPBlutoothPeripheralAppleController? =
+        PPBlutoothPeripheralAppleInstance.instance.controller
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -60,6 +65,7 @@ class PeripheralAppleActivity : AppCompatActivity() {
         setContentView(R.layout.peripheral_apple_layout)
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
+        wifiConfigLayout = findViewById<LinearLayout>(R.id.wifiConfigLayout)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
@@ -155,7 +161,10 @@ class PeripheralAppleActivity : AppCompatActivity() {
             addPrint("syncUserHistoryData")
             if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType)) {
                 controller?.getHistoryData(object : PPHistoryDataInterface() {
-                    override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
+                    override fun monitorHistoryData(
+                        bodyBaseModel: PPBodyBaseModel?,
+                        dateTime: String?
+                    ) {
                         addPrint("monitorHistoryData weight: ${bodyBaseModel?.weight}" + " dateTime:$dateTime")
                     }
 
@@ -267,8 +276,15 @@ class PeripheralAppleActivity : AppCompatActivity() {
          * @param bodyBaseModel
          * @param deviceModel
          */
-        override fun monitorProcessData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-            val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
+        override fun monitorProcessData(
+            bodyBaseModel: PPBodyBaseModel?,
+            deviceModel: PPDeviceModel?
+        ) {
+            val weightStr = PPUtil.getWeightValueD(
+                bodyBaseModel?.unit,
+                bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0,
+                deviceModel!!.deviceAccuracyType.getType()
+            )
             weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             weightMeasureState?.text = ""
         }
@@ -283,7 +299,11 @@ class PeripheralAppleActivity : AppCompatActivity() {
          * @param bodyBaseModel
          */
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-            val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
+            val weightStr = PPUtil.getWeightValueD(
+                bodyBaseModel?.unit,
+                bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0,
+                deviceModel!!.deviceAccuracyType.getType()
+            )
             weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             if (bodyBaseModel?.isHeartRating ?: false) {
                 //心率测量中
@@ -305,18 +325,27 @@ class PeripheralAppleActivity : AppCompatActivity() {
                         DataUtil.bodyBaseModel = bodyBaseModel
                         if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect) {
                             //4电极直流算法  24项数据
-                            val intent = Intent(this@PeripheralAppleActivity, Calculate4DCActivitiy::class.java)
+                            val intent = Intent(
+                                this@PeripheralAppleActivity,
+                                Calculate4DCActivitiy::class.java
+                            )
                             intent.putExtra("bodyDataModel", "bodyDataModel")
                             startActivity(intent)
                         } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1) {
                             Logger.i("PeripheralAppleActivity 四电极 双频 impedance1:${DataUtil.bodyBaseModel?.impedance} impedance100EnCode:${DataUtil.bodyBaseModel?.ppImpedance100EnCode}")
                             //4电极交流算法  24项数据
-                            val intent = Intent(this@PeripheralAppleActivity, Calculate4AC2ChannelActivitiy::class.java)
+                            val intent = Intent(
+                                this@PeripheralAppleActivity,
+                                Calculate4AC2ChannelActivitiy::class.java
+                            )
                             intent.putExtra("bodyDataModel", "bodyDataModel")
                             startActivity(intent)
                         } else {
                             //4电极交流算法  24项数据
-                            val intent = Intent(this@PeripheralAppleActivity, Calculate4ACActivitiy::class.java)
+                            val intent = Intent(
+                                this@PeripheralAppleActivity,
+                                Calculate4ACActivitiy::class.java
+                            )
                             intent.putExtra("bodyDataModel", "bodyDataModel")
                             startActivity(intent)
                         }
@@ -400,7 +429,10 @@ class PeripheralAppleActivity : AppCompatActivity() {
     }
 
     val bleStateInterface = object : PPBleStateInterface() {
-        override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState?, deviceModel: PPDeviceModel?) {
+        override fun monitorBluetoothWorkState(
+            ppBleWorkState: PPBleWorkState?,
+            deviceModel: PPDeviceModel?
+        ) {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 device_set_connect_state?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
@@ -435,10 +467,18 @@ class PeripheralAppleActivity : AppCompatActivity() {
         override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState?) {
             if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
                 addPrint(getString(R.string.system_bluetooth_disconnect))
-                Toast.makeText(this@PeripheralAppleActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@PeripheralAppleActivity,
+                    getString(R.string.system_bluetooth_disconnect),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
                 addPrint(getString(R.string.system_blutooth_on))
-                Toast.makeText(this@PeripheralAppleActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@PeripheralAppleActivity,
+                    getString(R.string.system_blutooth_on),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

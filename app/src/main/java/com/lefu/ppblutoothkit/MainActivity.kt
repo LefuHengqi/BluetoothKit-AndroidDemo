@@ -36,7 +36,7 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
 
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
-        toolbar?.title = "${getString(R.string.app_name)}V${BuildConfig.VERSION_NAME}"
+//        toolbar?.title = "${getString(R.string.app_name)}V${BuildConfig.VERSION_NAME}"
         toolbar?.setTitleTextColor(Color.WHITE)
         toolbar?.inflateMenu(R.menu.main_toolbar_menu)
         toolbar?.setOnMenuItemClickListener {
@@ -89,19 +89,19 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
      *
      */
     private fun initDeviceConfig() {
-        val map: MutableMap<String, String> = HashMap()
-        DataTask.get(NetUtil.GET_SCALE_CONFIG + PPApplication.appKey, map, object : RetCallBack<DemoDeviceConfigVo>(DemoDeviceConfigVo::class.java) {
-            override fun onError(call: Call, e: Exception, id: Int) {}
-            override fun onResponse(configVo: DemoDeviceConfigVo?, p1: Int) {
-
-                configVo?.let {
-                    if (configVo.code == 200 && configVo.msg.isNullOrEmpty().not()) {
-                        configVo.msg?.let { it1 -> PPBluetoothKit.setNetConfig(this@MainActivity, PPApplication.appKey, PPApplication.appSecret, it1) }
-                    }
-                }
-
-            }
-        })
+//        val map: MutableMap<String, String> = HashMap()
+//        DataTask.get(NetUtil.GET_SCALE_CONFIG + PPApplication.appKey, map, object : RetCallBack<DemoDeviceConfigVo>(DemoDeviceConfigVo::class.java) {
+//            override fun onError(call: Call, e: Exception, id: Int) {}
+//            override fun onResponse(configVo: DemoDeviceConfigVo?, p1: Int) {
+//
+//                configVo?.let {
+//                    if (configVo.code == 200 && configVo.msg.isNullOrEmpty().not()) {
+//                        configVo.msg?.let { it1 -> PPBluetoothKit.setNetConfig(this@MainActivity, PPApplication.appKey, PPApplication.appSecret, it1) }
+//                    }
+//                }
+//
+//            }
+//        })
 
     }
 

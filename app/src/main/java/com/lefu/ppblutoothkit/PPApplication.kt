@@ -63,7 +63,7 @@ class PPApplication : Application() {
          * PPBluetoothKit 蓝牙库初始化 所需参数需要自行到开放平台自行申请，请勿直接使用Demo中的参数，
          * Demo中的参数仅供Demo使用
          * @param appKey App的标识
-         * @param appSecret Appp的密钥
+         * @param appSecret App的密钥
          * @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK
          */
         PPBluetoothKit.initSdk(this, appKey, appSecret, "lefu.config")

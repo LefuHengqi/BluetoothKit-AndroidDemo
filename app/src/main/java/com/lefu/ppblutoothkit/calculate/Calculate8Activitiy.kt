@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
@@ -21,7 +22,6 @@ import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
-import kotlinx.android.synthetic.main.activity_calculate_8ac.*
 
 /**
  * 8电极计算库
@@ -32,6 +32,21 @@ class Calculate8Activitiy : Activity() {
     var spinner: Spinner? = null
 
     var deviceName: String = ""
+
+    var etSex: EditText? = null
+    var etHeight: EditText? = null
+    var etAge: EditText? = null
+    var etWeight: EditText? = null
+    var z100KhzLeftArmEnCode: EditText? = null
+    var z100KhzLeftLegEnCode: EditText? = null
+    var z100KhzRightArmEnCode: EditText? = null
+    var z100KhzRightLegEnCode: EditText? = null
+    var z100KhzTrunkEnCode: EditText? = null
+    var z20KhzLeftArmEnCode: EditText? = null
+    var z20KhzLeftLegEnCode: EditText? = null
+    var z20KhzRightArmEnCode: EditText? = null
+    var z20KhzRightLegEnCode: EditText? = null
+    var z20KhzTrunkEnCode: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,25 +95,39 @@ class Calculate8Activitiy : Activity() {
     }
 
     private fun initData() {
+        etSex = findViewById(R.id.etSex)
+        etHeight = findViewById(R.id.etHeight)
+        etAge = findViewById(R.id.etAge)
+        etWeight = findViewById(R.id.etWeight)
+        z100KhzLeftArmEnCode = findViewById(R.id.z100KhzLeftArmEnCode)
+        z100KhzLeftLegEnCode = findViewById(R.id.z100KhzLeftLegEnCode)
+        z100KhzRightArmEnCode = findViewById(R.id.z100KhzRightArmEnCode)
+        z100KhzRightLegEnCode = findViewById(R.id.z100KhzRightLegEnCode)
+        z100KhzTrunkEnCode = findViewById(R.id.z100KhzTrunkEnCode)
+        z20KhzLeftArmEnCode = findViewById(R.id.z20KhzLeftArmEnCode)
+        z20KhzLeftLegEnCode = findViewById(R.id.z20KhzLeftLegEnCode)
+        z20KhzRightArmEnCode = findViewById(R.id.z20KhzRightArmEnCode)
+        z20KhzRightLegEnCode = findViewById(R.id.z20KhzRightLegEnCode)
+        z20KhzTrunkEnCode = findViewById(R.id.z20KhzTrunkEnCode)
         val tag = intent.getStringExtra("bodyDataModel")
         if (tag != null) {
             //显示称重完成后的数据
             val bodyBaseModel = DataUtil.bodyBaseModel
             deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
-            etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
-            etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
-            etAge.setText(bodyBaseModel?.userModel?.age.toString())
-            etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
-            z100KhzLeftArmEnCode.setText(bodyBaseModel?.z100KhzLeftArmEnCode.toString())
-            z100KhzLeftLegEnCode.setText(bodyBaseModel?.z100KhzLeftLegEnCode.toString())
-            z100KhzRightArmEnCode.setText(bodyBaseModel?.z100KhzRightArmEnCode.toString())
-            z100KhzRightLegEnCode.setText(bodyBaseModel?.z100KhzRightLegEnCode.toString())
-            z100KhzTrunkEnCode.setText(bodyBaseModel?.z100KhzTrunkEnCode.toString())
-            z20KhzLeftArmEnCode.setText(bodyBaseModel?.z20KhzLeftArmEnCode.toString())
-            z20KhzLeftLegEnCode.setText(bodyBaseModel?.z20KhzLeftLegEnCode.toString())
-            z20KhzRightArmEnCode.setText(bodyBaseModel?.z20KhzRightArmEnCode.toString())
-            z20KhzRightLegEnCode.setText(bodyBaseModel?.z20KhzRightLegEnCode.toString())
-            z20KhzTrunkEnCode.setText(bodyBaseModel?.z20KhzTrunkEnCode.toString())
+            etSex?.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
+            etHeight?.setText(bodyBaseModel?.userModel?.userHeight.toString())
+            etAge?.setText(bodyBaseModel?.userModel?.age.toString())
+            etWeight?.setText(bodyBaseModel?.getPpWeightKg().toString())
+            z100KhzLeftArmEnCode?.setText(bodyBaseModel?.z100KhzLeftArmEnCode.toString())
+            z100KhzLeftLegEnCode?.setText(bodyBaseModel?.z100KhzLeftLegEnCode.toString())
+            z100KhzRightArmEnCode?.setText(bodyBaseModel?.z100KhzRightArmEnCode.toString())
+            z100KhzRightLegEnCode?.setText(bodyBaseModel?.z100KhzRightLegEnCode.toString())
+            z100KhzTrunkEnCode?.setText(bodyBaseModel?.z100KhzTrunkEnCode.toString())
+            z20KhzLeftArmEnCode?.setText(bodyBaseModel?.z20KhzLeftArmEnCode.toString())
+            z20KhzLeftLegEnCode?.setText(bodyBaseModel?.z20KhzLeftLegEnCode.toString())
+            z20KhzRightArmEnCode?.setText(bodyBaseModel?.z20KhzRightArmEnCode.toString())
+            z20KhzRightLegEnCode?.setText(bodyBaseModel?.z20KhzRightLegEnCode.toString())
+            z20KhzTrunkEnCode?.setText(bodyBaseModel?.z20KhzTrunkEnCode.toString())
 
             calcuteType = bodyBaseModel?.deviceModel?.deviceCalcuteType
             if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8) {
@@ -124,25 +153,25 @@ class Calculate8Activitiy : Activity() {
     }
 
     private fun startCalculate() {
-        val sex = if (etSex.text?.toString()?.toInt() == 0) {
+        val sex = if (etSex?.text?.toString()?.toInt() == 0) {
             PPUserGender.PPUserGenderFemale
         } else {
             PPUserGender.PPUserGenderMale
         }
-        val height = etHeight.text?.toString()?.toInt() ?: 168
-        val age = etAge.text?.toString()?.toInt() ?: 35
-        val weight = etWeight.text?.toString()?.toDouble() ?: 83.00
+        val height = etHeight?.text?.toString()?.toInt() ?: 168
+        val age = etAge?.text?.toString()?.toInt() ?: 35
+        val weight = etWeight?.text?.toString()?.toDouble() ?: 83.00
 
-        val z100KhzLeftArmEnCode = z100KhzLeftArmEnCode.text?.toString()?.toLong() ?: 294794323L
-        val z100KhzLeftLegEnCode = z100KhzLeftLegEnCode.text?.toString()?.toLong() ?: 806102147L
-        val z100KhzRightArmEnCode = z100KhzRightArmEnCode.text?.toString()?.toLong() ?: 26360525L
-        val z100KhzRightLegEnCode = z100KhzRightLegEnCode.text?.toString()?.toLong() ?: 816581534L
-        val z100KhzTrunkEnCode = z100KhzTrunkEnCode.text?.toString()?.toLong() ?: 1080247226L
-        val z20KhzLeftArmEnCode = z20KhzLeftArmEnCode.text?.toString()?.toLong() ?: 27983001L
-        val z20KhzLeftLegEnCode = z20KhzLeftLegEnCode.text?.toString()?.toLong() ?: 837194050L
-        val z20KhzRightArmEnCode = z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 1634195706L
-        val z20KhzRightLegEnCode = z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463L
-        val z20KhzTrunkEnCode = z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429L
+        val z100KhzLeftArmEnCode = z100KhzLeftArmEnCode?.text?.toString()?.toLong() ?: 294794323L
+        val z100KhzLeftLegEnCode = z100KhzLeftLegEnCode?.text?.toString()?.toLong() ?: 806102147L
+        val z100KhzRightArmEnCode = z100KhzRightArmEnCode?.text?.toString()?.toLong() ?: 26360525L
+        val z100KhzRightLegEnCode = z100KhzRightLegEnCode?.text?.toString()?.toLong() ?: 816581534L
+        val z100KhzTrunkEnCode = z100KhzTrunkEnCode?.text?.toString()?.toLong() ?: 1080247226L
+        val z20KhzLeftArmEnCode = z20KhzLeftArmEnCode?.text?.toString()?.toLong() ?: 27983001L
+        val z20KhzLeftLegEnCode = z20KhzLeftLegEnCode?.text?.toString()?.toLong() ?: 837194050L
+        val z20KhzRightArmEnCode = z20KhzRightArmEnCode?.text?.toString()?.toLong() ?: 1634195706L
+        val z20KhzRightLegEnCode = z20KhzRightLegEnCode?.text?.toString()?.toLong() ?: 29868463L
+        val z20KhzTrunkEnCode = z20KhzTrunkEnCode?.text?.toString()?.toLong() ?: 1881406429L
 
 //        val age 	=	27
 //        val height 	=	180
