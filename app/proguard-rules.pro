@@ -118,8 +118,7 @@ public static java.lang.String TABLENAME;
 -keep class com.peng.ppscale.util.** {*;}
 -keep class com.peng.ppscale.business.torre.vo.** {*;}
 #ppbase
--keep class com.lefu.ppbase.vo.** {*;}
--keep class com.lefu.ppbase.util.** {*;}
+-keep class com.lefu.ppbase.** {*;}
 #ppcalculate
 -keep class com.lefu.ppcalculate.data.** {*;}
 -keep class com.besthealth.bhBodyComposition.** {*;}
@@ -127,5 +126,10 @@ public static java.lang.String TABLENAME;
 -keep class com.besthealth.bh2BodyComposition.** {*;}
 -keep class com.besthealth.bh3BodyComposition.** {*;}
 -keep class com.besthealth.bh4BodyComposition.** {*;}
+#内置gson/Built in gson
+-keep class * extends com.lefu.gson.reflect.TypeToken
+-keep class com.lefu.gson.** {*;}
+#bluetooth lib
+-keep class com.lefu.bluetooth.library.** {*;}
 
 
