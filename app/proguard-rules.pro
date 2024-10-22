@@ -36,7 +36,7 @@
 # 指定不去忽略包可见的库类的成员
 -dontskipnonpubliclibraryclassmembers
 #不进行优化，建议使用此选项，
--dontoptimize
+#-dontoptimize
 # 不进行预校验,Android不需要,可加快混淆速度。
 -dontpreverify
 # 屏蔽警告
