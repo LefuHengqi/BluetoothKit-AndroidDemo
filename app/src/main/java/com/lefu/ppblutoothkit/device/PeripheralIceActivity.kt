@@ -110,10 +110,7 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("readDeviceInfo")
             controller?.readDeviceInfo(object : PPDeviceInfoInterface() {
                 override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {
-                    addPrint("firmwareVersion: ${deviceModel?.firmwareVersion}")
-                    addPrint("serialNumber: ${deviceModel?.serialNumber}")
-                    addPrint("hardwareRevision: ${deviceModel?.hardwareVersion}")
-                    addPrint("softwareRevision: ${deviceModel?.softwareVersion}")
+                    addPrint(deviceModel.toString())
                 }
             })
         }
@@ -293,7 +290,6 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("Query distribution network status")
             //电量低于20%时提醒用户
             controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
-
 
                 /**
                  * 设备电量返回/Device power return
@@ -508,8 +504,6 @@ class PeripheralIceActivity : AppCompatActivity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 device_set_connect_state?.text = getString(R.string.scanning)
                 addPrint(getString(R.string.scanning))
-            } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
-                addPrint(getString(R.string.writable))
             }
         }
 
@@ -521,6 +515,14 @@ class PeripheralIceActivity : AppCompatActivity() {
                 addPrint(getString(R.string.system_blutooth_on))
                 Toast.makeText(this@PeripheralIceActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
             }
+        }
+
+        /**
+         * PeripheralIce/Torre/Borre/Dorre 类型设备在monitorMtuChange()后发送蓝牙指令
+         * 其他的PeripheralType 设备要在PPBleWorkStateWritable中下发数据
+         */
+        override fun monitorMtuChange(deviceModel: PPDeviceModel?) {
+            addPrint("monitorMtuChange mtu:${deviceModel?.mtu}")
         }
 
     }
