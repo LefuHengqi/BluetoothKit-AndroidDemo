@@ -130,6 +130,14 @@
                     android:text="@string/clear_history"
                     android:textAllCaps="false" />
 
+                <Button
+                    android:id="@+id/device_set_reset"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/reset"
+                    android:textAllCaps="false" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -216,21 +224,24 @@
                         android:text="@string/query_domain_name"
                         android:textAllCaps="false" />
 
+
+                    <Button
+                        android:id="@+id/device_set_startOTA"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="WifiOTA"
+                        android:textAllCaps="false" />
+
                     <Button
                         android:id="@+id/deleteWifiConfig"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textAllCaps="false"
-                        android:text="@string/delete_wifi_config" />
-
-                    <Button
-                        android:id="@+id/device_set_reset"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="@string/reset"
+                        android:text="@string/delete_wifi_config"
                         android:textAllCaps="false" />
+
+
 
                 </LinearLayout>
 
