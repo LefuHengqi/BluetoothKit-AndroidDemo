@@ -110,8 +110,8 @@
     <string name="reset">恢复出厂</string>
     <string name="start_keep_alive">启动保活</string>
     <string name="pregnant_woman_mode">孕妇模式</string>
-    <string name="start_local_ota">本地升级</string>
-    <string name="start_user_ota">用户升级</string>
+    <string name="start_local_ota">测试OTA</string>
+    <string name="start_user_ota">用户OTA</string>
     <string name="start_dfu">启动DFU升级</string>
     <string name="is_full_upgrade">是否全量升级</string>
     <string name="caculate_type">计算类型:</string>

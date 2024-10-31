@@ -95,8 +95,8 @@
     <string name="reset">Factory reset</string>
     <string name="start_keep_alive">Start keep alive</string>
     <string name="pregnant_woman_mode">Pregnant woman mode</string>
-    <string name="start_local_ota">Local upgrade</string>
-    <string name="start_user_ota">User upgrade</string>
+    <string name="start_local_ota">Test OTA</string>
+    <string name="start_user_ota">User OTA</string>
     <string name="start_dfu">Start DFU upgrade</string>
     <string name="is_full_upgrade">Upgrade in full</string>
     <string name="caculate_type">Calculation type:</string>
