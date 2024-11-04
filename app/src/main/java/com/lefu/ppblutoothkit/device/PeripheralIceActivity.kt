@@ -457,10 +457,6 @@ class PeripheralIceActivity : AppCompatActivity() {
             addPrint("getWifiInfo ssid:$ssid")
         }
 
-        override fun monitorConfigPassword(password: String?, deviceModel: PPDeviceModel?) {
-            addPrint("getWifiInfo password:$password")
-        }
-
         override fun monitorModifyServerDomainSuccess() {
             addPrint("ModifyServerDNSSuccess")
         }
