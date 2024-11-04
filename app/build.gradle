@@ -163,11 +163,11 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.76'
 
     //基础模块，必须/Basic module, must
-    api 'com.lefu.ppbasekit:ppbasekit:4.0.9'
+    api 'com.lefu.ppbasekit:ppbasekit:4.1.0'
     //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
-    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.9'
+    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.1.0'
     //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
-    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.9'
+    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.1.0'
 
 //    api(project(":ppsdkkit:ppbasekit"))
 //    api(project(":ppsdkkit:ppbluetoothkit"))
