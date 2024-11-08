@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -83,7 +83,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/connect_device" />
+                    android:text="@string/connect_device"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/startMeasureBtn"
@@ -189,7 +190,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="设置域名"
+                    android:text="@string/set_domain_name"
                     android:textAllCaps="false" />
 
             </LinearLayout>
@@ -289,7 +290,6 @@
                     android:layout_weight="1"
                     android:text="@string/reset"
                     android:textAllCaps="false" />
-
 
 
                 <Button
@@ -441,7 +441,6 @@
                         android:textOn="" />
 
 
-
                 </LinearLayout>
 
             </LinearLayout>
@@ -450,12 +449,11 @@
                 android:id="@+id/mCurrentHostUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens_4dp"
+                android:layout_marginTop="@dimen/dimens_12dp"
                 android:text="当前的域名"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="@dimen/text_sp16"
-                android:layout_marginTop="@dimen/dimens_12dp"
-                android:layout_marginStart="@dimen/dimens_4dp"
-                />
+                android:textSize="@dimen/text_sp16" />
 
         </LinearLayout>
 

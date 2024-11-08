@@ -140,7 +140,7 @@
     <string name="wifi_config_5g_hint">Your 5G network is not currently supported, please set up Wi-Fi and switch to another network</string>
     <string name="wifi_config_key_hint">Enter Wi-Fi password</string>
     <string name="wifi_config_other">Change other Wi-Fi</string>
-    <string name="select_device_type_next">Next</string>
+    <string name="select_device_type_next">下一步</string>
     <string name="wifi_config_disconnected">The network is disconnected</string>
     <string name="scan_time_out">扫描超时</string>
     <string name="scan_cancle">取消扫描</string>
@@ -174,5 +174,8 @@
     <string name="copy">复制</string>
     <string name="body_data_status">身体数据状态</string>
     <string name="copied_to_clipboard">已复制到剪贴版</string>
+    <string name="please_input_your_domain">域名</string>
+    <string name="set_password">设置密码</string>
+    <string name="refresh">刷新</string>
 
 </resources>
