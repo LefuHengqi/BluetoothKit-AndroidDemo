@@ -34,6 +34,7 @@ import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppblutoothkit.device.PeripheralBorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralDorreActivity
+import com.lefu.ppblutoothkit.device.PeripheralForreActivity
 import kotlinx.android.synthetic.main.activity_device_list.startFilterName
 import kotlinx.android.synthetic.main.activity_device_list.startRefresh
 
@@ -107,6 +108,10 @@ class ScanDeviceListActivity : Activity() {
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre) {
                 val intent = Intent(this@ScanDeviceListActivity, PeripheralBorreActivity::class.java)
                 PeripheralBorreActivity.deviceModel = deviceModel
+                startActivity(intent)
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralForre) {
+                val intent = Intent(this@ScanDeviceListActivity, PeripheralForreActivity::class.java)
+                PeripheralForreActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralApple) {
                 val intent =

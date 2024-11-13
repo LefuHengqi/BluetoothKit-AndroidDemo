@@ -551,10 +551,9 @@ class PeripheralTorreActivity : AppCompatActivity() {
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface {
 
         override fun onReadDeviceInfo(deviceModel: PPDeviceModel?) {
-            addPrint("firmwareVersion: ${deviceModel?.firmwareVersion}")
-            addPrint("serialNumber: ${deviceModel?.serialNumber}")
-            addPrint("hardwareRevision: ${deviceModel?.hardwareVersion}")
-            addPrint("softwareRevision: ${deviceModel?.softwareVersion}")
+            deviceModel?.let {
+                addPrint(it.toString())
+            }
         }
 
 

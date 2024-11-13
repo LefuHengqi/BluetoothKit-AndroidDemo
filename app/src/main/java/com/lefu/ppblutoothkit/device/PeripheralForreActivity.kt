@@ -32,6 +32,7 @@ import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralForreInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
@@ -50,16 +51,16 @@ import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
-import com.peng.ppscale.device.PeripheralBorre.PPBlutoothPeripheralBorreController
+import com.peng.ppscale.device.PeripheralForre.PPBlutoothPeripheralForreController
 import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
- * 对应的协议: BORRE
+ * 对应的协议: FORRE
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralBorreActivity : AppCompatActivity() {
+class PeripheralForreActivity : AppCompatActivity() {
 
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
@@ -73,7 +74,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
 
     private var whetherFullyDFUToggleBtn: ToggleButton? = null//控制是否全量升级，true开启全量
 
-    var controller: PPBlutoothPeripheralBorreController? = PPBlutoothPeripheralBorreInstance.instance.controller
+    var controller: PPBlutoothPeripheralForreController? = PPBlutoothPeripheralForreInstance.instance.controller
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -82,7 +83,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContentView(R.layout.peripheral_borre_layout)
+        setContentView(R.layout.peripheral_forre_layout)
 
         userModel = DataUtil.getUserModel()
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
@@ -115,33 +116,6 @@ class PeripheralBorreActivity : AppCompatActivity() {
             addPrint("startConnect")
             deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         }
-        findViewById<Button>(R.id.getRGBMode).setOnClickListener {
-            addPrint("getRGBMode")
-            deviceModel?.let { it1 -> controller?.getTorreDeviceManager()?.getRGBMode(modeChangeInterface) }
-        }
-        findViewById<Button>(R.id.device_set_SevenWeighInfo).setOnClickListener {
-
-//    public double bodyfat;//放大10倍,243 = 24.3
-//    public int heartRate;//心率(bmp)
-//    public double muscleRate;//放大10倍,960 = 96
-//    public double muscle;//放大10倍,243 = 24.3
-//    public double bone;//放大10倍,960 = 96
-//    public double boneRate;//放大10倍,960 = 96
-//    public double waterRate;//放大10倍,960 = 96
-            userModel?.PIndex = 2
-            userModel?.bmi = 20.2
-            userModel?.bodyfat = 20.2
-            userModel?.heartRate = 80
-            userModel?.muscleRate = 20.2
-            userModel?.muscle = 20.2
-            userModel?.bone = 20.2
-            userModel?.boneRate = 20.2
-            userModel?.waterRate = 20.2
-
-            addPrint("syncUserInfo userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.syncUserSevenWeighInfo(userModel, userInfoInterface)
-
-        }
         findViewById<Button>(R.id.device_set_sync_log).setOnClickListener {
             addPrint("syncLog")
             //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
@@ -154,38 +128,9 @@ class PeripheralBorreActivity : AppCompatActivity() {
                 addPrint("syncTime Success")
             }
         }
-        findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
-            addPrint("syncUserHistoryData userID:${userModel?.userID}")
-            controller?.getTorreDeviceManager()?.syncUserHistory(userModel, userHistoryDataInterface)
-        }
-        findViewById<Button>(R.id.syncTouristHistoryData).setOnClickListener {
-            addPrint("syncTouristHistoryData username:游客")
-            controller?.getTorreDeviceManager()?.syncTouristHistory(touristHistoryDataInterface)
-        }
-        findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
-            addPrint("syncUserInfo userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.syncUserInfo(userModel, userInfoInterface)
-        }
-        findViewById<Button>(R.id.deleteUserinfo).setOnClickListener {
-            //根据userID去删除该userId下的所有子成员
-            addPrint("deleteAllUserInfo userID:${userModel?.userID}")
-            controller?.getTorreDeviceManager()?.deleteAllUserInfo(userModel, userInfoInterface)
-            //删除单个用户,根据memberID去删除
-//            controller?.getTorreDeviceManager()?.deleteUserInfo(userModel, userInfoInterface)
-        }
-        findViewById<Button>(R.id.device_set_confirm_current_userinfo).setOnClickListener {
-            //下发当前称重用户
-            addPrint("confirmCurrentUser userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.confirmCurrentUser(userModel, userInfoInterface)
-        }
-        findViewById<Button>(R.id.device_set_get_userinfo_list).setOnClickListener {
-            addPrint("getUserList")
-            controller?.getTorreDeviceManager()?.getUserList(userInfoInterface)
-        }
         findViewById<Button>(R.id.startKeepAlive).setOnClickListener {
             addPrint("startKeepAlive")
             controller?.getTorreDeviceManager()?.startKeepAlive()
-
         }
         findViewById<Button>(R.id.device_set_getFilePath).setOnClickListener {
             addPrint("check sdCard read and write permission")
@@ -278,21 +223,6 @@ class PeripheralBorreActivity : AppCompatActivity() {
              */
             controller?.getTorreDeviceManager()?.switchMode(0, if (isChecked) 0 else 1, null)
         }
-        findViewById<ToggleButton>(R.id.switchDemoModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
-            addPrint("maternity mode isChecked:$isChecked")
-            /**
-             * 设置/获取演示模式状态
-             *
-             * @param type  1设置  2获取
-             * @param state 0x00：关闭演示模式 0x01：打开演示模式
-             */
-            controller?.getTorreDeviceManager()?.demoModeSwitch(1, if (isChecked) 1 else 0, modeChangeInterface)
-        }
-
-        findViewById<Button>(R.id.device_set_clearUser).setOnClickListener {
-            addPrint("clear Device User Info")
-            controller?.getTorreDeviceManager()?.clearDeviceUserInfo(clearDataInterface)
-        }
         findViewById<Button>(R.id.device_set_reset).setOnClickListener {
             addPrint("resetDevice")
             controller?.getTorreDeviceManager()?.resetDevice(deviceSetInterface)
@@ -305,27 +235,10 @@ class PeripheralBorreActivity : AppCompatActivity() {
             addPrint("readDeviceBattery")
             controller?.getTorreDeviceManager()?.readDeviceBattery(modeChangeInterface)
         }
-        findViewById<Button>(R.id.readLight).setOnClickListener {
-            addPrint("readLight")
-            controller?.getTorreDeviceManager()?.getLight(deviceSetInterface)
-        }
-        findViewById<Button>(R.id.getLanguage).setOnClickListener {
-            addPrint("getLanguage")
-            //0x00：中文简体
-            //0x01：英文
-            //0x02：中文繁体
-            //0x03：日语
-            //0x04：西班牙语
-            //0x05：葡萄牙语
-            //0x06：阿拉伯语
-            //0x07：韩语
-            controller?.getTorreDeviceManager()?.getLanguage(deviceSetInterface)
-        }
         findViewById<Button>(R.id.getUnit).setOnClickListener {
             addPrint("getUnit")
             controller?.getTorreDeviceManager()?.getUnit(modeChangeInterface)
         }
-
     }
 
     val bleStateInterface = object : PPBleStateInterface() {
@@ -365,10 +278,10 @@ class PeripheralBorreActivity : AppCompatActivity() {
         override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState?) {
             if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
                 addPrint(getString(R.string.system_bluetooth_disconnect))
-                Toast.makeText(this@PeripheralBorreActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@PeripheralForreActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
             } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
                 addPrint(getString(R.string.system_blutooth_on))
-                Toast.makeText(this@PeripheralBorreActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@PeripheralForreActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -473,18 +386,18 @@ class PeripheralBorreActivity : AppCompatActivity() {
                     || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
                 ) {
                     //8电极交流算法  48项数据
-                    val intent = Intent(this@PeripheralBorreActivity, Calculate8Activitiy::class.java)
+                    val intent = Intent(this@PeripheralForreActivity, Calculate8Activitiy::class.java)
                     intent.putExtra("bodyDataModel", "bodyDataModel")
                     startActivity(intent)
                 } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1) {
                     Logger.d("PeripheralBorreActivity 四电极 双频 impedance1:${DataUtil.bodyBaseModel?.impedance} impedance100EnCode:${DataUtil.bodyBaseModel?.ppImpedance100EnCode}")
                     //4电极交流算法  24项数据
-                    val intent = Intent(this@PeripheralBorreActivity, Calculate4AC2ChannelActivitiy::class.java)
+                    val intent = Intent(this@PeripheralForreActivity, Calculate4AC2ChannelActivitiy::class.java)
                     intent.putExtra("bodyDataModel", "bodyDataModel")
                     startActivity(intent)
                 } else {
                     //4电极交流算法  24项数据
-                    val intent = Intent(this@PeripheralBorreActivity, Calculate4ACActivitiy::class.java)
+                    val intent = Intent(this@PeripheralForreActivity, Calculate4ACActivitiy::class.java)
                     intent.putExtra("bodyDataModel", "bodyDataModel")
                     startActivity(intent)
                 }
@@ -499,21 +412,14 @@ class PeripheralBorreActivity : AppCompatActivity() {
         }
     }
 
-    val clearDataInterface = object : PPClearDataInterface {
-        override fun onClearSuccess() {
-            addPrint("onClearSuccess")
-        }
 
-        override fun onClearFail() {
-            addPrint("onClearFail")
-        }
-
-    }
 
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface {
 
         override fun onReadDeviceInfo(deviceModel: PPDeviceModel?) {
-            deviceModel?.toString()?.let { addPrint(it) }
+            deviceModel?.let {
+                addPrint(it.toString())
+            }
         }
 
 
@@ -527,7 +433,9 @@ class PeripheralBorreActivity : AppCompatActivity() {
          * @param type  1设置单位 2获取单位
          * @param state 0设置成功 1设置失败
          */
-        override fun readDeviceUnitCallBack(type: Int, state: Int, unitType: PPUnitType?) {}
+        override fun readDeviceUnitCallBack(type: Int, state: Int, unitType: PPUnitType?) {
+            addPrint("getUnit success unitType:${PPUtil.getWeightUnit(unitType)}")
+        }
 
         /**
          * 心率开关状态
@@ -582,42 +490,6 @@ class PeripheralBorreActivity : AppCompatActivity() {
         override fun bindStateCallBack(type: Int, state: Int) {
             addPrint("bindStateCallBack type $type state$state")
         }
-
-        /**
-         * 设置/获取演示模式状态
-         *
-         * @param type  1设置  2获取
-         * @param state 0x00：关闭演示模式
-         *              0x01：打开演示模式
-         * @param state 0x00：设置成功
-         *              0x01：设置失败
-         */
-        override fun demoModeSwitchCallBack(type: Int, state: Int) {
-            if (type == 1) {
-                if (state == 0) {
-                    addPrint("设置成功")
-                    Toast.makeText(this@PeripheralBorreActivity, "设置成功", Toast.LENGTH_SHORT).show()
-                } else {
-                    addPrint("设置失败")
-                    Toast.makeText(this@PeripheralBorreActivity, "设置失败", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        /**
-         * 设置/获取设备用户信息修改标识
-         *
-         * @param type  0x01：设置  0x02：获取
-         * @param state 0x00：设置成功 0x01：设置失败
-         * 0x00：设备用户信息未本地修改 0x01：设备用户信息本地修改过
-         */
-        override fun userInfoEditStateCallBack(type: Int, state: Int) {
-            addPrint("userInfoEditStateCallBack type $type state$state")
-        }
-
-        override fun getRGBModeCallBack(lightEnable: Int, lightMode: Int, defaultHex: String, againHex: String, lossHex: String) {
-            addPrint("getRGBModeCallBack lightEnable:$lightEnable lightMode:$lightMode\ndefaultHex:$defaultHex againHex:$againHex lossHex:$lossHex")
-        }
     }
 
     val onDFUStateListener = object : OnDFUStateListener {
@@ -666,92 +538,6 @@ class PeripheralBorreActivity : AppCompatActivity() {
 
     }
 
-    val userInfoInterface = object : PPUserInfoInterface {
-
-        override fun getUserListByPPBuserModelSuccess(userList: MutableList<PPUserModel>?) {
-            if (userList.isNullOrEmpty().not()) {
-                userList?.forEach {
-                    addPrint("uid:${it.userID} \nmemberId:${it.memberID} \nheight:${it.userHeight} age:${it.age} sex:${it.sex} weight:${it.weightKg}")
-                }
-            } else {
-                addPrint("getUserListSuccess user list is null")
-            }
-        }
-
-        override fun syncUserInfoSuccess() {
-            addPrint("syncUserInfoSuccess")
-        }
-
-        override fun syncUserInfoFail() {
-            addPrint("syncUserInfoFail")
-        }
-
-        override fun deleteUserInfoSuccess(userModel: PPUserModel?) {
-            //这里自行根据调用的方法去判断是删除的所有用户还是删除的单个用户
-            addPrint("deleteUserInfoSuccess userID:${userModel?.userID} userName:${userModel?.userName}")
-        }
-
-        override fun deleteUserInfoFail(userModel: PPUserModel?) {
-            addPrint("deleteUserInfoFail userID:${userModel?.userID} userName:${userModel?.userName}")
-        }
-
-        override fun confirmCurrentUserInfoSuccess() {
-            addPrint("confirmCurrentUserInfoSuccess")
-        }
-
-        override fun confirmCurrentUserInfoFail() {
-            addPrint("confirmCurrentUserInfoFail")
-        }
-
-        override fun syncUserSevenWeightInfoSuccess() {
-            addPrint("syncUserSevenWeightInfoSuccess")
-        }
-
-        override fun syncUserSevenWeightInfoFail() {
-            addPrint("syncUserSevenWeightInfoFail")
-        }
-
-    }
-
-    val touristHistoryDataInterface = object : PPHistoryDataInterface() {
-
-        override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
-            addPrint("touristHistoryData: weight:${bodyBaseModel?.getPpWeightKg()} dateTime:$dateTime")
-        }
-
-        override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
-            addPrint("touristHistoryDataEnd")
-        }
-
-        override fun monitorHistoryFail() {
-            addPrint("touristHistoryDataFail")
-        }
-
-        /**
-         * 历史数据发生改变,目前只在Torre/Borre/Dorre设备上生效
-         */
-        override fun onHistoryChange() {
-            addPrint("There is new historical data available")
-        }
-
-    }
-
-    val userHistoryDataInterface = object : PPHistoryDataInterface() {
-
-        override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
-            addPrint("monitorHistoryData: weight:${bodyBaseModel?.getPpWeightKg()} dateTime:$dateTime")
-        }
-
-        override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
-            addPrint("monitorHistoryEnd")
-        }
-
-        override fun monitorHistoryFail() {
-            addPrint("monitorHistoryFail")
-        }
-
-    }
-
     val deviceLogInterface = object : PPDeviceLogInterface {
         override fun syncLogStart() {
             addPrint("syncLogStart")
@@ -766,8 +552,8 @@ class PeripheralBorreActivity : AppCompatActivity() {
             addPrint("syncLogEnd ")
             addPrint("logFilePath: $logFilePath")
 
-            Toast.makeText(this@PeripheralBorreActivity, "Sync Log Success", Toast.LENGTH_SHORT).show()
-            FileUtil.sendEmail(this@PeripheralBorreActivity, logFilePath)
+            Toast.makeText(this@PeripheralForreActivity, "Sync Log Success", Toast.LENGTH_SHORT).show()
+            FileUtil.sendEmail(this@PeripheralForreActivity, logFilePath)
         }
     }
 
@@ -813,7 +599,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
             if (Environment.isExternalStorageManager()) {
                 performFileSearch()
             } else {
-                Toast.makeText(this@PeripheralBorreActivity, "存储权限获取失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@PeripheralForreActivity, "存储权限获取失败", Toast.LENGTH_SHORT).show()
             }
         } else if (resultCode == RESULT_OK && data != null) {
             //当单选选了一个文件后返回
@@ -839,7 +625,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
             ) {
                 performFileSearch()
             } else {
-                Toast.makeText(this@PeripheralBorreActivity, "存储权限获取失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@PeripheralForreActivity, "存储权限获取失败", Toast.LENGTH_SHORT).show()
             }
         }
     }
