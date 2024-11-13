@@ -62,7 +62,7 @@
     <string name="current_weight">Current weight</string>
     <string name="save">Save</string>
 
-    <string name="confirm">Confirm</string>
+    <string name="confirm">OK</string>
     <string name="connect_device">Connect device</string>
     <string name="sync_time">Synchronization time</string>
     <string name="device_time">Device Time</string>
@@ -95,8 +95,8 @@
     <string name="reset">Factory reset</string>
     <string name="start_keep_alive">Start keep alive</string>
     <string name="pregnant_woman_mode">Pregnant woman mode</string>
-    <string name="start_local_ota">Local upgrade</string>
-    <string name="start_user_ota">User upgrade</string>
+    <string name="start_local_ota">Test OTA</string>
+    <string name="start_user_ota">User OTA</string>
     <string name="start_dfu">Start DFU upgrade</string>
     <string name="is_full_upgrade">Upgrade in full</string>
     <string name="caculate_type">Calculation type:</string>
@@ -157,5 +157,11 @@
     <string name="current_domain_name">Current domain name</string>
     <string name="delete_wifi_config">Delete WiFi configuration</string>
     <string name="calculation_results">Calculation results</string>
+    <string name="please_input_your_domain">Domain</string>
+    <string name="set_password">Set Password</string>
+    <string name="refresh">Refresh</string>
 
+    <string name="copy">Copy</string>
+    <string name="body_data_status">Physical data status</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 </resources>

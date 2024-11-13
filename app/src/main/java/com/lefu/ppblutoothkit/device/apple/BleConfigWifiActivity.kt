@@ -30,6 +30,7 @@ class BleConfigWifiActivity : AppCompatActivity() {
     private var spHintTimerTask: TimerTask? = null
     private var tvHint: TextView? = null
     private var tvOthers: TextView? = null
+     var confiWifiStateTV: TextView? = null
     var snTv: TextView? = null
     var address: String? = null
     var ssid: String? = null
@@ -54,6 +55,7 @@ class BleConfigWifiActivity : AppCompatActivity() {
             tvHint!!.visibility = View.INVISIBLE
         }
         tvNext = findViewById(R.id.tvNext)
+        confiWifiStateTV = findViewById(R.id.confiWifiStateTV)
         etWifiName = findViewById(R.id.etWifiName)
         etWifiKey = findViewById(R.id.etWifiKey)
         snTv = findViewById(R.id.snTv)

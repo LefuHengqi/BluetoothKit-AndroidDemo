@@ -5,7 +5,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
@@ -33,6 +37,8 @@ class Calculate4ACActivitiy : Activity() {
     var deviceName: String = ""
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate//4电极新版计算库
 
+    var spinner: Spinner? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculate_4ac)
@@ -40,11 +46,32 @@ class Calculate4ACActivitiy : Activity() {
         findViewById<Button>(R.id.calculateBtn).setOnClickListener {
             startCalculate()
         }
-
+        spinner = findViewById<Spinner>(R.id.spinner)
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.title = getString(R.string._4ac)
         toolbar?.setTitleTextColor(Color.WHITE)
+        val adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.add("Version-V5.0.5")
+        adapter.add("Version-V5.0.b")
+//        adapter.add("Version-Normal")
+        spinner?.setAdapter(adapter)
+        spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position == 0) {
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate//4电极交流-V5.0.5固定版本-做减法
+                } else if (position == 1) {
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0//4电极交流(新)-跟随方案商，最新版本
+                } else if (position == 2) {
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal//4电极交流4-V5.0.5固定版本-不做减法
+                }
+            }
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        }
         initData()
     }
 
@@ -61,6 +88,16 @@ class Calculate4ACActivitiy : Activity() {
             etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
             etImpedance.setText(bodyBaseModel?.impedance.toString())
             calcuteType = bodyBaseModel?.deviceModel?.deviceCalcuteType
+            if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate) {
+                // 4电极交流-V5.0.5固定版本-做减法
+                spinner?.setSelection(0)
+            } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0) {
+                // 4电极交流(新)-跟随方案商，最新版本
+                spinner?.setSelection(1)
+            } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal) {
+                // 4电极交流4-V5.0.5固定版本-不做减法
+                spinner?.setSelection(2)
+            }
         }
     }
 
@@ -82,12 +119,7 @@ class Calculate4ACActivitiy : Activity() {
             .build()
 
         val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0
-        deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
-            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
-        } else {
-            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
-        }
+        deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
 
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)

@@ -130,6 +130,14 @@
                     android:text="@string/clear_history"
                     android:textAllCaps="false" />
 
+                <Button
+                    android:id="@+id/device_set_reset"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/reset"
+                    android:textAllCaps="false" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -221,17 +229,34 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textAllCaps="false"
-                        android:text="@string/delete_wifi_config" />
-
-                    <Button
-                        android:id="@+id/device_set_reset"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="@string/reset"
+                        android:text="@string/delete_wifi_config"
                         android:textAllCaps="false" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/device_ota_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OTA:" />
+
+                    <Button
+                        android:id="@+id/device_set_startTestOTA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/start_local_ota" />
+
+                    <Button
+                        android:id="@+id/device_set_startUserOTA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/start_user_ota" />
                 </LinearLayout>
 
                 <TextView

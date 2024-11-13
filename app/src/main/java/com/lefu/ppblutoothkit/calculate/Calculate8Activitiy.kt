@@ -50,7 +50,7 @@ class Calculate8Activitiy : Activity() {
         adapter.add("Product1-CF577")
         adapter.add("Product3-CF586")
         adapter.add("Product4-CF597")
-        adapter.add("Product0-CF610")
+        adapter.add("Product7-CF610")
         adapter.add("Product5-CF577_N1")
         adapter.add("Product6-CF597_N")
         spinner?.setAdapter(adapter)
@@ -63,7 +63,7 @@ class Calculate8Activitiy : Activity() {
                 } else if (position == 2) {
                     calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0//8电极算法，bhProduct =4 --CF597
                 } else if (position == 3) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2//8电极算法，bhProduct =0 --CF610
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2//8电极算法，bhProduct =7 --CF610
                 } else if (position == 4) {
                     calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3//8电极算法，bhProduct =5 --CF577_N1
                 } else if (position == 5) {
@@ -111,7 +111,7 @@ class Calculate8Activitiy : Activity() {
                 // 8电极算法，bhProduct =4 --CF597
                 spinner?.setSelection(2)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2) {
-                // 8电极算法，bhProduct =0 --CF610
+                // 8电极算法，bhProduct =7 --CF610
                 spinner?.setSelection(3)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3) {
                 // 8电极算法，bhProduct =5 --CF577_N1

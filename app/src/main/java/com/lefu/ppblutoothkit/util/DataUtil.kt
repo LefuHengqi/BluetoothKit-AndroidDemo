@@ -21,6 +21,8 @@ object DataUtil {
                 .setHeight(180)
                 .setSex(PPUserGender.PPUserGenderMale)
                 .setGroupNum(0)
+                .setUserID("0000")
+                .setMemberId("00001")
                 .build()
         }
         return userModel!!

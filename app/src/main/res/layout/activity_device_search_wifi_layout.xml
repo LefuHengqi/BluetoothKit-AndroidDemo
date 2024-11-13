@@ -16,7 +16,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="配置网络"
+            android:text="@string/config_wifi"
             android:textColor="@android:color/black" />
 
         <LinearLayout
@@ -64,7 +64,7 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:paddingVertical="12dp"
-        android:text="刷新"
+        android:text="@string/refresh"
         android:textSize="@dimen/text_sp16"
         android:visibility="visible" />
 </RelativeLayout>

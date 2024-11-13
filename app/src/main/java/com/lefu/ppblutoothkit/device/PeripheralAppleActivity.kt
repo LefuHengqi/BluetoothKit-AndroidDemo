@@ -10,28 +10,34 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
-import com.lefu.ppblutoothkit.R
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
-import com.lefu.ppblutoothkit.util.DataUtil
-import com.lefu.ppblutoothkit.UserinfoActivity
-import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
-import com.lefu.ppblutoothkit.view.MsgDialog
-import com.lefu.ppblutoothkit.device.apple.BleConfigWifiActivity
-import com.lefu.ppblutoothkit.okhttp.NetUtil
-import com.peng.ppscale.business.ble.PPScaleHelper
-import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
-import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
-import com.peng.ppscale.business.ble.listener.*
-import com.peng.ppscale.business.state.PPBleSwitchState
-import com.peng.ppscale.business.state.PPBleWorkState
-import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
-import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
+import com.lefu.ppblutoothkit.device.apple.BleConfigWifiActivity
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
+import com.lefu.ppblutoothkit.okhttp.NetUtil
+import com.lefu.ppblutoothkit.util.DataUtil
+import com.lefu.ppblutoothkit.view.MsgDialog
+import com.peng.ppscale.business.ble.PPScaleHelper
+import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
+import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
+import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
+import com.peng.ppscale.business.ble.listener.PPBleStateInterface
+import com.peng.ppscale.business.ble.listener.PPDataChangeListener
+import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface
+import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
+import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
+import com.peng.ppscale.business.ota.OnOTAStateListener
+import com.peng.ppscale.business.state.PPBleSwitchState
+import com.peng.ppscale.business.state.PPBleWorkState
+import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
 import com.peng.ppscale.vo.PPScaleSendState
 import kotlinx.android.synthetic.main.peripheral_apple_layout.wifiConfigLayout
 
@@ -188,43 +194,10 @@ class PeripheralAppleActivity : AppCompatActivity() {
                 addPrint("device does not support")
             }
         }
-        findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
-            addPrint("startConfigWifi")
-            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
-                val intent = Intent(this@PeripheralAppleActivity, BleConfigWifiActivity::class.java)
-                intent.putExtra("address", deviceModel?.deviceMac)
-                startActivity(intent)
-            } else {
-                addPrint("device does not support")
-            }
-        }
-        findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
-            addPrint("getWifiInfo")
-            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType) ?: false) {
-                controller?.getWiFiParmameters(configWifiInfoInterface)
-            } else {
-                addPrint("device does not support")
-            }
-        }
         findViewById<Button>(R.id.setUserInfo).setOnClickListener {
             addPrint("start UserInfo pager")
             startActivity(Intent(this, UserinfoActivity::class.java))
         }
-        findViewById<Button>(R.id.setNetHost).setOnClickListener {
-            addPrint("setNetHost")
-            startActivity(Intent(this, SetHostActivity::class.java))
-        }
-        findViewById<Button>(R.id.getDeviceDomain).setOnClickListener {
-            addPrint("getDeviceDomain")
-            //专订功能不是所有的Wifi秤都支持
-            controller?.getDeviceDomain(configWifiInfoInterface)
-        }
-        findViewById<Button>(R.id.deleteWifiConfig).setOnClickListener {
-            addPrint("deleteWifiConfig")
-            //专订功能不是所有的Wifi秤都支持
-            controller?.sendDeleteWifiConfig(configWifiInfoInterface)
-        }
-
         findViewById<Button>(R.id.device_set_reset).setOnClickListener {
             addPrint("device reset")
             //恢复默认值(工厂的SSID：null和Password：null)，同时清除所有的历史数据，秤端时间恢复成出厂默认时间。等同于一台新秤。
@@ -245,6 +218,111 @@ class PeripheralAppleActivity : AppCompatActivity() {
                     }
                 }
             })
+        }
+        /****************************Wifi device only have *********************************************************/
+        findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
+            addPrint("startConfigWifi")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                val intent = Intent(this@PeripheralAppleActivity, BleConfigWifiActivity::class.java)
+                intent.putExtra("address", deviceModel?.deviceMac)
+                startActivity(intent)
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
+            addPrint("getWifiInfo")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType) ?: false) {
+                controller?.getWiFiParmameters(configWifiInfoInterface)
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.setNetHost).setOnClickListener {
+            addPrint("setNetHost")
+            startActivity(Intent(this, SetHostActivity::class.java))
+        }
+        findViewById<Button>(R.id.getDeviceDomain).setOnClickListener {
+            addPrint("getDeviceDomain")
+            //专订功能不是所有的Wifi秤都支持
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                controller?.getDeviceDomain(configWifiInfoInterface)
+            } else {
+                addPrint("device does not support wifi")
+            }
+        }
+        findViewById<Button>(R.id.deleteWifiConfig).setOnClickListener {
+            addPrint("deleteWifiConfig")
+            //专订功能不是所有的Wifi秤都支持
+            controller?.sendDeleteWifiConfig(configWifiInfoInterface)
+        }
+        //测试环境升级，需要用户先进行配网，然后升级，采用的是厂家指定配置的域名
+        //To upgrade the testing environment, users need to first configure the distribution network and then upgrade using the domain name specified by the manufacturer
+        findViewById<Button>(R.id.device_set_startTestOTA).setOnClickListener {
+            addPrint("device start Test OTA")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                //专订功能不是所有的Wifi秤都支持
+                addPrint("getWiFiParmameters")
+                controller?.getWiFiParmameters(object : PPConfigWifiInfoInterface {
+                    override fun monitorConfigSsid(ssid: String?, deviceModel: PPDeviceModel?) {
+                        addPrint("getWifiInfo ssid:$ssid")
+                        if (ssid.isNullOrEmpty().not()) {
+                            controller?.startTestOTA(object : PPBleSendResultCallBack {
+                                override fun onResult(sendState: PPScaleSendState?) {
+                                    controller?.resetSendListener()
+                                }
+
+                            })
+                        } else {
+                            Toast.makeText(this@PeripheralAppleActivity, "Please configure WiFi for the device first", Toast.LENGTH_SHORT).show()
+                            addPrint("Please configure WiFi for the device first")
+                        }
+                    }
+                })
+            } else {
+                addPrint("device does not support wifi")
+            }
+        }
+        //用户环境升级，需要用户先进行配网，然后升级，采用的是App配置的域名。
+        //User environment upgrade requires users to first configure the network and then upgrade, using the domain name configured by the app.
+        findViewById<Button>(R.id.device_set_startUserOTA).setOnClickListener {
+            addPrint("device start User OTA")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                //专订功能不是所有的Wifi秤都支持
+                controller?.startUserOTA(object : PPBleSendResultCallBack {
+                    override fun onResult(sendState: PPScaleSendState?) {
+                        controller?.resetSendListener()
+                    }
+
+                }, object : OnOTAStateListener() {
+                    /**
+                     * @param state  2设备低电量 3未配网 4 充电中
+                     * @param state  2 devices have low battery, 3 are not connected to the power grid,  4 are charging
+                     */
+                    override fun onUpdateFail(state: Int) {
+                        when (state) {
+                            2 -> {
+                                addPrint("startUserOTA fail:The device has low battery")
+                            }
+
+                            3 -> {
+                                Toast.makeText(this@PeripheralAppleActivity, "Please configure WiFi for the device first", Toast.LENGTH_SHORT).show()
+                                addPrint("startUserOTA fail:Please configure WiFi for the device first")
+                            }
+
+                            else -> {
+                                addPrint("startUserOTA fail: Device charging in progress")
+                            }
+                        }
+                    }
+
+                    override fun onStartUpdate() {
+                        addPrint("Upgrade started successfully")
+                    }
+                })
+            } else {
+                addPrint("device does not support wifi")
+            }
         }
 
     }
