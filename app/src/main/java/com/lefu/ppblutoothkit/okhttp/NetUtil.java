@@ -30,11 +30,10 @@ public class NetUtil {
     //Binding WiFi to users requires your own server, which will only be used for demonstration purposes
     public static String SAVE_WIFI_GROUP = GET_URL() + "/lefu/wifi/app/saveWifiGroup";
 
-//    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082";
-//    public static String SCALE_DOMAIN = "http://ddi-bm-staging.buzud.com/api/v1.0/scale";
-//    public static String SCALE_DOMAIN = "http://ddi-bm-staging.buzud.com:80/api/v1.0/scale";
-    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082";
-//    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082/api/v1.0/scale";
+    //外网可以访问的域名地址
+    //下发给秤的域名，用于秤访问服务器；自己项目中，请使用你自己的
+    //The domain name issued to the scale for accessing the server; In your own project, please use your own
+    public static String SCALE_DOMAIN = "http://120.79.144.170:6032";
 
     /**
      * 拉取设备配置信息，仅供Demo使用，与AppKey配套使用,
@@ -42,10 +41,6 @@ public class NetUtil {
      *
      */
     public static String GET_SCALE_CONFIG = "http://nat.lefuenergy.com:10081/unique-admin/openApi/openAppKeySetting/download?appKey=";
-    //下发给秤的域名，用于秤访问服务器；自己项目中，请使用你自己的
-    //The domain name issued to the scale for accessing the server; In your own project, please use your own
-//    public static String SCALE_DOMAIN = "http://nat.lefuenergy.com:10082";
-//    public static String SCALE_DOMAIN = "http://health-api.duoduiduo.com";
 
     public static String getScaleDomain(){
         return SCALE_DOMAIN;
