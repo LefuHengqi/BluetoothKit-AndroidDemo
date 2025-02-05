@@ -144,32 +144,6 @@ class Calculate8Activitiy : Activity() {
         val z20KhzRightLegEnCode = z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463L
         val z20KhzTrunkEnCode = z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429L
 
-//        val age 	=	27
-//        val height 	=	180
-//        val weight 	=	77.65
-//        val sex 	=	PPUserGender.PPUserGenderMale
-//        val z100KhzLeftArmEnCode 	=	1365273936L
-//        val z100KhzLeftLegEnCode 	=	537581477L
-//        val z100KhzRightArmEnCode 	=	1362153929L
-//        val z100KhzRightLegEnCode 	=	1088101585L
-//        val z100KhzTrunkEnCode 	=	1075910384L
-//        val z20KhzLeftArmEnCode 	=	545197126L
-//        val z20KhzLeftLegEnCode 	=	569465508L
-//        val z20KhzRightArmEnCode 	=	921094L
-//        val z20KhzRightLegEnCode 	=	837068764L
-//        val z20KhzTrunkEnCode 	=	14330286L
-
-//        val z100KhzLeftArmEnCode=569602315L
-//        val z100KhzLeftLegEnCode=809255489L
-//        val z100KhzRightArmEnCode=2895252L
-//        val z100KhzRightLegEnCode=1886303910L
-//        val z100KhzTrunkEnCode=4345946L
-//        val z20KhzLeftArmEnCode=538898029L
-//        val z20KhzLeftLegEnCode=1100272835L
-//        val z20KhzRightArmEnCode=1374763886L
-//        val z20KhzRightLegEnCode=1615689850L
-//        val z20KhzTrunkEnCode=1620566014L
-
         val userModel = PPUserModel.Builder()
             .setSex(sex) //gender
             .setHeight(height)//height 90-220
