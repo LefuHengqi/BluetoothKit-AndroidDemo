@@ -340,7 +340,7 @@ class PeripheralAppleActivity : AppCompatActivity() {
     val dataChangeListener = object : PPDataChangeListener {
 
         /**
-         * 监听过程数据
+         * 监听过程数据/Data during the measurement process
          *
          * @param bodyBaseModel
          * @param deviceModel
@@ -356,7 +356,7 @@ class PeripheralAppleActivity : AppCompatActivity() {
         }
 
         /**
-         * 锁定数据
+         * 锁定数据/Measure stable data
          *
          * @param bodyBaseModel
          */
@@ -364,12 +364,12 @@ class PeripheralAppleActivity : AppCompatActivity() {
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
             weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             if (bodyBaseModel?.isHeartRating ?: false) {
-                //心率测量中
+                //心率测量中/Measurement completed
                 weightMeasureState?.text = getString(R.string.heartrate_mesuring)
             } else {
-                //测量结束
+                //测量结束/Heart rate measurement
                 weightMeasureState?.text = getString(R.string.measure_complete)
-                //这里要填称重用户的个人信息
+                //这里要填称重用户的个人信息/We need to fill in the personal information of the weighing user here
                 val userModel = DataUtil.getUserModel()
                 bodyBaseModel?.userModel = userModel
 
