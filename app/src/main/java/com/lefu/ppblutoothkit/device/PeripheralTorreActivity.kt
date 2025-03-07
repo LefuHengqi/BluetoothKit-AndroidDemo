@@ -449,10 +449,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
          * @param deviceModel
          */
         override fun monitorProcessData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-            val weightStr = PPUtil.getWeightValueD(
-                bodyBaseModel?.unit,
-                bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType()
-            )
+            val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType(), true)
             weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             weightMeasureState?.text = ""
         }
@@ -466,13 +463,13 @@ class PeripheralTorreActivity : AppCompatActivity() {
             if (bodyBaseModel?.isHeartRating ?: false) {
                 //isHeartRating： 心率是否测量中  true心率测量中/重量测量完成/阻抗测量完成  false心率测量结束/测量完成
                 addPrint(getString(R.string.heartrate_mesuring))
-                val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel?.deviceAccuracyType?.getType() ?: 2)
+                val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType(), true)
                 weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
                 weightMeasureState?.text = ""
             } else {
                 //心率测量完成/阻抗测量完成/测量完成
                 addPrint(getString(R.string.measure_complete))
-                val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType())
+                val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType(), true)
                 weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
                 weightMeasureState?.text = ""
                 //Before calling the computing library, it is necessary to assign the personal information of the user who is currently being weighed as a value

@@ -42,7 +42,7 @@ public class WifiDataListAdapter extends ArrayAdapter {
         if (device != null) {
             accuracyType = device.getAccuracyType();
         }
-        weightKgText.setText(PPUtil.getWeight(PPUnitType.Unit_KG, wifiDataBean.getWeight(), accuracyType));
+        weightKgText.setText(PPUtil.getWeightValueD(PPUnitType.Unit_KG, wifiDataBean.getWeight(), accuracyType, true));
 
         try {
             String dateTime = WifiUtil.formatDate2(Long.parseLong(wifiDataBean.getTimestamp()));
