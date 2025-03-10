@@ -6,7 +6,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppblutoothkit.R
 
 class CalculateManagerActivity : Activity(), View.OnClickListener {
@@ -19,6 +24,20 @@ class CalculateManagerActivity : Activity(), View.OnClickListener {
         findViewById<Button>(R.id.ac4).setOnClickListener(this)
         findViewById<Button>(R.id.ac4_2channel).setOnClickListener(this)
         findViewById<Button>(R.id.ac8).setOnClickListener(this)
+
+        val weightET = findViewById<EditText>(R.id.weightET);
+        val resultTV = findViewById<TextView>(R.id.resultTV);
+        val unit_changeBTN = findViewById<Button>(R.id.unit_changeBTN);
+
+        unit_changeBTN?.setOnClickListener{
+
+            val text = weightET.text?.toString() ?: "0.0"
+
+            val toFloat = text.toDouble()
+            val weightValueD = PPUtil.getWeightValueD(PPUnitType.PPUnitST_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
+            resultTV.text = weightValueD.toString()
+        }
+
 
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.title = "Calculate"

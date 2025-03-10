@@ -58,6 +58,26 @@
             android:text="@string/_8ac"
             android:textAllCaps="false" />
 
+
+        <EditText
+            android:id="@+id/weightET"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimens_60dp"
+            android:hint="请输入重量" />
+
+        <TextView
+            android:id="@+id/resultTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/unit_changeBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="单位换算" />
+
     </LinearLayout>
+
+
 
 </LinearLayout>
