@@ -14,17 +14,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dimens_50dp"
-        android:gravity="center"
+        android:layout_marginTop="@dimen/dimens_60dp"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/dc4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimens_50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:text="@string/_4dc"
             android:textAllCaps="false" />
 
@@ -32,9 +30,7 @@
             android:id="@+id/ac4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimens_50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="@dimen/dimens_50dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/dp_10"
             android:text="@string/_4ac"
             android:textAllCaps="false" />
 
@@ -42,9 +38,7 @@
             android:id="@+id/ac4_2channel"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimens_50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="@dimen/dimens_50dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/dp_10"
             android:text="@string/_4ac2channel"
             android:textAllCaps="false" />
 
@@ -52,32 +46,35 @@
             android:id="@+id/ac8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="@dimen/dimens_50dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/dp_10"
             android:text="@string/_8ac"
             android:textAllCaps="false" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/weightET"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimens_60dp"
-            android:hint="请输入重量" />
+            <EditText
+                android:id="@+id/weightET"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimens_60dp"
+                android:layout_weight="1"
+                android:hint="请输入重量" />
+
+            <Button
+                android:id="@+id/unit_changeBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="单位换算" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/resultTV"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/unit_changeBTN"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="单位换算" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>

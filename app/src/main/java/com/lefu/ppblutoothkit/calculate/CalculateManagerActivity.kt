@@ -31,13 +31,18 @@ class CalculateManagerActivity : Activity(), View.OnClickListener {
 
         unit_changeBTN?.setOnClickListener{
 
-            val text = weightET.text?.toString() ?: "0.0"
+            val weightD = weightET.text?.toString() ?: "0.0"
 
-            val toFloat = text.toDouble()
-            val weightValueD = PPUtil.getWeightValueD(PPUnitType.PPUnitST_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
-            resultTV.text = weightValueD.toString()
+            val toFloat = weightD.toDouble()
+            val weightValueST_LB = PPUtil.getWeightValueD(PPUnitType.PPUnitST_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
+            val weightValueD_ST = PPUtil.getWeightValueD(PPUnitType.PPUnitST, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
+            val weightValueD_LB = PPUtil.getWeightValueD(PPUnitType.Unit_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
+            val weightValueD_JIN = PPUtil.getWeightValueD(PPUnitType.PPUnitJin, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
+
+            val text = "KG:$toFloat\nST_LB:$weightValueST_LB\nST:$weightValueD_ST\nLB:$weightValueD_LB\nJIN:$weightValueD_JIN"
+
+            resultTV.text = text
         }
-
 
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.title = "Calculate"
