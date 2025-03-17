@@ -51,10 +51,10 @@
 ## Android SDK
 
 | 模块             | 描述     | 必须     | 集成方式                                               |
-| -------------- | ------ | ------ | -------------------------------------------------- |
-| ppbasekit      | 基础模块   | 是      | api 'com.lefu.ppbasekit:ppbasekit:4.0.7'           |
-| ppbluetoothkit | 蓝牙协议模块 | 根据业务选择 | api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.0.7' |
-| ppcalculatekit | 体脂计算库  | 根据业务选择 | api 'com.lefu.ppcalculatekit:ppcalculatekit:4.0.7' |
+| -------------- | ------ | ------ |----------------------------------------------------|
+| ppbasekit      | 基础模块   | 是      | api 'com.lefu.ppbasekit:ppbasekit:4.1.3'           |
+| ppbluetoothkit | 蓝牙协议模块 | 根据业务选择 | api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.1.3' |
+| ppcalculatekit | 体脂计算库  | 根据业务选择 | api 'com.lefu.ppcalculatekit:ppcalculatekit:4.1.3' |
 
 PPBaseKit是基础模块，必须集成
 
@@ -66,13 +66,13 @@ PPCalculateKit是针对体脂计算封装的SDK，包含了4电极交流算法�
 
 为了让客户快速实现称重以及对应的功能而实现，提供了一个示例程序，示例程序中包含体脂计算模块和设备功能模块。
 
-* 设备功能模块目前支持的设备包含：蓝牙秤、食物秤、Torre系列蓝牙WiFi体脂秤。
+* 设备功能模块目前支持的设备包含：蓝牙秤/食物秤/蓝牙WiFi秤/Torre/Borre/Dorre/Forre系列蓝牙WiFi体脂秤。
 
 * 体脂计算模块支持4电极交流算法、4电极直流算法、8电极交流算法。
 
 * [GitHub - LefuHengqi/BluetoothKit-AndroidDemo](https://github.com/LefuHengqi/BluetoothKit-AndroidDemo)
 
-![](https://xinzhiyun.feishu.cn/space/api/box/stream/download/asynccode/?code=Y2RiMzg0OTg0ZWQ3NThjYTQ3NTIyZThkNjQxOWU5NGVfa3dwOUFxYU1EMDRpTmd4SzlaNDBKRzV2VVhFVERCNlRfVG9rZW46VkwxZGJNWVFWbzdLQXJ4eXZoSWM5czNvblZGXzE3MzAzNDYyNjE6MTczMDM0OTg2MV9WNA)
+![示例程序](icon/ppbluetothkit.PNG)
 
 
 
@@ -81,13 +81,9 @@ PPCalculateKit是针对体脂计算封装的SDK，包含了4电极交流算法�
 * 可在GooglePlay或其他应用商店搜索下载 "Unique Health"
 
 * 也可扫描下面的二维码进行下载
+  ![示例程序](icon/uniquehealth.PNG)
 
-
-
-![](https://xinzhiyun.feishu.cn/space/api/box/stream/download/asynccode/?code=ZmZlMGY1OWI2NGU4NmJmNjcyZWEwNTcyODVmZmYwMGFfaExLOUZCS0xMZmIzUWxZZUFQaWduYzZPSFRLR1BLczhfVG9rZW46V3ZTTGJ3NVM2b1lHRHV4SFRUVWNVOHIzbllnXzE3MzAzNDYyNjE6MTczMDM0OTg2MV9WNA)
-
-
-
+  
 # 常见问题
 
 [ Android 常见问题](https://xinzhiyun.feishu.cn/docx/Y3HgdVqXHoGhZqxG9BscGxCPnhh)
