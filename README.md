@@ -81,7 +81,7 @@ PPCalculateKit是针对体脂计算封装的SDK，包含了4电极交流算法�
 * 可在GooglePlay或其他应用商店搜索下载 "Unique Health"
 
 * 也可扫描下面的二维码进行下载
-  ![示例程序](icon/uniquehealth.PNG)
+![示例程序](icon/uniquehealth.PNG)
 
   
 # 常见问题
