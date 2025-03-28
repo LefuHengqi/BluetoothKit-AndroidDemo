@@ -109,7 +109,7 @@
             android:screenOrientation="portrait" />
         <!--Dutian-->
         <activity
-            android:name="com.lefu.ppblutoothkit.device.PeripheralDutianActivity"
+            android:name="com.lefu.ppblutoothkit.device.PeripheralDurianActivity"
             android:screenOrientation="portrait" />
         <!--Egg-->
         <activity

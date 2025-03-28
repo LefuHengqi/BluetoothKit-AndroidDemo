@@ -14,7 +14,7 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.PeripheralAppleActivity
 import com.lefu.ppblutoothkit.device.PeripheralBananaActivity
 import com.lefu.ppblutoothkit.device.PeripheralCoconutActivity
-import com.lefu.ppblutoothkit.device.PeripheralDutianActivity
+import com.lefu.ppblutoothkit.device.PeripheralDurianActivity
 import com.lefu.ppblutoothkit.device.PeripheralEggActivity
 import com.lefu.ppblutoothkit.device.PeripheralFishActivity
 import com.lefu.ppblutoothkit.device.PeripheralGrapesActivity
@@ -98,19 +98,23 @@ class ScanDeviceListActivity : Activity() {
         val deviceModel = deviceVo?.deviceModel
         deviceModel?.let {
             if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
-                val intent = Intent(this@ScanDeviceListActivity, PeripheralTorreActivity::class.java)
+                val intent =
+                    Intent(this@ScanDeviceListActivity, PeripheralTorreActivity::class.java)
                 PeripheralTorreActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre) {
-                val intent = Intent(this@ScanDeviceListActivity, PeripheralDorreActivity::class.java)
+                val intent =
+                    Intent(this@ScanDeviceListActivity, PeripheralDorreActivity::class.java)
                 PeripheralDorreActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre) {
-                val intent = Intent(this@ScanDeviceListActivity, PeripheralBorreActivity::class.java)
+                val intent =
+                    Intent(this@ScanDeviceListActivity, PeripheralBorreActivity::class.java)
                 PeripheralBorreActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralForre) {
-                val intent = Intent(this@ScanDeviceListActivity, PeripheralForreActivity::class.java)
+                val intent =
+                    Intent(this@ScanDeviceListActivity, PeripheralForreActivity::class.java)
                 PeripheralForreActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralApple) {
@@ -119,7 +123,8 @@ class ScanDeviceListActivity : Activity() {
                 PeripheralAppleActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBanana) {
-                val intent = Intent(this@ScanDeviceListActivity, PeripheralBananaActivity::class.java)
+                val intent =
+                    Intent(this@ScanDeviceListActivity, PeripheralBananaActivity::class.java)
                 PeripheralBananaActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralCoconut) {
@@ -129,8 +134,8 @@ class ScanDeviceListActivity : Activity() {
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDurian) {
                 val intent =
-                    Intent(this@ScanDeviceListActivity, PeripheralDutianActivity::class.java)
-                PeripheralDutianActivity.deviceModel = deviceModel
+                    Intent(this@ScanDeviceListActivity, PeripheralDurianActivity::class.java)
+                PeripheralDurianActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralEgg) {
                 val intent = Intent(this@ScanDeviceListActivity, PeripheralEggActivity::class.java)
@@ -155,7 +160,8 @@ class ScanDeviceListActivity : Activity() {
                 PeripheralIceActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralJambul) {
-                val intent = Intent(this@ScanDeviceListActivity, PeripheralJambulActivity::class.java)
+                val intent =
+                    Intent(this@ScanDeviceListActivity, PeripheralJambulActivity::class.java)
                 PeripheralJambulActivity.deviceModel = deviceModel
                 startActivity(intent)
             }
@@ -172,9 +178,7 @@ class ScanDeviceListActivity : Activity() {
      * Get around bluetooth scale devices
      */
     fun startScanDeviceList() {
-        if (ppScale == null) {
-            ppScale = PPSearchManager()
-        }
+        ppScale = PPSearchManager.getInstance()
         //You can dynamically set the scan time in ms
         ppScale?.startSearchDeviceList(300000, searchDeviceInfoInterface, bleStateInterface)
     }
@@ -245,7 +249,8 @@ class ScanDeviceListActivity : Activity() {
 //                PPBlutoothPeripheralAppleInstance.instance.controller?.registDataChangeListener(dataChangeListener)
 //                PPBlutoothPeripheralAppleInstance.instance.controller?.onSearchResponse(hex)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBanana) {
-                val intent = Intent(this@ScanDeviceListActivity, PeripheralBananaActivity::class.java)
+                val intent =
+                    Intent(this@ScanDeviceListActivity, PeripheralBananaActivity::class.java)
                 PeripheralBananaActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralCoconut) {
@@ -255,8 +260,8 @@ class ScanDeviceListActivity : Activity() {
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDurian) {
                 val intent =
-                    Intent(this@ScanDeviceListActivity, PeripheralDutianActivity::class.java)
-                PeripheralDutianActivity.deviceModel = deviceModel
+                    Intent(this@ScanDeviceListActivity, PeripheralDurianActivity::class.java)
+                PeripheralDurianActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralEgg) {
                 val intent = Intent(this@ScanDeviceListActivity, PeripheralEggActivity::class.java)
@@ -297,16 +302,22 @@ class ScanDeviceListActivity : Activity() {
          * @param ppBleWorkState 蓝牙状态标识/Bluetooth status indicator
          * @param deviceModel 设备对象/Device Object
          */
-        override fun monitorBluetoothWorkState(ppBleWorkState: PPBleWorkState, deviceModel: PPDeviceModel?) {
+        override fun monitorBluetoothWorkState(
+            ppBleWorkState: PPBleWorkState,
+            deviceModel: PPDeviceModel?
+        ) {
             if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 Logger.d(getString(R.string.stop_scanning))
-                tv_starts?.text = getString(R.string.bluetooth_status) + getString(R.string.stop_scanning)
+                tv_starts?.text =
+                    getString(R.string.bluetooth_status) + getString(R.string.stop_scanning)
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkSearchTimeOut) {
                 Logger.d(getString(R.string.scan_timeout))
-                tv_starts?.text = getString(R.string.bluetooth_status) + getString(R.string.scan_timeout)
+                tv_starts?.text =
+                    getString(R.string.bluetooth_status) + getString(R.string.scan_timeout)
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateSearching) {
                 Logger.d(getString(R.string.scanning))
-                tv_starts?.text = getString(R.string.bluetooth_status) + getString(R.string.scanning)
+                tv_starts?.text =
+                    getString(R.string.bluetooth_status) + getString(R.string.scanning)
             } else {
             }
         }
@@ -318,13 +329,21 @@ class ScanDeviceListActivity : Activity() {
         override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState) {
             if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
                 Logger.e(getString(R.string.system_bluetooth_disconnect))
-                Toast.makeText(this@ScanDeviceListActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@ScanDeviceListActivity,
+                    getString(R.string.system_bluetooth_disconnect),
+                    Toast.LENGTH_SHORT
+                ).show()
                 tv_starts!!.text =
                     getString(R.string.bluetooth_status) + getString(R.string.system_bluetooth_disconnect)
             } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
                 delayScan()
                 Logger.d(getString(R.string.system_blutooth_on))
-                Toast.makeText(this@ScanDeviceListActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@ScanDeviceListActivity,
+                    getString(R.string.system_blutooth_on),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

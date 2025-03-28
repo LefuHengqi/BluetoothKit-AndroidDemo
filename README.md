@@ -52,9 +52,9 @@
 
 | 模块             | 描述     | 必须     | 集成方式                                               |
 | -------------- | ------ | ------ |----------------------------------------------------|
-| ppbasekit      | 基础模块   | 是      | api 'com.lefu.ppbasekit:ppbasekit:4.1.3'           |
-| ppbluetoothkit | 蓝牙协议模块 | 根据业务选择 | api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.1.3' |
-| ppcalculatekit | 体脂计算库  | 根据业务选择 | api 'com.lefu.ppcalculatekit:ppcalculatekit:4.1.3' |
+| ppbasekit      | 基础模块   | 是      | api 'com.lefu.ppbasekit:ppbasekit:4.1.5'           |
+| ppbluetoothkit | 蓝牙协议模块 | 根据业务选择 | api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.1.5' |
+| ppcalculatekit | 体脂计算库  | 根据业务选择 | api 'com.lefu.ppcalculatekit:ppcalculatekit:4.1.5' |
 
 PPBaseKit是基础模块，必须集成
 

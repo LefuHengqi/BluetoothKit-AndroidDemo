@@ -12,18 +12,16 @@ import androidx.core.widget.NestedScrollView
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.vo.PPUserModel
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDutianInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDurianInstance
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
-import com.lefu.ppcalculate.PPBodyFatModel
 import com.peng.ppscale.business.ble.listener.*
 import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
-import com.peng.ppscale.device.PeripheralDurian.PPBlutoothPeripheralDutianController
+import com.peng.ppscale.device.PeripheralDurian.PPBlutoothPeripheralDurianController
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.vo.PPBodyFatInScaleVo
-import com.lefu.ppcalculate.calcute.CalculateHelper4
 import com.peng.ppscale.vo.*
 
 
@@ -32,7 +30,7 @@ import com.peng.ppscale.vo.*
  * 连接类型:设备端计算的连接
  * 设备类型 人体秤
  */
-class PeripheralDutianActivity : Activity() {
+class PeripheralDurianActivity : Activity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -41,7 +39,7 @@ class PeripheralDutianActivity : Activity() {
 
     var userModel: PPUserModel? = null
 
-    var controller: PPBlutoothPeripheralDutianController? = PPBlutoothPeripheralDutianInstance.instance.controller
+    var controller: PPBlutoothPeripheralDurianController? = PPBlutoothPeripheralDurianInstance.instance.controller
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -185,10 +183,10 @@ class PeripheralDutianActivity : Activity() {
         override fun monitorBluetoothSwitchState(ppBleSwitchState: PPBleSwitchState?) {
             if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOff) {
                 addPrint(getString(R.string.system_bluetooth_disconnect))
-                Toast.makeText(this@PeripheralDutianActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@PeripheralDurianActivity, getString(R.string.system_bluetooth_disconnect), Toast.LENGTH_SHORT).show()
             } else if (ppBleSwitchState == PPBleSwitchState.PPBleSwitchStateOn) {
                 addPrint(getString(R.string.system_blutooth_on))
-                Toast.makeText(this@PeripheralDutianActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@PeripheralDurianActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
             }
         }
 
