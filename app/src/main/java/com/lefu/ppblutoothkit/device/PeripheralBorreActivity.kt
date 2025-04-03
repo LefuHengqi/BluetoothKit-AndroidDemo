@@ -137,6 +137,8 @@ class PeripheralBorreActivity : AppCompatActivity() {
             userModel?.bone = 20.2
             userModel?.boneRate = 20.2
             userModel?.waterRate = 20.2
+            userModel?.userWeightArray = doubleArrayOf(50.0, 51.0, 53.0, 54.0, 55.0, 56.0, 57.0)
+            userModel?.userWeightTimeArray = longArrayOf(1696118400000, 1696032000000, 1695945600000, 1695859200000, 1695772800000, 1695686400000, 1695600000000)
 
             addPrint("syncUserInfo userName:${userModel?.userName}")
             controller?.getTorreDeviceManager()?.syncUserSevenWeighInfo(userModel, userInfoInterface)
