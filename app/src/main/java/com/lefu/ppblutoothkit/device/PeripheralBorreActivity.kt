@@ -32,6 +32,8 @@ import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
+import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
+import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
@@ -51,7 +53,6 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralBorre.PPBlutoothPeripheralBorreController
-import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -64,6 +65,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
+    private var mCurrentHostUrl: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
 
@@ -91,6 +93,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
+        mCurrentHostUrl = findViewById<TextView>(R.id.mCurrentHostUrl)
         whetherFullyDFUToggleBtn = findViewById<ToggleButton>(R.id.whetherFullyDFUToggleBtn)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
@@ -261,9 +264,11 @@ class PeripheralBorreActivity : AppCompatActivity() {
         if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
             device_ota_layout.visibility = View.VISIBLE
             device_dfu_layout.visibility = View.GONE
+            mCurrentHostUrl?.visibility = View.VISIBLE
         } else {
             device_ota_layout.visibility = View.GONE
             device_dfu_layout.visibility = View.VISIBLE
+            mCurrentHostUrl?.visibility = View.GONE
         }
         findViewById<ToggleButton>(R.id.pregnancyModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
             addPrint("maternity mode isChecked:$isChecked")
@@ -328,6 +333,41 @@ class PeripheralBorreActivity : AppCompatActivity() {
             controller?.getTorreDeviceManager()?.getUnit(modeChangeInterface)
         }
 
+        findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                addPrint("startConfigWifi pager")
+                PeripheralTorreSearchWifiListActivity.deviceModel = deviceModel
+                startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
+            addPrint("getWifiSSID")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                controller?.getTorreDeviceManager()?.getWifiSSID(configWifiInterface)
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.getWifiMac).setOnClickListener {
+            addPrint("getWifiMac")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                controller?.getTorreDeviceManager()?.getWifiMac(configWifiInterface)
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.device_set_get_userinfo_list).setOnClickListener {
+            addPrint("getUserList")
+            controller?.getTorreDeviceManager()?.getUserList(userInfoInterface)
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mCurrentHostUrl?.text = "当前域名：${NetUtil.getScaleDomain()}"
     }
 
     val bleStateInterface = object : PPBleStateInterface() {
@@ -340,7 +380,6 @@ class PeripheralBorreActivity : AppCompatActivity() {
                 if (Companion.deviceModel != null) {
                     deviceModel?.let {
                         if (deviceModel.deviceMac.equals(Companion.deviceModel!!.deviceMac)) {
-                            mTestStateTv?.text = getString(R.string.device_be_connected)
                             addPrint(getString(R.string.device_be_connected))
                             controller?.startConnect(it, this)
                         }
@@ -713,6 +752,32 @@ class PeripheralBorreActivity : AppCompatActivity() {
             addPrint("syncUserSevenWeightInfoFail")
         }
 
+    }
+
+    val configWifiInterface = object : PPTorreConfigWifiInterface() {
+
+        /**
+         * @param ssid
+         * @param state 0 成功 1失败
+         */
+        override fun readDeviceSsidCallBack(ssid: String?, state: Int) {
+            addPrint("readDeviceSsidCallBack ssid:$ssid state:$state")
+        }
+
+        override fun readDeviceWifiMacCallBack(wifiMac: String) {
+            addPrint("readDeviceWifiMacCallBack wifiMac $wifiMac")
+        }
+
+        /**
+         * 配网状态
+         * 0x00：未配网（设备端恢复出厂或APP解除设备配网后状态）
+         * 0x01：已配网（APP已配网状态）
+         *
+         * @param state
+         */
+        override fun configWifiState(state: Int) {
+            addPrint("configWifiState state:$state")
+        }
     }
 
     val touristHistoryDataInterface = object : PPHistoryDataInterface() {

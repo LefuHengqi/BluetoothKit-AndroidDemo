@@ -2,9 +2,11 @@ package com.lefu.ppblutoothkit.device.torre
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.InputType
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppblutoothkit.R
@@ -17,12 +19,17 @@ import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.lefu.ppbase.util.Logger
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
 
 class PeripheralTorreConfigWifiActivity : Activity() {
 
     var configResultTV: TextView? = null
+    var ivShowPassword: ImageView? = null
 
     var etWifiKey: EditText? = null
+
+    private var isPasswordVisible = false
 
     companion object {
         var ssid = ""
@@ -35,8 +42,24 @@ class PeripheralTorreConfigWifiActivity : Activity() {
 
         findViewById<TextView>(R.id.etWifiName)?.text = ssid
         etWifiKey = findViewById<EditText>(R.id.etWifiKey)
+        ivShowPassword = findViewById<ImageView>(R.id.ivShowPassword)
 
         configResultTV = findViewById<TextView>(R.id.configResultTV)
+
+        ivShowPassword?.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+
+            if (isPasswordVisible) {
+                // 显示密码（明文）
+                etWifiKey?.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                // 隐藏密码（密文）
+                etWifiKey?.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+
+            // 确保光标保持在末尾
+            etWifiKey?.setSelection(etWifiKey?.text?.length ?: 0)
+        }
 
         findViewById<Button>(R.id.tvNext).setOnClickListener {
             var pwd = ""
@@ -49,16 +72,28 @@ class PeripheralTorreConfigWifiActivity : Activity() {
 //            val domainName = "http://nat.lefuenergy.com:10082"
             val domainName = NetUtil.getScaleDomain()
 //            val domainName = "http://test-mirrorapi.ruleye.com"
-            configResultTV?.text =getString(R.string.start_config_net)
+            configResultTV?.text = getString(R.string.start_config_net)
             if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {
                 var mDomain = domainName
                 if (mDomain.contains("http://")) {
                     mDomain = domainName.replace("http://", "")
+                } else if (mDomain.contains("https://")) {
+                    mDomain = domainName.replace("https://", "")
                 }
                 Logger.e("configwifi domainName: $domainName")
-                PPBlutoothPeripheralIceInstance.instance.controller?.sendModifyServerDomain(mDomain, configWifiInfoInterface)
+                PPBlutoothPeripheralIceInstance.instance.controller?.sendModifyServerDomain(
+                    mDomain,
+                    configWifiInfoInterface
+                )
             } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
-                PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
+                PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()
+                    ?.configWifi(domainName, ssid, pwd, configWifiInterface)
+            } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre) {
+                PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()
+                    ?.configWifi(domainName, ssid, pwd, configWifiInterface)
+            } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre) {
+                PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()
+                    ?.configWifi(domainName, ssid, pwd, configWifiInterface)
             }
         }
 
@@ -67,7 +102,8 @@ class PeripheralTorreConfigWifiActivity : Activity() {
     val configWifiInterface = object : PPTorreConfigWifiInterface() {
 
         override fun configResult(configStateMenu: PPConfigStateMenu?, resultCode: String?) {
-            configResultTV?.text = "configResult configStateMenu: $configStateMenu\nresultCode: $resultCode"
+            configResultTV?.text =
+                "configResult configStateMenu: $configStateMenu\nresultCode: $resultCode"
         }
 
     }
@@ -105,7 +141,8 @@ class PeripheralTorreConfigWifiActivity : Activity() {
                 }
 
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_GET_CONFIG_FAIL -> {
-                    configResultTV?.text = "Config wifi fail because: Failed to obtain configuration"
+                    configResultTV?.text =
+                        "Config wifi fail because: Failed to obtain configuration"
                 }
 
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_ROUTER_FAIL -> {
@@ -117,7 +154,8 @@ class PeripheralTorreConfigWifiActivity : Activity() {
                 }
 
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_OTHER_FAIL -> {
-                    configResultTV?.text = "Config wifi fail because: Other errors (app can be ignored)"
+                    configResultTV?.text =
+                        "Config wifi fail because: Other errors (app can be ignored)"
                 }
 
                 else -> {
@@ -133,7 +171,14 @@ class PeripheralTorreConfigWifiActivity : Activity() {
         if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {
             PPBlutoothPeripheralIceInstance.instance.controller?.exitConfigWifi()
         } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
-            PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.exitConfigWifi()
+            PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()
+                ?.exitConfigWifi()
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre) {
+            PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()
+                ?.exitConfigWifi()
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre) {
+            PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()
+                ?.exitConfigWifi()
         }
     }
 

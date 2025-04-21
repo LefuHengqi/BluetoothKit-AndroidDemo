@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -316,34 +317,91 @@
                     android:textOff=""
                     android:textOn="" />
 
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/device_ota_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/startConfigWifi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/start_config_net"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/getWifiInfo"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/get_ssid"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/getWifiMac"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/get_wifi_mac"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/setNetHost"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/set_domain_name"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OTA:" />
+
+                    <Button
+                        android:id="@+id/device_set_startLocalOTA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/start_local_ota" />
+
+                    <Button
+                        android:id="@+id/device_set_startOTA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/start_user_ota" />
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/mCurrentHostUrl"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="OTA:" />
+                    android:layout_marginStart="@dimen/dimens_4dp"
+                    android:layout_marginTop="@dimen/dimens_12dp"
+                    android:text="当前的域名"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_sp16" />
 
-                <Button
-                    android:id="@+id/device_set_startLocalOTA"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/start_local_ota" />
-
-                <Button
-                    android:id="@+id/device_set_startOTA"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/start_user_ota" />
             </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/device_dfu_layout"

@@ -55,8 +55,6 @@ import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.vo.PPScaleSendState
-import kotlinx.android.synthetic.main.peripheral_torre_layout.mCurrentHostUrl
-import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -69,6 +67,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
+    private var mCurrentHostUrl: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
 
@@ -100,6 +99,7 @@ class PeripheralTorreActivity : AppCompatActivity() {
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
+        mCurrentHostUrl = findViewById<TextView>(R.id.mCurrentHostUrl)
         whetherFullyDFUToggleBtn = findViewById<ToggleButton>(R.id.whetherFullyDFUToggleBtn)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
@@ -290,11 +290,11 @@ class PeripheralTorreActivity : AppCompatActivity() {
         if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
             device_ota_layout.visibility = View.VISIBLE
             device_dfu_layout.visibility = View.GONE
-            mCurrentHostUrl.visibility = View.VISIBLE
+            mCurrentHostUrl?.visibility = View.VISIBLE
         } else {
             device_ota_layout.visibility = View.GONE
             device_dfu_layout.visibility = View.VISIBLE
-            mCurrentHostUrl.visibility = View.GONE
+            mCurrentHostUrl?.visibility = View.GONE
         }
         findViewById<ToggleButton>(R.id.pregnancyModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
             addPrint("maternity mode isChecked:$isChecked")
@@ -386,7 +386,6 @@ class PeripheralTorreActivity : AppCompatActivity() {
                 if (Companion.deviceModel != null) {
                     deviceModel?.let {
                         if (deviceModel.deviceMac.equals(Companion.deviceModel!!.deviceMac)) {
-                            mTestStateTv?.text = getString(R.string.device_be_connected)
                             addPrint(getString(R.string.device_be_connected))
                             controller?.startConnect(it, this)
                         }

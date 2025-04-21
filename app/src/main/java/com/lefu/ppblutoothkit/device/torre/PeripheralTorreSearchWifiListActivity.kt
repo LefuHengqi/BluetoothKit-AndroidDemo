@@ -17,6 +17,8 @@ import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
 import com.peng.ppscale.vo.PPWifiModel
 
 /**
@@ -131,6 +133,28 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
                     mWifiRefreshSB?.visibility = View.VISIBLE
                 }
             })
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre) {
+            //读取附近的wifi列表
+            PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()?.getWifiList(object : PPTorreConfigWifiInterface() {
+                override fun monitorWiFiListSuccess(wifiModels: List<PPWifiModel>?) {
+                    cloneRotateAnimator()
+                    mDeviceSearchWifAdapter.users = wifiModels?.toMutableList() ?: mutableListOf()
+//                mDeviceSearchWifAdapter.notifyDataSetChanged()
+                    mLoadAnimaLL?.visibility = View.GONE
+                    mWifiRefreshSB?.visibility = View.VISIBLE
+                }
+            })
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre) {
+            //读取附近的wifi列表
+            PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()?.getWifiList(object : PPTorreConfigWifiInterface() {
+                override fun monitorWiFiListSuccess(wifiModels: List<PPWifiModel>?) {
+                    cloneRotateAnimator()
+                    mDeviceSearchWifAdapter.users = wifiModels?.toMutableList() ?: mutableListOf()
+//                mDeviceSearchWifAdapter.notifyDataSetChanged()
+                    mLoadAnimaLL?.visibility = View.GONE
+                    mWifiRefreshSB?.visibility = View.VISIBLE
+                }
+            })
         }
 
     }
@@ -139,8 +163,12 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
         super.onBackPressed()
         if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {
             PPBlutoothPeripheralIceInstance.instance.controller?.exitWifiList()
-        } else {
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre){
             PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.exitConfigWifi()
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre){
+            PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()?.exitConfigWifi()
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre){
+            PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()?.exitConfigWifi()
         }
     }
 
