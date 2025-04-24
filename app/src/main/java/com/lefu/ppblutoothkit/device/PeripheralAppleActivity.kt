@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +40,6 @@ import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
 import com.peng.ppscale.vo.PPScaleSendState
-import kotlinx.android.synthetic.main.peripheral_apple_layout.wifiConfigLayout
 
 /**
  * 对应的协议: 2.x
@@ -49,6 +49,7 @@ import kotlinx.android.synthetic.main.peripheral_apple_layout.wifiConfigLayout
 class PeripheralAppleActivity : AppCompatActivity() {
 
     private var weightTextView: TextView? = null
+    private var wifiConfigLayout: LinearLayout? = null
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
@@ -66,6 +67,7 @@ class PeripheralAppleActivity : AppCompatActivity() {
         setContentView(R.layout.peripheral_apple_layout)
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
+        wifiConfigLayout = findViewById<LinearLayout>(R.id.wifiConfigLayout)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
@@ -97,6 +99,30 @@ class PeripheralAppleActivity : AppCompatActivity() {
             addPrint("startConnect")
             controller?.registDataChangeListener(dataChangeListener)
             deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+        }
+        findViewById<Button>(R.id.readDeviceBattery).setOnClickListener {
+            addPrint("stopConnectDevice")
+            controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
+
+                /**
+                 * 读取电量
+                 * @param power -1 失败，0-100
+                 * @param state -1 不支持 0正常 1充电中
+                 */
+                override fun readDevicePower(power: Int, state: Int) {
+                    if (state >= 0) {
+                        if (power > 0) {
+                            addPrint("readDeviceBattery:$power")
+                        } else {
+                            addPrint("readDeviceBattery fail")
+                        }
+                    } else {
+                        addPrint("device not support readDeviceBattery")
+                    }
+
+                }
+
+            })
         }
         findViewById<Button>(R.id.startReceiveBroadcastData).setOnClickListener {
             addPrint("startReceiveBroadcastData")
@@ -223,9 +249,18 @@ class PeripheralAppleActivity : AppCompatActivity() {
         findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
             addPrint("startConfigWifi")
             if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
-                val intent = Intent(this@PeripheralAppleActivity, BleConfigWifiActivity::class.java)
-                intent.putExtra("address", deviceModel?.deviceMac)
-                startActivity(intent)
+                controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
+                    override fun readDevicePower(power: Int, state: Int) {
+                        addPrint("startConfigWifi power:${power} state:${state}")
+                        if (state != -1 && power > 20) {
+                            val intent = Intent(this@PeripheralAppleActivity, BleConfigWifiActivity::class.java)
+                            intent.putExtra("address", deviceModel?.deviceMac)
+                            startActivity(intent)
+                        } else {
+                            addPrint("The device's battery level can't be lower than 20%")
+                        }
+                    }
+                })
             } else {
                 addPrint("device does not support")
             }

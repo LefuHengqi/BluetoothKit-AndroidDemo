@@ -85,6 +85,13 @@
                     android:text="@string/connect_device" />
 
                 <Button
+                    android:id="@+id/readDeviceBattery"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="读取电量" />
+
+                <Button
                     android:id="@+id/startReceiveBroadcastData"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
