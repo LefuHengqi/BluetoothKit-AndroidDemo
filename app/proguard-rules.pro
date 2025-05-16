@@ -126,6 +126,7 @@ public static java.lang.String TABLENAME;
 -keep class com.besthealth.bh2BodyComposition.** {*;}
 -keep class com.besthealth.bh3BodyComposition.** {*;}
 -keep class com.besthealth.bh4BodyComposition.** {*;}
+-keep class com.besthealth.bh5BodyComposition.** {*;}
 #内置gson/Built in gson
 -keep class * extends com.lefu.gson.reflect.TypeToken
 -keep class com.lefu.gson.** {*;}
