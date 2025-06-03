@@ -50,7 +50,6 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
-import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -65,10 +64,12 @@ class PeripheralDorreActivity : AppCompatActivity() {
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
+    val mTestStateTv: TextView? by lazy { findViewById<TextView>(R.id.mTestStateTv) }
 
     val REQUEST_CODE = 1024
 
     var dfuFilePath: String? = null//本地文件升级时使用
+
 
     private var whetherFullyDFUToggleBtn: ToggleButton? = null//控制是否全量升级，true开启全量
 

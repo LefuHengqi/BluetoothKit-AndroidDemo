@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,8 +36,6 @@ import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppblutoothkit.device.PeripheralBorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralDorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralForreActivity
-import kotlinx.android.synthetic.main.activity_device_list.startFilterName
-import kotlinx.android.synthetic.main.activity_device_list.startRefresh
 
 class ScanDeviceListActivity : Activity() {
     var ppScale: PPSearchManager? = null
@@ -69,6 +68,8 @@ class ScanDeviceListActivity : Activity() {
 
     private fun initView() {
         val toolbar: TextView? = findViewById(R.id.titleTv)
+        val startRefresh: ImageView? = findViewById(R.id.startRefresh)
+        val startFilterName: ImageView? = findViewById(R.id.startFilterName)
         toolbar?.text = "${getString(R.string.app_name)}V${BuildConfig.VERSION_NAME}"
 
         startRefresh?.setOnClickListener(View.OnClickListener { reStartScan() })

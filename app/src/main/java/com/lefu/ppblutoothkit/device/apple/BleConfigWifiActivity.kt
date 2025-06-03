@@ -17,6 +17,9 @@ import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.device.apple.util.WifiUtil
 import com.lefu.ppbase.util.Logger
+import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
+import com.peng.ppscale.business.ble.send.BleSendManager
+import com.peng.ppscale.vo.PPScaleSendState
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -91,7 +94,12 @@ class BleConfigWifiActivity : AppCompatActivity() {
         ssid = etWifiName?.text.toString()
         val password = etWifiKey?.text.toString()
         ssid?.let {
-            PPBlutoothPeripheralAppleInstance.instance.controller?.configWifiData(it, password, configWifiInfoInterface)
+            PPBlutoothPeripheralAppleInstance.instance.controller?.configWifiData(it, password, configWifiInfoInterface, object : PPBleSendResultCallBack {
+                override fun onResult(sendState: PPScaleSendState?) {
+
+                }
+
+            })
         }
     }
 

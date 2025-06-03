@@ -17,14 +17,6 @@ import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
-import kotlinx.android.synthetic.main.activity_calculate_4ac.*
-import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.etImpedance1
-import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.etImpedance2
-import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.sportModeEt
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etAge
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etHeight
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etSex
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etWeight
 
 /**
  * 4电极交流双频算法
@@ -32,6 +24,14 @@ import kotlinx.android.synthetic.main.activity_calculate_8ac.etWeight
 class Calculate4AC2ChannelActivitiy : Activity() {
 
     var deviceName: String = ""
+
+    val etSex: android.widget.EditText by lazy { findViewById(R.id.etSex) }
+    val etHeight: android.widget.EditText by lazy { findViewById(R.id.etHeight) }
+    val etAge: android.widget.EditText by lazy { findViewById(R.id.etAge) }
+    val etWeight: android.widget.EditText by lazy { findViewById(R.id.etWeight) }
+    val etImpedance1: android.widget.EditText by lazy { findViewById(R.id.etImpedance1) }
+    val etImpedance2: android.widget.EditText by lazy { findViewById(R.id.etImpedance2) }
+    val sportModeEt: android.widget.EditText by lazy { findViewById(R.id.sportModeEt) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -2,6 +2,7 @@ package com.lefu.ppblutoothkit.calculate
 
 import android.app.Activity
 import android.content.Intent
+
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -22,12 +23,6 @@ import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
-import com.peng.ppscale.util.DeviceUtil
-import kotlinx.android.synthetic.main.activity_calculate_4ac.*
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etAge
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etHeight
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etSex
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etWeight
 
 /**
  * 4电极交流算法
@@ -38,6 +33,12 @@ class Calculate4ACActivitiy : Activity() {
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate//4电极新版计算库
 
     var spinner: Spinner? = null
+    val etSex: android.widget.EditText by lazy {findViewById(R.id.etSex)}
+    val etHeight: android.widget.EditText by lazy {findViewById(R.id.etHeight)}
+    val etAge: android.widget.EditText by lazy {findViewById(R.id.etAge)}
+    val etWeight: android.widget.EditText by lazy {findViewById(R.id.etWeight)}
+    val etImpedance: android.widget.EditText by lazy {findViewById(R.id.etImpedance)}
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

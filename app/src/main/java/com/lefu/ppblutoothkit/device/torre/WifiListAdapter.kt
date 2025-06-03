@@ -3,10 +3,10 @@ package com.lefu.ppblutoothkit.device.torre
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lefu.ppblutoothkit.R
 import com.peng.ppscale.vo.PPWifiModel
-import kotlinx.android.synthetic.main.adapter_device_search_item_layout.view.*
 
 class WifiListAdapter : RecyclerView.Adapter<WifiListAdapter.ViewHolder>() {
 
@@ -33,8 +33,10 @@ class WifiListAdapter : RecyclerView.Adapter<WifiListAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(wifiModel: PPWifiModel) {
-            itemView.mWifiNameSsidSB.text = wifiModel.ssid
-            itemView.mWifiNameSignSB.text = "rssi:${wifiModel.sign}"
+            var mWifiNameSsidSB = itemView.findViewById<TextView>(R.id.mWifiNameSsidSB)
+            var mWifiNameSignSB = itemView.findViewById<TextView>(R.id.mWifiNameSignSB)
+            mWifiNameSsidSB.text = wifiModel.ssid
+            mWifiNameSignSB.text = "rssi:${wifiModel.sign}"
         }
     }
 

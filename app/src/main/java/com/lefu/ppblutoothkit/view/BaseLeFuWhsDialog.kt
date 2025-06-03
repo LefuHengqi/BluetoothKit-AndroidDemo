@@ -17,7 +17,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.lefu.ppblutoothkit.R
 
-import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
 /**
  *    author : whs
@@ -62,7 +62,7 @@ abstract class BaseLeFuWhsDialog<T : BaseLeFuWhsDialog<T>> : DialogFragment() {
 
         //Restore UI status
         savedInstanceState?.let {
-            baseParams = it.getParcelable(KEY_PARAMS) ?: BaseDialogParams()
+            baseParams = (it.getSerializable(KEY_PARAMS) ?: BaseDialogParams()) as BaseDialogParams
             viewHandlerListener = savedInstanceState.getParcelable(KEY_VIEW_HANDLER)
             onDialogDismissListener = savedInstanceState.getParcelable(KEY_DISMISS_LISTENER)
         }
@@ -115,7 +115,7 @@ abstract class BaseLeFuWhsDialog<T : BaseLeFuWhsDialog<T>> : DialogFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.apply {
-            putParcelable(KEY_PARAMS, baseParams)
+            putSerializable(KEY_PARAMS, baseParams)
             putParcelable(KEY_VIEW_HANDLER, viewHandlerListener)
             putParcelable(KEY_DISMISS_LISTENER, onDialogDismissListener)
         }
@@ -317,7 +317,6 @@ abstract class BaseLeFuWhsDialog<T : BaseLeFuWhsDialog<T>> : DialogFragment() {
     abstract class UnParcelableParams(var fragmentManager: FragmentManager? = null,
                                       var view: View? = null)
 
-    @Parcelize
     class BaseDialogParams(
         @LayoutRes var layoutRes: Int = 0,
         var widthScale: Float = 0f,
@@ -336,5 +335,5 @@ abstract class BaseLeFuWhsDialog<T : BaseLeFuWhsDialog<T>> : DialogFragment() {
         var backgroundDrawableRes: Int = R.drawable.def_dialog_bg,
         var animStyle: Int = 0,
         var needKeyboardViewId: Int = 0
-    ) : UnParcelableParams(), Parcelable
+    ) : UnParcelableParams(), Serializable
 }

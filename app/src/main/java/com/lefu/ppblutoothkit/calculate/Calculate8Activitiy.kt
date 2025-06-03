@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
@@ -21,7 +22,7 @@ import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
-import kotlinx.android.synthetic.main.activity_calculate_8ac.*
+import kotlin.lazy
 
 /**
  * 8电极计算库
@@ -32,6 +33,20 @@ class Calculate8Activitiy : Activity() {
     var spinner: Spinner? = null
 
     var deviceName: String = ""
+    val etSex: EditText by lazy { findViewById(R.id.etSex) }
+    val etHeight: EditText by lazy { findViewById(R.id.etHeight)}
+    val etAge: EditText by lazy { findViewById(R.id.etAge) }
+    val etWeight: EditText by lazy { findViewById(R.id.etWeight) }
+    val z100KhzLeftArmEnCode: EditText by lazy { findViewById(R.id.z100KhzLeftArmEnCode) }
+    val z100KhzLeftLegEnCode: EditText by lazy { findViewById(R.id.z100KhzLeftLegEnCode) }
+    val z100KhzRightArmEnCode: EditText by lazy { findViewById(R.id.z100KhzRightArmEnCode) }
+    val z100KhzRightLegEnCode: EditText by lazy { findViewById(R.id.z100KhzRightLegEnCode) }
+    val z100KhzTrunkEnCode: EditText by lazy { findViewById(R.id.z100KhzTrunkEnCode) }
+    val z20KhzLeftArmEnCode: EditText by lazy { findViewById(R.id.z20KhzLeftArmEnCode) }
+    val z20KhzLeftLegEnCode: EditText by lazy { findViewById(R.id.z20KhzLeftLegEnCode) }
+    val z20KhzRightArmEnCode: EditText by lazy { findViewById(R.id.z20KhzRightArmEnCode) }
+    val z20KhzRightLegEnCode: EditText by lazy { findViewById(R.id.z20KhzRightLegEnCode) }
+    val z20KhzTrunkEnCode: EditText by lazy { findViewById(R.id.z20KhzTrunkEnCode) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -62,21 +62,21 @@ dependencies {
     compileOnly(project(":ppsdkkit:ppbasekit"))
 //    implementation 'com.lefu.ppbasekit:ppbasekit:4.0.1.5'
 
-//    api(project(":ppsdkkit:lefulib:bh1BodyComposition"))
-//    api(project(":ppsdkkit:lefulib:bh2BodyComposition"))
-//    api(project(":ppsdkkit:lefulib:bh3BodyComposition"))
-//    api(project(":ppsdkkit:lefulib:bh4BodyComposition"))
-//    api(project(":ppsdkkit:lefulib:bh5BodyComposition"))
-//    api(project(":ppsdkkit:lefulib:bhBodyComposition"))
-//    api(project(":ppsdkkit:lefulib:body_sl"))
+    api(project(":ppsdkkit:lefulib:bh1BodyComposition"))
+    api(project(":ppsdkkit:lefulib:bh2BodyComposition"))
+    api(project(":ppsdkkit:lefulib:bh3BodyComposition"))
+    api(project(":ppsdkkit:lefulib:bh4BodyComposition"))
+    api(project(":ppsdkkit:lefulib:bh5BodyComposition"))
+    api(project(":ppsdkkit:lefulib:bhBodyComposition"))
+    api(project(":ppsdkkit:lefulib:body_sl"))
 
-    embed project(":ppsdkkit:lefulib:bh1BodyComposition")
-    embed project(":ppsdkkit:lefulib:bh2BodyComposition")
-    embed project(":ppsdkkit:lefulib:bh3BodyComposition")
-    embed project(":ppsdkkit:lefulib:bh4BodyComposition")
-    embed project(":ppsdkkit:lefulib:bh5BodyComposition")
-    embed project(":ppsdkkit:lefulib:bhBodyComposition")
-    embed project(":ppsdkkit:lefulib:body_sl")
+//    embed project(":ppsdkkit:lefulib:bh1BodyComposition")
+//    embed project(":ppsdkkit:lefulib:bh2BodyComposition")
+//    embed project(":ppsdkkit:lefulib:bh3BodyComposition")
+//    embed project(":ppsdkkit:lefulib:bh4BodyComposition")
+//    embed project(":ppsdkkit:lefulib:bh5BodyComposition")
+//    embed project(":ppsdkkit:lefulib:bhBodyComposition")
+//    embed project(":ppsdkkit:lefulib:body_sl")
 
 
 }
