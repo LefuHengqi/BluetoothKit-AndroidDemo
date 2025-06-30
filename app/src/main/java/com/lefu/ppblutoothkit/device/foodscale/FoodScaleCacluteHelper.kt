@@ -13,22 +13,22 @@ import com.lefu.ppbase.PPScaleDefine
 object FoodScaleCacluteHelper {
 
     @JvmStatic
-    fun getValue(context: Context, weightG: Float, unit: PPUnitType, deviceModel: PPDeviceModel): String {
-        DeviceType.deviceType = DeviceUtil.getDeviceType(deviceModel.deviceName)
+    fun getValue(context: Context, weightG: Float, unit: PPUnitType, deviceModel: PPDeviceModel?): String {
+        DeviceType.deviceType = DeviceUtil.getDeviceType(deviceModel?.deviceName)
         var valueStr = ""
         var value = weightG
 //        if (foodScaleGeneral.thanZero == 0) {
 //            value *= -1f
 //        }
         val type = unit
-        valueStr = if (deviceModel.deviceAccuracyType == PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G) {
+        valueStr = if (deviceModel?.deviceAccuracyType == PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G) {
             //            String num = String.valueOf(value);
-            val unit = Energy.toG(value, type, deviceModel.deviceAccuracyType)
+            val unit = Energy.toG(value, type, deviceModel?.deviceAccuracyType?: PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01G)
             val num = unit.format01()
             val unitText = UnitUtil.unitText(context, type)
             num + unitText
         } else {
-            val unit = Energy.toG(value, type, deviceModel.deviceAccuracyType)
+            val unit = Energy.toG(value, type, deviceModel?.deviceAccuracyType?: PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePointG)
             if (unit is EnergyUnitLbOz) {
                 val split = ":"
                 val values = unit.format(type).split(split.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()

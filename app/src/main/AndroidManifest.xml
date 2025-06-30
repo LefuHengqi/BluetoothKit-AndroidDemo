@@ -38,7 +38,7 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".device.SetHostActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name="com.lefu.ppblutoothkit.MainActivity"
             android:exported="true"
@@ -91,6 +91,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralBorreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralKorreActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralForreActivity"

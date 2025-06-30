@@ -2,11 +2,10 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 30
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 

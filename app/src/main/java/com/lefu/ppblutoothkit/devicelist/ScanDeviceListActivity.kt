@@ -36,6 +36,7 @@ import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppblutoothkit.device.PeripheralBorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralDorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralForreActivity
+import com.lefu.ppblutoothkit.device.PeripheralKorreActivity
 
 class ScanDeviceListActivity : Activity() {
     var ppScale: PPSearchManager? = null
@@ -117,6 +118,11 @@ class ScanDeviceListActivity : Activity() {
                 val intent =
                     Intent(this@ScanDeviceListActivity, PeripheralForreActivity::class.java)
                 PeripheralForreActivity.deviceModel = deviceModel
+                startActivity(intent)
+            } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralKorre) {
+                val intent =
+                    Intent(this@ScanDeviceListActivity, PeripheralKorreActivity::class.java)
+                PeripheralKorreActivity.deviceModel = deviceModel
                 startActivity(intent)
             } else if (deviceModel.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralApple) {
                 val intent =
