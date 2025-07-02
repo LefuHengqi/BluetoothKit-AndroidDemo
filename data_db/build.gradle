@@ -32,6 +32,16 @@ android {
         targetGenDir 'src/main/java' //指定生成代码的目录
         daoPackage 'com.lefu.ppscale.db.dao'//生成代码到具体包下
     }
+    
+    // 解决 GreenDAO 任务依赖问题
+    tasks.whenTaskAdded { task ->
+        if (task.name == 'extractReleaseAnnotations') {
+            task.dependsOn 'greendao'
+        }
+        if (task.name == 'extractDebugAnnotations') {
+            task.dependsOn 'greendao'
+        }
+    }
 }
 
 dependencies {
