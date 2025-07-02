@@ -30,7 +30,17 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
         findViewById<Button>(R.id.searchDevice).setOnClickListener(this)
         findViewById<Button>(R.id.calculateBodyFat).setOnClickListener(this)
 
-        requestLocationPermission()
+        handleBLUETOOTHSCANPermission(object : AppPermissionCallback {
+
+            override fun onGranted(permissions: MutableList<String>, granted: Boolean) {
+                if (granted) {
+
+                } else {
+                    handlingPermission()
+                }
+            }
+
+        })
 
     }
 
@@ -64,17 +74,18 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.searchDevice -> {
-                if (isHasBluetoothPermissions()) {
-                    if (PPBluetoothKit.isBluetoothOpened()) {
-                        startActivity(Intent(this@MainActivity, ScanDeviceListActivity::class.java))
-                    } else {
-                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                            return
+
+                handleBLUETOOTHSCANPermission(object : AppPermissionCallback {
+
+                    override fun onGranted(permissions: MutableList<String>, granted: Boolean) {
+                        if (granted) {
+                            startActivity(Intent(this@MainActivity, ScanDeviceListActivity::class.java))
+                        } else {
+                            handlingPermission()
                         }
-                        val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                        startActivityForResult(intent, 0x001)
                     }
-                }
+
+                })
             }
 
             R.id.calculateBodyFat -> {
@@ -91,7 +102,9 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
     private fun initDeviceConfig() {
         val map: MutableMap<String, String> = HashMap()
         DataTask.get(NetUtil.GET_SCALE_CONFIG + PPApplication.appKey, map, object : RetCallBack<DemoDeviceConfigVo>(DemoDeviceConfigVo::class.java) {
-            override fun onError(call: Call, e: Exception, id: Int) {}
+            override fun onError(call: Call, e: Exception, id: Int) {
+                e.printStackTrace()
+            }
             override fun onResponse(configVo: DemoDeviceConfigVo?, p1: Int) {
 
                 configVo?.let {

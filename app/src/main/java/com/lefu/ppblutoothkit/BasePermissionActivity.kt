@@ -1,52 +1,45 @@
 package com.lefu.ppblutoothkit
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.pm.PackageManager
-import android.location.LocationManager
+import android.bluetooth.BluetoothAdapter
+import android.content.Intent
 import android.os.Build
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.annotation.RequiresApi
+import com.hjq.permissions.OnPermissionCallback
+import com.hjq.permissions.XXPermissions
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppblutoothkit.util.CommonUtils
 
 abstract class BasePermissionActivity : Activity() {
 
 
-    var strings = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+    var permissions = mutableListOf<String>(Manifest.permission.ACCESS_FINE_LOCATION)
 
-    var strings31BlePermission = arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_ADVERTISE)
+    @RequiresApi(Build.VERSION_CODES.S)
+    var permissions31 = mutableListOf<String>(
+        Manifest.permission.BLUETOOTH_SCAN,
+        Manifest.permission.BLUETOOTH_CONNECT,
+        Manifest.permission.BLUETOOTH_ADVERTISE
+    )
 
-    /**
-     *   Android 31 and below only need to apply for positioning permission
-     */
-    fun requestLocationPermission() {
-        if (isHasBluetoothPermissions()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                //已经可以进行蓝牙操作
-            } else {
-                if (isLocationEnabled()) {
-                    //已经可以进行蓝牙操作
-                } else {
-                    Toast.makeText(this@BasePermissionActivity, "请开启定位开关", Toast.LENGTH_LONG).show()
-                }
-            }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(this, strings31BlePermission, 1)
-            } else {
-                ActivityCompat.requestPermissions(this, strings, 1)
-            }
-        }
-    }
-
+    @RequiresApi(Build.VERSION_CODES.S)
+    var permissions31HuaWei = mutableListOf<String>(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.BLUETOOTH_SCAN,
+        Manifest.permission.BLUETOOTH_CONNECT,
+        Manifest.permission.BLUETOOTH_ADVERTISE
+    )
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (isHasBluetoothPermissions()) {
+        if (handleCheckBLUETOOTHSCANPermission()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-             //已经可以进行蓝牙操作
+                //已经可以进行蓝牙操作
             } else {
-                if (isLocationEnabled()) {
+                if (CommonUtils.isLocationEnabled(this)) {
                     //已经可以进行蓝牙操作
                 } else {
                     Toast.makeText(this@BasePermissionActivity, "请开启定位开关", Toast.LENGTH_LONG).show()
@@ -58,31 +51,116 @@ abstract class BasePermissionActivity : Activity() {
     }
 
     /**
-     * 判断是否已经赋予权限
-     *
-     * @return
+     * 蓝牙相关权限检测
      */
-    fun isHasBluetoothPermissions(): Boolean {
+    protected fun handleBLUETOOTHSCANPermission(appPermissionCallback: AppPermissionCallback) {
+        var permissions = permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            for (permission in strings31BlePermission) {
-                if (!(ContextCompat.checkSelfPermission(this, permission) === PackageManager.PERMISSION_GRANTED)) {
-                    return false
-                }
-            }
-        } else {
-            for (permission in strings) {
-                if (!(ContextCompat.checkSelfPermission(this, permission) === PackageManager.PERMISSION_GRANTED)) {
-                    return false
-                }
-            }
+            permissions = permissions31
         }
-        return true
+        if (CommonUtils.isHuaweiOS() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions = permissions31HuaWei
+        }
+        if (XXPermissions.isGranted(this, permissions)) {
+            isLocationOrBle(appPermissionCallback, permissions)
+        } else {
+            appPermissionCallback.onGranted(permissions, false)
+        }
     }
 
-    fun isLocationEnabled(): Boolean {
-        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    private fun handleCheckBLUETOOTHSCANPermission(): Boolean {
+        var permissions = permissions
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions = permissions31
+        }
+        if (CommonUtils.isHuaweiOS() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions = permissions31HuaWei
+        }
+        return XXPermissions.isGranted(this, permissions)
+    }
+
+    fun isLocationOrBle(
+        appPermissionCallback: AppPermissionCallback,
+        permissions: MutableList<String>
+    ) {
+        //Android 12以上不需要定位服务
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && CommonUtils.isHuaweiOS().not()) {
+            appPermissionCallback.onGranted(permissions, CommonUtils.isOpenBluetooth())
+        } else {
+            if (CommonUtils.isLocationEnabled(this)) {
+                appPermissionCallback.onGranted(permissions, CommonUtils.isOpenBluetooth())
+            } else {
+                appPermissionCallback.onGranted(permissions, false)
+            }
+        }
+
+    }
+
+    protected fun handlingPermission() {
+        var permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) permissions31 else permissions
+        if (CommonUtils.isHuaweiOS() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions = permissions31HuaWei
+        }
+        XXPermissions.with(this)
+            .permission(permissions)
+            .request(object : OnPermissionCallback {
+                override fun onGranted(
+                    permissions: MutableList<String>,
+                    allGranted: Boolean
+                ) {
+                    if (allGranted) {
+                        requestLocationOrBle()
+                    }
+                }
+            })
+    }
+
+    protected fun requestLocationOrBle() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && CommonUtils.isHuaweiOS().not()) {
+            if (CommonUtils.isOpenBluetooth()) {
+            } else {
+                openBluetooth()
+            }
+        } else {
+            if (CommonUtils.isLocationEnabled(this)) {
+                if (CommonUtils.isOpenBluetooth()) {
+                } else {
+                    openBluetooth()
+                }
+            } else {
+                CommonUtils.openLocation(this)
+            }
+        }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private fun openBluetooth() {
+        val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+        if (bluetoothAdapter != null) {
+            if (!bluetoothAdapter.isEnabled()) {
+                try {
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(enableBtIntent, 0x0001)
+                } catch (e: Exception) {
+                    CommonUtils.openOpenBluetooth()
+                }
+            } else {
+                // 蓝牙已经打开
+                Logger.d("蓝牙已经打开")
+            }
+        } else {
+            // 设备不支持蓝牙
+            Logger.d("设备不支持蓝牙")
+        }
+    }
+
+
+    interface AppPermissionCallback {
+        /**
+         * 请求回调
+         */
+        fun onGranted(permissions: MutableList<String>, all: Boolean)
     }
 
 }

@@ -11,17 +11,17 @@ static def releaseTime() {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
     defaultConfig {
         applicationId "com.lefu.ppblutoothkit"
-        minSdkVersion 21
+        targetSdkVersion 34
+        minSdkVersion 24
         versionCode LIB_VERSION_CODE as int
         versionName LIB_VERSION
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     /******************************以下Demo配置项，你的项目中无需引入*************************************/
     packagingOptions {
-        exclude 'res/values/values.xml'
         exclude 'R.txt'
         exclude 'proguard.txt'
         exclude 'META-INF/proguard/coroutines.pro'
@@ -60,6 +60,12 @@ android {
         pickFirst 'lib/x86/libbh4BodyComposition.so'
 
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     /******************************以上Demo配置项，你的项目中无需引入*************************************/
 
     buildTypes {
@@ -161,6 +167,10 @@ dependencies {
     implementation files('libs\\okhttputils-2_6_2.jar')
     implementation 'com.squareup.okhttp3:okhttp:4.6.0'
     implementation 'com.alibaba:fastjson:1.2.76'
+
+    // 权限请求框架：https://github.com/getActivity/XXPermissions
+//    api 'com.github.getActivity:XXPermissions:20.0'
+    api 'com.github.getActivity:XXPermissions:18.63'
 
     //https://github.com/LefuHengqi/PPBaseKit-Android
     //基础模块，必须/Basic module, must
