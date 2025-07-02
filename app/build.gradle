@@ -31,34 +31,6 @@ android {
         exclude 'META-INF/ppbluetoothkit_debug.kotlin_module'
         exclude 'AndroidManifest.xml'
 
-        //以下代码是Demo需要使用的，在你们的项目中不需要使用
-        //直流秤
-        pickFirst 'lib/armeabi-v7a/libsl.so'
-        pickFirst 'lib/arm64-v8a/libsl.so'
-        pickFirst 'lib/x86_64/libsl.so'
-        pickFirst 'lib/x86/libsl.so'
-        //交流秤
-        pickFirst 'lib/armeabi-v7a/libbhBodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbhBodyComposition.so'
-        pickFirst 'lib/x86_64/libbhBodyComposition.so'
-        pickFirst 'lib/x86/libbhBodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh1BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh1BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh1BodyComposition.so'
-        pickFirst 'lib/x86/libbh1BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh2BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh2BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh2BodyComposition.so'
-        pickFirst 'lib/x86/libbh2BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh3BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh3BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh3BodyComposition.so'
-        pickFirst 'lib/x86/libbh3BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh4BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh4BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh4BodyComposition.so'
-        pickFirst 'lib/x86/libbh4BodyComposition.so'
-
     }
 
     compileOptions {
@@ -179,9 +151,5 @@ dependencies {
     api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.1.8.1'
     //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
     api 'com.lefu.ppcalculatekit:ppcalculatekit:4.1.8.1'
-
-//    api(project(":ppsdkkit:ppbasekit"))
-//    api(project(":ppsdkkit:ppbluetoothkit"))
-//    api(project(":ppsdkkit:ppcalculatekit"))
 
 }
