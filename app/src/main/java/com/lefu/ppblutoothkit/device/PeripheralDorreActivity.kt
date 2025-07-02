@@ -50,7 +50,9 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
-import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
+import com.lefu.ppblutoothkit.databinding.PeripheralDorreLayoutBinding
+// 移除这行导入：
+// import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -60,6 +62,9 @@ import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateT
  */
 class PeripheralDorreActivity : AppCompatActivity() {
 
+    private lateinit var binding: PeripheralDorreLayoutBinding
+    private var mTestStateTv: TextView? = null
+    
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -81,8 +86,14 @@ class PeripheralDorreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContentView(R.layout.peripheral_dorre_layout)
-
+        
+        binding = PeripheralDorreLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        // 如果 mTestStateTv 在 peripheral_dorre_layout.xml 中，使用 binding 访问
+        // 如果在其他布局文件中，需要单独 findViewById
+        mTestStateTv = findViewById(R.id.mTestStateTv) // 或者使用 binding.mTestStateTv
+        
         userModel = DataUtil.getUserModel()
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.memberID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"

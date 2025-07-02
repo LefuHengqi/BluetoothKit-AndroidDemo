@@ -17,14 +17,8 @@ import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
-import kotlinx.android.synthetic.main.activity_calculate_4ac.*
-import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.etImpedance1
-import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.etImpedance2
-import kotlinx.android.synthetic.main.activity_calculate_4ac2channel.sportModeEt
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etAge
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etHeight
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etSex
-import kotlinx.android.synthetic.main.activity_calculate_8ac.etWeight
+import com.lefu.ppblutoothkit.databinding.ActivityCalculate4ac2channelBinding
+// 移除所有 kotlinx.android.synthetic 导入
 
 /**
  * 4电极交流双频算法
@@ -32,12 +26,14 @@ import kotlinx.android.synthetic.main.activity_calculate_8ac.etWeight
 class Calculate4AC2ChannelActivitiy : Activity() {
 
     var deviceName: String = ""
+    private lateinit var binding: ActivityCalculate4ac2channelBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calculate_4ac2channel)
+        binding = ActivityCalculate4ac2channelBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        findViewById<Button>(R.id.calculateBtn).setOnClickListener {
+        binding.calculateBtn.setOnClickListener {
             startCalculate()
         }
 
@@ -45,36 +41,35 @@ class Calculate4AC2ChannelActivitiy : Activity() {
     }
 
     private fun initData() {
-
         val tag = intent.getStringExtra("bodyDataModel")
         if (tag != null) {
             //显示称重完成后的数据
             val bodyBaseModel = DataUtil.bodyBaseModel
             deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
-            etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
-            sportModeEt.setText(if (bodyBaseModel?.userModel?.isAthleteMode == false) "0" else "1")
-            etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
-            etAge.setText(bodyBaseModel?.userModel?.age.toString())
-            etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
-            etImpedance1.setText(bodyBaseModel?.impedance.toString())
-            etImpedance2.setText(bodyBaseModel?.ppImpedance100EnCode.toString())
+            binding.etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
+            binding.sportModeEt.setText(if (bodyBaseModel?.userModel?.isAthleteMode == false) "0" else "1")
+            binding.etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
+            binding.etAge.setText(bodyBaseModel?.userModel?.age.toString())
+            binding.etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
+            binding.etImpedance1.setText(bodyBaseModel?.impedance.toString())
+            binding.etImpedance2.setText(bodyBaseModel?.ppImpedance100EnCode.toString())
         }
     }
 
     private fun startCalculate() {
-        val sex = if (etSex.text?.toString()?.toInt() == 0) {
+        val sex = if (binding.etSex.text?.toString()?.toInt() == 0) {
             PPUserGender.PPUserGenderFemale
         } else {
             PPUserGender.PPUserGenderMale
         }
 
-        val isAthleteMode = sportModeEt.text?.toString()?.toInt() == 1
+        val isAthleteMode = binding.sportModeEt.text?.toString()?.toInt() == 1
 
-        val height = etHeight.text?.toString()?.toInt() ?: 180
-        val age = etAge.text?.toString()?.toInt() ?: 28
-        val weight = etWeight.text?.toString()?.toDouble() ?: 70.00
-        val impedance1 = etImpedance1.text?.toString()?.toLong() ?: 4195332L
-        val impedance2 = etImpedance2.text?.toString()?.toLong() ?: 4195332L
+        val height = binding.etHeight.text?.toString()?.toInt() ?: 180
+        val age = binding.etAge.text?.toString()?.toInt() ?: 28
+        val weight = binding.etWeight.text?.toString()?.toDouble() ?: 70.00
+        val impedance1 = binding.etImpedance1.text?.toString()?.toLong() ?: 4195332L
+        val impedance2 = binding.etImpedance2.text?.toString()?.toLong() ?: 4195332L
 
         val userModel = PPUserModel.Builder()
             .setSex(sex) //gender

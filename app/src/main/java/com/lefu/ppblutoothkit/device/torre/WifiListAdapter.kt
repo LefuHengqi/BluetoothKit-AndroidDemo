@@ -4,51 +4,48 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.databinding.AdapterDeviceSearchItemLayoutBinding
 import com.peng.ppscale.vo.PPWifiModel
-import kotlinx.android.synthetic.main.adapter_device_search_item_layout.view.*
 
-class WifiListAdapter : RecyclerView.Adapter<WifiListAdapter.ViewHolder>() {
+class WifiListAdapter(var wifiList: List<PPWifiModel>) :
+    RecyclerView.Adapter<WifiListAdapter.ViewHolder>() {
 
-    var users: MutableList<PPWifiModel> = mutableListOf()
-    var onItemClickViewInsideListener: OnItemClickViewInsideListener? = null
-
-    override fun getItemViewType(position: Int) = position
+    private var onItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_device_search_item_layout, parent, false)
-        return ViewHolder(view)
+        val binding = AdapterDeviceSearchItemLayoutBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = users[position]
-        holder.bind(user)
-        holder.itemView.setOnClickListener {
-            onItemClickViewInsideListener?.onItemClickViewInside(position, holder.itemView)
+        val wifiBean = wifiList[position]
+        holder.bind(wifiBean, onItemClickListener)
+    }
+
+    override fun getItemCount(): Int = wifiList.size
+
+    class ViewHolder(private val binding: AdapterDeviceSearchItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(wifiBean: PPWifiModel, listener: OnItemClickListener?) {
+            binding.mWifiNameSsidSB.text = wifiBean.ssid
+            binding.mWifiNameSignSB.text = wifiBean.sign.toString()
+            
+            binding.root.setOnClickListener {
+                listener?.onItemClick(wifiBean)
+            }
         }
     }
 
-    override fun getItemCount() = users.size
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        fun bind(wifiModel: PPWifiModel) {
-            itemView.mWifiNameSsidSB.text = wifiModel.ssid
-            itemView.mWifiNameSignSB.text = "rssi:${wifiModel.sign}"
-        }
+    interface OnItemClickListener {
+        fun onItemClick(wifiBean: PPWifiModel)
     }
 
-    fun setOnClickInItemLisenter(onItemClickViewInsideListener: OnItemClickViewInsideListener) {
-        this.onItemClickViewInsideListener = onItemClickViewInsideListener
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.onItemClickListener = listener
     }
-
-    interface OnItemClickViewInsideListener {
-        /**
-         * @param position 列表项在列表中的位置
-         * @param v        列表项被点击的子视图
-         */
-        fun onItemClickViewInside(position: Int, v: View?)
-    }
-
-
 }

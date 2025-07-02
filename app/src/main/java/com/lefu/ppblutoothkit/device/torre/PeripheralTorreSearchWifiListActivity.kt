@@ -33,7 +33,7 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
     private var mLoadAnimaIV: ImageView? = null
     private var mDeviceWifiListRV: RecyclerView? = null
     private var mWifiRefreshSB: Button? = null
-    private val mDeviceSearchWifAdapter: WifiListAdapter = WifiListAdapter()
+    private val mDeviceSearchWifAdapter: WifiListAdapter = WifiListAdapter(mutableListOf())
 
     //旋转动画
     var mRotateAnimator: ObjectAnimator? = null
@@ -62,11 +62,11 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
         }
         loadWifList()
         mDeviceWifiListRV?.adapter = mDeviceSearchWifAdapter
-        mDeviceSearchWifAdapter.setOnClickInItemLisenter(object : WifiListAdapter.OnItemClickViewInsideListener {
-            override fun onItemClickViewInside(position: Int, v: View?) {
+        mDeviceSearchWifAdapter.setOnItemClickListener(object : WifiListAdapter.OnItemClickListener {
+            override fun onItemClick(wifiBean: PPWifiModel) {
                 cloneRotateAnimator()
                 PeripheralTorreConfigWifiActivity.deviceModel = deviceModel
-                PeripheralTorreConfigWifiActivity.ssid = mDeviceSearchWifAdapter.users.get(position).ssid ?: ""
+                PeripheralTorreConfigWifiActivity.ssid = wifiBean.ssid ?: ""
                 startActivity(Intent(this@PeripheralTorreSearchWifiListActivity, PeripheralTorreConfigWifiActivity::class.java))
                 finish()
             }
@@ -111,7 +111,7 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
 
                 override fun monitorWiFiListSuccess(wifiModels: MutableList<PPWifiModel>?) {
                     cloneRotateAnimator()
-                    mDeviceSearchWifAdapter.users = wifiModels?.toMutableList() ?: mutableListOf()
+                    mDeviceSearchWifAdapter.wifiList = wifiModels?.toMutableList() ?: mutableListOf()
 //                mDeviceSearchWifAdapter.notifyDataSetChanged()
                     mLoadAnimaLL?.visibility = View.GONE
                     mWifiRefreshSB?.visibility = View.VISIBLE
@@ -127,7 +127,7 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
             PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.getWifiList(object : PPTorreConfigWifiInterface() {
                 override fun monitorWiFiListSuccess(wifiModels: List<PPWifiModel>?) {
                     cloneRotateAnimator()
-                    mDeviceSearchWifAdapter.users = wifiModels?.toMutableList() ?: mutableListOf()
+                    mDeviceSearchWifAdapter.wifiList = wifiModels?.toMutableList() ?: mutableListOf()
 //                mDeviceSearchWifAdapter.notifyDataSetChanged()
                     mLoadAnimaLL?.visibility = View.GONE
                     mWifiRefreshSB?.visibility = View.VISIBLE
@@ -138,7 +138,7 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
             PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()?.getWifiList(object : PPTorreConfigWifiInterface() {
                 override fun monitorWiFiListSuccess(wifiModels: List<PPWifiModel>?) {
                     cloneRotateAnimator()
-                    mDeviceSearchWifAdapter.users = wifiModels?.toMutableList() ?: mutableListOf()
+                    mDeviceSearchWifAdapter.wifiList = wifiModels?.toMutableList() ?: mutableListOf()
 //                mDeviceSearchWifAdapter.notifyDataSetChanged()
                     mLoadAnimaLL?.visibility = View.GONE
                     mWifiRefreshSB?.visibility = View.VISIBLE
@@ -149,7 +149,7 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
             PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()?.getWifiList(object : PPTorreConfigWifiInterface() {
                 override fun monitorWiFiListSuccess(wifiModels: List<PPWifiModel>?) {
                     cloneRotateAnimator()
-                    mDeviceSearchWifAdapter.users = wifiModels?.toMutableList() ?: mutableListOf()
+                    mDeviceSearchWifAdapter.wifiList = wifiModels?.toMutableList() ?: mutableListOf()
 //                mDeviceSearchWifAdapter.notifyDataSetChanged()
                     mLoadAnimaLL?.visibility = View.GONE
                     mWifiRefreshSB?.visibility = View.VISIBLE

@@ -2,11 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 30
+    namespace 'com.lefu.ppscale.db'  // 添加 namespace 配置
+    compileSdkVersion 35  // 建议升级到 35 以保持一致
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 35  // 建议升级到 35
         versionCode 1
         versionName "1.0"
 
@@ -20,17 +21,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-//    compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_8
-//        targetCompatibility JavaVersion.VERSION_1_8
-//    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     greendao {
         schemaVersion 1 //数据库版本
         targetGenDir 'src/main/java' //指定生成代码的目录
         daoPackage 'com.lefu.ppscale.db.dao'//生成代码到具体包下
     }
-
 }
 
 dependencies {

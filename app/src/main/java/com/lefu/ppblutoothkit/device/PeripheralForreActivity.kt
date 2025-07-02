@@ -1,6 +1,7 @@
 package com.lefu.ppblutoothkit.device
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -9,9 +10,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -31,7 +34,8 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
+import com.lefu.ppblutoothkit.databinding.PeripheralForreLayoutBinding
+import com.lefu.ppblutoothkit.databinding.ProductTestDfuTestActivityBinding
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralForreInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
@@ -52,7 +56,6 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralForre.PPBlutoothPeripheralForreController
-import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -80,11 +83,15 @@ class PeripheralForreActivity : AppCompatActivity() {
         var deviceModel: PPDeviceModel? = null
     }
 
+    private lateinit var binding: PeripheralForreLayoutBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContentView(R.layout.peripheral_forre_layout)
+        binding = PeripheralForreLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        // 替换所有 mTestStateTv 为 binding.mTestStateTv
         userModel = DataUtil.getUserModel()
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.memberID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
@@ -251,7 +258,7 @@ class PeripheralForreActivity : AppCompatActivity() {
                 if (Companion.deviceModel != null) {
                     deviceModel?.let {
                         if (deviceModel.deviceMac.equals(Companion.deviceModel!!.deviceMac)) {
-                            mTestStateTv?.text = getString(R.string.device_be_connected)
+                            device_set_connect_state?.text = getString(R.string.device_be_connected)
                             addPrint(getString(R.string.device_be_connected))
                             controller?.startConnect(it, this)
                         }
@@ -405,14 +412,12 @@ class PeripheralForreActivity : AppCompatActivity() {
             .show()
     }
 
-    fun addPrint(msg: String) {
+    internal fun addPrint(msg: String) {
         if (msg.isNotEmpty()) {
             Logger.d(msg)
             logTxt?.append("$msg\n")
         }
     }
-
-
 
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface {
 

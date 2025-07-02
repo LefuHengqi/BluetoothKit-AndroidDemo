@@ -21,30 +21,33 @@ import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
-import kotlinx.android.synthetic.main.activity_calculate_8ac.*
+// 添加 View Binding 导入
+import com.lefu.ppblutoothkit.databinding.ActivityCalculate8acBinding
+// 移除 kotlinx.android.synthetic 导入
 
 /**
  * 8电极计算库
  */
 class Calculate8Activitiy : Activity() {
 
-    var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8//CF577系列
+    var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
     var spinner: Spinner? = null
-
     var deviceName: String = ""
+    private lateinit var binding: ActivityCalculate8acBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calculate_8ac)
+        binding = ActivityCalculate8acBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.title = getString(R.string._8ac)
         toolbar?.setTitleTextColor(Color.WHITE)
 
-        findViewById<Button>(R.id.calculateBtn).setOnClickListener {
+        binding.calculateBtn.setOnClickListener {
             startCalculate()
         }
-        spinner = findViewById<Spinner>(R.id.spinner)
+        spinner = binding.spinner
         val adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         adapter.add("Product1-CF577")
@@ -57,17 +60,17 @@ class Calculate8Activitiy : Activity() {
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8//8电极算法, bhProduct =1--CF577
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
                 } else if (position == 1) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1//8电极算法，bhProduct =3--CF586
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
                 } else if (position == 2) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0//8电极算法，bhProduct =4 --CF597
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
                 } else if (position == 3) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2//8电极算法，bhProduct =7 --CF610
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2
                 } else if (position == 4) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3//8电极算法，bhProduct =5 --CF577_N1
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
                 } else if (position == 5) {
-                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4//8电极算法，bhProduct =6 --CF597_N
+                    calcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
                 }
             }
 
@@ -82,75 +85,68 @@ class Calculate8Activitiy : Activity() {
     private fun initData() {
         val tag = intent.getStringExtra("bodyDataModel")
         if (tag != null) {
-            //显示称重完成后的数据
             val bodyBaseModel = DataUtil.bodyBaseModel
             deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
-            etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
-            etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
-            etAge.setText(bodyBaseModel?.userModel?.age.toString())
-            etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
-            z100KhzLeftArmEnCode.setText(bodyBaseModel?.z100KhzLeftArmEnCode.toString())
-            z100KhzLeftLegEnCode.setText(bodyBaseModel?.z100KhzLeftLegEnCode.toString())
-            z100KhzRightArmEnCode.setText(bodyBaseModel?.z100KhzRightArmEnCode.toString())
-            z100KhzRightLegEnCode.setText(bodyBaseModel?.z100KhzRightLegEnCode.toString())
-            z100KhzTrunkEnCode.setText(bodyBaseModel?.z100KhzTrunkEnCode.toString())
-            z20KhzLeftArmEnCode.setText(bodyBaseModel?.z20KhzLeftArmEnCode.toString())
-            z20KhzLeftLegEnCode.setText(bodyBaseModel?.z20KhzLeftLegEnCode.toString())
-            z20KhzRightArmEnCode.setText(bodyBaseModel?.z20KhzRightArmEnCode.toString())
-            z20KhzRightLegEnCode.setText(bodyBaseModel?.z20KhzRightLegEnCode.toString())
-            z20KhzTrunkEnCode.setText(bodyBaseModel?.z20KhzTrunkEnCode.toString())
+            binding.etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
+            binding.etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
+            binding.etAge.setText(bodyBaseModel?.userModel?.age.toString())
+            binding.etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
+            binding.z100KhzLeftArmEnCode.setText(bodyBaseModel?.z100KhzLeftArmEnCode.toString())
+            binding.z100KhzLeftLegEnCode.setText(bodyBaseModel?.z100KhzLeftLegEnCode.toString())
+            binding.z100KhzRightArmEnCode.setText(bodyBaseModel?.z100KhzRightArmEnCode.toString())
+            binding.z100KhzRightLegEnCode.setText(bodyBaseModel?.z100KhzRightLegEnCode.toString())
+            binding.z100KhzTrunkEnCode.setText(bodyBaseModel?.z100KhzTrunkEnCode.toString())
+            binding.z20KhzLeftArmEnCode.setText(bodyBaseModel?.z20KhzLeftArmEnCode.toString())
+            binding.z20KhzLeftLegEnCode.setText(bodyBaseModel?.z20KhzLeftLegEnCode.toString())
+            binding.z20KhzRightArmEnCode.setText(bodyBaseModel?.z20KhzRightArmEnCode.toString())
+            binding.z20KhzRightLegEnCode.setText(bodyBaseModel?.z20KhzRightLegEnCode.toString())
+            binding.z20KhzTrunkEnCode.setText(bodyBaseModel?.z20KhzTrunkEnCode.toString())
 
             calcuteType = bodyBaseModel?.deviceModel?.deviceCalcuteType
             if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8) {
-                // 8电极交流算法, bhProduct=1--CF577
                 spinner?.setSelection(0)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1) {
-                // 8电极算法，bhProduct =3 --CF586
                 spinner?.setSelection(1)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0) {
-                // 8电极算法，bhProduct =4 --CF597
                 spinner?.setSelection(2)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2) {
-                // 8电极算法，bhProduct =7 --CF610
                 spinner?.setSelection(3)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3) {
-                // 8电极算法，bhProduct =5 --CF577_N1
                 spinner?.setSelection(4)
             } else if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4) {
-                // 8电极算法，bhProduct =6 --CF597_N
                 spinner?.setSelection(5)
             }
         }
     }
 
     private fun startCalculate() {
-        val sex = if (etSex.text?.toString()?.toInt() == 0) {
+        val sex = if (binding.etSex.text?.toString()?.toInt() == 0) {
             PPUserGender.PPUserGenderFemale
         } else {
             PPUserGender.PPUserGenderMale
         }
-        val height = etHeight.text?.toString()?.toInt() ?: 168
-        val age = etAge.text?.toString()?.toInt() ?: 35
-        val weight = etWeight.text?.toString()?.toDouble() ?: 83.00
+        val height = binding.etHeight.text?.toString()?.toInt() ?: 168
+        val age = binding.etAge.text?.toString()?.toInt() ?: 35
+        val weight = binding.etWeight.text?.toString()?.toDouble() ?: 83.00
 
-        val z100KhzLeftArmEnCode = z100KhzLeftArmEnCode.text?.toString()?.toLong() ?: 294794323L
-        val z100KhzLeftLegEnCode = z100KhzLeftLegEnCode.text?.toString()?.toLong() ?: 806102147L
-        val z100KhzRightArmEnCode = z100KhzRightArmEnCode.text?.toString()?.toLong() ?: 26360525L
-        val z100KhzRightLegEnCode = z100KhzRightLegEnCode.text?.toString()?.toLong() ?: 816581534L
-        val z100KhzTrunkEnCode = z100KhzTrunkEnCode.text?.toString()?.toLong() ?: 1080247226L
-        val z20KhzLeftArmEnCode = z20KhzLeftArmEnCode.text?.toString()?.toLong() ?: 27983001L
-        val z20KhzLeftLegEnCode = z20KhzLeftLegEnCode.text?.toString()?.toLong() ?: 837194050L
-        val z20KhzRightArmEnCode = z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 1634195706L
-        val z20KhzRightLegEnCode = z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463L
-        val z20KhzTrunkEnCode = z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429L
+        val z100KhzLeftArmEnCode = binding.z100KhzLeftArmEnCode.text?.toString()?.toLong() ?: 294794323L
+        val z100KhzLeftLegEnCode = binding.z100KhzLeftLegEnCode.text?.toString()?.toLong() ?: 806102147L
+        val z100KhzRightArmEnCode = binding.z100KhzRightArmEnCode.text?.toString()?.toLong() ?: 26360525L
+        val z100KhzRightLegEnCode = binding.z100KhzRightLegEnCode.text?.toString()?.toLong() ?: 816581534L
+        val z100KhzTrunkEnCode = binding.z100KhzTrunkEnCode.text?.toString()?.toLong() ?: 1080247226L
+        val z20KhzLeftArmEnCode = binding.z20KhzLeftArmEnCode.text?.toString()?.toLong() ?: 27983001L
+        val z20KhzLeftLegEnCode = binding.z20KhzLeftLegEnCode.text?.toString()?.toLong() ?: 837194050L
+        val z20KhzRightArmEnCode = binding.z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 1634195706L
+        val z20KhzRightLegEnCode = binding.z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463L
+        val z20KhzTrunkEnCode = binding.z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429L
 
         val userModel = PPUserModel.Builder()
-            .setSex(sex) //gender
-            .setHeight(height)//height 90-220
-            .setAge(age)//age 6-99
+            .setSex(sex)
+            .setHeight(height)
+            .setAge(age)
             .build()
 
-        val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
+        val deviceModel = PPDeviceModel("", deviceName)
         deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
@@ -169,7 +165,6 @@ class Calculate8Activitiy : Activity() {
         bodyBaseModel.z20KhzTrunkEnCode = z20KhzTrunkEnCode
 
         val fatModel = PPBodyFatModel(bodyBaseModel)
-
         val ppDetailModel = PPBodyDetailModel(fatModel)
         Log.d("liyp_", ppDetailModel.toString())
 
@@ -179,5 +174,4 @@ class Calculate8Activitiy : Activity() {
         val intent = Intent(this@Calculate8Activitiy, BodyDataDetailActivity::class.java)
         startActivity(intent)
     }
-
 }

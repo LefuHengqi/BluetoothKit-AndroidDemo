@@ -1,15 +1,11 @@
 package com.lefu.ppblutoothkit
 
-import android.Manifest
-import android.bluetooth.BluetoothAdapter
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import com.lefu.ppblutoothkit.calculate.CalculateManagerActivity
 import com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity
 import com.lefu.ppblutoothkit.log.LogActivity
