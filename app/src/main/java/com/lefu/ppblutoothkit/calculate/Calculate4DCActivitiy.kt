@@ -1,15 +1,16 @@
 package com.lefu.ppblutoothkit.calculate
 
-import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
+import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.util.DataUtil
@@ -19,12 +20,11 @@ import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
 // 添加 View Binding 导入
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate4dcBinding
-// 移除所有 kotlinx.android.synthetic 导入
 
 /**
  * 直流秤计算库
  */
-class Calculate4DCActivitiy : Activity() {
+class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
 
     var deviceName: String = ""
     private lateinit var binding: ActivityCalculate4dcBinding
@@ -33,12 +33,27 @@ class Calculate4DCActivitiy : Activity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCalculate4dcBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
 
         binding.calculateBtn.setOnClickListener {
             startCalculate()
         }
 
         initData()
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setupUnifiedToolbar(
+            toolbar = toolbar,
+            title = "直流秤计算",
+            showBackButton = true
+        )
     }
 
     private fun initData() {

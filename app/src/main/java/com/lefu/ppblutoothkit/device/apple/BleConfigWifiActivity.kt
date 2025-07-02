@@ -12,6 +12,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.okhttp.NetUtil
@@ -20,7 +22,7 @@ import com.lefu.ppbase.util.Logger
 import java.lang.ref.WeakReference
 import java.util.*
 
-class BleConfigWifiActivity : AppCompatActivity() {
+class BleConfigWifiActivity : BaseImmersivePermissionActivity() {
     var RET_CODE_SYSTEM_WIFI_SETTINGS = 8161
     private var etWifiName: EditText? = null
     var etWifiKey: EditText? = null
@@ -37,10 +39,28 @@ class BleConfigWifiActivity : AppCompatActivity() {
     var tvNext: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_wifi_config)
+        setContentView(R.layout.activity_ble_config_wifi)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         mHandler = PreviewHandler(this)
         address = intent.getStringExtra("address")
         initView()
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "WiFi配置",
+                showBackButton = true
+            )
+        }
     }
 
     private fun initView() {

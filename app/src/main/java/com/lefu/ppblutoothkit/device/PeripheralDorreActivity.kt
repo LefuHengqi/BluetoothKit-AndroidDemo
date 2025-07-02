@@ -17,6 +17,8 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
@@ -60,7 +62,7 @@ import com.lefu.ppblutoothkit.databinding.PeripheralDorreLayoutBinding
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralDorreActivity : AppCompatActivity() {
+class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
 
     private lateinit var binding: PeripheralDorreLayoutBinding
     private var mTestStateTv: TextView? = null
@@ -90,6 +92,12 @@ class PeripheralDorreActivity : AppCompatActivity() {
         binding = PeripheralDorreLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         // 如果 mTestStateTv 在 peripheral_dorre_layout.xml 中，使用 binding 访问
         // 如果在其他布局文件中，需要单独 findViewById
         mTestStateTv = findViewById(R.id.mTestStateTv) // 或者使用 binding.mTestStateTv
@@ -118,6 +126,17 @@ class PeripheralDorreActivity : AppCompatActivity() {
         initClick()
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Dorre设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {
@@ -842,7 +861,7 @@ class PeripheralDorreActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&

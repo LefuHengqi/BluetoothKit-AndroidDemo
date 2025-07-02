@@ -1,6 +1,8 @@
 package com.lefu.ppblutoothkit.device
 
 import android.app.Activity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -25,7 +27,7 @@ import com.lefu.ppbase.PPDeviceModel
  * 连接类型:广播
  * 设备类型 厨房秤
  */
-class PeripheralGrapesActivity : Activity() {
+class PeripheralGrapesActivity : BaseImmersivePermissionActivity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -39,8 +41,14 @@ class PeripheralGrapesActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.peripheral_banana_layout)
-
+        setContentView(R.layout.peripheral_grapes_layout)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
@@ -58,6 +66,17 @@ class PeripheralGrapesActivity : Activity() {
 
         initClick()
 
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Grapes设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {

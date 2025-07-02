@@ -2,6 +2,8 @@ package com.lefu.ppblutoothkit.device.torre
 
 import android.animation.ObjectAnimator
 import android.app.Activity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -27,7 +29,7 @@ import com.peng.ppscale.vo.PPWifiModel
  *    date   : 2023/4/3 14:45
  *    desc   : 设备的wifi列表
  */
-class PeripheralTorreSearchWifiListActivity : Activity() {
+class PeripheralTorreSearchWifiListActivity : BaseImmersivePermissionActivity() {
 
     private var mLoadAnimaLL: LinearLayout? = null
     private var mLoadAnimaIV: ImageView? = null
@@ -45,7 +47,25 @@ class PeripheralTorreSearchWifiListActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device_search_wifi_layout)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         initView()
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "WiFi列表搜索",
+                showBackButton = true
+            )
+        }
     }
 
     /**

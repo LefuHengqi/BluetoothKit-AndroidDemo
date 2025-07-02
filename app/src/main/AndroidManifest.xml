@@ -37,10 +37,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".device.SetHostActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.MainActivity"
             android:exported="true"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,106 +52,136 @@
         </activity>
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.BodyDataDetailActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.BodyDataStateActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.UserinfoActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" /> <!-- Calculate -->
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.CalculateManagerActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Torre-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreConfigWifiActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralTorreActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralDorreActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralBorreActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralForreActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Apple-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralAppleActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Banana-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralBananaActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Coconut-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralCoconutActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Dutian-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralDurianActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Egg-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralEggActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Fish-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralFishActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Grapes-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralGrapesActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Hamburger-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralHamburgerActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Ice-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralIceActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <!--Jambul-->
         <activity
             android:name="com.lefu.ppblutoothkit.device.PeripheralJambulActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name=".device.apple.BleConfigWifiActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name=".device.apple.WifiBodyDataDetailActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
             android:name=".device.apple.WifiDataListActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".log.LogActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".filter.FilterNameActivity"
+            android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
 
         <provider

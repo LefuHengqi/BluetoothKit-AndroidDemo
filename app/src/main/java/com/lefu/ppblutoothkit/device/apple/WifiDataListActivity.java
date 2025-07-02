@@ -7,6 +7,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity;
 
 import com.alibaba.fastjson.JSON;
 import com.lefu.ppblutoothkit.util.SettingManager;
@@ -24,7 +26,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-public class WifiDataListActivity extends AppCompatActivity {
+public class WifiDataListActivity extends BaseImmersivePermissionActivity {
 
     private ListView listView;
     private WifiDataListAdapter adapter;
@@ -33,7 +35,28 @@ public class WifiDataListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_data_list);
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode();
+        
+        // 初始化Toolbar
+        initToolbar();
+        
+        initView();
+    }
+    
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setupUnifiedToolbar(
+                toolbar,
+                "WiFi数据列表",
+                true
+            );
+        }
+    }
 
+    private void initView() {
         adapter = new WifiDataListAdapter(WifiDataListActivity.this, R.layout.list_view_device, new ArrayList<WifiDataVo.Data>());
         listView = (ListView) findViewById(R.id.list_View);
         listView.setAdapter(adapter);

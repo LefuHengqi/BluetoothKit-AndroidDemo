@@ -7,9 +7,10 @@ import android.os.Handler
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.BuildConfig
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.databinding.ActivityDeviceListBinding
@@ -38,7 +39,7 @@ import com.lefu.ppblutoothkit.device.PeripheralBorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralDorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralForreActivity
 
-class ScanDeviceListActivity : AppCompatActivity() {
+class ScanDeviceListActivity : BaseImmersivePermissionActivity() {
     var ppScale: PPSearchManager? = null
     var isOnResume = false //页面可见时再重新发起扫描
     private var adapter: DeviceListAdapter? = null
@@ -55,6 +56,9 @@ class ScanDeviceListActivity : AppCompatActivity() {
         binding = ActivityDeviceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
         adapter = DeviceListAdapter()
         adapter?.setOnItemClickListener { adapter, view, position ->
             onStartDeviceSetPager(position)
@@ -65,6 +69,9 @@ class ScanDeviceListActivity : AppCompatActivity() {
     }
     
     private fun initView() {
+        // 初始化Toolbar
+        initToolbar()
+        
         // 修复：startRefresh是ImageView，应该使用setOnClickListener而不是setOnRefreshListener
         binding.startRefresh.setOnClickListener {
             reStartScan() // 重新开始扫描
@@ -77,11 +84,15 @@ class ScanDeviceListActivity : AppCompatActivity() {
         
         binding.deviceListRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.deviceListRecyclerView.adapter = adapter
-        
-        // 移除以下三行代码，因为布局文件中没有toolbar组件
-        // setSupportActionBar(binding.toolbar)
-        // supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        // supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setupUnifiedToolbar(
+            toolbar = toolbar,
+            title = "设备扫描",
+            showBackButton = true
+        )
     }
     
     private fun initBle() {

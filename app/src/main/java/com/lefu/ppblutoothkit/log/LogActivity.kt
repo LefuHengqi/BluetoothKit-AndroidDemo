@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lefu.ppblutoothkit.R
@@ -13,7 +15,7 @@ import com.lefu.ppblutoothkit.view.MsgDialog
 import com.lefu.ppbase.util.Logger
 import java.io.File
 
-class LogActivity : FragmentActivity() {
+class LogActivity : BaseImmersivePermissionActivity() {
 
     var adapter: DeviceLogListAdapter? = null
 
@@ -28,6 +30,28 @@ class LogActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_log)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
+        initView()
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "日志",
+                showBackButton = true
+            )
+        }
+    }
+
+    private fun initView() {
         if (logType == 0) {
             deviceLog = "/Log/AppLog"
             findViewById<TextView>(R.id.title).setText("AppLog")
@@ -38,13 +62,8 @@ class LogActivity : FragmentActivity() {
             deviceLog = "/Log/AppLog"
             findViewById<TextView>(R.id.title).setText("AppLog")
         }
-        initView()
-        initData()
-    }
-
-    private fun initView() {
-
-    }
+         initData()
+     }
 
     private fun initData() {
         adapter = DeviceLogListAdapter()

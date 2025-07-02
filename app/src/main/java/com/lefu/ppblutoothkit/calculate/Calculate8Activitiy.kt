@@ -1,6 +1,8 @@
 package com.lefu.ppblutoothkit.calculate
 
 import android.app.Activity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -10,7 +12,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
-import androidx.appcompat.widget.Toolbar
+
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
@@ -28,7 +30,7 @@ import com.lefu.ppblutoothkit.databinding.ActivityCalculate8acBinding
 /**
  * 8电极计算库
  */
-class Calculate8Activitiy : Activity() {
+class Calculate8Activitiy : BaseImmersivePermissionActivity() {
 
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
     var spinner: Spinner? = null
@@ -39,10 +41,12 @@ class Calculate8Activitiy : Activity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCalculate8acBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val toolbar: Toolbar? = findViewById(R.id.toolbar)
-        toolbar?.title = getString(R.string._8ac)
-        toolbar?.setTitleTextColor(Color.WHITE)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
 
         binding.calculateBtn.setOnClickListener {
             startCalculate()
@@ -80,6 +84,17 @@ class Calculate8Activitiy : Activity() {
 
         }
         initData()
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "8电极计算",
+                showBackButton = true
+            )
+        }
     }
 
     private fun initData() {

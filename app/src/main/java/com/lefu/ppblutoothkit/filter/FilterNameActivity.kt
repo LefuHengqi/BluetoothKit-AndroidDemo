@@ -9,10 +9,11 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity
 
-class FilterNameActivity : FragmentActivity() {
+class FilterNameActivity : BaseImmersivePermissionActivity() {
 
     private var et_filterName: EditText? = null
     private var seekBar: SeekBar? = null
@@ -21,6 +22,11 @@ class FilterNameActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter_name)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
         initToolbar()
 
         et_filterName = findViewById(R.id.et_filterName)
@@ -50,14 +56,13 @@ class FilterNameActivity : FragmentActivity() {
 
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
-        toolbar?.title = "名称过滤"
-        toolbar?.setTitleTextColor(Color.WHITE)
-
-        toolbar?.setNavigationIcon(getDrawable(R.drawable.baseline_keyboard_arrow_left_24))
-        toolbar?.setNavigationOnClickListener {
-            onBackPressed()
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "过滤器名称",
+                showBackButton = true
+            )
         }
-
     }
 
     override fun onBackPressed() {

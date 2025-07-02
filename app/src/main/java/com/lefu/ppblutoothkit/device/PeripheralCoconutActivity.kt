@@ -9,8 +9,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPUserModel
@@ -36,7 +38,7 @@ import com.peng.ppscale.vo.*
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralCoconutActivity : AppCompatActivity() {
+class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -54,7 +56,13 @@ class PeripheralCoconutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_coconut_layout)
-
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
@@ -76,6 +84,17 @@ class PeripheralCoconutActivity : AppCompatActivity() {
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         initClick()
 
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Coconut设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {

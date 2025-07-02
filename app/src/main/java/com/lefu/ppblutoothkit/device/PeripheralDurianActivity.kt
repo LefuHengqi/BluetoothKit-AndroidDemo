@@ -1,6 +1,8 @@
 package com.lefu.ppblutoothkit.device
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -30,7 +32,7 @@ import com.peng.ppscale.vo.*
  * 连接类型:设备端计算的连接
  * 设备类型 人体秤
  */
-class PeripheralDurianActivity : Activity() {
+class PeripheralDurianActivity : BaseImmersivePermissionActivity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -48,7 +50,13 @@ class PeripheralDurianActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_dutian_layout)
-
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
@@ -73,6 +81,17 @@ class PeripheralDurianActivity : Activity() {
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         initClick()
 
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Durian设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {

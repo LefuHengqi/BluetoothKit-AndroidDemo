@@ -1,8 +1,6 @@
 package com.lefu.ppblutoothkit.calculate
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -12,14 +10,21 @@ import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.vo.PPUnitType
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 
-class CalculateManagerActivity : Activity(), View.OnClickListener {
+class CalculateManagerActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_caculate_manager)
-
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         findViewById<Button>(R.id.dc4).setOnClickListener(this)
         findViewById<Button>(R.id.ac4).setOnClickListener(this)
         findViewById<Button>(R.id.ac4_2channel).setOnClickListener(this)
@@ -33,6 +38,8 @@ class CalculateManagerActivity : Activity(), View.OnClickListener {
 
             val weightD = weightET.text?.toString() ?: "0.0"
 
+            if(weightD.isNullOrEmpty()) return@setOnClickListener
+
             val toFloat = weightD.toDouble()
             val weightValueST_LB = PPUtil.getWeightValueD(PPUnitType.PPUnitST_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
             val weightValueD_ST = PPUtil.getWeightValueD(PPUnitType.PPUnitST, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
@@ -44,9 +51,17 @@ class CalculateManagerActivity : Activity(), View.OnClickListener {
             resultTV.text = text
         }
 
+    }
+    
+    private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
-        toolbar?.title = "Calculate"
-        toolbar?.setTitleTextColor(Color.WHITE)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "计算管理",
+                showBackButton = true
+            )
+        }
     }
 
     override fun onClick(v: View?) {

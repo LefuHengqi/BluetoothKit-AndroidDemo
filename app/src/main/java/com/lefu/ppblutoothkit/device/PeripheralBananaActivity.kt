@@ -1,6 +1,8 @@
 package com.lefu.ppblutoothkit.device
 
 import android.app.Activity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -25,7 +27,7 @@ import com.lefu.ppbase.PPDeviceModel
  * 连接类型:广播
  * 设备类型 人体秤
  */
-class PeripheralBananaActivity : Activity() {
+class PeripheralBananaActivity : BaseImmersivePermissionActivity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -41,7 +43,13 @@ class PeripheralBananaActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_banana_layout)
-
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
@@ -60,6 +68,17 @@ class PeripheralBananaActivity : Activity() {
 
         initClick()
 
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Banana设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {
