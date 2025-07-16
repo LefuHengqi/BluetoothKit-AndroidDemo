@@ -11,7 +11,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
@@ -39,7 +38,7 @@ class BleConfigWifiActivity : BaseImmersivePermissionActivity() {
     var tvNext: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ble_config_wifi)
+        setContentView(R.layout.activity_wifi_config)
         
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
