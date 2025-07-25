@@ -5,12 +5,12 @@
     <item
         android:id="@+id/menu_item_export_app_log"
         android:title="App日志"
-        app:showAsAction="collapseActionView" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_item_export_device_log"
         android:title="设备日志"
         android:visible="true"
-        app:showAsAction="collapseActionView" />
+        app:showAsAction="never" />
 
 </menu>

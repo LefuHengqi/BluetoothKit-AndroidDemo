@@ -2,6 +2,8 @@ package com.lefu.ppblutoothkit
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
@@ -53,6 +55,7 @@ class MainActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
         
         // 设置菜单
         toolbar.inflateMenu(R.menu.main_toolbar_menu)
+        
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_item_export_app_log -> {
@@ -69,8 +72,31 @@ class MainActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
                     true
                 }
 
-                else -> super.onOptionsItemSelected(it)
+                else -> false
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_export_app_log -> {
+                LogActivity.logType = 0
+                val intent = Intent(this, LogActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_item_export_device_log -> {
+                LogActivity.logType = 1
+                val intent = Intent(this, LogActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
