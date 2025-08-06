@@ -159,7 +159,9 @@ dependencies {
 
     implementation project(':data_db')
 
-    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+//    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    api files('libs\\rxpermissions-0.10.3.aar')
+
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
 
@@ -174,14 +176,14 @@ dependencies {
 
     //https://github.com/LefuHengqi/PPBaseKit-Android
     //基础模块，必须/Basic module, must
-    api 'com.lefu.ppbasekit:ppbasekit:4.1.8.1'
-    //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
-    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.1.8.1'
-    //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
-    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.1.8.1'
+//    api 'com.lefu.ppbasekit:ppbasekit:4.1.8.1'
+//    //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
+//    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.1.8.1'
+//    //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
+//    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.1.8.1'
 
-//    api(project(":ppsdkkit:ppbasekit"))
-//    api(project(":ppsdkkit:ppbluetoothkit"))
-//    api(project(":ppsdkkit:ppcalculatekit"))
+    api(project(":ppsdkkit:ppbasekit"))
+    api(project(":ppsdkkit:ppbluetoothkit"))
+    api(project(":ppsdkkit:ppcalculatekit"))
 
 }
