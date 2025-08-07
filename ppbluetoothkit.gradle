@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
-apply plugin: 'com.kezong.fat-aar'
 
 def releaseTime() {
 //GMT+8代表北京时间
@@ -14,16 +13,32 @@ def GROUP_ID = "com.lefu.ppbluetoothkit"
 def ARTIFACT_ID = "ppbluetoothkit"
 
 android {
+    namespace 'com.lefu.ppbluetoothkit'
     compileSdkVersion 31
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 18
         versionCode LIB_VERSION_CODE as int
         versionName LIB_VERSION
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -58,12 +73,8 @@ android {
 dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-
-//    api(project(":ppsdkkit:lefulib:bluetoothkit"))
     api project(":ppsdkkit:lefulib:bluetoothkit")
-
     compileOnly(project(":ppsdkkit:ppbasekit"))
-//    implementation 'com.lefu.ppbasekit:ppbasekit:4.0.1.5'
 
 }
 

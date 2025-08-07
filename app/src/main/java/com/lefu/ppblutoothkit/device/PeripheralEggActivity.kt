@@ -101,13 +101,13 @@ class PeripheralEggActivity : Activity() {
     val dataChangeListener = object : FoodScaleDataChangeListener() {
 
 
-        override fun processData(foodScaleGeneral: LFFoodScaleGeneral?, deviceModel: PPDeviceModel?) {
+        override fun processData(foodScaleGeneral: LFFoodScaleGeneral, deviceModel: PPDeviceModel?) {
             foodScaleGeneral?.let {
                 weightTextView?.text = "process:${getFoodValue(it, deviceModel)}"
             }
         }
 
-        override fun lockedData(foodScaleGeneral: LFFoodScaleGeneral?, deviceModel: PPDeviceModel?) {
+        override fun lockedData(foodScaleGeneral: LFFoodScaleGeneral, deviceModel: PPDeviceModel?) {
             foodScaleGeneral?.let {
                 weightTextView?.text = "lock:${getFoodValue(it, deviceModel)}"
             }

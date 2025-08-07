@@ -118,10 +118,6 @@ class PeripheralKorreActivity : AppCompatActivity() {
             addPrint("startConnect")
             deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         }
-        findViewById<Button>(R.id.getRGBMode).setOnClickListener {
-            addPrint("getRGBMode")
-            deviceModel?.let { it1 -> controller?.getTorreDeviceManager()?.getRGBMode(modeChangeInterface) }
-        }
         findViewById<Button>(R.id.device_set_SevenWeighInfo).setOnClickListener {
 
 //    public double bodyfat;//放大10倍,243 = 24.3
@@ -709,7 +705,7 @@ class PeripheralKorreActivity : AppCompatActivity() {
 
     val userInfoInterface = object : PPUserInfoInterface {
 
-        override fun getUserListByPPBuserModelSuccess(userList: MutableList<PPUserModel>?) {
+        override fun getUserListByUserModelSuccess(userList: MutableList<PPUserModel>?) {
             if (userList.isNullOrEmpty().not()) {
                 userList?.forEach {
                     addPrint("uid:${it.userID} \nmemberId:${it.memberID} \nheight:${it.userHeight} age:${it.age} sex:${it.sex} weight:${it.weightKg}")

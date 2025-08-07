@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
+    namespace 'com.lefu.ppscale.db'
     compileSdk 34
 
     defaultConfig {
@@ -30,6 +31,16 @@ android {
         daoPackage 'com.lefu.ppscale.db.dao'//生成代码到具体包下
     }
 
+}
+
+// Fix GreenDAO task dependency issue
+afterEvaluate {
+    tasks.named('extractReleaseAnnotations').configure {
+        dependsOn 'greendao'
+    }
+    tasks.named('extractDebugAnnotations').configure {
+        dependsOn 'greendao'
+    }
 }
 
 dependencies {

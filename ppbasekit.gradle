@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
-apply plugin: 'com.kezong.fat-aar'
 
 def releaseTime() {
 //GMT+8代表北京时间
@@ -12,12 +11,28 @@ def fileName
 
 def GROUP_ID = "com.lefu.ppbasekit"
 def ARTIFACT_ID = "ppbasekit"
+def LIB_VERSION = "4.0.1.10"
+def LIB_VERSION_CODE = "105"
 
 android {
+    namespace 'com.lefu.ppbasekit'
     compileSdkVersion 31
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 18
         versionCode LIB_VERSION_CODE as int
         versionName LIB_VERSION
 
@@ -25,67 +40,27 @@ android {
 
     }
     buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            android.libraryVariants.all { variant ->
-                variant.outputs.all { output ->
-                    def f = output.outputFileName
-                    if (f != null && f.endsWith('.aar')) {
-                        fileName = "${ARTIFACT_ID}_v${defaultConfig.versionName}_${releaseTime()}.aar"
-                        output.outputFileName = fileName
-                    }
-                }
-            }
-        }
         debug {
+            debuggable true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            android.libraryVariants.all { variant ->
-                variant.outputs.all { output ->
-                    def f = output.outputFileName
-                    if (f != null && f.endsWith('.aar')) {
-                        fileName = "${ARTIFACT_ID}_v${defaultConfig.versionName}_${releaseTime()}.aar"
-                        output.outputFileName = fileName
-                    }
-                }
-            }
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
 }
 
 dependencies {
+//    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
     api(project(":ppsdkkit:lefulib:lfgson"))
 
-//    api project(":ppsdkkit:lefulib:lfgson")
-
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-
 }
-
-//上传到maven
-//apply plugin: 'maven'
-//
-//uploadArchives {
-//    repositories.mavenDeployer {
-//        String deployPath = getProjectDir().absolutePath + "/../../maven/"
-//        repository(url: "file://${deployPath}")
-//        pom.groupId = GROUP_ID
-//        pom.artifactId = ARTIFACT_ID
-//        pom.version = LIB_VERSION
-//        pom.packaging = 'aar'
-//    }
-//
-//}
-
-//task mergeLfgsonIntoAar(type: Jar) {
-//    from zipTree("${project(':ppsdkkit:lefulib:lfgson').buildDir}/outputs/aar/lfgson-release.aar")
-//    from zipTree("$buildDir/outputs/aar/ppbasekit-release.aar")
-//    destinationDir file("$buildDir/merged/")
-//    archiveName "ppbasekit-merged-${version}.aar"
-//}
 
 // 配置发布
 afterEvaluate {
@@ -100,8 +75,8 @@ afterEvaluate {
                 version = LIB_VERSION
 
                 // 可选：包含源码和文档
-//                artifact sourcesJar
-//                artifact javadocJar
+                //  artifact sourcesJar
+                //  artifact javadocJar
             }
         }
 
@@ -111,36 +86,17 @@ afterEvaluate {
 //                url = layout.buildDirectory.dir('repo')
 
                 // 或者指定绝对路径
-//                 url = uri("file://${projectDir}/../repo")
                 url = uri("${rootProject.projectDir}/maven")
             }
         }
     }
 }
-//
-//// 先创建 JavaDoc 生成任务
-//task androidJavadoc(type: Javadoc) {
-//    source = android.sourceSets.main.java.srcDirs
-//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//    android.libraryVariants.all { variant ->
-//        if (variant.name == 'release') {
-//            owner.classpath += variant.javaCompileProvider.get().classpath
-//        }
-//    }
-//    exclude '**/R.html', '**/R.*.html', '**/index.html'
-//}
-//
-//// 再创建 JavaDoc JAR 任务
-//task javadocJar(type: Jar, dependsOn: androidJavadoc) {
-//    classifier = 'javadoc'
-//    from androidJavadoc.destinationDir
-//}
-//
-//// 可选：源码 JAR 任务
-//task sourcesJar(type: Jar) {
-//    classifier = 'sources'
-//    from android.sourceSets.main.java.srcDirs
-//}
+
+
+
+
+
+
 
 
 

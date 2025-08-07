@@ -709,7 +709,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
 
     val userInfoInterface = object : PPUserInfoInterface {
 
-        override fun getUserListByPPBuserModelSuccess(userList: MutableList<PPUserModel>?) {
+        override fun getUserListByUserModelSuccess(userList: MutableList<PPUserModel>?) {
             if (userList.isNullOrEmpty().not()) {
                 userList?.forEach {
                     addPrint("uid:${it.userID} \nmemberId:${it.memberID} \nheight:${it.userHeight} age:${it.age} sex:${it.sex} weight:${it.weightKg}")

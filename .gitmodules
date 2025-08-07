@@ -1,6 +1,3 @@
-[submodule "maven"]
-	path = maven
-	url = git@github.com:LefuHengqi/PPBaseKit-Android.git
 [submodule "ppsdkkit"]
 	path = ppsdkkit
 	url = https://gitee.com/shenzhen-lfscale/ppsdkkit-android.git
