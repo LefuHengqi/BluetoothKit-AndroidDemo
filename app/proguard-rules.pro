@@ -113,6 +113,11 @@
 public static java.lang.String TABLENAME;
 }
 
+
+
+#
+-keep class com.lefu.** {*;}
+
 #ppscale
 -keep class com.peng.ppscale.vo.** {*;}
 -keep class com.peng.ppscale.util.** {*;}
@@ -132,5 +137,7 @@ public static java.lang.String TABLENAME;
 -keep class com.lefu.gson.** {*;}
 #bluetooth lib
 -keep class com.lefu.bluetooth.library.** {*;}
+
+
 
 

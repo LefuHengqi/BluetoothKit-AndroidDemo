@@ -13,6 +13,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.io.Serializable
 import java.nio.charset.Charset
 
 /**
@@ -33,7 +34,7 @@ object CSVFIleUtil {
         val age: Int,            // 年龄
         val impedance50Khz: Long, // 50Khz阻抗
         val impedance100Khz: Long // 100Khz阻抗
-    )
+    ) : Serializable
 
     /**
      * CSV导出行数据类 - 每行包含原始数据和一组计算结果
@@ -48,12 +49,12 @@ object CSVFIleUtil {
         val age: Int,
         val impedance50Khz: Long,
         val impedance100Khz: Long,
-        
+
         // 计算模式标识
         val calculationType: String, // "data1", "data2", "data3"
         val isSportMode: Boolean,
         val ppProduct: Int,
-        
+
         // 计算结果
         val errorType: String,
         val ppBMI: Float,
@@ -85,7 +86,7 @@ object CSVFIleUtil {
         val ppBodyHealth: String,
         val ppBodyAge: Int,
         val ppBodyScore: Int
-    )
+    ) : Serializable
 
     /**
      * CSV解析结果类
@@ -95,7 +96,7 @@ object CSVFIleUtil {
         val dataRows: List<CSVDataRow>, // 数据行
         val totalRows: Int,             // 总行数（不包括表头）
         val errorRows: List<Pair<Int, String>> // 解析失败的行号和错误信息
-    )
+    ) : Serializable
 
     /**
      * 从Uri中读取并解析CSV文件
@@ -218,10 +219,10 @@ object CSVFIleUtil {
             try {
                 val decoded = String(content, Charset.forName(charset))
                 val score = calculateEncodingScore(decoded)
-                
+
                 Log.d("CSVFIleUtil", "编码 $charset 得分: $score")
                 Log.d("CSVFIleUtil", "编码 $charset 解码结果前100字符: ${decoded.take(100)}")
-                
+
                 if (score > bestScore) {
                     bestScore = score
                     bestCharset = charset
@@ -241,35 +242,35 @@ object CSVFIleUtil {
      */
     private fun calculateEncodingScore(text: String): Int {
         var score = 0
-        
+
         // 检查是否包含过多的替换字符（乱码标志）
         val replacementCharCount = text.count { it == '\uFFFD' }
         if (replacementCharCount > text.length * 0.1) {
             return -1000 // 严重扣分
         }
-        
+
         // 检查是否包含CSV相关的中文字符
         val csvChineseChars = "编号姓名体重身高性别年龄阻抗男女"
         val chineseCharCount = text.count { it in csvChineseChars }
         score += chineseCharCount * 100 // 中文字符加分很高
-        
+
         // 检查是否包含常见的CSV分隔符
         val separatorCount = text.count { it in ",\t;|" }
         score += separatorCount * 10
-        
+
         // 检查是否包含数字
         val digitCount = text.count { it.isDigit() }
         score += digitCount * 2
-        
+
         // 检查是否包含英文字母
         val letterCount = text.count { it.isLetter() && it.code < 128 }
         score += letterCount
-        
+
         // 检查是否包含常见的单位字符
         val unitChars = "kgcmKhzΩ"
         val unitCharCount = text.count { it in unitChars }
         score += unitCharCount * 50
-        
+
         return score
     }
 
@@ -502,7 +503,7 @@ object CSVFIleUtil {
                                     // 第一行作为表头
                                     headers = columns.map { it.trim() }
                                     Log.d("CSVFIleUtil", "解析到表头: $headers (共${headers.size}个字段)")
-                                    
+
                                     // 打印原始行内容用于调试
                                     Log.d("CSVFIleUtil", "原始表头行: '$currentLine'")
                                     Log.d("CSVFIleUtil", "原始表头行字节: ${currentLine.toByteArray().contentToString()}")
@@ -606,7 +607,7 @@ object CSVFIleUtil {
         if (fieldMapping.size < fieldPatterns.size && headers.size == 8) {
             Log.d("CSVFIleUtil", "尝试位置匹配（表头可能乱码）")
             Log.d("CSVFIleUtil", "检测到乱码表头: $hasGarbledHeaders")
-            
+
             val fieldKeys = listOf("id", "name", "weight", "height", "gender", "age", "impedance50", "impedance100")
             fieldKeys.forEachIndexed { index, fieldKey ->
                 if (!fieldMapping.containsKey(fieldKey) && index < headers.size) {
@@ -614,7 +615,7 @@ object CSVFIleUtil {
                     Log.d("CSVFIleUtil", "位置匹配: $fieldKey -> [$index] '${headers[index]}'")
                 }
             }
-            
+
             // 如果是乱码表头，给出提示
             if (hasGarbledHeaders) {
                 Log.w("CSVFIleUtil", "警告: 检测到表头乱码，已使用位置映射。建议检查文件编码格式。")
@@ -633,16 +634,16 @@ object CSVFIleUtil {
 
         if (missingFields.isNotEmpty()) {
             // 检查是否是完整的位置映射（8个字段都有映射）
-            val isCompletePositionMapping = fieldMapping.size == 8 && 
-                fieldMapping.values.toSet() == (0..7).toSet()
-            
+            val isCompletePositionMapping = fieldMapping.size == 8 &&
+                    fieldMapping.values.toSet() == (0..7).toSet()
+
             if (isCompletePositionMapping) {
                 Log.w("CSVFIleUtil", "使用位置映射，但缺少字段: $missingFields")
                 Log.w("CSVFIleUtil", "当前映射: $fieldMapping")
                 Log.w("CSVFIleUtil", "将继续处理，但请确认CSV文件列顺序正确")
                 return // 允许位置映射继续处理
             }
-            
+
             val errorMessage = "缺少必要字段的映射: $missingFields。" +
                     "当前映射: $fieldMapping。" +
                     "请检查CSV文件的表头格式，确保包含以下字段：编号、姓名、体重、身高、性别、年龄、50Khz阻抗、100Khz阻抗"
@@ -704,30 +705,30 @@ object CSVFIleUtil {
     ): Uri? {
         return try {
             val csvContent = StringBuilder()
-            
+
             // 添加表头
             csvContent.append(createCSVHeader()).append("\n")
-            
+
             // 为每个原始数据行生成三行输出
             for (i in dataRows.indices) {
                 val dataRow = dataRows[i]
                 val data1 = if (i < data1Results.size) data1Results[i] else null
                 val data2 = if (i < data2Results.size) data2Results[i] else null
                 val data3 = if (i < data3Results.size) data3Results[i] else null
-                
+
                 // 生成data1行
                 val exportRow1 = createCSVExportRowSingle(dataRow, data1, "data1", false, 0)
                 csvContent.append(createCSVDataLine(exportRow1)).append("\n")
-                
+
                 // 生成data2行
                 val exportRow2 = createCSVExportRowSingle(dataRow, data2, "data2", true, 0)
                 csvContent.append(createCSVDataLine(exportRow2)).append("\n")
-                
+
                 // 生成data3行
                 val exportRow3 = createCSVExportRowSingle(dataRow, data3, "data3", true, 1)
                 csvContent.append(createCSVDataLine(exportRow3)).append("\n")
             }
-            
+
             // 保存文件并返回Uri
             saveCSVToFile(context, csvContent.toString(), fileName)
         } catch (e: Exception) {
@@ -735,7 +736,7 @@ object CSVFIleUtil {
             null
         }
     }
-    
+
     /**
      * 创建CSV表头
      */
@@ -743,33 +744,33 @@ object CSVFIleUtil {
         return listOf(
             // 原始数据字段
             "编号", "姓名", "体重(kg)", "身高(cm)", "性别", "年龄", "50Khz阻抗", "100Khz阻抗",
-            
+
             // 计算配置字段
             "计算类型", "运动模式", "产品类型",
-            
+
             // 计算结果字段
-            "错误类型", "BMI", "体脂率(%)", "脂肪量(kg)", "肌肉率(%)", "肌肉量(kg)", 
-            "骨骼肌率(%)", "骨骼肌量(kg)", "水分率(%)", "水分量(kg)", "蛋白质率(%)", 
-            "蛋白质量(kg)", "去脂体重(kg)", "皮下脂肪率(%)", "皮下脂肪量(kg)", 
-            "心率", "脚长", "基础代谢", "内脏脂肪等级", "骨量(kg)", 
-            "肌肉控制量(kg)", "脂肪控制量(kg)", "标准体重(kg)", "理想体重(kg)", 
-            "控制体重(kg)", "身体类型", "肥胖等级", "健康评估", 
+            "错误类型", "BMI", "体脂率(%)", "脂肪量(kg)", "肌肉率(%)", "肌肉量(kg)",
+            "骨骼肌率(%)", "骨骼肌量(kg)", "水分率(%)", "水分量(kg)", "蛋白质率(%)",
+            "蛋白质量(kg)", "去脂体重(kg)", "皮下脂肪率(%)", "皮下脂肪量(kg)",
+            "心率", "脚长", "基础代谢", "内脏脂肪等级", "骨量(kg)",
+            "肌肉控制量(kg)", "脂肪控制量(kg)", "标准体重(kg)", "理想体重(kg)",
+            "控制体重(kg)", "身体类型", "肥胖等级", "健康评估",
             "身体年龄", "身体得分"
         ).joinToString(",")
     }
-    
+
     /**
      * 创建CSV数据行
      */
     private fun createCSVDataLine(row: CSVExportRow): String {
         return listOf(
             // 原始数据
-            row.id, row.name, row.weight, row.height, row.gender, row.age, 
+            row.id, row.name, row.weight, row.height, row.gender, row.age,
             row.impedance50Khz, row.impedance100Khz,
-            
+
             // 计算配置
             row.calculationType, if (row.isSportMode) "是" else "否", row.ppProduct,
-            
+
             // 计算结果
             row.errorType, row.ppBMI, row.ppFat, row.ppBodyfatKg, row.ppMusclePercentage,
             row.ppMuscleKg, row.ppBodySkeletal, row.ppBodySkeletalKg,
@@ -789,7 +790,7 @@ object CSVFIleUtil {
             }
         }
     }
-    
+
     /**
      * 保存CSV内容到文件
      * 保存到App内部缓存目录下的CSV子目录
@@ -802,19 +803,19 @@ object CSVFIleUtil {
                 csvDir.mkdirs()
                 Log.d("CSVFIleUtil", "创建CSV目录: ${csvDir.absolutePath}")
             }
-            
+
             // 创建CSV文件
             val csvFile = File(csvDir, "$fileName.csv")
-            
+
             // 写入文件内容
             csvFile.outputStream().use { outputStream ->
                 // 添加BOM以确保Excel正确识别UTF-8编码
                 outputStream.write(byteArrayOf(0xEF.toByte(), 0xBB.toByte(), 0xBF.toByte()))
                 outputStream.write(csvContent.toByteArray(Charsets.UTF_8))
             }
-            
+
             Log.d("CSVFIleUtil", "CSV文件导出成功: ${csvFile.absolutePath}")
-            
+
             // 返回文件的Uri
             Uri.fromFile(csvFile)
         } catch (e: Exception) {
@@ -822,7 +823,7 @@ object CSVFIleUtil {
             null
         }
     }
-    
+
     /**
      * 从PPBodyFatModel创建单行CSVExportRow的辅助方法
      */
@@ -843,12 +844,12 @@ object CSVFIleUtil {
             age = dataRow.age,
             impedance50Khz = dataRow.impedance50Khz,
             impedance100Khz = dataRow.impedance100Khz,
-            
+
             // 计算配置
             calculationType = calculationType,
             isSportMode = isSportMode,
             ppProduct = ppProduct,
-            
+
             // 计算结果
             errorType = result?.errorType?.toString() ?: "无数据",
             ppBMI = result?.ppBMI ?: 0f,
