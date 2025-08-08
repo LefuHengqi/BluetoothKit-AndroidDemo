@@ -13,7 +13,8 @@ android {
     compileSdk 35
     namespace 'com.lefu.ppblutoothkit'
     defaultConfig {
-        applicationId "com.lefu.ppblutoothkit"
+//        applicationId "com.lefu.ppblutoothkit"
+        applicationId "com.etekcity.vesyncplatform"
         targetSdkVersion 35
         minSdkVersion 24
         versionCode LIB_VERSION_CODE as int
