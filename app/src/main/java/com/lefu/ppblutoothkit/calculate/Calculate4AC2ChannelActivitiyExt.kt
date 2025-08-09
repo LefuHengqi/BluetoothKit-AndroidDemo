@@ -121,8 +121,6 @@ fun Calculate4AC2ChannelActivitiy.calculateCSVDataByProduct0(dataRow: CSVFIleUti
     } else {
         deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1_1
     }
-
-    deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1
     deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
         PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
     } else {

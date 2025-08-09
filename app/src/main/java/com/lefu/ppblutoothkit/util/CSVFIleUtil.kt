@@ -37,7 +37,7 @@ object CSVFIleUtil {
     ) : Serializable
 
     /**
-     * CSV导出行数据类 - 每行包含原始数据和一组计算结果
+     * CSV导出行数据类 - 每行包含原始数据和三组计算结果(data1, data2, data3)
      */
     data class CSVExportRow(
         // 原始数据
@@ -49,43 +49,102 @@ object CSVFIleUtil {
         val age: Int,
         val impedance50Khz: Long,
         val impedance100Khz: Long,
-
-        // 计算模式标识
-        val calculationType: String, // "data1", "data2", "data3"
-        val isSportMode: Boolean,
-        val ppProduct: Int,
-
-        // 计算结果
-        val errorType: String,
-        val ppBMI: Float,
-        val ppFat: Float,
-        val ppBodyfatKg: Float,
-        val ppMusclePercentage: Float,
-        val ppMuscleKg: Float,
-        val ppBodySkeletal: Float,
-        val ppBodySkeletalKg: Float,
-        val ppWaterPercentage: Float,
-        val ppWaterKg: Float,
-        val ppProteinPercentage: Float,
-        val ppProteinKg: Float,
-        val ppLoseFatWeightKg: Float,
-        val ppBodyFatSubCutPercentage: Float,
-        val ppBodyFatSubCutKg: Float,
-        val ppHeartRate: Int,
-        val ppFootLen: Int,
-        val ppBMR: Int,
-        val ppVisceralFat: Int,
-        val ppBoneKg: Float,
-        val ppBodyMuscleControl: Float,
-        val ppFatControlKg: Float,
-        val ppBodyStandardWeightKg: Float,
-        val ppIdealWeightKg: Float,
-        val ppControlWeightKg: Float,
-        val ppBodyType: String,
-        val ppFatGrade: String,
-        val ppBodyHealth: String,
-        val ppBodyAge: Int,
-        val ppBodyScore: Int
+        
+        // Data1计算结果 (Product0-普通人)
+        val data1_errorType: String,
+        val data1_ppBMI: Float,
+        val data1_ppFat: Float,
+        val data1_ppBodyfatKg: Float,
+        val data1_ppMusclePercentage: Float,
+        val data1_ppMuscleKg: Float,
+        val data1_ppBodySkeletal: Float,
+        val data1_ppBodySkeletalKg: Float,
+        val data1_ppWaterPercentage: Float,
+        val data1_ppWaterKg: Float,
+        val data1_ppProteinPercentage: Float,
+        val data1_ppProteinKg: Float,
+        val data1_ppLoseFatWeightKg: Float,
+        val data1_ppBodyFatSubCutPercentage: Float,
+        val data1_ppBodyFatSubCutKg: Float,
+        val data1_ppHeartRate: Int,
+        val data1_ppFootLen: Int,
+        val data1_ppBMR: Int,
+        val data1_ppVisceralFat: Int,
+        val data1_ppBoneKg: Float,
+        val data1_ppBodyMuscleControl: Float,
+        val data1_ppFatControlKg: Float,
+        val data1_ppBodyStandardWeightKg: Float,
+        val data1_ppIdealWeightKg: Float,
+        val data1_ppControlWeightKg: Float,
+        val data1_ppBodyType: String,
+        val data1_ppFatGrade: String,
+        val data1_ppBodyHealth: String,
+        val data1_ppBodyAge: Int,
+        val data1_ppBodyScore: Int,
+        
+        // Data2计算结果 (Product0-运动员)
+        val data2_errorType: String,
+        val data2_ppBMI: Float,
+        val data2_ppFat: Float,
+        val data2_ppBodyfatKg: Float,
+        val data2_ppMusclePercentage: Float,
+        val data2_ppMuscleKg: Float,
+        val data2_ppBodySkeletal: Float,
+        val data2_ppBodySkeletalKg: Float,
+        val data2_ppWaterPercentage: Float,
+        val data2_ppWaterKg: Float,
+        val data2_ppProteinPercentage: Float,
+        val data2_ppProteinKg: Float,
+        val data2_ppLoseFatWeightKg: Float,
+        val data2_ppBodyFatSubCutPercentage: Float,
+        val data2_ppBodyFatSubCutKg: Float,
+        val data2_ppHeartRate: Int,
+        val data2_ppFootLen: Int,
+        val data2_ppBMR: Int,
+        val data2_ppVisceralFat: Int,
+        val data2_ppBoneKg: Float,
+        val data2_ppBodyMuscleControl: Float,
+        val data2_ppFatControlKg: Float,
+        val data2_ppBodyStandardWeightKg: Float,
+        val data2_ppIdealWeightKg: Float,
+        val data2_ppControlWeightKg: Float,
+        val data2_ppBodyType: String,
+        val data2_ppFatGrade: String,
+        val data2_ppBodyHealth: String,
+        val data2_ppBodyAge: Int,
+        val data2_ppBodyScore: Int,
+        
+        // Data3计算结果 (Product1-运动员)
+        val data3_errorType: String,
+        val data3_ppBMI: Float,
+        val data3_ppFat: Float,
+        val data3_ppBodyfatKg: Float,
+        val data3_ppMusclePercentage: Float,
+        val data3_ppMuscleKg: Float,
+        val data3_ppBodySkeletal: Float,
+        val data3_ppBodySkeletalKg: Float,
+        val data3_ppWaterPercentage: Float,
+        val data3_ppWaterKg: Float,
+        val data3_ppProteinPercentage: Float,
+        val data3_ppProteinKg: Float,
+        val data3_ppLoseFatWeightKg: Float,
+        val data3_ppBodyFatSubCutPercentage: Float,
+        val data3_ppBodyFatSubCutKg: Float,
+        val data3_ppHeartRate: Int,
+        val data3_ppFootLen: Int,
+        val data3_ppBMR: Int,
+        val data3_ppVisceralFat: Int,
+        val data3_ppBoneKg: Float,
+        val data3_ppBodyMuscleControl: Float,
+        val data3_ppFatControlKg: Float,
+        val data3_ppBodyStandardWeightKg: Float,
+        val data3_ppIdealWeightKg: Float,
+        val data3_ppControlWeightKg: Float,
+        val data3_ppBodyType: String,
+        val data3_ppFatGrade: String,
+        val data3_ppBodyHealth: String,
+        val data3_ppBodyAge: Int,
+        val data3_ppBodyScore: Int
     ) : Serializable
 
     /**
@@ -709,24 +768,16 @@ object CSVFIleUtil {
             // 添加表头
             csvContent.append(createCSVHeader()).append("\n")
 
-            // 为每个原始数据行生成三行输出
+            // 为每个原始数据行生成一行输出，包含原始数据和三组计算结果
             for (i in dataRows.indices) {
                 val dataRow = dataRows[i]
                 val data1 = if (i < data1Results.size) data1Results[i] else null
                 val data2 = if (i < data2Results.size) data2Results[i] else null
                 val data3 = if (i < data3Results.size) data3Results[i] else null
 
-                // 生成data1行
-                val exportRow1 = createCSVExportRowSingle(dataRow, data1, "data1", false, 0)
-                csvContent.append(createCSVDataLine(exportRow1)).append("\n")
-
-                // 生成data2行
-                val exportRow2 = createCSVExportRowSingle(dataRow, data2, "data2", true, 0)
-                csvContent.append(createCSVDataLine(exportRow2)).append("\n")
-
-                // 生成data3行
-                val exportRow3 = createCSVExportRowSingle(dataRow, data3, "data3", true, 1)
-                csvContent.append(createCSVDataLine(exportRow3)).append("\n")
+                // 创建包含三组计算结果的导出行
+                val exportRow = createCSVExportRowCombined(dataRow, data1, data2, data3)
+                csvContent.append(createCSVDataLine(exportRow)).append("\n")
             }
 
             // 保存文件并返回Uri
@@ -745,17 +796,37 @@ object CSVFIleUtil {
             // 原始数据字段
             "编号", "姓名", "体重(kg)", "身高(cm)", "性别", "年龄", "50Khz阻抗", "100Khz阻抗",
 
-            // 计算配置字段
-            "计算类型", "运动模式", "产品类型",
-
-            // 计算结果字段
-            "错误类型", "BMI", "体脂率(%)", "脂肪量(kg)", "肌肉率(%)", "肌肉量(kg)",
-            "骨骼肌率(%)", "骨骼肌量(kg)", "水分率(%)", "水分量(kg)", "蛋白质率(%)",
-            "蛋白质量(kg)", "去脂体重(kg)", "皮下脂肪率(%)", "皮下脂肪量(kg)",
-            "心率", "脚长", "基础代谢", "内脏脂肪等级", "骨量(kg)",
-            "肌肉控制量(kg)", "脂肪控制量(kg)", "标准体重(kg)", "理想体重(kg)",
-            "控制体重(kg)", "身体类型", "肥胖等级", "健康评估",
-            "身体年龄", "身体得分"
+            // 计算结果字段 - 按字段类型分组，每组包含1、2、3
+            "体脂率(%)1", "体脂率(%)2", "体脂率(%)3",
+            "BMI1", "BMI2", "BMI3",
+            "脂肪量(kg)1", "脂肪量(kg)2", "脂肪量(kg)3",
+            "肌肉率(%)1", "肌肉率(%)2", "肌肉率(%)3",
+            "肌肉量(kg)1", "肌肉量(kg)2", "肌肉量(kg)3",
+            "骨骼肌率(%)1", "骨骼肌率(%)2", "骨骼肌率(%)3",
+            "骨骼肌量(kg)1", "骨骼肌量(kg)2", "骨骼肌量(kg)3",
+            "水分率(%)1", "水分率(%)2", "水分率(%)3",
+            "水分量(kg)1", "水分量(kg)2", "水分量(kg)3",
+            "蛋白质率(%)1", "蛋白质率(%)2", "蛋白质率(%)3",
+            "蛋白质量(kg)1", "蛋白质量(kg)2", "蛋白质量(kg)3",
+            "去脂体重(kg)1", "去脂体重(kg)2", "去脂体重(kg)3",
+            "皮下脂肪率(%)1", "皮下脂肪率(%)2", "皮下脂肪率(%)3",
+            "皮下脂肪量(kg)1", "皮下脂肪量(kg)2", "皮下脂肪量(kg)3",
+            "心率1", "心率2", "心率3",
+            "脚长1", "脚长2", "脚长3",
+            "基础代谢1", "基础代谢2", "基础代谢3",
+            "内脏脂肪等级1", "内脏脂肪等级2", "内脏脂肪等级3",
+            "骨量(kg)1", "骨量(kg)2", "骨量(kg)3",
+            "肌肉控制量(kg)1", "肌肉控制量(kg)2", "肌肉控制量(kg)3",
+            "脂肪控制量(kg)1", "脂肪控制量(kg)2", "脂肪控制量(kg)3",
+            "标准体重(kg)1", "标准体重(kg)2", "标准体重(kg)3",
+            "理想体重(kg)1", "理想体重(kg)2", "理想体重(kg)3",
+            "控制体重(kg)1", "控制体重(kg)2", "控制体重(kg)3",
+            "身体类型1", "身体类型2", "身体类型3",
+            "肥胖等级1", "肥胖等级2", "肥胖等级3",
+            "健康评估1", "健康评估2", "健康评估3",
+            "身体年龄1", "身体年龄2", "身体年龄3",
+            "身体得分1", "身体得分2", "身体得分3",
+            "错误类型1", "错误类型2", "错误类型3"
         ).joinToString(",")
     }
 
@@ -768,19 +839,37 @@ object CSVFIleUtil {
             row.id, row.name, row.weight, row.height, row.gender, row.age,
             row.impedance50Khz, row.impedance100Khz,
 
-            // 计算配置
-            row.calculationType, if (row.isSportMode) "是" else "否", row.ppProduct,
-
-            // 计算结果
-            row.errorType, row.ppBMI, row.ppFat, row.ppBodyfatKg, row.ppMusclePercentage,
-            row.ppMuscleKg, row.ppBodySkeletal, row.ppBodySkeletalKg,
-            row.ppWaterPercentage, row.ppWaterKg, row.ppProteinPercentage,
-            row.ppProteinKg, row.ppLoseFatWeightKg, row.ppBodyFatSubCutPercentage,
-            row.ppBodyFatSubCutKg, row.ppHeartRate, row.ppFootLen,
-            row.ppBMR, row.ppVisceralFat, row.ppBoneKg,
-            row.ppBodyMuscleControl, row.ppFatControlKg, row.ppBodyStandardWeightKg,
-            row.ppIdealWeightKg, row.ppControlWeightKg, row.ppBodyType,
-            row.ppFatGrade, row.ppBodyHealth, row.ppBodyAge, row.ppBodyScore
+            // 计算结果 - 按字段类型分组，每组包含1、2、3
+            row.data1_ppFat, row.data2_ppFat, row.data3_ppFat,
+            row.data1_ppBMI, row.data2_ppBMI, row.data3_ppBMI,
+            row.data1_ppBodyfatKg, row.data2_ppBodyfatKg, row.data3_ppBodyfatKg,
+            row.data1_ppMusclePercentage, row.data2_ppMusclePercentage, row.data3_ppMusclePercentage,
+            row.data1_ppMuscleKg, row.data2_ppMuscleKg, row.data3_ppMuscleKg,
+            row.data1_ppBodySkeletal, row.data2_ppBodySkeletal, row.data3_ppBodySkeletal,
+            row.data1_ppBodySkeletalKg, row.data2_ppBodySkeletalKg, row.data3_ppBodySkeletalKg,
+            row.data1_ppWaterPercentage, row.data2_ppWaterPercentage, row.data3_ppWaterPercentage,
+            row.data1_ppWaterKg, row.data2_ppWaterKg, row.data3_ppWaterKg,
+            row.data1_ppProteinPercentage, row.data2_ppProteinPercentage, row.data3_ppProteinPercentage,
+            row.data1_ppProteinKg, row.data2_ppProteinKg, row.data3_ppProteinKg,
+            row.data1_ppLoseFatWeightKg, row.data2_ppLoseFatWeightKg, row.data3_ppLoseFatWeightKg,
+            row.data1_ppBodyFatSubCutPercentage, row.data2_ppBodyFatSubCutPercentage, row.data3_ppBodyFatSubCutPercentage,
+            row.data1_ppBodyFatSubCutKg, row.data2_ppBodyFatSubCutKg, row.data3_ppBodyFatSubCutKg,
+            row.data1_ppHeartRate, row.data2_ppHeartRate, row.data3_ppHeartRate,
+            row.data1_ppFootLen, row.data2_ppFootLen, row.data3_ppFootLen,
+            row.data1_ppBMR, row.data2_ppBMR, row.data3_ppBMR,
+            row.data1_ppVisceralFat, row.data2_ppVisceralFat, row.data3_ppVisceralFat,
+            row.data1_ppBoneKg, row.data2_ppBoneKg, row.data3_ppBoneKg,
+            row.data1_ppBodyMuscleControl, row.data2_ppBodyMuscleControl, row.data3_ppBodyMuscleControl,
+            row.data1_ppFatControlKg, row.data2_ppFatControlKg, row.data3_ppFatControlKg,
+            row.data1_ppBodyStandardWeightKg, row.data2_ppBodyStandardWeightKg, row.data3_ppBodyStandardWeightKg,
+            row.data1_ppIdealWeightKg, row.data2_ppIdealWeightKg, row.data3_ppIdealWeightKg,
+            row.data1_ppControlWeightKg, row.data2_ppControlWeightKg, row.data3_ppControlWeightKg,
+            row.data1_ppBodyType, row.data2_ppBodyType, row.data3_ppBodyType,
+            row.data1_ppFatGrade, row.data2_ppFatGrade, row.data3_ppFatGrade,
+            row.data1_ppBodyHealth, row.data2_ppBodyHealth, row.data3_ppBodyHealth,
+            row.data1_ppBodyAge, row.data2_ppBodyAge, row.data3_ppBodyAge,
+            row.data1_ppBodyScore, row.data2_ppBodyScore, row.data3_ppBodyScore,
+            row.data1_errorType, row.data2_errorType, row.data3_errorType
         ).joinToString(",") { value ->
             // 处理包含逗号的字段，用双引号包围
             if (value.toString().contains(",")) {
@@ -825,14 +914,13 @@ object CSVFIleUtil {
     }
 
     /**
-     * 从PPBodyFatModel创建单行CSVExportRow的辅助方法
+     * 从PPBodyFatModel创建包含三组计算结果的CSVExportRow的辅助方法
      */
-    fun createCSVExportRowSingle(
+    fun createCSVExportRowCombined(
         dataRow: CSVDataRow,
-        result: PPBodyFatModel?,
-        calculationType: String,
-        isSportMode: Boolean,
-        ppProduct: Int
+        data1Result: PPBodyFatModel?,
+        data2Result: PPBodyFatModel?,
+        data3Result: PPBodyFatModel?
     ): CSVExportRow {
         return CSVExportRow(
             // 原始数据
@@ -845,42 +933,101 @@ object CSVFIleUtil {
             impedance50Khz = dataRow.impedance50Khz,
             impedance100Khz = dataRow.impedance100Khz,
 
-            // 计算配置
-            calculationType = calculationType,
-            isSportMode = isSportMode,
-            ppProduct = ppProduct,
+            // Data1计算结果 (Product0-普通人)
+            data1_errorType = data1Result?.errorType?.toString() ?: "无数据",
+            data1_ppBMI = data1Result?.ppBMI ?: 0f,
+            data1_ppFat = data1Result?.ppFat ?: 0f,
+            data1_ppBodyfatKg = data1Result?.ppBodyfatKg ?: 0f,
+            data1_ppMusclePercentage = data1Result?.ppMusclePercentage ?: 0f,
+            data1_ppMuscleKg = data1Result?.ppMuscleKg ?: 0f,
+            data1_ppBodySkeletal = data1Result?.ppBodySkeletal ?: 0f,
+            data1_ppBodySkeletalKg = data1Result?.ppBodySkeletalKg ?: 0f,
+            data1_ppWaterPercentage = data1Result?.ppWaterPercentage ?: 0f,
+            data1_ppWaterKg = data1Result?.ppWaterKg ?: 0f,
+            data1_ppProteinPercentage = data1Result?.ppProteinPercentage ?: 0f,
+            data1_ppProteinKg = data1Result?.ppProteinKg ?: 0f,
+            data1_ppLoseFatWeightKg = data1Result?.ppLoseFatWeightKg ?: 0f,
+            data1_ppBodyFatSubCutPercentage = data1Result?.ppBodyFatSubCutPercentage ?: 0f,
+            data1_ppBodyFatSubCutKg = data1Result?.ppBodyFatSubCutKg ?: 0f,
+            data1_ppHeartRate = data1Result?.ppHeartRate ?: 0,
+            data1_ppFootLen = data1Result?.ppFootLen ?: 0,
+            data1_ppBMR = data1Result?.ppBMR ?: 0,
+            data1_ppVisceralFat = data1Result?.ppVisceralFat ?: 0,
+            data1_ppBoneKg = data1Result?.ppBoneKg ?: 0f,
+            data1_ppBodyMuscleControl = data1Result?.ppBodyMuscleControl ?: 0f,
+            data1_ppFatControlKg = data1Result?.ppFatControlKg ?: 0f,
+            data1_ppBodyStandardWeightKg = data1Result?.ppBodyStandardWeightKg ?: 0f,
+            data1_ppIdealWeightKg = data1Result?.ppIdealWeightKg ?: 0f,
+            data1_ppControlWeightKg = data1Result?.ppControlWeightKg ?: 0f,
+            data1_ppBodyType = data1Result?.ppBodyType?.toString() ?: "无数据",
+            data1_ppFatGrade = data1Result?.ppFatGrade?.toString() ?: "无数据",
+            data1_ppBodyHealth = data1Result?.ppBodyHealth?.toString() ?: "无数据",
+            data1_ppBodyAge = data1Result?.ppBodyAge ?: 0,
+            data1_ppBodyScore = data1Result?.ppBodyScore ?: 0,
 
-            // 计算结果
-            errorType = result?.errorType?.toString() ?: "无数据",
-            ppBMI = result?.ppBMI ?: 0f,
-            ppFat = result?.ppFat ?: 0f,
-            ppBodyfatKg = result?.ppBodyfatKg ?: 0f,
-            ppMusclePercentage = result?.ppMusclePercentage ?: 0f,
-            ppMuscleKg = result?.ppMuscleKg ?: 0f,
-            ppBodySkeletal = result?.ppBodySkeletal ?: 0f,
-            ppBodySkeletalKg = result?.ppBodySkeletalKg ?: 0f,
-            ppWaterPercentage = result?.ppWaterPercentage ?: 0f,
-            ppWaterKg = result?.ppWaterKg ?: 0f,
-            ppProteinPercentage = result?.ppProteinPercentage ?: 0f,
-            ppProteinKg = result?.ppProteinKg ?: 0f,
-            ppLoseFatWeightKg = result?.ppLoseFatWeightKg ?: 0f,
-            ppBodyFatSubCutPercentage = result?.ppBodyFatSubCutPercentage ?: 0f,
-            ppBodyFatSubCutKg = result?.ppBodyFatSubCutKg ?: 0f,
-            ppHeartRate = result?.ppHeartRate ?: 0,
-            ppFootLen = result?.ppFootLen ?: 0,
-            ppBMR = result?.ppBMR ?: 0,
-            ppVisceralFat = result?.ppVisceralFat ?: 0,
-            ppBoneKg = result?.ppBoneKg ?: 0f,
-            ppBodyMuscleControl = result?.ppBodyMuscleControl ?: 0f,
-            ppFatControlKg = result?.ppFatControlKg ?: 0f,
-            ppBodyStandardWeightKg = result?.ppBodyStandardWeightKg ?: 0f,
-            ppIdealWeightKg = result?.ppIdealWeightKg ?: 0f,
-            ppControlWeightKg = result?.ppControlWeightKg ?: 0f,
-            ppBodyType = result?.ppBodyType?.toString() ?: "无数据",
-            ppFatGrade = result?.ppFatGrade?.toString() ?: "无数据",
-            ppBodyHealth = result?.ppBodyHealth?.toString() ?: "无数据",
-            ppBodyAge = result?.ppBodyAge ?: 0,
-            ppBodyScore = result?.ppBodyScore ?: 0
+            // Data2计算结果 (Product0-运动员)
+            data2_errorType = data2Result?.errorType?.toString() ?: "无数据",
+            data2_ppBMI = data2Result?.ppBMI ?: 0f,
+            data2_ppFat = data2Result?.ppFat ?: 0f,
+            data2_ppBodyfatKg = data2Result?.ppBodyfatKg ?: 0f,
+            data2_ppMusclePercentage = data2Result?.ppMusclePercentage ?: 0f,
+            data2_ppMuscleKg = data2Result?.ppMuscleKg ?: 0f,
+            data2_ppBodySkeletal = data2Result?.ppBodySkeletal ?: 0f,
+            data2_ppBodySkeletalKg = data2Result?.ppBodySkeletalKg ?: 0f,
+            data2_ppWaterPercentage = data2Result?.ppWaterPercentage ?: 0f,
+            data2_ppWaterKg = data2Result?.ppWaterKg ?: 0f,
+            data2_ppProteinPercentage = data2Result?.ppProteinPercentage ?: 0f,
+            data2_ppProteinKg = data2Result?.ppProteinKg ?: 0f,
+            data2_ppLoseFatWeightKg = data2Result?.ppLoseFatWeightKg ?: 0f,
+            data2_ppBodyFatSubCutPercentage = data2Result?.ppBodyFatSubCutPercentage ?: 0f,
+            data2_ppBodyFatSubCutKg = data2Result?.ppBodyFatSubCutKg ?: 0f,
+            data2_ppHeartRate = data2Result?.ppHeartRate ?: 0,
+            data2_ppFootLen = data2Result?.ppFootLen ?: 0,
+            data2_ppBMR = data2Result?.ppBMR ?: 0,
+            data2_ppVisceralFat = data2Result?.ppVisceralFat ?: 0,
+            data2_ppBoneKg = data2Result?.ppBoneKg ?: 0f,
+            data2_ppBodyMuscleControl = data2Result?.ppBodyMuscleControl ?: 0f,
+            data2_ppFatControlKg = data2Result?.ppFatControlKg ?: 0f,
+            data2_ppBodyStandardWeightKg = data2Result?.ppBodyStandardWeightKg ?: 0f,
+            data2_ppIdealWeightKg = data2Result?.ppIdealWeightKg ?: 0f,
+            data2_ppControlWeightKg = data2Result?.ppControlWeightKg ?: 0f,
+            data2_ppBodyType = data2Result?.ppBodyType?.toString() ?: "无数据",
+            data2_ppFatGrade = data2Result?.ppFatGrade?.toString() ?: "无数据",
+            data2_ppBodyHealth = data2Result?.ppBodyHealth?.toString() ?: "无数据",
+            data2_ppBodyAge = data2Result?.ppBodyAge ?: 0,
+            data2_ppBodyScore = data2Result?.ppBodyScore ?: 0,
+
+            // Data3计算结果 (Product1-运动员)
+            data3_errorType = data3Result?.errorType?.toString() ?: "无数据",
+            data3_ppBMI = data3Result?.ppBMI ?: 0f,
+            data3_ppFat = data3Result?.ppFat ?: 0f,
+            data3_ppBodyfatKg = data3Result?.ppBodyfatKg ?: 0f,
+            data3_ppMusclePercentage = data3Result?.ppMusclePercentage ?: 0f,
+            data3_ppMuscleKg = data3Result?.ppMuscleKg ?: 0f,
+            data3_ppBodySkeletal = data3Result?.ppBodySkeletal ?: 0f,
+            data3_ppBodySkeletalKg = data3Result?.ppBodySkeletalKg ?: 0f,
+            data3_ppWaterPercentage = data3Result?.ppWaterPercentage ?: 0f,
+            data3_ppWaterKg = data3Result?.ppWaterKg ?: 0f,
+            data3_ppProteinPercentage = data3Result?.ppProteinPercentage ?: 0f,
+            data3_ppProteinKg = data3Result?.ppProteinKg ?: 0f,
+            data3_ppLoseFatWeightKg = data3Result?.ppLoseFatWeightKg ?: 0f,
+            data3_ppBodyFatSubCutPercentage = data3Result?.ppBodyFatSubCutPercentage ?: 0f,
+            data3_ppBodyFatSubCutKg = data3Result?.ppBodyFatSubCutKg ?: 0f,
+            data3_ppHeartRate = data3Result?.ppHeartRate ?: 0,
+            data3_ppFootLen = data3Result?.ppFootLen ?: 0,
+            data3_ppBMR = data3Result?.ppBMR ?: 0,
+            data3_ppVisceralFat = data3Result?.ppVisceralFat ?: 0,
+            data3_ppBoneKg = data3Result?.ppBoneKg ?: 0f,
+            data3_ppBodyMuscleControl = data3Result?.ppBodyMuscleControl ?: 0f,
+            data3_ppFatControlKg = data3Result?.ppFatControlKg ?: 0f,
+            data3_ppBodyStandardWeightKg = data3Result?.ppBodyStandardWeightKg ?: 0f,
+            data3_ppIdealWeightKg = data3Result?.ppIdealWeightKg ?: 0f,
+            data3_ppControlWeightKg = data3Result?.ppControlWeightKg ?: 0f,
+            data3_ppBodyType = data3Result?.ppBodyType?.toString() ?: "无数据",
+            data3_ppFatGrade = data3Result?.ppFatGrade?.toString() ?: "无数据",
+            data3_ppBodyHealth = data3Result?.ppBodyHealth?.toString() ?: "无数据",
+            data3_ppBodyAge = data3Result?.ppBodyAge ?: 0,
+            data3_ppBodyScore = data3Result?.ppBodyScore ?: 0
         )
     }
 }
