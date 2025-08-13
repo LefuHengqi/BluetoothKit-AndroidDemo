@@ -11,19 +11,17 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.device.apple.util.WifiUtil
 import com.lefu.ppbase.util.Logger
-import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
-import com.peng.ppscale.business.ble.send.BleSendManager
-import com.peng.ppscale.vo.PPScaleSendState
 import java.lang.ref.WeakReference
 import java.util.*
 
-class BleConfigWifiActivity : AppCompatActivity() {
+class BleConfigWifiActivity : BaseImmersivePermissionActivity() {
     var RET_CODE_SYSTEM_WIFI_SETTINGS = 8161
     private var etWifiName: EditText? = null
     var etWifiKey: EditText? = null
@@ -41,9 +39,27 @@ class BleConfigWifiActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wifi_config)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         mHandler = PreviewHandler(this)
         address = intent.getStringExtra("address")
         initView()
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "WiFi配置",
+                showBackButton = true
+            )
+        }
     }
 
     private fun initView() {
@@ -94,12 +110,7 @@ class BleConfigWifiActivity : AppCompatActivity() {
         ssid = etWifiName?.text.toString()
         val password = etWifiKey?.text.toString()
         ssid?.let {
-            PPBlutoothPeripheralAppleInstance.instance.controller?.configWifiData(it, password, configWifiInfoInterface, object : PPBleSendResultCallBack {
-                override fun onResult(sendState: PPScaleSendState?) {
-
-                }
-
-            })
+            PPBlutoothPeripheralAppleInstance.instance.controller?.configWifiData(it, password, configWifiInfoInterface)
         }
     }
 

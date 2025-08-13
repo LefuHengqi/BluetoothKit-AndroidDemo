@@ -16,7 +16,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
@@ -27,6 +27,7 @@ import com.lefu.ppbase.util.Logger
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserModel
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
@@ -60,7 +61,7 @@ import com.peng.ppscale.device.PeripheralBorre.PPBlutoothPeripheralBorreControll
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralBorreActivity : AppCompatActivity() {
+class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
 
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
@@ -85,6 +86,12 @@ class PeripheralBorreActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.peripheral_borre_layout)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
 
         userModel = DataUtil.getUserModel()
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
@@ -111,6 +118,17 @@ class PeripheralBorreActivity : AppCompatActivity() {
         initClick()
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Borre设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {
@@ -898,7 +916,7 @@ class PeripheralBorreActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&

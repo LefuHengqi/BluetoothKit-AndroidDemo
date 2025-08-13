@@ -1,6 +1,8 @@
 package com.lefu.ppblutoothkit.device.torre
 
 import android.app.Activity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.os.Bundle
 import android.text.InputType
 import android.text.TextUtils
@@ -22,7 +24,7 @@ import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
 
-class PeripheralTorreConfigWifiActivity : Activity() {
+class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
 
     var configResultTV: TextView? = null
     var ivShowPassword: ImageView? = null
@@ -39,6 +41,12 @@ class PeripheralTorreConfigWifiActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wifi_config_torre)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
 
         findViewById<TextView>(R.id.etWifiName)?.text = ssid
         etWifiKey = findViewById<EditText>(R.id.etWifiKey)
@@ -97,6 +105,17 @@ class PeripheralTorreConfigWifiActivity : Activity() {
             }
         }
 
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "WiFi配置",
+                showBackButton = true
+            )
+        }
     }
 
     val configWifiInterface = object : PPTorreConfigWifiInterface() {

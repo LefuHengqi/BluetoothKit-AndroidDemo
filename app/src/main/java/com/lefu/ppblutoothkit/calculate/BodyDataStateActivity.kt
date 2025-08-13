@@ -1,21 +1,28 @@
 package com.lefu.ppblutoothkit.calculate
 
 import android.app.Activity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil.bodyDataModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.lefu.toolsutils.language.JsonLanguageDefaultValueUtils
 
-class BodyDataStateActivity : Activity() {
+class BodyDataStateActivity : BaseImmersivePermissionActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_body_data_state)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
 
         JsonLanguageDefaultValueUtils.initLocalLanguageJson(this)
 
@@ -38,6 +45,17 @@ class BodyDataStateActivity : Activity() {
                 }
             }
             textView.text = buffer.toString()
+        }
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "身体数据状态",
+                showBackButton = true
+            )
         }
     }
 }

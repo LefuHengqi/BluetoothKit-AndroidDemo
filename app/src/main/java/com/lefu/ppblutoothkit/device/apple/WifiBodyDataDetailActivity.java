@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity;
 
 import com.lefu.ppblutoothkit.R;
 import com.lefu.ppblutoothkit.device.apple.data.BodyFataDataModel;
@@ -14,12 +16,34 @@ import com.lefu.ppbase.PPBodyBaseModel;
 import com.lefu.ppbase.PPDeviceModel;
 import com.lefu.ppbase.vo.PPUserModel;
 
-public class WifiBodyDataDetailActivity extends AppCompatActivity {
+public class WifiBodyDataDetailActivity extends BaseImmersivePermissionActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body_data_detail);
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode();
+        
+        // 初始化Toolbar
+        initToolbar();
+        
+        initView();
+    }
+    
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setupUnifiedToolbar(
+                toolbar,
+                "WiFi体重数据详情",
+                true
+            );
+        }
+    }
+
+    private void initView() {
         TextView textView = findViewById(R.id.data_detail);
 
 //        BodyFataDataModel bodyFataDataModel = (BodyFataDataModel) getIntent().getSerializableExtra("bodyFataDataModel");
@@ -43,7 +67,5 @@ public class WifiBodyDataDetailActivity extends AppCompatActivity {
 
             textView.setText(bodyFataDataModel.toString());
         }
-
-
     }
 }

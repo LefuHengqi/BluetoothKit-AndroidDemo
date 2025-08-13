@@ -10,8 +10,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.util.Logger
@@ -46,7 +48,7 @@ import com.peng.ppscale.vo.PPScaleSendState
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralAppleActivity : AppCompatActivity() {
+class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
 
     private var weightTextView: TextView? = null
     private var wifiConfigLayout: LinearLayout? = null
@@ -65,7 +67,13 @@ class PeripheralAppleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_apple_layout)
-
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         wifiConfigLayout = findViewById<LinearLayout>(R.id.wifiConfigLayout)
         logTxt = findViewById<TextView>(R.id.logTxt)
@@ -91,6 +99,17 @@ class PeripheralAppleActivity : AppCompatActivity() {
 
         initClick()
 
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Apple设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {

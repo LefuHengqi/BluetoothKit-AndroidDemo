@@ -4,6 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_58dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimens_10dp"
+        android:theme="@style/ToolbarTheme" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

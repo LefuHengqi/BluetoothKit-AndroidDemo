@@ -17,6 +17,8 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
@@ -50,6 +52,9 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
+import com.lefu.ppblutoothkit.databinding.PeripheralDorreLayoutBinding
+// 移除这行导入：
+// import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -57,19 +62,20 @@ import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreControll
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralDorreActivity : AppCompatActivity() {
+class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
 
+    private lateinit var binding: PeripheralDorreLayoutBinding
+    private var mTestStateTv: TextView? = null
+    
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
-    val mTestStateTv: TextView? by lazy { findViewById<TextView>(R.id.mTestStateTv) }
 
     val REQUEST_CODE = 1024
 
     var dfuFilePath: String? = null//本地文件升级时使用
-
 
     private var whetherFullyDFUToggleBtn: ToggleButton? = null//控制是否全量升级，true开启全量
 
@@ -82,8 +88,20 @@ class PeripheralDorreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContentView(R.layout.peripheral_dorre_layout)
-
+        
+        binding = PeripheralDorreLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
+        // 如果 mTestStateTv 在 peripheral_dorre_layout.xml 中，使用 binding 访问
+        // 如果在其他布局文件中，需要单独 findViewById
+        mTestStateTv = findViewById(R.id.mTestStateTv) // 或者使用 binding.mTestStateTv
+        
         userModel = DataUtil.getUserModel()
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.memberID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
@@ -108,6 +126,17 @@ class PeripheralDorreActivity : AppCompatActivity() {
         initClick()
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Dorre设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {
@@ -832,7 +861,7 @@ class PeripheralDorreActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&

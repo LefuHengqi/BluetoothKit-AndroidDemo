@@ -1,6 +1,8 @@
 package com.lefu.ppblutoothkit
 
 import android.app.Activity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +17,7 @@ import com.lefu.ppbase.util.UserUtil
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
 
-class UserinfoActivity : Activity() {
+class UserinfoActivity : BaseImmersivePermissionActivity() {
     var height = 180
     var age = 18
     var unit = PPUnitType.Unit_KG
@@ -23,7 +25,13 @@ class UserinfoActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_userinfo)
-
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         onBtnClck()
 
         val userModel = DataUtil.getUserModel()
@@ -101,6 +109,17 @@ class UserinfoActivity : Activity() {
 
     private fun onBtnClck() {
 
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "用户信息",
+                showBackButton = true
+            )
+        }
     }
 
     override fun onPause() {

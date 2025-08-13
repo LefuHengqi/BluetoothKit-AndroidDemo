@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
@@ -40,7 +42,7 @@ import com.peng.ppscale.vo.PPScaleSendState
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralIceActivity : AppCompatActivity() {
+class PeripheralIceActivity : BaseImmersivePermissionActivity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -63,7 +65,13 @@ class PeripheralIceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_ice_layout)
-
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         whetherFullyDFUToggleBtn = findViewById<ToggleButton>(R.id.whetherFullyDFUToggleBtn)
@@ -83,9 +91,19 @@ class PeripheralIceActivity : AppCompatActivity() {
         setTitle("${deviceModel?.getDevicePeripheralType()}")
         addPrint("startConnect")
         controller?.registDataChangeListener(dataChangeListener)
-        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         initClick()
-
+        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Ice设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {

@@ -1,6 +1,7 @@
 package com.lefu.ppblutoothkit.device
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -9,14 +10,18 @@ import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
@@ -31,6 +36,8 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.databinding.PeripheralForreLayoutBinding
+import com.lefu.ppblutoothkit.databinding.ProductTestDfuTestActivityBinding
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralForreInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
@@ -41,11 +48,14 @@ import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
+import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
 import com.peng.ppscale.business.ble.listener.PPTorreDeviceModeChangeInterface
+import com.peng.ppscale.business.ble.listener.PPUserInfoInterface
 import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener
+import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralForre.PPBlutoothPeripheralForreController
 
@@ -55,14 +65,13 @@ import com.peng.ppscale.device.PeripheralForre.PPBlutoothPeripheralForreControll
  * 连接类型:连接
  * 设备类型 人体秤
  */
-class PeripheralForreActivity : AppCompatActivity() {
+class PeripheralForreActivity : BaseImmersivePermissionActivity() {
 
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
-    val mTestStateTv : TextView? by lazy { findViewById<TextView>(R.id.mTestStateTv) }
 
     val REQUEST_CODE = 1024
 
@@ -76,11 +85,21 @@ class PeripheralForreActivity : AppCompatActivity() {
         var deviceModel: PPDeviceModel? = null
     }
 
+    private lateinit var binding: PeripheralForreLayoutBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContentView(R.layout.peripheral_forre_layout)
+        binding = PeripheralForreLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
 
+        // 替换所有 mTestStateTv 为 binding.mTestStateTv
         userModel = DataUtil.getUserModel()
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.memberID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
@@ -105,6 +124,17 @@ class PeripheralForreActivity : AppCompatActivity() {
         initClick()
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Forre设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {
@@ -247,7 +277,7 @@ class PeripheralForreActivity : AppCompatActivity() {
                 if (Companion.deviceModel != null) {
                     deviceModel?.let {
                         if (deviceModel.deviceMac.equals(Companion.deviceModel!!.deviceMac)) {
-                            mTestStateTv?.text = getString(R.string.device_be_connected)
+                            device_set_connect_state?.text = getString(R.string.device_be_connected)
                             addPrint(getString(R.string.device_be_connected))
                             controller?.startConnect(it, this)
                         }
@@ -401,14 +431,12 @@ class PeripheralForreActivity : AppCompatActivity() {
             .show()
     }
 
-    fun addPrint(msg: String) {
+    internal fun addPrint(msg: String) {
         if (msg.isNotEmpty()) {
             Logger.d(msg)
             logTxt?.append("$msg\n")
         }
     }
-
-
 
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface {
 
@@ -613,7 +641,7 @@ class PeripheralForreActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&

@@ -9,6 +9,9 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralHamburgerInstance
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.foodscale.FoodScaleCacluteHelper
@@ -25,7 +28,7 @@ import com.lefu.ppbase.PPDeviceModel
  * 连接类型:广播
  * 设备类型 厨房秤
  */
-class PeripheralHamburgerActivity : Activity() {
+class PeripheralHamburgerActivity : BaseImmersivePermissionActivity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -40,7 +43,13 @@ class PeripheralHamburgerActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_hamburger_layout)
-
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
@@ -60,6 +69,17 @@ class PeripheralHamburgerActivity : Activity() {
 
         initClick()
 
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Hamburger设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {

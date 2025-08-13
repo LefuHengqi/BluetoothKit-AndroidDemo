@@ -1,15 +1,16 @@
 package com.lefu.ppblutoothkit.calculate
 
-import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
+import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.util.DataUtil
@@ -17,64 +18,73 @@ import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
+import com.lefu.ppblutoothkit.databinding.ActivityCalculate4ac2channelBinding
 
 /**
  * 4电极交流双频算法
  */
-class Calculate4AC2ChannelActivitiy : Activity() {
+class Calculate4AC2ChannelActivitiy : BaseImmersivePermissionActivity() {
 
     var deviceName: String = ""
-
-    val etSex: android.widget.EditText by lazy { findViewById(R.id.etSex) }
-    val etHeight: android.widget.EditText by lazy { findViewById(R.id.etHeight) }
-    val etAge: android.widget.EditText by lazy { findViewById(R.id.etAge) }
-    val etWeight: android.widget.EditText by lazy { findViewById(R.id.etWeight) }
-    val etImpedance1: android.widget.EditText by lazy { findViewById(R.id.etImpedance1) }
-    val etImpedance2: android.widget.EditText by lazy { findViewById(R.id.etImpedance2) }
-    val sportModeEt: android.widget.EditText by lazy { findViewById(R.id.sportModeEt) }
+    private lateinit var binding: ActivityCalculate4ac2channelBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calculate_4ac2channel)
+        binding = ActivityCalculate4ac2channelBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
 
-        findViewById<Button>(R.id.calculateBtn).setOnClickListener {
+        binding.calculateBtn.setOnClickListener {
             startCalculate()
         }
 
         initData()
     }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setupUnifiedToolbar(
+            toolbar = toolbar,
+            title = "4电极交流双频算法",
+            showBackButton = true
+        )
+    }
 
     private fun initData() {
-
         val tag = intent.getStringExtra("bodyDataModel")
         if (tag != null) {
             //显示称重完成后的数据
             val bodyBaseModel = DataUtil.bodyBaseModel
             deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
-            etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
-            sportModeEt.setText(if (bodyBaseModel?.userModel?.isAthleteMode == false) "0" else "1")
-            etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
-            etAge.setText(bodyBaseModel?.userModel?.age.toString())
-            etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
-            etImpedance1.setText(bodyBaseModel?.impedance.toString())
-            etImpedance2.setText(bodyBaseModel?.ppImpedance100EnCode.toString())
+            binding.etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
+            binding.sportModeEt.setText(if (bodyBaseModel?.userModel?.isAthleteMode == false) "0" else "1")
+            binding.etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
+            binding.etAge.setText(bodyBaseModel?.userModel?.age.toString())
+            binding.etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
+            binding.etImpedance1.setText(bodyBaseModel?.impedance.toString())
+            binding.etImpedance2.setText(bodyBaseModel?.ppImpedance100EnCode.toString())
         }
     }
 
     private fun startCalculate() {
-        val sex = if (etSex.text?.toString()?.toInt() == 0) {
+        val sex = if (binding.etSex.text?.toString()?.toInt() == 0) {
             PPUserGender.PPUserGenderFemale
         } else {
             PPUserGender.PPUserGenderMale
         }
 
-        val isAthleteMode = sportModeEt.text?.toString()?.toInt() == 1
+        val isAthleteMode = binding.sportModeEt.text?.toString()?.toInt() == 1
 
-        val height = etHeight.text?.toString()?.toInt() ?: 180
-        val age = etAge.text?.toString()?.toInt() ?: 28
-        val weight = etWeight.text?.toString()?.toDouble() ?: 70.00
-        val impedance1 = etImpedance1.text?.toString()?.toLong() ?: 4195332L
-        val impedance2 = etImpedance2.text?.toString()?.toLong() ?: 4195332L
+        val height = binding.etHeight.text?.toString()?.toInt() ?: 180
+        val age = binding.etAge.text?.toString()?.toInt() ?: 28
+        val weight = binding.etWeight.text?.toString()?.toDouble() ?: 70.00
+        val impedance1 = binding.etImpedance1.text?.toString()?.toLong() ?: 4195332L
+        val impedance2 = binding.etImpedance2.text?.toString()?.toLong() ?: 4195332L
 
         val userModel = PPUserModel.Builder()
             .setSex(sex) //gender

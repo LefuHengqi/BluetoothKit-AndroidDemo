@@ -1,6 +1,8 @@
 package com.lefu.ppblutoothkit.device
 
 import android.app.Activity
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -30,7 +32,7 @@ import com.peng.ppscale.vo.PPScaleSendState
  * 连接类型:连接
  * 设备类型 厨房秤
  */
-class PeripheralFishActivity : Activity() {
+class PeripheralFishActivity : BaseImmersivePermissionActivity() {
 
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -45,7 +47,13 @@ class PeripheralFishActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_fish_layout)
-
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
+        // 初始化Toolbar
+        initToolbar()
+        
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
@@ -62,8 +70,19 @@ class PeripheralFishActivity : Activity() {
         })
         addPrint("startConnect")
         controller?.registDataChangeListener(dataChangeListener)
-        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         initClick()
+        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+    }
+    
+    private fun initToolbar() {
+        val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        toolbar?.let {
+            setupUnifiedToolbar(
+                toolbar = it,
+                title = "Fish设备",
+                showBackButton = true
+            )
+        }
     }
 
     fun initClick() {

@@ -1,8 +1,9 @@
 package com.lefu.ppblutoothkit
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
@@ -16,11 +17,15 @@ import com.lefu.ppblutoothkit.vo.DemoDeviceConfigVo
 import com.peng.ppscale.PPBluetoothKit
 import okhttp3.Call
 
-class MainActivity : BasePermissionActivity(), View.OnClickListener {
+class MainActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        
+        // 在 setContentView 之后调用沉浸式设置
+        setupImmersiveMode()
+        
         initToolbar()
         initDeviceConfig()
         findViewById<Button>(R.id.searchDevice).setOnClickListener(this)
@@ -41,14 +46,19 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
     }
 
     private fun initToolbar() {
-        val toolbar: Toolbar? = findViewById(R.id.toolbar)
-        toolbar?.title = "${getString(R.string.app_name)}V${BuildConfig.VERSION_NAME}"
-        toolbar?.setTitleTextColor(Color.WHITE)
-        toolbar?.inflateMenu(R.menu.main_toolbar_menu)
-        toolbar?.setOnMenuItemClickListener {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setupUnifiedToolbar(
+            toolbar = toolbar,
+            title = "${getString(R.string.app_name)}V${BuildConfig.VERSION_NAME}",
+            showBackButton = false
+        )
+        
+        // 设置菜单
+        toolbar.inflateMenu(R.menu.main_toolbar_menu)
+        
+        toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_item_export_app_log -> {
-//                    startUploadLog()
                     LogActivity.logType = 0
                     val intent = Intent(this, LogActivity::class.java)
                     startActivity(intent)
@@ -62,8 +72,31 @@ class MainActivity : BasePermissionActivity(), View.OnClickListener {
                     true
                 }
 
-                else -> super.onOptionsItemSelected(it)
+                else -> false
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_export_app_log -> {
+                LogActivity.logType = 0
+                val intent = Intent(this, LogActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_item_export_device_log -> {
+                LogActivity.logType = 1
+                val intent = Intent(this, LogActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'  // 替换 kotlin-android-extensions
 
 static def releaseTime() {
     def utcDate = new Date()
@@ -10,16 +11,24 @@ static def releaseTime() {
 }
 
 android {
-    compileSdk 35
-    namespace 'com.lefu.ppblutoothkit'
+    namespace 'com.lefu.ppblutoothkit'  // 添加 namespace 配置
+    compileSdkVersion 35  // 从34升级到35
+
+    // 启用 BuildConfig 生成
+    buildFeatures {
+        buildConfig true
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "com.lefu.ppblutoothkit"
-        targetSdkVersion 35
         minSdkVersion 24
+        targetSdkVersion 35  // 添加这行，设置为35
         versionCode LIB_VERSION_CODE as int
         versionName LIB_VERSION
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
+
     /******************************以下Demo配置项，你的项目中无需引入*************************************/
     packagingOptions {
         exclude 'R.txt'
@@ -31,38 +40,6 @@ android {
         exclude 'META-INF/ppbluetoothkit_debug.kotlin_module'
         exclude 'AndroidManifest.xml'
 
-        //以下代码是Demo需要使用的，在你们的项目中不需要使用
-        //直流秤
-        pickFirst 'lib/armeabi-v7a/libsl.so'
-        pickFirst 'lib/arm64-v8a/libsl.so'
-        pickFirst 'lib/x86_64/libsl.so'
-        pickFirst 'lib/x86/libsl.so'
-        //交流秤
-        pickFirst 'lib/armeabi-v7a/libbhBodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbhBodyComposition.so'
-        pickFirst 'lib/x86_64/libbhBodyComposition.so'
-        pickFirst 'lib/x86/libbhBodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh1BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh1BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh1BodyComposition.so'
-        pickFirst 'lib/x86/libbh1BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh2BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh2BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh2BodyComposition.so'
-        pickFirst 'lib/x86/libbh2BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh3BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh3BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh3BodyComposition.so'
-        pickFirst 'lib/x86/libbh3BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh4BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh4BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh4BodyComposition.so'
-        pickFirst 'lib/x86/libbh4BodyComposition.so'
-        pickFirst 'lib/armeabi-v7a/libbh5BodyComposition.so'
-        pickFirst 'lib/arm64-v8a/libbh5BodyComposition.so'
-        pickFirst 'lib/x86_64/libbh5BodyComposition.so'
-        pickFirst 'lib/x86/libbh5BodyComposition.so'
-
     }
 
     compileOptions {
@@ -73,7 +50,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
     /******************************以上Demo配置项，你的项目中无需引入*************************************/
 
     buildTypes {
@@ -87,10 +63,6 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    
-    buildFeatures {
-        buildConfig = true
     }
     repositories {
         flatDir {
@@ -116,14 +88,6 @@ android {
             enableSplit true
         }
     }
-
-//    compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_8
-//        targetCompatibility JavaVersion.VERSION_1_8
-//    }
-//    kotlinOptions {
-//        jvmTarget = '1.8'
-//    }
 
     android.applicationVariants.all { variant ->
         if (variant.buildType.name.equals('release')) {
