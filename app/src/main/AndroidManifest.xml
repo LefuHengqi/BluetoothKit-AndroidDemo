@@ -162,6 +162,10 @@
             android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.lefu.ppblutoothkit.device.PeripheralLorreActivity"
+            android:theme="@style/AppTheme.Immersive"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".device.apple.BleConfigWifiActivity"
             android:theme="@style/AppTheme.Immersive"
             android:screenOrientation="portrait" />
