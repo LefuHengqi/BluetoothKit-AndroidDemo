@@ -1,9 +1,9 @@
-package com.lefu.ppblutoothkit.device.lorre
+package com.lefu.ppblutoothkit.device.morre
 
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.vo.PPScaleStateMeasureResultType
 import com.lefu.ppbase.vo.PPScaleStateWeightType
-import com.lefu.ppblutoothkit.device.PeripheralLorreActivity
+import com.lefu.ppblutoothkit.device.PeripheralMorreActivity
 import com.lefu.ppblutoothkit.device.foodscale.vo.toPPKorreFoodInfo
 import com.lefu.ppblutoothkit.device.korre.getFoodIdByFoodNumber
 import com.lefu.ppblutoothkit.util.UnitUtil
@@ -11,7 +11,7 @@ import com.peng.ppscale.business.ble.listener.FoodScaleDataChangeListener
 import com.peng.ppscale.util.UnitUtils
 import com.peng.ppscale.vo.LFFoodScaleGeneral
 
-val PeripheralLorreActivity.foodScaleDataChangeListener: FoodScaleDataChangeListener
+val PeripheralMorreActivity.foodScaleDataChangeListener: FoodScaleDataChangeListener
     get() = object : FoodScaleDataChangeListener() {
 
         override fun processData(lfFoodScaleGeneral: LFFoodScaleGeneral, deviceModel: PPDeviceModel?) {
@@ -43,7 +43,7 @@ val PeripheralLorreActivity.foodScaleDataChangeListener: FoodScaleDataChangeList
         }
     }
 
-fun PeripheralLorreActivity.getFoodIdByFoodNumber(foodNumber: Int): String {
+fun PeripheralMorreActivity.getFoodIdByFoodNumber(foodNumber: Int): String {
 
     if (foodNumberList.isNullOrEmpty()) {
         if (foodList.isNullOrEmpty()) {

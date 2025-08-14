@@ -17,6 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimens_16dp"
         android:layout_marginVertical="@dimen/dimens_10dp"
         android:gravity="center_vertical">
 
@@ -53,6 +54,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimens_16dp"
         android:orientation="horizontal">
 
         <TextView
@@ -70,6 +72,7 @@
             android:text="foodRemoteId:" />
 
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,7 +135,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/sync_time"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:visibility="gone" />
 
 
             </LinearLayout>
