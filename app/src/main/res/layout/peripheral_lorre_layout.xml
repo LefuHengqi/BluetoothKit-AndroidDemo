@@ -126,15 +126,6 @@
                     android:text="@string/change_unit"
                     android:textAllCaps="false" />
 
-                <Button
-                    android:id="@+id/syncTime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/sync_time"
-                    android:textAllCaps="false" />
-
-
             </LinearLayout>
 
             <LinearLayout

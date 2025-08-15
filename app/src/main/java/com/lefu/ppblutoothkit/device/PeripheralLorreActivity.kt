@@ -122,16 +122,6 @@ class PeripheralLorreActivity : BaseImmersivePermissionActivity() {
             })
         }
 
-        findViewById<Button>(R.id.syncTime).setOnClickListener {
-            addPrint("syncTime")
-            PPBluetoothPeripheralLorreInstance.syncTime { success ->
-                if (success) {
-                    addPrint("syncTime success")
-                } else {
-                    addPrint("syncTime fail")
-                }
-            }
-        }
         findViewById<Button>(R.id.device_set_sync_log).setOnClickListener {
             addPrint("syncLog")
             //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
