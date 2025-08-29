@@ -71,9 +71,10 @@ android {
 }
 
 dependencies {
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-    api project(":ppsdkkit:lefulib:bluetoothkit")
+//    api project(":ppsdkkit:lefulib:bluetoothkit")
     compileOnly(project(":ppsdkkit:ppbasekit"))
 
 }
@@ -112,39 +113,108 @@ afterEvaluate {
 
         repositories {
             maven {
-                // 本地仓库路径（默认生成在模块的build/repo目录）
-//                url = layout.buildDirectory.dir('repo')
-
-                // 或者指定绝对路径
+                // 发布到指定的maven目录
                 url = uri("${rootProject.projectDir}/maven")
+                
+                // 确保目录存在
+                allowInsecureProtocol = true
             }
         }
     }
+    
+    // 自定义AAR文件名
+    tasks.withType(Zip) { task ->
+        if (task.name.contains('bundleReleaseAar')) {
+            task.archiveFileName = "${ARTIFACT_ID}-${LIB_VERSION}.aar"
+        }
+    }
+    
+    // 创建自定义任务来清理AAR文件
+    task cleanAarFiles {
+        doLast {
+            def aarFile = file("build/outputs/aar/${ARTIFACT_ID}-${LIB_VERSION}.aar")
+            if (aarFile.exists()) {
+                cleanAarFile(aarFile)
+            }
+        }
+    }
+    
+    // 清理Maven发布的AAR文件
+    task cleanMavenAarFiles {
+        doLast {
+            def mavenAarFile = file("${project.rootDir}/maven/com/lefu/ppbluetoothkit/${ARTIFACT_ID}/${LIB_VERSION}/${ARTIFACT_ID}-${LIB_VERSION}.aar")
+            if (mavenAarFile.exists()) {
+                cleanAarFile(mavenAarFile)
+            }
+        }
+    }
+    
+    // 通用的AAR清理闭包
+    ext.cleanAarFile = { File aarFile ->
+        def tempDir = file("build/temp-aar-${System.currentTimeMillis()}")
+        tempDir.deleteDir()
+        tempDir.mkdirs()
+        
+        // 解压AAR
+        copy {
+            from zipTree(aarFile)
+            into tempDir
+        }
+        
+        // 删除不需要的文件
+        delete file("${tempDir}/R.txt")
+        delete file("${tempDir}/AndroidManifest.xml")
+        // 完全删除META-INF目录
+        delete file("${tempDir}/META-INF")
+        
+        // 处理classes.jar中的META-INF
+        def classesJar = file("${tempDir}/classes.jar")
+        if (classesJar.exists()) {
+            def classesTemp = file("build/temp-classes-${System.currentTimeMillis()}")
+            classesTemp.deleteDir()
+            classesTemp.mkdirs()
+            
+            // 解压classes.jar
+            copy {
+                from zipTree(classesJar)
+                into classesTemp
+            }
+            
+            // 删除classes.jar中的META-INF目录中的非必要文件，保留MANIFEST.MF
+            def metaInfDir = file("${classesTemp}/META-INF")
+            if (metaInfDir.exists()) {
+                metaInfDir.listFiles().each { file ->
+                    if (file.name != 'MANIFEST.MF') {
+                        file.delete()
+                    }
+                }
+            }
+            
+            // 重新打包classes.jar
+            ant.jar(destfile: classesJar, basedir: classesTemp)
+            
+            // 清理临时目录
+            classesTemp.deleteDir()
+        }
+        
+        // 重新打包AAR
+        ant.zip(destfile: aarFile, basedir: tempDir)
+        
+        // 清理临时目录
+        tempDir.deleteDir()
+    }
+    
+    // 在bundleReleaseAar任务后执行清理
+    tasks.named('bundleReleaseAar').configure {
+        finalizedBy cleanAarFiles
+    }
+    
+    // 在publishToMavenLocal任务后执行Maven AAR清理
+    tasks.named('publishToMavenLocal').configure {
+        finalizedBy cleanMavenAarFiles
+    }
 }
 
-//// 先创建 JavaDoc 生成任务
-//task androidJavadoc(type: Javadoc) {
-//    source = android.sourceSets.main.java.srcDirs
-//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//    android.libraryVariants.all { variant ->
-//        if (variant.name == 'release') {
-//            owner.classpath += variant.javaCompileProvider.get().classpath
-//        }
-//    }
-//    exclude '**/R.html', '**/R.*.html', '**/index.html'
-//}
-//
-//// 再创建 JavaDoc JAR 任务
-//task javadocJar(type: Jar, dependsOn: androidJavadoc) {
-//    classifier = 'javadoc'
-//    from androidJavadoc.destinationDir
-//}
-//
-//// 可选：源码 JAR 任务
-//task sourcesJar(type: Jar) {
-//    classifier = 'sources'
-//    from android.sourceSets.main.java.srcDirs
-//}
 
 
 

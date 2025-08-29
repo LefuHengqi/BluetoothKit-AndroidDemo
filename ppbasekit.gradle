@@ -11,8 +11,8 @@ def fileName
 
 def GROUP_ID = "com.lefu.ppbasekit"
 def ARTIFACT_ID = "ppbasekit"
-def LIB_VERSION = "4.0.1.10"
-def LIB_VERSION_CODE = "105"
+//def LIB_VERSION = "4.0.1.10"
+//def LIB_VERSION_CODE = "105"
 
 android {
     namespace 'com.lefu.ppbasekit'
@@ -39,6 +39,19 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
     }
+    
+    // 配置打包选项，排除不需要的文件
+    packagingOptions {
+        pickFirst '**/AndroidManifest.xml'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/*.kotlin_module'
+        exclude 'proguard.txt'
+    }
+
     buildTypes {
         debug {
             debuggable true
@@ -55,10 +68,10 @@ android {
 }
 
 dependencies {
-//    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
-    api(project(":ppsdkkit:lefulib:lfgson"))
+//    api(project(":ppsdkkit:lefulib:lfgson"))
 
 }
 
@@ -74,6 +87,11 @@ afterEvaluate {
                 artifactId = ARTIFACT_ID
                 version = LIB_VERSION
 
+                // 自定义AAR文件名：项目名+版本号
+                pom {
+                    name = "${ARTIFACT_ID}-${LIB_VERSION}"
+                }
+
                 // 可选：包含源码和文档
                 //  artifact sourcesJar
                 //  artifact javadocJar
@@ -82,13 +100,105 @@ afterEvaluate {
 
         repositories {
             maven {
-                // 本地仓库路径（默认生成在模块的build/repo目录）
-//                url = layout.buildDirectory.dir('repo')
-
-                // 或者指定绝对路径
+                // 发布到指定的maven目录
                 url = uri("${rootProject.projectDir}/maven")
+                
+                // 确保目录存在
+                allowInsecureProtocol = true
             }
         }
+    }
+    
+    // 自定义AAR文件名
+    tasks.withType(Zip) { task ->
+        if (task.name.contains('bundleReleaseAar')) {
+            task.archiveFileName = "${ARTIFACT_ID}-${LIB_VERSION}.aar"
+        }
+    }
+    
+    // 创建自定义任务来清理AAR文件
+    task cleanAarFiles {
+        doLast {
+            def aarFile = file("build/outputs/aar/${ARTIFACT_ID}-${LIB_VERSION}.aar")
+            if (aarFile.exists()) {
+                cleanAarFile(aarFile)
+            }
+        }
+    }
+    
+    // 清理Maven发布的AAR文件
+    task cleanMavenAarFiles {
+        doLast {
+            def mavenAarFile = file("${project.rootDir}/maven/com/lefu/ppbasekit/${ARTIFACT_ID}/${LIB_VERSION}/${ARTIFACT_ID}-${LIB_VERSION}.aar")
+            if (mavenAarFile.exists()) {
+                cleanAarFile(mavenAarFile)
+            }
+        }
+    }
+    
+    // 通用的AAR清理闭包
+    ext.cleanAarFile = { File aarFile ->
+        def tempDir = file("build/temp-aar-${System.currentTimeMillis()}")
+        tempDir.deleteDir()
+        tempDir.mkdirs()
+        
+        // 解压AAR
+        copy {
+            from zipTree(aarFile)
+            into tempDir
+        }
+        
+        // 删除不需要的文件
+        delete file("${tempDir}/R.txt")
+        delete file("${tempDir}/AndroidManifest.xml")
+        // 完全删除META-INF目录
+        delete file("${tempDir}/META-INF")
+        
+        // 处理classes.jar中的META-INF
+        def classesJar = file("${tempDir}/classes.jar")
+        if (classesJar.exists()) {
+            def classesTemp = file("build/temp-classes-${System.currentTimeMillis()}")
+            classesTemp.deleteDir()
+            classesTemp.mkdirs()
+            
+            // 解压classes.jar
+            copy {
+                from zipTree(classesJar)
+                into classesTemp
+            }
+            
+            // 删除classes.jar中的META-INF目录中的非必要文件，保留MANIFEST.MF
+            def metaInfDir = file("${classesTemp}/META-INF")
+            if (metaInfDir.exists()) {
+                metaInfDir.listFiles().each { file ->
+                    if (file.name != 'MANIFEST.MF') {
+                        file.delete()
+                    }
+                }
+            }
+            
+            // 重新打包classes.jar
+            ant.jar(destfile: classesJar, basedir: classesTemp)
+            
+            // 清理临时目录
+            classesTemp.deleteDir()
+        }
+        
+        // 重新打包AAR
+        ant.zip(destfile: aarFile, basedir: tempDir)
+        
+        // 清理临时目录
+        tempDir.deleteDir()
+    }
+    
+    // 在bundleReleaseAar任务后执行清理
+    tasks.named('bundleReleaseAar').configure {
+        finalizedBy cleanAarFiles
+    }
+    
+    // 在publishToMavenLocal任务后执行Maven AAR清理
+    tasks.named('publishToMavenLocal').configure {
+        finalizedBy cleanMavenAarFiles
     }
 }
 
