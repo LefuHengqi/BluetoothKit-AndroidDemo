@@ -221,6 +221,19 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/testImpedance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="测试阻抗解析"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 

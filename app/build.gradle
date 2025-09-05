@@ -21,7 +21,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.lefu.ppblutoothkit"
+        applicationId "com.lefu.demo"
         minSdkVersion 24
         targetSdkVersion 35  // 添加这行，设置为35
         versionCode LIB_VERSION_CODE as int

@@ -9,7 +9,7 @@ public class BodyFataDataModel extends PPBodyFatModel implements Serializable {
 
 
     public BodyFataDataModel(PPBodyBaseModel bodyBaseModel) {
-        super(bodyBaseModel);
+        super(bodyBaseModel, null);
     }
 
     @Override
