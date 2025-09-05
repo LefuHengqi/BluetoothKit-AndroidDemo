@@ -83,16 +83,14 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                from components.release  // 发布release版本
+                // 发布AAR文件，不包含sources
+                artifact("$buildDir/outputs/aar/${ARTIFACT_ID}-${LIB_VERSION}.aar")
 
                 // 自定义你的包信息
                 groupId = GROUP_ID
                 artifactId = ARTIFACT_ID
                 version = LIB_VERSION
 
-                // 可选：包含源码和文档
-//                artifact sourcesJar
-//                artifact javadocJar
             }
         }
 

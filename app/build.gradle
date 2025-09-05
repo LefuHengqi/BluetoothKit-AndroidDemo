@@ -157,10 +157,12 @@ android {
 //    implementation files('libs/ppbluetoothkit-4.5.0.jar')
 //    implementation files('libs/ppbluetoothkit-4.5.0.0.jar')
 
-        api(project(':ppsdkkit:ppbasiccalculatekit'))
+        //改项目为独立引用，在你使用时请知悉查看
+        api(project(':ppbasiccalculatekit'))
+
         api(project(":ppsdkkit:ppbasekit"))
-        api(project(":ppsdkkit:ppbluetoothkit"))
         api(project(":ppsdkkit:ppdataanalysiskit"))
+        api(project(":ppsdkkit:ppbluetoothkit"))
 
 
     }

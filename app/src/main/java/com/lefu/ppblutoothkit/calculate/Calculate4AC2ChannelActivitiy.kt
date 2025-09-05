@@ -11,6 +11,7 @@ import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.PPScaleDefine.PPDeviceCalcuteType
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
+import com.lefu.ppbasiccalculatekit.SecretManager
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate4ac2channelBinding

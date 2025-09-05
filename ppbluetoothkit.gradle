@@ -79,20 +79,6 @@ dependencies {
 
 }
 
-
-//上传到maven
-//apply plugin: 'maven'
-//uploadArchives {
-//    repositories.mavenDeployer {
-//        String deployPath = getProjectDir().absolutePath + "/../../maven/"
-//        repository(url: "file://${deployPath}")
-//        pom.groupId = GROUP_ID
-//        pom.artifactId = ARTIFACT_ID
-//        pom.version = LIB_VERSION
-//        pom.packaging = 'aar'
-//    }
-//}
-
 // 添加JAR打包任务
 task jar(type: Jar) {
     dependsOn 'compileReleaseJavaWithJavac'
@@ -103,7 +89,7 @@ task jar(type: Jar) {
         into 'assets'
     }
     // 添加libs目录下的JAR文件内容
-    from(zipTree('libs/bluetoothkit-1.5.4.jar')) {
+    from(zipTree('libs/bluetoothkit-1.5.5.jar')) {
         exclude 'META-INF/**'
     }
     // 完全排除META-INF目录

@@ -5,5 +5,5 @@ include ':data_db'
 include ':ppsdkkit:ppbluetoothkit'
 include ':ppsdkkit:ppdataanalysiskit'
 include ':ppsdkkit:ppbasekit'
-include ':ppsdkkit:ppbasiccalculatekit'
+include ':ppbasiccalculatekit'
 
