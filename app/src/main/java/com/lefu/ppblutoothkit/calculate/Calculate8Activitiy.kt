@@ -12,6 +12,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import com.lefu.htcalculatekit.HTBodyBaseModel
+import com.lefu.htcalculatekit.HTCalculateManager
 
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
@@ -21,10 +23,11 @@ import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
-import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 // 添加 View Binding 导入
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate8acBinding
+import com.lefu.ppcalculate.calculate.PPCalculateManager
+
 // 移除 kotlinx.android.synthetic 导入
 
 /**
@@ -36,6 +39,8 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
     var spinner: Spinner? = null
     var deviceName: String = ""
     private lateinit var binding: ActivityCalculate8acBinding
+
+    var heartRate = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,7 +121,7 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
             binding.z20KhzRightArmEnCode.setText(bodyBaseModel?.z20KhzRightArmEnCode.toString())
             binding.z20KhzRightLegEnCode.setText(bodyBaseModel?.z20KhzRightLegEnCode.toString())
             binding.z20KhzTrunkEnCode.setText(bodyBaseModel?.z20KhzTrunkEnCode.toString())
-
+            heartRate = bodyBaseModel?.heartRate ?: 0
             calcuteType = bodyBaseModel?.deviceModel?.deviceCalcuteType
             if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8) {
                 spinner?.setSelection(0)
@@ -163,10 +168,14 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
 
         val deviceModel = PPDeviceModel("", deviceName)
         deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
-        val bodyBaseModel = PPBodyBaseModel()
+        val bodyBaseModel = HTBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
-        bodyBaseModel.deviceModel = deviceModel
-        bodyBaseModel.userModel = userModel
+        bodyBaseModel.calculateType = calcuteType?.getType() ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate.getType()
+
+        bodyBaseModel.height = userModel.userHeight
+        bodyBaseModel.age = userModel.age
+        bodyBaseModel.sex = if (userModel.sex == PPUserGender.PPUserGenderFemale) 0 else 1
+        bodyBaseModel.secret = SecretManager.getSecret(bodyBaseModel.calculateType)
 
         bodyBaseModel.z100KhzLeftArmEnCode = z100KhzLeftArmEnCode
         bodyBaseModel.z100KhzLeftLegEnCode = z100KhzLeftLegEnCode
@@ -179,12 +188,18 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         bodyBaseModel.z20KhzRightLegEnCode = z20KhzRightLegEnCode
         bodyBaseModel.z20KhzTrunkEnCode = z20KhzTrunkEnCode
 
-        val fatModel = PPBodyFatModel(bodyBaseModel)
-        val ppDetailModel = PPBodyDetailModel(fatModel)
-        Log.d("liyp_", ppDetailModel.toString())
+        val calculateDataJson = HTCalculateManager.calculateDataJson(bodyBaseModel)
 
-        DataUtil.bodyDataModel = fatModel
-        Log.d("liyp_", fatModel.toString())
+        val ppBodyFatModel = PPCalculateManager.calculateData(calculateDataJson)
+
+        //这里有些不需要经过计算的值，需要在计算结束自己赋值。例如：心率/脚长等
+        ppBodyFatModel?.ppHeartRate = heartRate
+
+        val ppBodyDetailModel = ppBodyFatModel?.let { PPBodyDetailModel(it) }
+        Log.d("liyp_", ppBodyFatModel.toString())
+
+        DataUtil.bodyDataModel = ppBodyFatModel
+        Log.d("liyp_", ppBodyDetailModel.toString())
 
         val intent = Intent(this@Calculate8Activitiy, BodyDataDetailActivity::class.java)
         startActivity(intent)

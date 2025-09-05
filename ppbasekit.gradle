@@ -75,26 +75,79 @@ dependencies {
 
 }
 
+// 创建JAR任务
+task jar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    from android.sourceSets.main.kotlin.srcDirs
+    archiveClassifier = ''
+    archiveFileName = "${ARTIFACT_ID}-${LIB_VERSION}.jar"
+    destinationDirectory = file("$buildDir/libs")
+}
+
+// 创建包含编译后类文件的JAR任务
+task classesJar(type: Jar) {
+    from "$buildDir/intermediates/compile_library_classes_jar/release/classes.jar"
+    archiveClassifier = 'classes'
+    archiveFileName = "${ARTIFACT_ID}-${LIB_VERSION}-classes.jar"
+    destinationDirectory = file("$buildDir/libs")
+}
+
+// 创建源码JAR任务
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    from android.sourceSets.main.kotlin.srcDirs
+    archiveClassifier = 'sources'
+    archiveFileName = "${ARTIFACT_ID}-${LIB_VERSION}-sources.jar"
+    destinationDirectory = file("$buildDir/libs")
+}
+
+// 确保JAR任务依赖于编译任务
+jar.dependsOn 'compileReleaseJavaWithJavac'
+classesJar.dependsOn 'compileReleaseJavaWithJavac'
+
 // 配置发布
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                from components.release  // 发布release版本
-
+                // 不使用components.release，手动配置artifacts
+                
                 // 自定义你的包信息
                 groupId = GROUP_ID
                 artifactId = ARTIFACT_ID
                 version = LIB_VERSION
 
-                // 自定义AAR文件名：项目名+版本号
+                // 添加JAR文件到发布
+                artifact classesJar
+                artifact sourcesJar
+
+                // 自定义包信息
                 pom {
                     name = "${ARTIFACT_ID}-${LIB_VERSION}"
+                    description = 'PPBaseKit JAR Library for Android'
+                    url = 'https://github.com/yourusername/yourrepository'
+                    
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    
+                    developers {
+                        developer {
+                            id = 'developer'
+                            name = 'Developer Name'
+                            email = 'developer@example.com'
+                        }
+                    }
+                    
+                    scm {
+                        connection = 'scm:git:git://github.com/yourusername/yourrepository.git'
+                        developerConnection = 'scm:git:ssh://github.com:yourusername/yourrepository.git'
+                        url = 'https://github.com/yourusername/yourrepository/tree/main'
+                    }
                 }
-
-                // 可选：包含源码和文档
-                //  artifact sourcesJar
-                //  artifact javadocJar
             }
         }
 

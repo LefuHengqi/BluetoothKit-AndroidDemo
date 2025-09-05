@@ -5,21 +5,24 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.Toolbar
+import com.lefu.htcalculatekit.HTBodyBaseModel
+import com.lefu.htcalculatekit.HTCalculateManager
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.PPScaleDefine.PPDeviceCalcuteType
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.util.DataUtil
-import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
 // 添加 View Binding 导入
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate4dcBinding
+import com.lefu.ppcalculate.calculate.PPCalculateManager
 
 /**
  * 直流秤计算库
@@ -94,18 +97,24 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
         } else {
             PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
         }
-        
-        val bodyBaseModel = PPBodyBaseModel()
+
+        val bodyBaseModel = HTBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.impedance = impedance
-        bodyBaseModel.deviceModel = deviceModel
-        bodyBaseModel.userModel = userModel
-        bodyBaseModel.unit = PPUnitType.Unit_KG
+        bodyBaseModel.calculateType =  PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect.getType()
+
+        bodyBaseModel.height = userModel.userHeight
+        bodyBaseModel.age = userModel.age
+        bodyBaseModel.sex = if (userModel.sex == PPUserGender.PPUserGenderFemale) 0 else 1
+        bodyBaseModel.secret = SecretManager.getSecret(bodyBaseModel.calculateType)
+
+        val calculateDataJson = HTCalculateManager.calculateDataJson(bodyBaseModel)
+
+        val ppBodyFatModel = PPCalculateManager.calculateData(calculateDataJson)
+
+        val ppBodyDetailModel = ppBodyFatModel?.let { PPBodyDetailModel(it) }
         
-        val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
-        val bodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
-        
-        Log.d("liyp_", bodyDetailModel.toString())
+        Log.d("liyp_", ppBodyDetailModel.toString())
         
         DataUtil.bodyDataModel = ppBodyFatModel
         Log.d("liyp_", ppBodyFatModel.toString())

@@ -93,21 +93,79 @@ dependencies {
 //    }
 //}
 
+// 添加JAR打包任务
+task jar(type: Jar) {
+    dependsOn 'compileReleaseJavaWithJavac'
+    from(fileTree(dir: 'build/intermediates/javac/release/classes')) {
+        exclude 'META-INF/**'
+    }
+    from(fileTree(dir: 'src/main/assets')) {
+        into 'assets'
+    }
+    // 添加libs目录下的JAR文件内容
+    from(zipTree('libs/bluetoothkit-1.5.4.jar')) {
+        exclude 'META-INF/**'
+    }
+    // 完全排除META-INF目录
+    exclude 'META-INF/**'
+    archiveFileName = "${project.name}-${version}.jar"
+    destinationDirectory = file('build/libs')
+    // 禁用MANIFEST.MF生成
+    metaInf {
+        exclude '**'
+    }
+    doLast {
+        // 在JAR包生成后删除META-INF目录
+        def jarFile = archiveFile.get().asFile
+        if (jarFile.exists()) {
+            exec {
+                commandLine 'zip', '-d', jarFile.absolutePath, 'META-INF/*'
+                ignoreExitValue = true
+            }
+        }
+    }
+}
+
 // 配置发布
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                from components.release  // 发布release版本
+                // 发布JAR文件而不是AAR
+                artifact jar
 
                 // 自定义你的包信息
                 groupId = GROUP_ID
                 artifactId = ARTIFACT_ID
                 version = LIB_VERSION
-
-                // 可选：包含源码和文档
-//                artifact sourcesJar
-//                artifact javadocJar
+                
+                // 添加POM信息
+                pom {
+                    name = ARTIFACT_ID
+                    description = 'PPBluetoothKit JAR Library for Android'
+                    url = 'https://github.com/lefu/ppbluetoothkit'
+                    
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    
+                    developers {
+                        developer {
+                            id = 'lefu'
+                            name = 'Lefu Developer'
+                            email = 'developer@lefu.com'
+                        }
+                    }
+                    
+                    scm {
+                        connection = 'scm:git:git://github.com/lefu/ppbluetoothkit.git'
+                        developerConnection = 'scm:git:ssh://github.com/lefu/ppbluetoothkit.git'
+                        url = 'https://github.com/lefu/ppbluetoothkit'
+                    }
+                }
             }
         }
 

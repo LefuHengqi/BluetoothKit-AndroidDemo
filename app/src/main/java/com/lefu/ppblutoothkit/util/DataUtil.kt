@@ -5,7 +5,7 @@ import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
-import com.lefu.ppcalculate.PPBodyFatModel
+import com.lefu.ppcalculate.vo.PPBodyFatModel
 
 object DataUtil {
     var bodyDataModel: PPBodyFatModel? = null
