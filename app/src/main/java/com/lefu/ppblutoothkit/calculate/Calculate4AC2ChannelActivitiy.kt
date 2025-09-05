@@ -94,13 +94,6 @@ class Calculate4AC2ChannelActivitiy : BaseImmersivePermissionActivity() {
             .setAthleteMode(isAthleteMode)
             .build()
 
-        val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1
-        deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceName)) {
-            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
-        } else {
-            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
-        }
         val bodyBaseModel = HTBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.impedance = impedance1

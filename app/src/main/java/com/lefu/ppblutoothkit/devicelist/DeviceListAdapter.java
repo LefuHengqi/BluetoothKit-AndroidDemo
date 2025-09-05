@@ -26,12 +26,12 @@ public class DeviceListAdapter extends BaseQuickAdapter<DeviceVo, BaseViewHolder
             TextView device_type = holder.getView(R.id.device_type);
             TextView device_AdvLen = holder.getView(R.id.device_AdvLen);
             TextView device_sign = holder.getView(R.id.device_sign);
-            nameText.setText("devName:"+deviceModel.getDeviceName());
-            macText.setText("Mac:" + deviceModel.getDeviceMac());
-            device_AdvLen.setText("advLength: " + deviceModel.getAdvLength());
-            device_sign.setText("sign: " + deviceModel.getSign());
+            nameText.setText("devName:"+deviceModel.deviceName);
+            macText.setText("Mac:" + deviceModel.deviceMac);
+            device_AdvLen.setText("advLength: " + deviceModel.advLength);
+            device_sign.setText("sign: " + deviceModel.sign);
 
-            device_rssi.setText(String.format(Locale.getDefault(), "RSSI: %d dBm", deviceModel.getRssi()));
+            device_rssi.setText(String.format(Locale.getDefault(), "RSSI: %d dBm", deviceModel.rssi));
             device_type.setText("PeripheralType:" + deviceModel.getDevicePeripheralType());
         }
 

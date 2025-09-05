@@ -68,6 +68,15 @@ android {
         }
     }
 
+    packagingOptions {
+        // 排除不需要的META-INF文件
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
 }
 
 dependencies {
@@ -79,46 +88,15 @@ dependencies {
 
 }
 
-// 添加JAR打包任务
-task jar(type: Jar) {
-    dependsOn 'compileReleaseJavaWithJavac'
-    from(fileTree(dir: 'build/intermediates/javac/release/classes')) {
-        exclude 'META-INF/**'
-    }
-    from(fileTree(dir: 'src/main/assets')) {
-        into 'assets'
-    }
-    // 添加libs目录下的JAR文件内容
-    from(zipTree('libs/bluetoothkit-1.5.5.jar')) {
-        exclude 'META-INF/**'
-    }
-    // 完全排除META-INF目录
-    exclude 'META-INF/**'
-    archiveFileName = "${project.name}-${version}.jar"
-    destinationDirectory = file('build/libs')
-    // 禁用MANIFEST.MF生成
-    metaInf {
-        exclude '**'
-    }
-    doLast {
-        // 在JAR包生成后删除META-INF目录
-        def jarFile = archiveFile.get().asFile
-        if (jarFile.exists()) {
-            exec {
-                commandLine 'zip', '-d', jarFile.absolutePath, 'META-INF/*'
-                ignoreExitValue = true
-            }
-        }
-    }
-}
+
 
 // 配置发布
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                // 发布JAR文件而不是AAR
-                artifact jar
+                // 发布AAR文件
+                from components.release
 
                 // 自定义你的包信息
                 groupId = GROUP_ID
@@ -128,7 +106,7 @@ afterEvaluate {
                 // 添加POM信息
                 pom {
                     name = ARTIFACT_ID
-                    description = 'PPBluetoothKit JAR Library for Android'
+                    description = 'PPBluetoothKit AAR Library for Android'
                     url = 'https://github.com/lefu/ppbluetoothkit'
                     
                     licenses {
@@ -173,6 +151,15 @@ afterEvaluate {
         }
     }
     
+    // 确保发布任务依赖于AAR构建任务
+    tasks.withType(PublishToMavenRepository) { task ->
+        task.dependsOn 'bundleReleaseAar'
+    }
+    
+    tasks.withType(PublishToMavenLocal) { task ->
+        task.dependsOn 'bundleReleaseAar'
+    }
+    
     // 创建自定义任务来清理AAR文件
     task cleanAarFiles {
         doLast {
@@ -207,7 +194,7 @@ afterEvaluate {
         
         // 删除不需要的文件
         delete file("${tempDir}/R.txt")
-        delete file("${tempDir}/AndroidManifest.xml")
+//        delete file("${tempDir}/AndroidManifest.xml")
         // 完全删除META-INF目录
         delete file("${tempDir}/META-INF")
         

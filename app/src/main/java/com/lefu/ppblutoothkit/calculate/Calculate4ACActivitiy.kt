@@ -135,9 +135,6 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
             .setAge(age)//age 6-99
             .build()
 
-        val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
-
         val bodyBaseModel = HTBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.impedance = impedance

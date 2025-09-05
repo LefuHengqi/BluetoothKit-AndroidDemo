@@ -87,14 +87,6 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
             .setHeight(height)//height 90-220
             .setAge(age)//age 6-99
             .build()
-            
-        val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect
-        deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
-            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
-        } else {
-            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
-        }
 
         val bodyBaseModel = HTBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)

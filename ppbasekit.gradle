@@ -42,7 +42,6 @@ android {
     
     // 配置打包选项，排除不需要的文件
     packagingOptions {
-        pickFirst '**/AndroidManifest.xml'
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
@@ -75,28 +74,28 @@ dependencies {
 
 }
 
-// 创建JAR任务
-task jar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    from android.sourceSets.main.kotlin.srcDirs
-    archiveClassifier = ''
-    archiveFileName = "${ARTIFACT_ID}-${LIB_VERSION}.jar"
-    destinationDirectory = file("$buildDir/libs")
-}
+// 创建JAR任务 - 注释掉以使用标准AAR构建
+// task jar(type: Jar) {
+//     from android.sourceSets.main.java.srcDirs
+//     from android.sourceSets.main.kotlin.srcDirs
+//     archiveClassifier = ''
+//     archiveFileName = "${ARTIFACT_ID}-${LIB_VERSION}.jar"
+//     destinationDirectory = file("$buildDir/libs")
+// }
 
-// 创建包含编译后类文件的JAR任务
-task classesJar(type: Jar) {
-    from "$buildDir/intermediates/compile_library_classes_jar/release/classes.jar"
-    archiveClassifier = ''
-    archiveFileName = "${ARTIFACT_ID}-${LIB_VERSION}.jar"
-    destinationDirectory = file("$buildDir/libs")
-}
+// 创建包含编译后类文件的JAR任务 - 注释掉以使用标准AAR构建
+// task classesJar(type: Jar) {
+//     from "$buildDir/intermediates/compile_library_classes_jar/release/classes.jar"
+//     archiveClassifier = ''
+//     archiveFileName = "${ARTIFACT_ID}-${LIB_VERSION}.jar"
+//     destinationDirectory = file("$buildDir/libs")
+// }
 
 // 源码JAR任务已移除
 
-// 确保JAR任务依赖于编译任务
-jar.dependsOn 'compileReleaseJavaWithJavac'
-classesJar.dependsOn 'bundleLibCompileToJarRelease'
+// 确保JAR任务依赖于编译任务 - 注释掉以使用标准AAR构建
+// jar.dependsOn 'compileReleaseJavaWithJavac'
+// classesJar.dependsOn 'bundleLibCompileToJarRelease'
 
 // 配置发布
 afterEvaluate {
@@ -112,7 +111,7 @@ afterEvaluate {
 
                 // 手动添加AAR和JAR文件到发布
                 artifact("$buildDir/outputs/aar/${project.name}-${LIB_VERSION}.aar")
-                artifact classesJar
+                // artifact classesJar  // 注释掉以使用标准AAR构建
 
                 // 自定义包信息
                 pom {
@@ -162,6 +161,15 @@ afterEvaluate {
         }
     }
     
+    // 确保发布任务依赖于AAR构建任务
+    tasks.withType(PublishToMavenRepository) { task ->
+        task.dependsOn 'bundleReleaseAar'
+    }
+    
+    tasks.withType(PublishToMavenLocal) { task ->
+        task.dependsOn 'bundleReleaseAar'
+    }
+    
     // 创建自定义任务来清理AAR文件
     task cleanAarFiles {
         doLast {
@@ -196,7 +204,7 @@ afterEvaluate {
         
         // 删除不需要的文件
         delete file("${tempDir}/R.txt")
-        delete file("${tempDir}/AndroidManifest.xml")
+//        delete file("${tempDir}/AndroidManifest.xml")
         // 完全删除META-INF目录
         delete file("${tempDir}/META-INF")
         

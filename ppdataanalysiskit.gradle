@@ -112,6 +112,15 @@ afterEvaluate {
         }
     }
     
+    // 确保发布任务依赖于AAR构建任务
+    tasks.withType(PublishToMavenRepository) { task ->
+        task.dependsOn 'bundleReleaseAar'
+    }
+    
+    tasks.withType(PublishToMavenLocal) { task ->
+        task.dependsOn 'bundleReleaseAar'
+    }
+    
     // 创建自定义任务来清理AAR文件
     task cleanAarFiles {
         doLast {
@@ -146,7 +155,7 @@ afterEvaluate {
         
         // 删除不需要的文件
         delete file("${tempDir}/R.txt")
-        delete file("${tempDir}/AndroidManifest.xml")
+//        delete file("${tempDir}/AndroidManifest.xml")
         // 完全删除META-INF目录
         delete file("${tempDir}/META-INF")
         

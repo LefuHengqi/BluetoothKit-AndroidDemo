@@ -144,25 +144,29 @@ android {
 //    api 'com.github.getActivity:XXPermissions:20.0'
         api 'com.github.getActivity:XXPermissions:18.63'
 
-        //https://github.com/LefuHengqi/PPBaseKit-Android
-        //基础模块，必须/Basic module, must
-//    api 'com.lefu.ppbasekit:ppbasekit:4.5.0'
-        //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
-//    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.5.0'0
-        //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
-//    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.5.0'
-//    implementation files('libs/ppbasekit-4.5.0.jar')
-//    implementation files('libs/ppbluetoothkit-unspecified.jar')
-//    implementation files('libs/ppbluetoothkit-unspecified1.jar')
-//    implementation files('libs/ppbluetoothkit-4.5.0.jar')
-//    implementation files('libs/ppbluetoothkit-4.5.0.0.jar')
 
-        //改项目为独立引用，在你使用时请知悉查看
+        //该PPBasicCalculateKit为源码独立引用，在你使用时请查看Readme,和SecretManager， 你也可以将它发布我们的github,并切换自己的分支去维护。
+        //https://github.com/LefuPPScale/PPBasicCalculateKit-Android.git
         api(project(':ppbasiccalculatekit'))
 
-        api(project(":ppsdkkit:ppbasekit"))
-        api(project(":ppsdkkit:ppdataanalysiskit"))
-        api(project(":ppsdkkit:ppbluetoothkit"))
+
+//        api(project(":ppsdkkit:ppbasekit"))
+//        api(project(":ppsdkkit:ppdataanalysiskit"))
+//        api(project(":ppsdkkit:ppbluetoothkit"))
+
+
+        //https://github.com/LefuHengqi/PPBaseKit-Android
+        //基础模块，必须/Basic module, must
+//        api 'com.lefu.ppbasekit:ppbasekit:4.5.0'
+//        //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
+//        api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.5.0'
+//        //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
+//        api 'com.lefu.ppdataanalysiskit:ppdataanalysiskit:4.5.0'
+
+
+        implementation files('libs/ppbasekit-4.5.1.1aar')
+        implementation files('libs/ppbluetoothkit-4.5.1.1.aar')
+        implementation files('libs/ppdataanalysiskit-4.5.1.1.aar')
 
 
     }
