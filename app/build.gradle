@@ -155,11 +155,11 @@ android {
 
         //https://github.com/LefuHengqi/PPBaseKit-Android
         //基础模块，必须/Basic module, must
-//        api 'com.lefu.ppbasekit:ppbasekit:4.5.0'
+//        api 'com.lefu.ppbasekit:ppbasekit:4.5.1.1'
 //        //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
-//        api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.5.0'
+//        api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.5.1.1'
 //        //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
-//        api 'com.lefu.ppdataanalysiskit:ppdataanalysiskit:4.5.0'
+//        api 'com.lefu.ppdataanalysiskit:ppdataanalysiskit:4.5.1.1'
 
         //该PPBasicCalculateKit为源码独立引用，在你使用时请查看Readme,和SecretManager， 你也可以将它发布我们的github,并切换自己的分支去维护。
         //https://github.com/LefuPPScale/PPBasicCalculateKit-Android.git
