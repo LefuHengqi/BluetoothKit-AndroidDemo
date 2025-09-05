@@ -2,12 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    namespace 'com.lefu.ppscale.db'  // 添加 namespace 配置
-    compileSdkVersion 35  // 建议升级到 35 以保持一致
+    namespace 'com.lefu.ppscale.db'
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 35  // 建议升级到 35
         versionCode 1
         versionName "1.0"
 
@@ -21,26 +20,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
 
     greendao {
         schemaVersion 1 //数据库版本
         targetGenDir 'src/main/java' //指定生成代码的目录
         daoPackage 'com.lefu.ppscale.db.dao'//生成代码到具体包下
     }
-    
-    // 解决 GreenDAO 任务依赖问题
-    tasks.whenTaskAdded { task ->
-        if (task.name == 'extractReleaseAnnotations') {
-            task.dependsOn 'greendao'
-        }
-        if (task.name == 'extractDebugAnnotations') {
-            task.dependsOn 'greendao'
-        }
+
+}
+
+// Fix GreenDAO task dependency issue
+afterEvaluate {
+    tasks.named('extractReleaseAnnotations').configure {
+        dependsOn 'greendao'
+    }
+    tasks.named('extractDebugAnnotations').configure {
+        dependsOn 'greendao'
     }
 }
 

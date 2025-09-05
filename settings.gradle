@@ -1,2 +1,9 @@
 include ':app'
 include ':data_db'
+
+//非对外的module
+include ':ppsdkkit:ppbluetoothkit'
+include ':ppsdkkit:ppdataanalysiskit'
+include ':ppsdkkit:ppbasekit'
+include ':ppbasiccalculatekit'
+

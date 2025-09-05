@@ -152,11 +152,54 @@ abstract class BaseImmersivePermissionActivity : AppCompatActivity() {
         appPermissionCallback: AppPermissionCallback,
         permissions: MutableList<String>
     ) {
-        //Android 12以上不需要定位服务
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && CommonUtils.isHuaweiOS().not()) {
-            appPermissionCallback.onGranted(permissions, CommonUtils.isOpenBluetooth())
+        // 首先检查是否已经拥有所需权限
+        val hasAllPermissions = XXPermissions.isGranted(this, permissions)
+        
+        if (hasAllPermissions) {
+            //Android 12以上不需要定位服务
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && CommonUtils.isHuaweiOS().not()) {
+                appPermissionCallback.onGranted(permissions, CommonUtils.isOpenBluetooth())
+            } else {
+                appPermissionCallback.onGranted(permissions, CommonUtils.isLocationEnabled(this) && CommonUtils.isOpenBluetooth())
+            }
         } else {
-            appPermissionCallback.onGranted(permissions, CommonUtils.isLocationEnabled(this) && CommonUtils.isOpenBluetooth())
+            // 没有权限时，发起权限请求
+            XXPermissions.with(this)
+                .permission(permissions)
+                .request(object : OnPermissionCallback {
+                    override fun onGranted(
+                        grantedPermissions: MutableList<String>,
+                        allGranted: Boolean
+                    ) {
+                        if (allGranted) {
+                            //Android 12以上不需要定位服务
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && CommonUtils.isHuaweiOS().not()) {
+                                appPermissionCallback.onGranted(permissions, CommonUtils.isOpenBluetooth())
+                            } else {
+                                appPermissionCallback.onGranted(permissions, CommonUtils.isLocationEnabled(this@BaseImmersivePermissionActivity) && CommonUtils.isOpenBluetooth())
+                            }
+                        } else {
+                            // 部分权限被拒绝，传递false表示权限不完整
+                            appPermissionCallback.onGranted(grantedPermissions, false)
+                        }
+                    }
+                    
+                    override fun onDenied(
+                        deniedPermissions: MutableList<String>,
+                        doNotAskAgain: Boolean
+                    ) {
+                        // 权限被拒绝，传递空列表和false
+                        appPermissionCallback.onGranted(mutableListOf(), false)
+                        
+                        if (doNotAskAgain) {
+                            Toast.makeText(this@BaseImmersivePermissionActivity, "权限被永久拒绝，请到设置中手动开启", Toast.LENGTH_LONG).show()
+                            // 可以引导用户到设置页面
+                            XXPermissions.startPermissionActivity(this@BaseImmersivePermissionActivity, deniedPermissions)
+                        } else {
+                            Toast.makeText(this@BaseImmersivePermissionActivity, "需要相关权限才能正常使用蓝牙功能", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
         }
     }
 

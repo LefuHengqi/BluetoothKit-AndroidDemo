@@ -38,6 +38,9 @@ import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppblutoothkit.device.PeripheralBorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralDorreActivity
 import com.lefu.ppblutoothkit.device.PeripheralForreActivity
+import com.lefu.ppblutoothkit.device.PeripheralKorreActivity
+import com.lefu.ppblutoothkit.device.PeripheralLorreActivity
+import com.lefu.ppblutoothkit.device.PeripheralMorreActivity
 
 class ScanDeviceListActivity : BaseImmersivePermissionActivity() {
     var ppScale: PPSearchManager? = null
@@ -184,6 +187,21 @@ class ScanDeviceListActivity : BaseImmersivePermissionActivity() {
                 PPScaleDefine.PPDevicePeripheralType.PeripheralJambul -> {
                     val intent = Intent(this@ScanDeviceListActivity, PeripheralJambulActivity::class.java)
                     PeripheralJambulActivity.deviceModel = deviceModel
+                    startActivity(intent)
+                }
+                PPScaleDefine.PPDevicePeripheralType.PeripheralLorre -> {
+                    val intent = Intent(this@ScanDeviceListActivity, PeripheralLorreActivity::class.java)
+                    PeripheralLorreActivity.deviceModel = deviceModel
+                    startActivity(intent)
+                }
+                PPScaleDefine.PPDevicePeripheralType.PeripheralKorre -> {
+                    val intent = Intent(this@ScanDeviceListActivity, PeripheralKorreActivity::class.java)
+                    PeripheralKorreActivity.deviceModel = deviceModel
+                    startActivity(intent)
+                }
+                PPScaleDefine.PPDevicePeripheralType.PeripheralMorre -> {
+                    val intent = Intent(this@ScanDeviceListActivity, PeripheralMorreActivity::class.java)
+                    PeripheralMorreActivity.deviceModel = deviceModel
                     startActivity(intent)
                 }
                 else -> {

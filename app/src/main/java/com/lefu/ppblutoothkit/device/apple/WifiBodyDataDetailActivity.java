@@ -3,12 +3,10 @@ package com.lefu.ppblutoothkit.device.apple;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity;
 
 import com.lefu.ppblutoothkit.R;
-import com.lefu.ppblutoothkit.device.apple.data.BodyFataDataModel;
 import com.lefu.ppblutoothkit.device.apple.data.WifiDataBean;
 import com.peng.ppscale.business.device.DeviceManager;
 import com.lefu.ppbase.vo.PPUnitType;
@@ -63,9 +61,9 @@ public class WifiBodyDataDetailActivity extends BaseImmersivePermissionActivity 
             bodyBaseModel.unit = PPUnitType.Unit_KG;
             bodyBaseModel.weight = (int) (wifiDataBean.getWeight() * 100);
 
-            BodyFataDataModel bodyFataDataModel = new BodyFataDataModel(bodyBaseModel);
-
-            textView.setText(bodyFataDataModel.toString());
+//            BodyFataDataModel bodyFataDataModel = new BodyFataDataModel(bodyBaseModel);
+//
+//            textView.setText(bodyFataDataModel.toString());
         }
     }
 }

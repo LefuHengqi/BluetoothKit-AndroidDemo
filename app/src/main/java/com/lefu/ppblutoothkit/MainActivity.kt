@@ -7,25 +7,34 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.lifecycleScope
+import com.lefu.ppbase.util.Logger
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.lefu.ppblutoothkit.calculate.CalculateManagerActivity
 import com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity
+import com.lefu.ppblutoothkit.ext.initDeviceConfig
 import com.lefu.ppblutoothkit.log.LogActivity
 import com.lefu.ppblutoothkit.okhttp.DataTask
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.okhttp.RetCallBack
 import com.lefu.ppblutoothkit.vo.DemoDeviceConfigVo
 import com.peng.ppscale.PPBluetoothKit
+import com.peng.ppscale.util.json.GsonUtil
 import okhttp3.Call
 
 class MainActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        android.util.Log.d("MainActivity", "onCreate方法开始执行")
+        System.out.println("MainActivity: onCreate方法开始执行")
         setContentView(R.layout.activity_main)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         initToolbar()
         initDeviceConfig()
         findViewById<Button>(R.id.searchDevice).setOnClickListener(this)
@@ -52,10 +61,10 @@ class MainActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
             title = "${getString(R.string.app_name)}V${BuildConfig.VERSION_NAME}",
             showBackButton = false
         )
-        
+
         // 设置菜单
         toolbar.inflateMenu(R.menu.main_toolbar_menu)
-        
+
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_item_export_app_log -> {
@@ -90,12 +99,14 @@ class MainActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
                 startActivity(intent)
                 true
             }
+
             R.id.menu_item_export_device_log -> {
                 LogActivity.logType = 1
                 val intent = Intent(this, LogActivity::class.java)
                 startActivity(intent)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -123,28 +134,6 @@ class MainActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
         }
     }
 
-    /**
-     * 拉取设备配置信息，仅供Demo使用，与AppKey配套使用,
-     * 在你自己的App中，请使用：PPBlutoothKit.initSdk(this, appKey, Companion.appSecret, "lefu.config")
-     *
-     */
-    private fun initDeviceConfig() {
-        val map: MutableMap<String, String> = HashMap()
-        DataTask.get(NetUtil.GET_SCALE_CONFIG + PPApplication.appKey, map, object : RetCallBack<DemoDeviceConfigVo>(DemoDeviceConfigVo::class.java) {
-            override fun onError(call: Call, e: Exception, id: Int) {
-                e.printStackTrace()
-            }
-            override fun onResponse(configVo: DemoDeviceConfigVo?, p1: Int) {
 
-                configVo?.let {
-                    if (configVo.code == 200 && configVo.msg.isNullOrEmpty().not()) {
-                        configVo.msg?.let { it1 -> PPBluetoothKit.setNetConfig(this@MainActivity, PPApplication.appKey, PPApplication.appSecret, it1) }
-                    }
-                }
-
-            }
-        })
-
-    }
 
 }

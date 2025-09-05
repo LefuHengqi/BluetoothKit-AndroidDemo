@@ -106,7 +106,7 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
         toolbar?.let {
             setupUnifiedToolbar(
                 toolbar = it,
-                title = "Apple设备",
+                title = "Apple:${deviceModel?.deviceName}",
                 showBackButton = true
             )
         }

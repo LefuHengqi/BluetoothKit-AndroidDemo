@@ -36,7 +36,6 @@ import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
-import com.lefu.ppcalculate.PPBodyFatModel
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
@@ -443,8 +442,8 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
                 bodyBaseModel?.userModel = userModel
                 //Calling the calculation library to calculate body fat information
                 //调用计算库计算体脂信息
-                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
-                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
+//                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
+//                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
 
                 MsgDialog.init(supportFragmentManager)
                     .setTitle(getString(R.string.tips))
@@ -680,7 +679,7 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
 
     val userInfoInterface = object : PPUserInfoInterface {
 
-        override fun getUserListByPPBuserModelSuccess(userList: MutableList<PPUserModel>?) {
+        override fun getUserListByUserModelSuccess(userList: MutableList<PPUserModel>?) {
             if (userList.isNullOrEmpty().not()) {
                 userList?.forEach {
                     addPrint("uid:${it.userID} \nmemberId:${it.memberID} \nheight:${it.userHeight} age:${it.age} sex:${it.sex} weight:${it.weightKg}")

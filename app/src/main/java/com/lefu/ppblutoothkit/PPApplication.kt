@@ -10,6 +10,7 @@ import com.peng.ppscale.PPBluetoothKit
 import com.lefu.ppbase.util.OnLogCallBack
 import com.lefu.ppcalculate.PPCalculateKit
 
+
 class PPApplication : Application() {
 
     companion object {
@@ -21,6 +22,7 @@ class PPApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        
         //数据库初始化
         DBManager.initGreenDao(this)
         //SP缓存
