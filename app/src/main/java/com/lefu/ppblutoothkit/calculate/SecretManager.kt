@@ -1,6 +1,6 @@
 package com.lefu.ppblutoothkit.calculate
 
-import com.lefu.htcalculatekit.PPDeviceCalculateType
+import com.lefu.ppbasiccalculatekit.PPDeviceCalculateType
 
 
 /**

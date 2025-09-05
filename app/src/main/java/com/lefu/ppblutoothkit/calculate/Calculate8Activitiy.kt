@@ -1,21 +1,17 @@
 package com.lefu.ppblutoothkit.calculate
 
-import android.app.Activity
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.Spinner
-import com.lefu.htcalculatekit.HTBodyBaseModel
-import com.lefu.htcalculatekit.HTCalculateManager
+import com.lefu.ppbasiccalculatekit.HTBodyBaseModel
+import com.lefu.ppbasiccalculatekit.HTCalculateManager
 
-import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPUserGender

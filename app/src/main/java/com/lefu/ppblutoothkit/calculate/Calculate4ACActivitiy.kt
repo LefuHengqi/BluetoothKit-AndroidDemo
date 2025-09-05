@@ -10,12 +10,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.widget.Toolbar
-import com.lefu.htcalculatekit.HTBodyBaseModel
-import com.lefu.htcalculatekit.HTCalculateManager
-import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppbasiccalculatekit.HTBodyBaseModel
+import com.lefu.ppbasiccalculatekit.HTCalculateManager
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
-import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity

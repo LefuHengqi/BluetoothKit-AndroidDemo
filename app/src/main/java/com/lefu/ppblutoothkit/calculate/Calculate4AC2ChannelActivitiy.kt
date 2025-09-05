@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.Toolbar
-import com.lefu.htcalculatekit.HTBodyBaseModel
-import com.lefu.htcalculatekit.HTCalculateManager
+import com.lefu.ppbasiccalculatekit.HTBodyBaseModel
+import com.lefu.ppbasiccalculatekit.HTCalculateManager
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.PPScaleDefine.PPDeviceCalcuteType

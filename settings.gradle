@@ -3,7 +3,7 @@ include ':data_db'
 
 //非对外的module
 include ':ppsdkkit:ppbluetoothkit'
-include ':ppsdkkit:ppcalculatekit'
+include ':ppsdkkit:ppdataanalysiskit'
 include ':ppsdkkit:ppbasekit'
-include ':ppsdkkit:htcalculatekit'
+include ':ppsdkkit:ppbasiccalculatekit'
 

@@ -9,8 +9,8 @@ def releaseTime() {
 
 def fileName
 
-def GROUP_ID = "com.lefu.ppcalculatekit"
-def ARTIFACT_ID = "ppcalculatekit"
+def GROUP_ID = "com.lefu.ppdataanalysiskit"
+def ARTIFACT_ID = "ppdataanalysiskit"
 
 android {
     namespace 'com.lefu.ppcalculatekit'

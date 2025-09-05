@@ -118,41 +118,38 @@ android {
 
     }
 
-}
+    dependencies {
+        api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+        implementation 'androidx.appcompat:appcompat:1.6.1'
+        implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+        implementation 'androidx.recyclerview:recyclerview:1.3.2'
+        implementation 'com.google.android.material:material:1.11.0'
 
-dependencies {
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-    implementation 'com.google.android.material:material:1.11.0'
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
+        implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
-
-    implementation project(':data_db')
+        implementation project(':data_db')
 
 //    implementation 'com.github.tbruyelle:rxpermissions:0.10.3'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
+        implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+        implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
 
-    implementation files('libs\\iopp-1.0.3.jar')
-    implementation files('libs\\okhttputils-2_6_2.jar')
-    implementation 'com.squareup.okhttp3:okhttp:4.6.0'
-    implementation 'com.alibaba:fastjson:1.2.76'
+        implementation files('libs\\iopp-1.0.3.jar')
+        implementation files('libs\\okhttputils-2_6_2.jar')
+        implementation 'com.squareup.okhttp3:okhttp:4.6.0'
+        implementation 'com.alibaba:fastjson:1.2.76'
 
-    // 权限请求框架：https://github.com/getActivity/XXPermissions
+        // 权限请求框架：https://github.com/getActivity/XXPermissions
 //    api 'com.github.getActivity:XXPermissions:20.0'
-    api 'com.github.getActivity:XXPermissions:18.63'
+        api 'com.github.getActivity:XXPermissions:18.63'
 
-
-    //https://github.com/LefuHengqi/PPBaseKit-Android
-    //基础模块，必须/Basic module, must
+        //https://github.com/LefuHengqi/PPBaseKit-Android
+        //基础模块，必须/Basic module, must
 //    api 'com.lefu.ppbasekit:ppbasekit:4.5.0'
-    //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
+        //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
 //    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.5.0'0
-    //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
+        //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
 //    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.5.0'
 //    implementation files('libs/ppbasekit-4.5.0.jar')
 //    implementation files('libs/ppbluetoothkit-unspecified.jar')
@@ -160,10 +157,11 @@ dependencies {
 //    implementation files('libs/ppbluetoothkit-4.5.0.jar')
 //    implementation files('libs/ppbluetoothkit-4.5.0.0.jar')
 
-    api(project(":ppsdkkit:htcalculatekit"))
-    api(project(":ppsdkkit:ppbasekit"))
-    api(project(":ppsdkkit:ppbluetoothkit"))
-    api(project(":ppsdkkit:ppcalculatekit"))
+        api(project(':ppsdkkit:ppbasiccalculatekit'))
+        api(project(":ppsdkkit:ppbasekit"))
+        api(project(":ppsdkkit:ppbluetoothkit"))
+        api(project(":ppsdkkit:ppdataanalysiskit"))
 
 
+    }
 }
