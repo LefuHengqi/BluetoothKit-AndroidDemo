@@ -244,6 +244,12 @@ class PeripheralLorreActivity : BaseImmersivePermissionActivity() {
             }
 
         }
+        
+        findViewById<Button>(R.id.testImpedance).setOnClickListener {
+            addPrint("开始测试阻抗解析...")
+//            testImpedanceAnalysis()
+
+        }
     }
 
     fun syncDefaultFoodLorreEnd() {
