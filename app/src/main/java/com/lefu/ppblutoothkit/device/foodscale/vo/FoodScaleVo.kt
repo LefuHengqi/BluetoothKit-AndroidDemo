@@ -1,6 +1,7 @@
 package com.lefu.ppblutoothkit.device.foodscale.vo
 
 import com.peng.ppscale.vo.PPKorreFoodInfo
+import com.peng.ppscale.vo.nameList1
 import java.io.Serializable
 
 data class XinmiaoFoodScaleDefault(
@@ -63,7 +64,7 @@ fun XinmiaoFoodScaleDefault.toPPKorreFoodInfo(foodNo: Int): PPKorreFoodInfo {
     return PPKorreFoodInfo(foodNo = foodNo).apply {
         // 遍历fullNutrients并映射到对应字段
         this@toPPKorreFoodInfo.fullNutrients?.forEach { nutrient ->
-            val nutritionKey = PPKorreFoodInfo.nameList1[nutrient.nutrientId] ?: return@forEach
+            val nutritionKey = nameList1[nutrient.nutrientId] ?: return@forEach
             when (nutritionKey) {
                 "calcium" -> calciumMg = nutrient.nutrientValue
                 "energy" -> calories = nutrient.nutrientValue

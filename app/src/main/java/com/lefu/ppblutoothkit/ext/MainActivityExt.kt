@@ -21,6 +21,7 @@ import okhttp3.Call
  */
 fun MainActivity.initDeviceConfig() {
     try {
+        Logger.i("MainActivity: initDeviceConfig ")
         // 准备网络请求参数
         val map: MutableMap<String, String> = HashMap()
         val url = NetUtil.GET_SCALE_CONFIG + PPApplication.appKey
@@ -32,6 +33,8 @@ fun MainActivity.initDeviceConfig() {
             override fun onResponse(response: String?, p1: Int) {
                 response?.let {
                     try {
+
+
                         val configVo = GsonUtil.jsonStirngToObj<DemoDeviceConfigVo>(response, DemoDeviceConfigVo::class.java)
 
                         // 暂时注释掉原有的配置处理逻辑，因为需要先解析JSON

@@ -9,11 +9,11 @@ def releaseTime() {
 
 def fileName
 
-def GROUP_ID = "com.lefu.ppbluetoothkit"
-def ARTIFACT_ID = "ppbluetoothkit"
+def GROUP_ID = "com.lefu.ppcalculatekit"
+def ARTIFACT_ID = "ppcalculatekit"
 
 android {
-    namespace 'com.lefu.ppbluetoothkit'
+    namespace 'com.lefu.ppcalculatekit'
     compileSdkVersion 31
 
     compileOptions {
@@ -29,7 +29,6 @@ android {
         buildConfig = true
     }
 
-
     defaultConfig {
         minSdkVersion 18
         versionCode LIB_VERSION_CODE as int
@@ -40,11 +39,10 @@ android {
         // 设置aar文件名包含版本号
         archivesBaseName = "${ARTIFACT_ID}-${LIB_VERSION}"
     }
-
     buildTypes {
         debug {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
@@ -54,18 +52,17 @@ android {
         }
     }
 
-
-
 }
 
 dependencies {
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-//    api project(":ppsdkkit:lefulib:bluetoothkit")
+
     compileOnly(project(":ppsdkkit:ppbasekit"))
+    compileOnly(project(":ppbasiccalculatekit"))
 
 }
+
 
 
 // 配置发布
@@ -96,7 +93,6 @@ afterEvaluate {
         dependsOn assembleRelease
     }
 }
-
 
 
 

@@ -10,19 +10,19 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.widget.Toolbar
-import com.lefu.ppbasiccalculatekit.HTBodyBaseModel
-import com.lefu.ppbasiccalculatekit.HTCalculateManager
+import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
-import com.lefu.ppbasiccalculatekit.SecretManager
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.SecretManager
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate4acBinding
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
-import com.lefu.ppcalculate.calculate.PPCalculateManager
+import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 
 // 移除所有 kotlinx.android.synthetic 导入
@@ -35,18 +35,16 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
     var deviceName: String = ""
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
     var spinner: Spinner? = null
-
-    var heartRate = 0
     private lateinit var binding: ActivityCalculate4acBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalculate4acBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-
+        
         // 初始化Toolbar
         initToolbar()
 
@@ -80,7 +78,7 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
         }
         initData()
     }
-
+    
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -104,7 +102,6 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
             binding.etWeight.setText(bodyBaseModel?.getPpWeightKg().toString())
             binding.etImpedance.setText(bodyBaseModel?.impedance.toString())
             calcuteType = bodyBaseModel?.deviceModel?.deviceCalcuteType
-            heartRate = bodyBaseModel?.heartRate ?: 0
             if (calcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate) {
                 // 4电极交流-V5.0.5固定版本-做减法
                 spinner?.setSelection(0)
@@ -135,29 +132,23 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
             .setAge(age)//age 6-99
             .build()
 
-        val bodyBaseModel = HTBodyBaseModel()
+        val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
+        deviceModel.setDeviceCalcuteType(calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate)
+
+        val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.impedance = impedance
-        bodyBaseModel.calculateType = calcuteType?.getType() ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate.getType()
+        bodyBaseModel.deviceModel = deviceModel
+        bodyBaseModel.userModel = userModel
+        bodyBaseModel.unit = PPUnitType.Unit_KG
+        bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
 
-        bodyBaseModel.height = userModel.userHeight
-        bodyBaseModel.age = userModel.age
-        bodyBaseModel.sex = if (userModel.sex == PPUserGender.PPUserGenderFemale) 0 else 1
-        bodyBaseModel.secret = SecretManager.getSecret(bodyBaseModel.calculateType)
+        val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
 
-        val calculateDataJson = HTCalculateManager.calculateDataJson(bodyBaseModel)
-
-        val ppBodyFatModel = PPCalculateManager.calculateData(calculateDataJson)
-
-        val ppBodyDetailModel = ppBodyFatModel?.let { PPBodyDetailModel(it) }
-
-        //这里有些不需要经过计算的值，需要在计算结束自己赋值。例如：心率/脚长等
-        ppBodyFatModel?.ppHeartRate = heartRate
-
+        val ppBodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
         Log.d("liyp_", ppBodyDetailModel.toString())
 
         DataUtil.bodyDataModel = ppBodyFatModel
-
         Log.d("liyp_", ppBodyFatModel.toString())
 
         val intent = Intent(this, BodyDataDetailActivity::class.java)

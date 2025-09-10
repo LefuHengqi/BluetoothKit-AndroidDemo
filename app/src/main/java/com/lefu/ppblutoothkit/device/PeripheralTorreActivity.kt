@@ -49,6 +49,7 @@ import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreControll
 import com.lefu.ppbase.util.Logger
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPScaleState
@@ -181,12 +182,16 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
             addPrint("syncUserInfo userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.syncUserInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.syncUserInfo(user, userInfoInterface)
+            }
         }
         findViewById<Button>(R.id.deleteUserinfo).setOnClickListener {
             //根据userID去删除该userId下的所有子成员
             addPrint("deleteAllUserInfo userID:${userModel?.userID}")
-            controller?.getTorreDeviceManager()?.deleteAllUserInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.deleteAllUserInfo(user, userInfoInterface)
+            }
             //删除单个用户,根据memberID去删除
 //            controller?.getTorreDeviceManager()?.deleteUserInfo(userModel, userInfoInterface)
         }
@@ -494,8 +499,8 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
                 bodyBaseModel?.userModel = userModel
                 //Calling the calculation library to calculate body fat information
                 //调用计算库计算体脂信息
-//                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
-//                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
+                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
+                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
 
                 MsgDialog.init(supportFragmentManager)
                     .setTitle(getString(R.string.tips))

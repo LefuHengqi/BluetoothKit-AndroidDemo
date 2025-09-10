@@ -1,26 +1,26 @@
 package com.lefu.ppblutoothkit.calculate
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.Toolbar
-import com.lefu.ppbasiccalculatekit.HTBodyBaseModel
-import com.lefu.ppbasiccalculatekit.HTCalculateManager
+import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
-import com.lefu.ppbase.PPScaleDefine.PPDeviceCalcuteType
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
-import com.lefu.ppbasiccalculatekit.SecretManager
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.util.DataUtil
+import com.lefu.ppcalculate.PPBodyFatModel
+import com.lefu.ppbase.vo.PPUnitType
+import com.lefu.ppblutoothkit.SecretManager
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
 // 添加 View Binding 导入
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate4dcBinding
-import com.lefu.ppcalculate.calculate.PPCalculateManager
 
 /**
  * 直流秤计算库
@@ -87,24 +87,26 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
             .setHeight(height)//height 90-220
             .setAge(age)//age 6-99
             .build()
-
-        val bodyBaseModel = HTBodyBaseModel()
+            
+        val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
+        deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect)
+        deviceModel.setDeviceAccuracyType(if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
+            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
+        } else {
+            PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
+        })
+        
+        val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.impedance = impedance
-        bodyBaseModel.calculateType =  PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect.getType()
-
-        bodyBaseModel.height = userModel.userHeight
-        bodyBaseModel.age = userModel.age
-        bodyBaseModel.sex = if (userModel.sex == PPUserGender.PPUserGenderFemale) 0 else 1
-        bodyBaseModel.secret = SecretManager.getSecret(bodyBaseModel.calculateType)
-
-        val calculateDataJson = HTCalculateManager.calculateDataJson(bodyBaseModel)
-
-        val ppBodyFatModel = PPCalculateManager.calculateData(calculateDataJson)
-
-        val ppBodyDetailModel = ppBodyFatModel?.let { PPBodyDetailModel(it) }
+        bodyBaseModel.deviceModel = deviceModel
+        bodyBaseModel.userModel = userModel
+        bodyBaseModel.unit = PPUnitType.Unit_KG
+        bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
+        val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
+        val bodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
         
-        Log.d("liyp_", ppBodyDetailModel.toString())
+        Log.d("liyp_", bodyDetailModel.toString())
         
         DataUtil.bodyDataModel = ppBodyFatModel
         Log.d("liyp_", ppBodyFatModel.toString())

@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
+import com.lefu.ppcalculate.PPBodyFatModel
 
 class BodyDataDetailActivity : BaseImmersivePermissionActivity() {
 

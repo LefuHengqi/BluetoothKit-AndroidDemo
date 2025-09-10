@@ -38,6 +38,7 @@ import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
+import com.lefu.ppcalculate.PPBodyFatModel
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
@@ -161,7 +162,9 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
             userModel?.userWeightTimeArray = longArrayOf(1696118400000, 1696032000000, 1695945600000, 1695859200000, 1695772800000, 1695686400000, 1695600000000)
 
             addPrint("syncUserInfo userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.syncUserSevenWeighInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.syncUserSevenWeighInfo(user, userInfoInterface)
+            }
 
         }
         findViewById<Button>(R.id.device_set_sync_log).setOnClickListener {
@@ -178,7 +181,9 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData userID:${userModel?.userID}")
-            controller?.getTorreDeviceManager()?.syncUserHistory(userModel, userHistoryDataInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.syncUserHistory(user, userHistoryDataInterface)
+            }
         }
         findViewById<Button>(R.id.syncTouristHistoryData).setOnClickListener {
             addPrint("syncTouristHistoryData username:游客")
@@ -186,19 +191,25 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
             addPrint("syncUserInfo userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.syncUserInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.syncUserInfo(user, userInfoInterface)
+            }
         }
         findViewById<Button>(R.id.deleteUserinfo).setOnClickListener {
             //根据userID去删除该userId下的所有子成员
             addPrint("deleteAllUserInfo userID:${userModel?.userID}")
-            controller?.getTorreDeviceManager()?.deleteAllUserInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.deleteAllUserInfo(user, userInfoInterface)
+            }
             //删除单个用户,根据memberID去删除
 //            controller?.getTorreDeviceManager()?.deleteUserInfo(userModel, userInfoInterface)
         }
         findViewById<Button>(R.id.device_set_confirm_current_userinfo).setOnClickListener {
             //下发当前称重用户
             addPrint("confirmCurrentUser userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.confirmCurrentUser(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.confirmCurrentUser(user, userInfoInterface)
+            }
         }
         findViewById<Button>(R.id.device_set_get_userinfo_list).setOnClickListener {
             addPrint("getUserList")
@@ -477,9 +488,8 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
                 //Calling the calculation library to calculate body fat information
                 //调用计算库计算体脂信息
                 Logger.d("PeripheralBorreActivity 四电极 双频 impedance:${bodyBaseModel?.impedance} impedance100EnCode:${bodyBaseModel?.ppImpedance100EnCode}")
-
-//                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
-//                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
+                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
+                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
                 bodyBaseModel?.let { showCalculateDialog(deviceModel, it) }
             }
 
