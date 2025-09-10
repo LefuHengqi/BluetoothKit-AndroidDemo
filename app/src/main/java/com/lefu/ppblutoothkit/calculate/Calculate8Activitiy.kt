@@ -16,9 +16,11 @@ import android.widget.Spinner
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.SecretManager
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppcalculate.PPBodyFatModel
@@ -162,12 +164,12 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
             .build()
 
         val deviceModel = PPDeviceModel("", deviceName)
-        deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+        deviceModel.setDeviceCalcuteType(calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8)
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.deviceModel = deviceModel
         bodyBaseModel.userModel = userModel
-
+        bodyBaseModel.unit = PPUnitType.Unit_KG
         bodyBaseModel.z100KhzLeftArmEnCode = z100KhzLeftArmEnCode
         bodyBaseModel.z100KhzLeftLegEnCode = z100KhzLeftLegEnCode
         bodyBaseModel.z100KhzRightArmEnCode = z100KhzRightArmEnCode

@@ -182,12 +182,16 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
             addPrint("syncUserInfo userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.syncUserInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.syncUserInfo(user, userInfoInterface)
+            }
         }
         findViewById<Button>(R.id.deleteUserinfo).setOnClickListener {
             //根据userID去删除该userId下的所有子成员
             addPrint("deleteAllUserInfo userID:${userModel?.userID}")
-            controller?.getTorreDeviceManager()?.deleteAllUserInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.deleteAllUserInfo(user, userInfoInterface)
+            }
             //删除单个用户,根据memberID去删除
 //            controller?.getTorreDeviceManager()?.deleteUserInfo(userModel, userInfoInterface)
         }

@@ -11,8 +11,8 @@ def fileName
 
 def GROUP_ID = "com.lefu.ppbasekit"
 def ARTIFACT_ID = "ppbasekit"
-def LIB_VERSION = "4.0.1.10"
-def LIB_VERSION_CODE = "105"
+//def LIB_VERSION = "4.0.1.10"
+//def LIB_VERSION_CODE = "105"
 
 android {
     namespace 'com.lefu.ppbasekit'
@@ -38,10 +38,12 @@ android {
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
+        // 设置aar文件名包含版本号
+        archivesBaseName = "${ARTIFACT_ID}-${LIB_VERSION}"
     }
     buildTypes {
         debug {
-            debuggable true
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -55,10 +57,9 @@ android {
 }
 
 dependencies {
-//    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
-    api(project(":ppsdkkit:lefulib:lfgson"))
 
 }
 
@@ -67,16 +68,13 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                from components.release  // 发布release版本
+                // 只发布aar文件，不包含.module和sources
+                artifact("$buildDir/outputs/aar/${ARTIFACT_ID}-${LIB_VERSION}-release.aar")
 
                 // 自定义你的包信息
                 groupId = GROUP_ID
                 artifactId = ARTIFACT_ID
                 version = LIB_VERSION
-
-                // 可选：包含源码和文档
-                //  artifact sourcesJar
-                //  artifact javadocJar
             }
         }
 
@@ -85,10 +83,15 @@ afterEvaluate {
                 // 本地仓库路径（默认生成在模块的build/repo目录）
 //                url = layout.buildDirectory.dir('repo')
 
-                // 或者指定绝对路径
+                // 指定绝对路径到项目根目录下的maven文件夹
                 url = uri("${rootProject.projectDir}/maven")
             }
         }
+    }
+    
+    // 确保发布任务依赖于构建任务
+    tasks.withType(PublishToMavenRepository) {
+        dependsOn assembleRelease
     }
 }
 

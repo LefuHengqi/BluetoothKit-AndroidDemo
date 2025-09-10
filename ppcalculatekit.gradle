@@ -36,33 +36,19 @@ android {
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
+        // 设置aar文件名包含版本号
+        archivesBaseName = "${ARTIFACT_ID}-${LIB_VERSION}"
     }
     buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            android.libraryVariants.all { variant ->
-                variant.outputs.all { output ->
-                    def f = output.outputFileName
-                    if (f != null && f.endsWith('.aar')) {
-                        fileName = "${ARTIFACT_ID}_v${defaultConfig.versionName}_${releaseTime()}.aar"
-                        output.outputFileName = fileName
-                    }
-                }
-            }
-        }
         debug {
+            debuggable false
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            android.libraryVariants.all { variant ->
-                variant.outputs.all { output ->
-                    def f = output.outputFileName
-                    if (f != null && f.endsWith('.aar')) {
-                        fileName = "${ARTIFACT_ID}_v${defaultConfig.versionName}_${releaseTime()}.aar"
-                        output.outputFileName = fileName
-                    }
-                }
-            }
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -73,93 +59,42 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
     compileOnly(project(":ppsdkkit:ppbasekit"))
-//    implementation 'com.lefu.ppbasekit:ppbasekit:4.0.1.5'
-
-    api(project(":ppsdkkit:lefulib:bh1BodyComposition"))
-    api(project(":ppsdkkit:lefulib:bh2BodyComposition"))
-    api(project(":ppsdkkit:lefulib:bh3BodyComposition"))
-    api(project(":ppsdkkit:lefulib:bh4BodyComposition"))
-    api(project(":ppsdkkit:lefulib:bh5BodyComposition"))
-    api(project(":ppsdkkit:lefulib:bhBodyComposition"))
-    api(project(":ppsdkkit:lefulib:body_sl"))
-
-//    embed project(":ppsdkkit:lefulib:bh1BodyComposition")
-//    embed project(":ppsdkkit:lefulib:bh2BodyComposition")
-//    embed project(":ppsdkkit:lefulib:bh3BodyComposition")
-//    embed project(":ppsdkkit:lefulib:bh4BodyComposition")
-//    embed project(":ppsdkkit:lefulib:bh5BodyComposition")
-//    embed project(":ppsdkkit:lefulib:bhBodyComposition")
-//    embed project(":ppsdkkit:lefulib:body_sl")
-
+    compileOnly(project(":ppbasiccalculatekit"))
 
 }
 
-//上传到maven
-//apply plugin: 'maven'
-//uploadArchives {
-//    repositories.mavenDeployer {
-//        String deployPath = getProjectDir().absolutePath + "/../../maven/"
-//        repository(url: "file://${deployPath}")
-//        pom.groupId = GROUP_ID
-//        pom.artifactId = ARTIFACT_ID
-//        pom.version = LIB_VERSION
-//        pom.packaging = 'aar'
-//    }
-//}
+
 
 // 配置发布
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                from components.release  // 发布release版本
+                // 只发布aar文件，不包含.module和sources
+                artifact("$buildDir/outputs/aar/${ARTIFACT_ID}-${LIB_VERSION}-release.aar")
 
                 // 自定义你的包信息
                 groupId = GROUP_ID
                 artifactId = ARTIFACT_ID
                 version = LIB_VERSION
-
-                // 可选：包含源码和文档
-//                artifact sourcesJar
-//                artifact javadocJar
             }
         }
 
         repositories {
             maven {
-                // 本地仓库路径（默认生成在模块的build/repo目录）
-//                url = layout.buildDirectory.dir('repo')
-
-                // 或者指定绝对路径
+                // 指定绝对路径到项目根目录下的maven文件夹
                 url = uri("${rootProject.projectDir}/maven")
             }
         }
     }
+    
+    // 确保发布任务依赖于构建任务
+    tasks.withType(PublishToMavenRepository) {
+        dependsOn assembleRelease
+    }
 }
 
-//// 先创建 JavaDoc 生成任务
-//task androidJavadoc(type: Javadoc) {
-//    source = android.sourceSets.main.java.srcDirs
-//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//    android.libraryVariants.all { variant ->
-//        if (variant.name == 'release') {
-//            owner.classpath += variant.javaCompileProvider.get().classpath
-//        }
-//    }
-//    exclude '**/R.html', '**/R.*.html', '**/index.html'
-//}
-//
-//// 再创建 JavaDoc JAR 任务
-//task javadocJar(type: Jar, dependsOn: androidJavadoc) {
-//    classifier = 'javadoc'
-//    from androidJavadoc.destinationDir
-//}
-//
-//// 可选：源码 JAR 任务
-//task sourcesJar(type: Jar) {
-//    classifier = 'sources'
-//    from android.sourceSets.main.java.srcDirs
-//}
+
 
 
 

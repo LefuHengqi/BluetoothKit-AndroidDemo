@@ -200,7 +200,7 @@ class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
          */
         override fun monitorProcessData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType(), true)
-            weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
+                weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             weightMeasureState?.text = ""
         }
 
@@ -215,12 +215,12 @@ class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
          */
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType(), true)
-            weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
+                weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
 
             //这里要填称重用户的个人信息
             val userModel = DataUtil.getUserModel()
             bodyBaseModel?.userModel = userModel
-            if (bodyBaseModel?.isHeartRating ?: false) {
+                if (bodyBaseModel?.isHeartRating ?: false) {
                 //心率测量中
                 weightMeasureState?.text = getString(R.string.heartrate_mesuring)
             } else {

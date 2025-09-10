@@ -1,3 +1,6 @@
 [submodule "ppsdkkit"]
 	path = ppsdkkit
 	url = https://gitee.com/shenzhen-lfscale/ppsdkkit-android.git
+[submodule "ppbasiccalculatekit"]
+	path = ppbasiccalculatekit
+	url = git@github.com:LefuPPScale/PPBasicCalculateKit-Android.git

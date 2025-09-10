@@ -18,6 +18,7 @@ import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.SecretManager
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate4acBinding
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
@@ -132,7 +133,7 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
             .build()
 
         val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.deviceCalcuteType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
+        deviceModel.setDeviceCalcuteType(calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate)
 
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
@@ -140,6 +141,7 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
         bodyBaseModel.deviceModel = deviceModel
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
+        bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
 
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
 

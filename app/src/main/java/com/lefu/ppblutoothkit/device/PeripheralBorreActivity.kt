@@ -162,7 +162,9 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
             userModel?.userWeightTimeArray = longArrayOf(1696118400000, 1696032000000, 1695945600000, 1695859200000, 1695772800000, 1695686400000, 1695600000000)
 
             addPrint("syncUserInfo userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.syncUserSevenWeighInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.syncUserSevenWeighInfo(user, userInfoInterface)
+            }
 
         }
         findViewById<Button>(R.id.device_set_sync_log).setOnClickListener {
@@ -179,7 +181,9 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData userID:${userModel?.userID}")
-            controller?.getTorreDeviceManager()?.syncUserHistory(userModel, userHistoryDataInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.syncUserHistory(user, userHistoryDataInterface)
+            }
         }
         findViewById<Button>(R.id.syncTouristHistoryData).setOnClickListener {
             addPrint("syncTouristHistoryData username:游客")
@@ -187,19 +191,25 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
             addPrint("syncUserInfo userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.syncUserInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.syncUserInfo(user, userInfoInterface)
+            }
         }
         findViewById<Button>(R.id.deleteUserinfo).setOnClickListener {
             //根据userID去删除该userId下的所有子成员
             addPrint("deleteAllUserInfo userID:${userModel?.userID}")
-            controller?.getTorreDeviceManager()?.deleteAllUserInfo(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.deleteAllUserInfo(user, userInfoInterface)
+            }
             //删除单个用户,根据memberID去删除
 //            controller?.getTorreDeviceManager()?.deleteUserInfo(userModel, userInfoInterface)
         }
         findViewById<Button>(R.id.device_set_confirm_current_userinfo).setOnClickListener {
             //下发当前称重用户
             addPrint("confirmCurrentUser userName:${userModel?.userName}")
-            controller?.getTorreDeviceManager()?.confirmCurrentUser(userModel, userInfoInterface)
+            userModel?.let { user ->
+                controller?.getTorreDeviceManager()?.confirmCurrentUser(user, userInfoInterface)
+            }
         }
         findViewById<Button>(R.id.device_set_get_userinfo_list).setOnClickListener {
             addPrint("getUserList")

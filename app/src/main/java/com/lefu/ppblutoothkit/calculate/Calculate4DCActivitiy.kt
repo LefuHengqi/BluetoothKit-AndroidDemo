@@ -16,6 +16,7 @@ import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.vo.PPUnitType
+import com.lefu.ppblutoothkit.SecretManager
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
 // 添加 View Binding 导入
@@ -88,12 +89,12 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
             .build()
             
         val deviceModel = PPDeviceModel("", deviceName)//Select the corresponding Bluetooth name according to your own device
-        deviceModel.deviceCalcuteType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect
-        deviceModel.deviceAccuracyType = if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
+        deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect)
+        deviceModel.setDeviceAccuracyType(if (DeviceUtil.Point2_Scale_List.contains(deviceModel.deviceName)) {
             PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005
         } else {
             PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01
-        }
+        })
         
         val bodyBaseModel = PPBodyBaseModel()
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
@@ -101,7 +102,7 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
         bodyBaseModel.deviceModel = deviceModel
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
-        
+        bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
         val bodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
         
