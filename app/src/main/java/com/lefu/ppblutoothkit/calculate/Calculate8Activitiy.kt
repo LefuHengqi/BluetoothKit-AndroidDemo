@@ -166,6 +166,7 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         val deviceModel = PPDeviceModel("", deviceName)
         deviceModel.setDeviceCalcuteType(calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8)
         val bodyBaseModel = PPBodyBaseModel()
+        bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.deviceModel = deviceModel
         bodyBaseModel.userModel = userModel
