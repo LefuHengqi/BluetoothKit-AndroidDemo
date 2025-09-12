@@ -1,5 +1,6 @@
 package com.lefu.ppblutoothkit
 
+import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPScaleDefine.PPDeviceCalcuteType
 
 /**
@@ -8,10 +9,14 @@ import com.lefu.ppbase.PPScaleDefine.PPDeviceCalcuteType
  */
 object SecretManager {
 
-    var secretByTwoLegs140_505 = "tqgNeXljRSboMQ8iMDjyvk4kIf+G5XK9fpdWoWeO7z+IXmlk1Q9Mrv+OvPOKTq/O"
-    var secretByTwoLegs140 = "qt7oIt3kG75tqev0mmtDvCUiSVCt1e8A0a8rp9pbBkUSK5gdtBaa517aGTIFTQJw"
-    var secretByTwoLegs240 = "30nZPG5OfoZVpsw4lBg5fQvUMfLgqnbILlfByPgOu19p7XFX3qr47j9wY+5UtMIM"
-    var secretByBody270 = "T+0Jkr5MrwwrurWQMA/VF6aJ9RBVOxJjtF5JIR3Xe59N3XM5fbKraBH/7fNOzk5s"
+    var secretByTwoLegs140_505 = "Hl3R4f7lyP+neAWbZBmvW2di1+gZXGzuYNZ0kAwAjnElNrR/CaoAcy1mB2CfHizc"
+    var secretByTwoLegs140 = "up5dkj8oEi4NUmcziVCUkaAZM4j80ffS0p8yEkDNUP+5lY4izQ7iTMV+8Qg4R/Lg"
+    var secretByTwoLegs240 = "9emloLinGXEk1n8oqsccPkFjEU4mGOK6r69Lgk2XDBcnQM19AwnWOw/9lIID0ove"
+    var secretByBody270_172 = "i+OS1Ir4pHlQEnN+N0NGAigejDX3ztNAhHOCNIUXA+TNUHCD5aOKhGVE4jf3uKpi"
+    var secretByBody270 = "Zvpw7/fttSdetsb9CBPEdsKTIf1Dr7Avu9AnOm8o9LdH3bAxwUeOFJaW/OqmEldp"
+    var secretTwoArms140 = "gxYx/oJypSlWQDDe7CR5Y1rjKmN7UoL70+c6yFnMS619KFzRn+UvFtoJk08987Hp"
+
+    var bodyBaseModel: PPBodyBaseModel? = null
 
     fun getSecret(calculateType: Int): String {
         when (calculateType) {
@@ -62,7 +67,11 @@ object SecretManager {
 
             PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8.getType() -> {
                 //8电极交流算法, bhProduct=1--CF577
-                return secretByBody270
+                if (isTwoArmsCalculate(calculateType, bodyBaseModel)) {
+                    return secretTwoArms140
+                } else {
+                    return secretByBody270_172
+                }
             }
 
             else -> {
@@ -72,5 +81,10 @@ object SecretManager {
         }
     }
 
+    fun isTwoArmsCalculate(deviceCalculateType: Int, bodyBaseModel: PPBodyBaseModel?): Boolean {
+        if (bodyBaseModel == null) return false
+        return deviceCalculateType == PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8.getType() &&
+                bodyBaseModel.z20KhzRightArmEnCode > 0 && bodyBaseModel.z100KhzRightArmEnCode <= 0
+    }
 
 }

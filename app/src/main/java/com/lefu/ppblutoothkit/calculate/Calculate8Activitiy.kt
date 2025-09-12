@@ -27,6 +27,7 @@ import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 // 添加 View Binding 导入
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate8acBinding
+
 // 移除 kotlinx.android.synthetic 导入
 
 /**
@@ -43,10 +44,10 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCalculate8acBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
 
@@ -87,7 +88,7 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         }
         initData()
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -166,7 +167,7 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         val deviceModel = PPDeviceModel("", deviceName)
         deviceModel.setDeviceCalcuteType(calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8)
         val bodyBaseModel = PPBodyBaseModel()
-        bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
+
         bodyBaseModel.weight = UnitUtil.getWeight(weight)
         bodyBaseModel.deviceModel = deviceModel
         bodyBaseModel.userModel = userModel
@@ -181,6 +182,9 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         bodyBaseModel.z20KhzRightArmEnCode = z20KhzRightArmEnCode
         bodyBaseModel.z20KhzRightLegEnCode = z20KhzRightLegEnCode
         bodyBaseModel.z20KhzTrunkEnCode = z20KhzTrunkEnCode
+
+        SecretManager.bodyBaseModel = bodyBaseModel
+        bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
 
         val fatModel = PPBodyFatModel(bodyBaseModel)
         val ppDetailModel = PPBodyDetailModel(fatModel)

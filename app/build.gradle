@@ -158,15 +158,14 @@ dependencies {
     api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.6.0.6'
     //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
     api 'com.lefu.ppcalculatekit:ppcalculatekit:4.6.0.6'
-
-    //该PPBasicCalculateKit为源码独立引用，开源地址：
-    //https://github.com/LefuPPScale/PPBasicCalculateKit-Android.git
-    api(project(':ppbasiccalculatekit'))
+    //计算库基础库
+    api 'com.lefu.ppbasiccalculatekit:ppbasiccalculatekit:1.1.0'
 
 
 //    api(project(":ppsdkkit:ppbasekit"))
 //    api(project(":ppsdkkit:ppbluetoothkit"))
 //    api(project(":ppsdkkit:ppcalculatekit"))
+//    api(project(':ppbasiccalculatekit'))
 
 
 }
