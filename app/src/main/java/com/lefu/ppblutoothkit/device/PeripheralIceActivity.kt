@@ -427,6 +427,29 @@ class PeripheralIceActivity : BaseImmersivePermissionActivity() {
             } else {
                 //测量结束
                 weightMeasureState?.text = getString(R.string.measure_complete)
+
+                if (com.lefu.ppbase.PPScaleHelper.isCalcute8(bodyBaseModel?.deviceModel?.deviceCalcuteType?.getType())) {
+                    //8电极交流算法  48项数据
+                    addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
+                    addPrint("heartRate:${bodyBaseModel?.heartRate}")
+                    addPrint("z100KhzLeftArmEnCode:${bodyBaseModel?.z100KhzLeftArmEnCode}")
+                    addPrint("z100KhzLeftLegEnCode:${bodyBaseModel?.z100KhzLeftLegEnCode}")
+                    addPrint("z100KhzRightArmEnCode:${bodyBaseModel?.z100KhzRightArmEnCode}")
+                    addPrint("z100KhzRightLegEnCode:${bodyBaseModel?.z100KhzRightLegEnCode}")
+                    addPrint("z100KhzTrunkEnCode:${bodyBaseModel?.z100KhzTrunkEnCode}")
+                    addPrint("z20KhzLeftArmEnCode:${bodyBaseModel?.z20KhzLeftArmEnCode}")
+                    addPrint("z20KhzLeftLegEnCode:${bodyBaseModel?.z20KhzLeftLegEnCode}")
+                    addPrint("z20KhzRightArmEnCode:${bodyBaseModel?.z20KhzRightArmEnCode}")
+                    addPrint("z20KhzRightLegEnCode:${bodyBaseModel?.z20KhzRightLegEnCode}")
+                    addPrint("z20KhzTrunkEnCode:${bodyBaseModel?.z20KhzTrunkEnCode}")
+                    addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
+                } else {
+                    addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
+                    addPrint("heartRate:${bodyBaseModel?.heartRate}")
+                    addPrint("impedance:${bodyBaseModel?.impedance}")
+                    addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
+                }
+
                 MsgDialog.init(supportFragmentManager)
                     .setTitle(getString(R.string.tips))
                     .setMessage(getString(R.string.is_body_fat_calculated))
@@ -435,13 +458,7 @@ class PeripheralIceActivity : BaseImmersivePermissionActivity() {
                     .setNegativeButton(getString(R.string.cancel))
                     .setPositiveButton(getString(R.string.confirm), View.OnClickListener {
                         DataUtil.bodyBaseModel = bodyBaseModel
-                        if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
-                        ) {
-                            //8电极交流算法  48项数据
+                        if (com.lefu.ppbase.PPScaleHelper.isCalcute8(bodyBaseModel?.deviceModel?.deviceCalcuteType?.getType())) {
                             val intent = Intent(this@PeripheralIceActivity, Calculate8Activitiy::class.java)
                             intent.putExtra("bodyDataModel", "bodyDataModel")
                             startActivity(intent)

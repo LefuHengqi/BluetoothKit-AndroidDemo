@@ -427,6 +427,11 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
                 val userModel = DataUtil.getUserModel()
                 bodyBaseModel?.userModel = userModel
 
+                addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
+                addPrint("impedance:${bodyBaseModel?.impedance}")
+                addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
+
+
                 MsgDialog.init(supportFragmentManager)
                     .setTitle(getString(R.string.tips))
                     .setMessage(getString(R.string.is_body_fat_calculated))

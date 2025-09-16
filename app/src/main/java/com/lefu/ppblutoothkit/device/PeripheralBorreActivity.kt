@@ -488,8 +488,12 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
                 //Calling the calculation library to calculate body fat information
                 //调用计算库计算体脂信息
                 Logger.d("PeripheralBorreActivity 四电极 双频 impedance:${bodyBaseModel?.impedance} impedance100EnCode:${bodyBaseModel?.ppImpedance100EnCode}")
-                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
-                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
+
+                addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
+                addPrint("impedance:${bodyBaseModel?.impedance}")
+                addPrint("impedance100EnCode:${bodyBaseModel?.ppImpedance100EnCode}")
+                addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
+
                 bodyBaseModel?.let { showCalculateDialog(deviceModel, it) }
             }
 

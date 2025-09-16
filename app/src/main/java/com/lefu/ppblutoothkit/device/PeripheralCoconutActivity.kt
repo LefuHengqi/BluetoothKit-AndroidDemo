@@ -56,13 +56,13 @@ class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_coconut_layout)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
-        
+
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
@@ -85,7 +85,7 @@ class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
         initClick()
 
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -200,7 +200,7 @@ class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
          */
         override fun monitorProcessData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType(), true)
-                weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
+            weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             weightMeasureState?.text = ""
         }
 
@@ -215,17 +215,22 @@ class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
          */
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType(), true)
-                weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
+            weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
 
             //这里要填称重用户的个人信息
             val userModel = DataUtil.getUserModel()
             bodyBaseModel?.userModel = userModel
-                if (bodyBaseModel?.isHeartRating ?: false) {
+            if (bodyBaseModel?.isHeartRating ?: false) {
                 //心率测量中
                 weightMeasureState?.text = getString(R.string.heartrate_mesuring)
             } else {
                 //测量结束
                 weightMeasureState?.text = getString(R.string.measure_complete)
+
+                addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
+                addPrint("impedance:${bodyBaseModel?.impedance}")
+                addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
+
                 MsgDialog.init(supportFragmentManager)
                     .setTitle(getString(R.string.tips))
                     .setMessage(getString(R.string.is_body_fat_calculated))

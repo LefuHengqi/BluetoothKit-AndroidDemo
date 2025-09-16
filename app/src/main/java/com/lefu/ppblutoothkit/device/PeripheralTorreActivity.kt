@@ -497,10 +497,27 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
                 //Before calling the computing library, it is necessary to assign the personal information of the user who is currently being weighed as a value
                 //在调用计算库之前必须赋值成当前称重的用户的个人信息
                 bodyBaseModel?.userModel = userModel
-                //Calling the calculation library to calculate body fat information
-                //调用计算库计算体脂信息
-                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
-                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
+                if (com.lefu.ppbase.PPScaleHelper.isCalcute8(bodyBaseModel?.deviceModel?.deviceCalcuteType?.getType())) {
+                    //8电极交流算法  48项数据
+                    addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
+                    addPrint("heartRate:${bodyBaseModel?.heartRate}")
+                    addPrint("z100KhzLeftArmEnCode:${bodyBaseModel?.z100KhzLeftArmEnCode}")
+                    addPrint("z100KhzLeftLegEnCode:${bodyBaseModel?.z100KhzLeftLegEnCode}")
+                    addPrint("z100KhzRightArmEnCode:${bodyBaseModel?.z100KhzRightArmEnCode}")
+                    addPrint("z100KhzRightLegEnCode:${bodyBaseModel?.z100KhzRightLegEnCode}")
+                    addPrint("z100KhzTrunkEnCode:${bodyBaseModel?.z100KhzTrunkEnCode}")
+                    addPrint("z20KhzLeftArmEnCode:${bodyBaseModel?.z20KhzLeftArmEnCode}")
+                    addPrint("z20KhzLeftLegEnCode:${bodyBaseModel?.z20KhzLeftLegEnCode}")
+                    addPrint("z20KhzRightArmEnCode:${bodyBaseModel?.z20KhzRightArmEnCode}")
+                    addPrint("z20KhzRightLegEnCode:${bodyBaseModel?.z20KhzRightLegEnCode}")
+                    addPrint("z20KhzTrunkEnCode:${bodyBaseModel?.z20KhzTrunkEnCode}")
+                    addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
+                } else {
+                    addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
+                    addPrint("heartRate:${bodyBaseModel?.heartRate}")
+                    addPrint("impedance:${bodyBaseModel?.impedance}")
+                    addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
+                }
 
                 MsgDialog.init(supportFragmentManager)
                     .setTitle(getString(R.string.tips))
@@ -510,13 +527,7 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
                     .setNegativeButton(getString(R.string.cancel))
                     .setPositiveButton(getString(R.string.confirm), View.OnClickListener() {
                         DataUtil.bodyBaseModel = bodyBaseModel
-                        if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
-                        ) {
+                        if (com.lefu.ppbase.PPScaleHelper.isCalcute8(bodyBaseModel?.deviceModel?.deviceCalcuteType?.getType())) {
                             //8电极交流算法  48项数据
                             val intent = Intent(this@PeripheralTorreActivity, Calculate8Activitiy::class.java)
                             intent.putExtra("bodyDataModel", "bodyDataModel")

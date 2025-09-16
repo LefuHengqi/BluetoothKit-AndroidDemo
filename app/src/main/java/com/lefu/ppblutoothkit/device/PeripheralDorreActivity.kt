@@ -445,10 +445,10 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
                 //Before calling the computing library, it is necessary to assign the personal information of the user who is currently being weighed as a value
                 //在调用计算库之前必须赋值成当前称重的用户的个人信息
                 bodyBaseModel?.userModel = userModel
-                //Calling the calculation library to calculate body fat information
-                //调用计算库计算体脂信息
-                val fatModel = bodyBaseModel?.let { PPBodyFatModel(it) }
-                addPrint("体脂计算完成 错误码：${fatModel?.errorType} 体脂率${fatModel?.ppFat} 心率${fatModel?.ppHeartRate}")
+
+                addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
+                addPrint("impedance:${bodyBaseModel?.impedance}")
+                addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
 
                 MsgDialog.init(supportFragmentManager)
                     .setTitle(getString(R.string.tips))
