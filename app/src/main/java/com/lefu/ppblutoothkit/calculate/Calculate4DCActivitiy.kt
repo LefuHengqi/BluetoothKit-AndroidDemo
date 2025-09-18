@@ -3,7 +3,11 @@ package com.lefu.ppblutoothkit.calculate
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
@@ -17,6 +21,8 @@ import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppblutoothkit.SecretManager
+import com.lefu.ppblutoothkit.batch_calculate.BaseBatchCalculateActivity
+import com.lefu.ppblutoothkit.batch_calculate.CSVFIleUtil
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
 // 添加 View Binding 导入
@@ -25,7 +31,7 @@ import com.lefu.ppblutoothkit.databinding.ActivityCalculate4dcBinding
 /**
  * 直流秤计算库
  */
-class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
+class Calculate4DCActivitiy : BaseBatchCalculateActivity() {
 
     var deviceName: String = ""
     private lateinit var binding: ActivityCalculate4dcBinding
@@ -46,6 +52,8 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
         }
 
         initData()
+
+        initbatchCalculation()
     }
     
     private fun initToolbar() {
@@ -55,6 +63,29 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
             title = "直流秤计算",
             showBackButton = true
         )
+    }
+
+
+    private fun initbatchCalculation() {
+        logTxt = binding.logTxt
+        binding.logTxt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                binding.nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
+            }
+        })
+        findViewById<Button>(R.id.device_selectCSV).setOnClickListener {
+            batchCalculateType = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect
+            addPrint("check sdCard read and write permission batchCalculateType:${batchCalculateType}")
+            requestPermission()
+        }
+
+        findViewById<Button>(R.id.device_startCalculate).setOnClickListener {
+            startBatchCalculate()
+        }
     }
 
     private fun initData() {
@@ -113,5 +144,35 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
         
         val intent = Intent(this, BodyDataDetailActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun calculateCSVDataByProduct0(dataRow: CSVFIleUtil.CSVDataRow): PPBodyFatModel? {
+        val sex = if (dataRow.gender.equals("男", false)) {
+            PPUserGender.PPUserGenderMale
+        } else {
+            PPUserGender.PPUserGenderFemale
+        }
+        val height = dataRow.height.toInt()
+        val age = dataRow.age
+        val weight = dataRow.weight.toDouble()
+        val impedance = dataRow.impedance50Khz
+
+        val userModel = PPUserModel.Builder()
+            .setSex(sex)
+            .setHeight(height)
+            .setAge(age)
+            .build()
+
+        val deviceModel = PPDeviceModel("", "")
+        deviceModel.setDeviceCalcuteType(PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect)
+
+        val bodyBaseModel = PPBodyBaseModel()
+        bodyBaseModel.weight = UnitUtil.getWeight(weight)
+        bodyBaseModel.impedance = impedance
+        bodyBaseModel.deviceModel = deviceModel
+        bodyBaseModel.userModel = userModel
+        bodyBaseModel.unit = PPUnitType.Unit_KG
+
+        return PPBodyFatModel(bodyBaseModel)
     }
 }

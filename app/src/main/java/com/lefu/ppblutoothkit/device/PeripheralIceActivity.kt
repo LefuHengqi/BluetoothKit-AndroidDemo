@@ -10,14 +10,13 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.calculate.Calculate8Activity
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.okhttp.NetUtil
@@ -35,7 +34,6 @@ import com.lefu.ppbase.util.Logger
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
-import com.lefu.ppbase.PPScaleDefine
 import com.peng.ppscale.vo.PPScaleSendState
 
 /**
@@ -459,7 +457,7 @@ class PeripheralIceActivity : BaseImmersivePermissionActivity() {
                     .setPositiveButton(getString(R.string.confirm), View.OnClickListener {
                         DataUtil.bodyBaseModel = bodyBaseModel
                         if (com.lefu.ppbase.PPScaleHelper.isCalcute8(bodyBaseModel?.deviceModel?.deviceCalcuteType?.getType())) {
-                            val intent = Intent(this@PeripheralIceActivity, Calculate8Activitiy::class.java)
+                            val intent = Intent(this@PeripheralIceActivity, Calculate8Activity::class.java)
                             intent.putExtra("bodyDataModel", "bodyDataModel")
                             startActivity(intent)
                         } else {

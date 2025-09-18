@@ -80,7 +80,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Immersive" />
         <activity
-            android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activitiy"
+            android:name="com.lefu.ppblutoothkit.calculate.Calculate8Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Immersive" />
         <activity

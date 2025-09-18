@@ -80,7 +80,7 @@ class CalculateManagerActivity : BaseImmersivePermissionActivity(), View.OnClick
             }
             R.id.ac8 -> {
                 //8电极交流算法  48项数据
-                startActivity(Intent(this@CalculateManagerActivity, Calculate8Activitiy::class.java))
+                startActivity(Intent(this@CalculateManagerActivity, Calculate8Activity::class.java))
             }
         }
     }

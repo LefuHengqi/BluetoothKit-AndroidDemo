@@ -31,14 +31,13 @@ import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.calculate.Calculate8Activity
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
-import com.lefu.ppcalculate.PPBodyFatModel
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
@@ -546,7 +545,7 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
                     || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
                 ) {
                     //8电极交流算法  48项数据
-                    val intent = Intent(this@PeripheralBorreActivity, Calculate8Activitiy::class.java)
+                    val intent = Intent(this@PeripheralBorreActivity, Calculate8Activity::class.java)
                     intent.putExtra("bodyDataModel", "bodyDataModel")
                     startActivity(intent)
                 } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1) {

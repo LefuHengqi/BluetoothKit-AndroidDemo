@@ -4,21 +4,26 @@ package com.lefu.ppblutoothkit.calculate
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.PPScaleDefine.PPDeviceCalcuteType
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
-import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.SecretManager
+import com.lefu.ppblutoothkit.batch_calculate.BaseBatchCalculateActivity
+import com.lefu.ppblutoothkit.batch_calculate.CSVFIleUtil
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate4acBinding
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
@@ -30,7 +35,7 @@ import com.lefu.ppcalculate.vo.PPBodyDetailModel
 /**
  * 4电极交流算法
  */
-class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
+class Calculate4ACActivitiy : BaseBatchCalculateActivity() {
 
     var deviceName: String = ""
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
@@ -77,6 +82,8 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
 
         }
         initData()
+
+        initbatchCalculation()
     }
     
     private fun initToolbar() {
@@ -87,6 +94,29 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
                 title = "4AC计算",
                 showBackButton = true
             )
+        }
+    }
+
+
+    private fun initbatchCalculation() {
+        logTxt = binding.logTxt
+        binding.logTxt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                binding.nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
+            }
+        })
+        findViewById<Button>(R.id.device_selectCSV).setOnClickListener {
+            batchCalculateType = calcuteType ?: PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1
+            addPrint("check sdCard read and write permission batchCalculateType:${batchCalculateType}")
+            requestPermission()
+        }
+
+        findViewById<Button>(R.id.device_startCalculate).setOnClickListener {
+            startBatchCalculate()
         }
     }
 
@@ -153,5 +183,36 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
 
         val intent = Intent(this, BodyDataDetailActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun calculateCSVDataByProduct0(dataRow: CSVFIleUtil.CSVDataRow): PPBodyFatModel? {
+        val sex = if (dataRow.gender.equals("男", false)) {
+            PPUserGender.PPUserGenderMale
+        } else {
+            PPUserGender.PPUserGenderFemale
+        }
+        val height = dataRow.height.toInt()
+        val age = dataRow.age
+        val weight = dataRow.weight.toDouble()
+        val impedance = dataRow.impedance50Khz
+
+        val userModel = PPUserModel.Builder()
+            .setSex(sex)
+            .setHeight(height)
+            .setAge(age)
+            .build()
+
+        val deviceModel = PPDeviceModel("", deviceName)
+        deviceModel.setDeviceCalcuteType(calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate)
+
+        val bodyBaseModel = PPBodyBaseModel()
+        bodyBaseModel.weight = UnitUtil.getWeight(weight)
+        bodyBaseModel.impedance = impedance
+        bodyBaseModel.deviceModel = deviceModel
+        bodyBaseModel.userModel = userModel
+        bodyBaseModel.unit = PPUnitType.Unit_KG
+        bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
+
+        return PPBodyFatModel(bodyBaseModel)
     }
 }

@@ -1,11 +1,10 @@
 package com.lefu.ppblutoothkit.calculate
 
-import android.app.Activity
 import androidx.appcompat.widget.Toolbar
-import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -21,6 +20,8 @@ import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.SecretManager
+import com.lefu.ppblutoothkit.batch_calculate.BaseBatchCalculateActivity
+import com.lefu.ppblutoothkit.batch_calculate.CSVFIleUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppcalculate.PPBodyFatModel
@@ -33,7 +34,7 @@ import com.lefu.ppblutoothkit.databinding.ActivityCalculate8acBinding
 /**
  * 8电极计算库
  */
-class Calculate8Activitiy : BaseImmersivePermissionActivity() {
+class Calculate8Activity : BaseBatchCalculateActivity() {
 
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
     var spinner: Spinner? = null
@@ -87,6 +88,8 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
 
         }
         initData()
+
+        initbatchCalculation()
     }
 
     private fun initToolbar() {
@@ -97,6 +100,29 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
                 title = "8电极计算",
                 showBackButton = true
             )
+        }
+    }
+
+
+    private fun initbatchCalculation() {
+        logTxt = binding.logTxt
+        binding.logTxt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                binding.nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
+            }
+        })
+        findViewById<Button>(R.id.device_selectCSV).setOnClickListener {
+            batchCalculateType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+            addPrint("check sdCard read and write permission batchCalculateType:${batchCalculateType}")
+            requestPermission()
+        }
+
+        findViewById<Button>(R.id.device_startCalculate).setOnClickListener {
+            startBatchCalculate()
         }
     }
 
@@ -193,7 +219,64 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         DataUtil.bodyDataModel = fatModel
         Log.d("liyp_", fatModel.toString())
 
-        val intent = Intent(this@Calculate8Activitiy, BodyDataDetailActivity::class.java)
+        val intent = Intent(this@Calculate8Activity, BodyDataDetailActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun calculateCSVDataByProduct0(dataRow: CSVFIleUtil.CSVDataRow): PPBodyFatModel? {
+        val sex = if (dataRow.gender.equals("男", false)) {
+            PPUserGender.PPUserGenderMale
+        } else {
+            PPUserGender.PPUserGenderFemale
+        }
+        val height = dataRow.height.toInt()
+        val age = dataRow.age
+        val weight = dataRow.weight.toDouble()
+
+        // 获取10个阻抗字段
+        val z100KhzLeftArmEnCode = dataRow.z100KhzLeftArmEnCode
+        val z100KhzLeftLegEnCode = dataRow.z100KhzLeftLegEnCode
+        val z100KhzRightArmEnCode = dataRow.z100KhzRightArmEnCode
+        val z100KhzRightLegEnCode = dataRow.z100KhzRightLegEnCode
+        val z100KhzTrunkEnCode = dataRow.z100KhzTrunkEnCode
+        val z20KhzLeftArmEnCode = dataRow.z20KhzLeftArmEnCode
+        val z20KhzLeftLegEnCode = dataRow.z20KhzLeftLegEnCode
+        val z20KhzRightArmEnCode = dataRow.z20KhzRightArmEnCode
+        val z20KhzRightLegEnCode = dataRow.z20KhzRightLegEnCode
+        val z20KhzTrunkEnCode = dataRow.z20KhzTrunkEnCode
+
+        val userModel = PPUserModel.Builder()
+            .setSex(sex)
+            .setHeight(height)
+            .setAge(age)
+            .build()
+
+        batchCalculateType = calcuteType ?: PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+
+        val deviceModel = PPDeviceModel("", deviceName)
+        deviceModel.setDeviceCalcuteType(batchCalculateType)
+
+        val bodyBaseModel = PPBodyBaseModel()
+        bodyBaseModel.weight = UnitUtil.getWeight(weight)
+        bodyBaseModel.deviceModel = deviceModel
+        bodyBaseModel.userModel = userModel
+        bodyBaseModel.unit = PPUnitType.Unit_KG
+
+        // 设置10个阻抗字段
+        bodyBaseModel.z100KhzLeftArmEnCode = z100KhzLeftArmEnCode
+        bodyBaseModel.z100KhzLeftLegEnCode = z100KhzLeftLegEnCode
+        bodyBaseModel.z100KhzRightArmEnCode = z100KhzRightArmEnCode
+        bodyBaseModel.z100KhzRightLegEnCode = z100KhzRightLegEnCode
+        bodyBaseModel.z100KhzTrunkEnCode = z100KhzTrunkEnCode
+        bodyBaseModel.z20KhzLeftArmEnCode = z20KhzLeftArmEnCode
+        bodyBaseModel.z20KhzLeftLegEnCode = z20KhzLeftLegEnCode
+        bodyBaseModel.z20KhzRightArmEnCode = z20KhzRightArmEnCode
+        bodyBaseModel.z20KhzRightLegEnCode = z20KhzRightLegEnCode
+        bodyBaseModel.z20KhzTrunkEnCode = z20KhzTrunkEnCode
+
+        SecretManager.bodyBaseModel = bodyBaseModel
+        bodyBaseModel.secret = SecretManager.getSecret(batchCalculateType.getType())
+
+        return PPBodyFatModel(bodyBaseModel)
     }
 }

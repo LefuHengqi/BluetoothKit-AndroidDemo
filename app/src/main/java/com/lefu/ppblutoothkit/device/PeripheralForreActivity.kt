@@ -1,7 +1,6 @@
 package com.lefu.ppblutoothkit.device
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,16 +9,13 @@ import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import androidx.core.app.ActivityCompat
@@ -35,9 +31,8 @@ import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.calculate.Calculate8Activity
 import com.lefu.ppblutoothkit.databinding.PeripheralForreLayoutBinding
-import com.lefu.ppblutoothkit.databinding.ProductTestDfuTestActivityBinding
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralForreInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
@@ -48,14 +43,11 @@ import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
-import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
 import com.peng.ppscale.business.ble.listener.PPTorreDeviceModeChangeInterface
-import com.peng.ppscale.business.ble.listener.PPUserInfoInterface
 import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener
-import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralForre.PPBlutoothPeripheralForreController
 
@@ -412,7 +404,7 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
                     || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
                 ) {
                     //8电极交流算法  48项数据
-                    val intent = Intent(this@PeripheralForreActivity, Calculate8Activitiy::class.java)
+                    val intent = Intent(this@PeripheralForreActivity, Calculate8Activity::class.java)
                     intent.putExtra("bodyDataModel", "bodyDataModel")
                     startActivity(intent)
                 } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1) {

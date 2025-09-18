@@ -16,7 +16,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import androidx.core.app.ActivityCompat
@@ -31,12 +30,11 @@ import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.calculate.Calculate8Activity
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
-import com.lefu.ppcalculate.PPBodyFatModel
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
@@ -466,7 +464,7 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
                             || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
                         ) {
                             //8电极交流算法  48项数据
-                            val intent = Intent(this@PeripheralDorreActivity, Calculate8Activitiy::class.java)
+                            val intent = Intent(this@PeripheralDorreActivity, Calculate8Activity::class.java)
                             intent.putExtra("bodyDataModel", "bodyDataModel")
                             startActivity(intent)
                         } else {

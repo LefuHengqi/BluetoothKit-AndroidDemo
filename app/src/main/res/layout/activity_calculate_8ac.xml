@@ -484,17 +484,62 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/calculateBtn"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dimens_20dp"
-        android:paddingStart="@dimen/dimens_20dp"
-        android:paddingTop="@dimen/dimens_10dp"
-        android:paddingEnd="@dimen/dimens_20dp"
-        android:paddingBottom="@dimen/dimens_10dp"
-        android:text="Calculate"
-        android:textAllCaps="true" />
+        android:layout_marginTop="@dimen/dp_10"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/calculateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Calculate"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/device_selectCSV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="选则CSV文件" />
+
+        <Button
+            android:id="@+id/device_startCalculate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="开始计算体脂"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="@dimen/dimens_3dp"
+        android:layout_marginBottom="@dimen/dimens_20dp"
+        android:layout_weight="1"
+        android:background="#11000000"
+        android:orientation="vertical">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollViewLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <TextView
+                android:id="@+id/logTxt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp" />
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
 
 </LinearLayout>

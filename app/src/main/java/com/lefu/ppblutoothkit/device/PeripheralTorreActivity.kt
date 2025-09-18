@@ -16,7 +16,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,7 +23,7 @@ import androidx.core.widget.NestedScrollView
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.calculate.Calculate8Activity
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.util.DataUtil
@@ -49,9 +48,7 @@ import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreControll
 import com.lefu.ppbase.util.Logger
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.PPBodyBaseModel
-import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppbase.PPDeviceModel
-import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPScaleState
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.okhttp.NetUtil
@@ -529,7 +526,7 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
                         DataUtil.bodyBaseModel = bodyBaseModel
                         if (com.lefu.ppbase.PPScaleHelper.isCalcute8(bodyBaseModel?.deviceModel?.deviceCalcuteType?.getType())) {
                             //8电极交流算法  48项数据
-                            val intent = Intent(this@PeripheralTorreActivity, Calculate8Activitiy::class.java)
+                            val intent = Intent(this@PeripheralTorreActivity, Calculate8Activity::class.java)
                             intent.putExtra("bodyDataModel", "bodyDataModel")
                             startActivity(intent)
                         } else {
