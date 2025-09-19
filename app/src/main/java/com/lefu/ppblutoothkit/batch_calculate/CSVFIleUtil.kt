@@ -61,6 +61,7 @@ object CSVFIleUtil {
         val height: Float,        // 身高(cm)
         val gender: String,       // 性别
         val age: Int,            // 年龄
+        val batchNumber: String,  // 批次编号
         val impedanceValues: Map<String, Long> // 阻抗值映射，key为频率标识(如"impedance50Khz", "impedance100Khz")，value为阻抗值
     ) : Serializable {
 
@@ -123,10 +124,10 @@ object CSVFIleUtil {
     }
 
     /**
-     * CSV导出行数据类 - 每行包含原始数据和三组计算结果(data1, data2, data3)
+     * CSV导出行数据类 - 包含所有需要导出的字段
      */
     data class CSVExportRow(
-        // 原始数据
+        // 基础数据字段
         val id: String,
         val name: String,
         val weight: Float,
@@ -135,42 +136,126 @@ object CSVFIleUtil {
         val age: Int,
         val impedanceValues: Map<String, Long>, // 阻抗值映射
 
-        // 兼容性字段
-        val impedance50Khz: Long = impedanceValues["impedance50Khz"] ?: impedanceValues["50"] ?: 0L,
-        val impedance100Khz: Long = impedanceValues["impedance100Khz"] ?: impedanceValues["100"] ?: 0L,
-
-        // Data1计算结果 (Product0-普通人)
-        val data1_errorType: String,
-        val data1_ppBMI: Float,
-        val data1_ppFat: Float,
-        val data1_ppBodyfatKg: Float,
-        val data1_ppMusclePercentage: Float,
-        val data1_ppMuscleKg: Float,
-        val data1_ppBodySkeletal: Float,
-        val data1_ppBodySkeletalKg: Float,
-        val data1_ppWaterPercentage: Float,
-        val data1_ppWaterKg: Float,
-        val data1_ppProteinPercentage: Float,
-        val data1_ppProteinKg: Float,
-        val data1_ppLoseFatWeightKg: Float,
-        val data1_ppBodyFatSubCutPercentage: Float,
-        val data1_ppBodyFatSubCutKg: Float,
-
-        val data1_ppBMR: Int,
-        val data1_ppVisceralFat: Int,
-        val data1_ppBoneKg: Float,
-        val data1_ppBodyMuscleControl: Float,
-        val data1_ppFatControlKg: Float,
-        val data1_ppBodyStandardWeightKg: Float,
-        val data1_ppIdealWeightKg: Float,
-        val data1_ppControlWeightKg: Float,
-        val data1_ppBodyType: String,
-        val data1_ppFatGrade: String,
-        val data1_ppBodyHealth: String,
-        val data1_ppBodyAge: Int,
-        val data1_ppBodyScore: Int,
-
-        ) : Serializable
+        // 从PPBodyFatModel获取的所有字段
+        val ppWaterECWKg: Float,                    // 全身体组成:细胞外水量(kg)
+        val ppWaterICWKg: Float,                    // 全身体组成:细胞内水量(kg)
+        val ppBodyFatKgLeftArm: Float,              // 左手脂肪量(kg), 分辨率0.1
+        val ppBodyFatKgLeftLeg: Float,              // 左脚脂肪量(kg), 分辨率0.1
+        val ppBodyFatKgRightArm: Float,             // 右手脂肪量(kg), 分辨率0.1
+        val ppBodyFatKgRightLeg: Float,             // 右脚脂肪量(kg), 分辨率0.1
+        val ppBodyFatKgTrunk: Float,                // 躯干脂肪量(kg), 分辨率0.1
+        val ppBodyFatRateLeftArm: Float,            // 左手脂肪率(%), 分辨率0.1
+        val ppBodyFatRateLeftLeg: Float,            // 左脚脂肪率(%), 分辨率0.1
+        val ppBodyFatRateRightArm: Float,           // 右手脂肪率(%), 分辨率0.1
+        val ppBodyFatRateRightLeg: Float,           // 右脚脂肪率(%), 分辨率0.1
+        val ppBodyFatRateTrunk: Float,              // 躯干脂肪率(%), 分辨率0.1
+        val ppMuscleKgLeftArm: Float,               // 左手肌肉量(kg), 分辨率0.1
+        val ppMuscleRateLeftArm: Float,             // 左手肌肉率(%), 分辨率0.1
+        val ppMuscleKgLeftLeg: Float,               // 左脚肌肉量(kg), 分辨率0.1
+        val ppMuscleRateLeftLeg: Float,             // 左脚肌肉率(%), 分辨率0.1
+        val ppMuscleKgRightArm: Float,              // 右手肌肉量(kg), 分辨率0.1
+        val ppMuscleRateRightArm: Float,            // 右手肌肉率(%), 分辨率0.1
+        val ppMuscleKgRightLeg: Float,              // 右脚肌肉量(kg), 分辨率0.1
+        val ppMuscleRateRightLeg: Float,            // 右脚肌肉率(%), 分辨率0.1
+        val ppMuscleKgTrunk: Float,                 // 躯干肌肉量(kg), 分辨率0.1
+        val ppMuscleRateTrunk: Float,               // 躯干肌肉率(%), 分辨率0.1
+        val z100KhzLeftArmEnCode: Long,             // 100KHz左手阻抗加密值
+        val z100KhzLeftLegEnCode: Long,             // 100KHz左腳阻抗加密值
+        val z100KhzRightArmEnCode: Long,            // 100KHz右手阻抗加密值
+        val z100KhzRightLegEnCode: Long,            // 100KHz右腳阻抗加密值
+        val z100KhzTrunkEnCode: Long,               // 100KHz軀幹阻抗加密值
+        val z20KhzLeftArmEnCode: Long,              // 20KHz左手阻抗加密值
+        val z20KhzLeftLegEnCode: Long,              // 20KHz左腳阻抗加密值
+        val z20KhzRightArmEnCode: Long,             // 20KHz右手阻抗加密值
+        val z20KhzRightLegEnCode: Long,             // 20KHz右腳阻抗加密值
+        val z20KhzTrunkEnCode: Long,                // 20KHz軀幹阻抗加密值
+        val ppCellMassKg: Float,                    // 身体细胞量(kg)
+        val z100KhzLeftArmDeCode: Long,             // 100KHz左手阻抗解密值
+        val z100KhzLeftLegDeCode: Long,             // 100KHz左腳阻抗解密值
+        val z100KhzRightArmDeCode: Long,            // 100KHz右手阻抗解密值
+        val z100KhzRightLegDeCode: Long,            // 100KHz右腳阻抗解密值
+        val z100KhzTrunkDeCode: Long,               // 100KHz軀幹阻抗解密值
+        val z20KhzLeftArmDeCode: Long,              // 20KHz左手阻抗解密值
+        val z20KhzLeftLegDeCode: Long,              // 20KHz左腳阻抗解密值
+        val z20KhzRightArmDeCode: Long,             // 20KHz右手阻抗解密值
+        val z20KhzRightLegDeCode: Long,             // 20KHz右腳阻抗解密值
+        val z20KhzTrunkDeCode: Long,                // 20KHz軀幹阻抗解密值
+        val ppBodySkeletalKg: Float,                // 骨骼肌量
+        val ppSmi: Float,                           // 骨骼肌质量指数
+        val ppWHR: Float,                           // 腰臀比
+        val ppRightArmMuscleLevel: Int,             // 右手肌肉标准
+        val ppLeftArmMuscleLevel: Int,              // 左手肌肉标准
+        val ppTrunkMuscleLevel: Int,                // 躯干肌肉标准
+        val ppRightLegMuscleLevel: Int,             // 右脚肌肉标准
+        val ppLeftLegMuscleLevel: Int,              // 左脚肌肉标准
+        val ppRightArmFatLevel: Int,                // 右手脂肪标准
+        val ppLeftArmFatLevel: Int,                 // 左手脂肪标准
+        val ppTrunkFatLevel: Int,                   // 躯干脂肪标准
+        val ppRightLegFatLevel: Int,                // 右脚脂肪标准
+        val ppLeftLegFatLevel: Int,                 // 左脚脂肪标准
+        val ppBalanceArmsLevel: Int,                // 上肢肌肉均衡
+        val ppBalanceLegsLevel: Int,                // 下肢肌肉均衡
+        val ppBalanceArmLegLevel: Int,              // 肌肉-上下均衡度
+        val ppBalanceFatArmsLevel: Int,             // 上肢脂肪均衡
+        val ppBalanceFatLegsLevel: Int,             // 下肢脂肪均衡
+        val ppBalanceFatArmLegLevel: Int,           // 脂肪-上下均衡度
+        val dataId: String,                         // 单条数据唯一id
+        val channelType: Int,                       // 渠道类型 1 后台接口、2 Android、3 IOS、4 固件
+        val batchNumber: String,                    // 批次编号
+        val uploadNumber: String,                   // 上传编号
+        val dataType: Int,                          // 数据类型 1 计算库原始数据、2 封装数据
+        val ppSex: Int,                             // 性别0:女 1:男
+        val ppHeightCm: Int,                        // 身高cm
+        val ppAge: Int,                             // 年龄
+        val accuracy: String,                       // 精度
+        val impedance: Long,                        // 阻抗
+        val decryptedImpedance: Long,               // 双脚解密阻抗
+        val athleteMode: Int,                       // 0普通模式，1运动员模式
+        val dataGenerateTime: String,               // 数据生成时间，客户端时间
+        val bodyFatDataKey: String,                 // 体脂数据的key,json格式
+        val ppWeightKg: Float,                      // 体重数据
+        val ppFat: Float,                           // 体脂率(%)
+        val ppBMI: Float,                           // 人体质量指数
+        val ppBodyfatKg: Float,                     // 脂肪量(kg)
+        val ppMusclePercentage: Float,              // 肌肉率(%)
+        val ppMuscleKg: Float,                      // 肌肉量(kg)
+        val ppVisceralFat: Int,                     // 内脏脂肪等级
+        val ppBMR: Int,                             // 基础代谢
+        val ppWaterPercentage: Float,               // 体水分率(%)
+        val ppBoneKg: Float,                        // 骨量(kg)
+        val ppProteinPercentage: Float,             // 蛋白质率(%)
+        val ppBodySkeletal: Float,                  // 骨量率/骨骼肌率(%)
+        val ppLoseFatWeightKg: Float,               // 去脂体重(%)
+        val ppHeartRate: Int,                       // 心率
+        val ppBodyScore: Int,                       // 身体得分
+        val ppBodyType: String,                     // 身体类型
+        val ppBodyAge: Int,                         // 身体年龄
+        val ppBodyFatSubCutPercentage: Float,       // 皮下脂肪率
+        val ppBodyHealth: String,                   // 健康等级
+        val ppFatGrade: String,                     // 肥胖等级
+        val ppFatControlKg: Float,                  // 脂肪控制量
+        val ppControlWeightKg: Float,               // 体重控制量
+        val ppBodyStandardWeightKg: Float,          // 标准体重
+        val bodyFatDataValue: String,               // 体脂数据的value
+        val ppBodyMuscleControl: Float,             // 肌肉控制量
+        val ppProteinKg: Float,                     // 蛋白质量(kg)
+        val ppBodyFatSubCutKg: Float,               // 皮下脂肪量(kg)
+        val ppDCI: Int,                             // 建议卡路里摄入量 _kcal/day
+        val ppMineralKg: Float,                     // 无机盐量(_kg)
+        val ppObesity: Float,                       // 肥胖度(%)
+        val hasExtendedFields: Boolean,             // 是否存在扩充字段，八电极字段更多
+        val errorType: String,                      // 计算库的错误类型
+        val deviceMac: String,                      // 设备mac
+        val ppSDKVersion: String,                   // sdk版本号
+        val ppWaterKg: Float,                       // 水分量
+        val organizationId: String,                 // 组织id
+        val calculateType: String,                  // 计算类型
+        val calculateVersion: String,               // 计算版本
+        val ppBodySkeletalKg2: Float,               // 骨骼肌量
+        val trunkImpedance1: Long,                  // 躯干阻抗
+        val trunkImpedance2: Long,                  // 躯干阻抗
+        val trunkImpedance3: Long                   // 躯干阻抗
+    ) : Serializable
 
     /**
      * CSV解析结果类
@@ -451,10 +536,11 @@ object CSVFIleUtil {
 
 
         //批次编号	信息id	类型 1 运营后台新增 2 UH导入 3 Excel导入 4 json导入	0普通模式，1运动员模式	性别0:女 1:男	姓名	身高cm	年龄	体重	称重时间戳UTC	躯干阻抗	躯干阻抗	100KHz左手阻抗加密值	100KHz左腳阻抗加密值	100KHz右手阻抗加密值	100KHz右腳阻抗加密值	100KHz躯干阻抗加密值	20KHz左手阻抗加密值	20KHz左腳阻抗加密值	20KHz右手阻抗加密值	20KHz右腳阻抗加密值	20KHz躯干阻抗加密值	躯干阻抗	躯干阻抗
-        
+
         // 使用固定列号映射新格式的CSV
         // A=0, B=1, C=2, D=3, E=4, F=5, G=6, H=7, I=8, J=9...
         val fixedFieldMapping = mapOf(
+            "batchNumber" to 0, // A列：批次编号
             "id" to 1,      // B列：信息id
             "gender" to 4,  // E列：性别0:女 1:男
             "name" to 5,    // F列：姓名
@@ -603,6 +689,7 @@ object CSVFIleUtil {
             val height = parseFloat(getColumnValue(columns, fieldMapping["height"]!!, "身高").trim(), "身高")
             val gender = getColumnValue(columns, fieldMapping["gender"]!!, "性别").trim()
             val age = parseInt(getColumnValue(columns, fieldMapping["age"]!!, "年龄").trim(), "年龄")
+            val batchNumber = getColumnValue(columns, fieldMapping["batchNumber"]!!, "批次编号").trim()
 
             // 解析阻抗字段
             val impedanceValues = mutableMapOf<String, Long>()
@@ -610,10 +697,10 @@ object CSVFIleUtil {
             // 定义需要解析的阻抗字段列表
             val impedanceFields = listOf(
                 "impedance50Khz",
-                "impedance100Khz", 
+                "impedance100Khz",
                 "z100KhzLeftArmEnCode",
                 "z100KhzLeftLegEnCode",
-                "z100KhzRightArmEnCode", 
+                "z100KhzRightArmEnCode",
                 "z100KhzRightLegEnCode",
                 "z100KhzTrunkEnCode",
                 "z20KhzLeftArmEnCode",
@@ -643,6 +730,7 @@ object CSVFIleUtil {
                 height = height,
                 gender = gender,
                 age = age,
+                batchNumber = batchNumber,
                 impedanceValues = impedanceValues
             )
         } catch (e: Exception) {
@@ -707,47 +795,127 @@ object CSVFIleUtil {
     private fun createCSVHeader(impedanceKeys: List<String> = listOf("impedance50Khz", "impedance100Khz")): String {
         val headers = mutableListOf<String>()
 
-        // 基础数据字段
-        headers.addAll(listOf("编号", "姓名", "体重(kg)", "身高(cm)", "性别", "年龄"))
-
-        // 动态阻抗字段
-        impedanceKeys.forEach { key ->
-            headers.add("${key}阻抗")
-        }
-
-        // 计算结果字段
+        // 新的字段列表
         headers.addAll(
             listOf(
-                // 计算结果字段 - 按字段类型分组，每组包含1、2、3
+                "全身体组成:细胞外水量(kg)",
+                "全身体组成:细胞内水量(kg)",
+                "左手脂肪量(%) 分辨率0.1",
+                "左脚脂肪量(%) 分辨率0.1",
+                "右手脂肪量(%) 分辨率0.1",
+                "右脚脂肪量(%) 分辨率0.1",
+                "躯干脂肪量(%) 分辨率0.1",
+                "左手脂肪率(%) 分辨率0.1",
+                "左脚脂肪率(%) 分辨率0.1",
+                "右手脂肪率(%) 分辨率0.1",
+                "右脚脂肪率(%) 分辨率0.1",
+                "躯干脂肪率(%) 分辨率0.1",
+                "左手肌肉量(kg) 分辨率0.1 范围0.0-200kg",
+                "左手肌肉率 分辨率0.1",
+                "左脚肌肉量(kg) 分辨率0.1 范围0.0-200kg",
+                "左脚肌肉率 分辨率0.1",
+                "右手肌肉量(kg) 分辨率0.1 范围0.0-200kg",
+                "右手肌肉率 分辨率0.1",
+                "右脚肌肉量(kg) 分辨率0.1 范围0.0-200kg",
+                "右脚肌肉率 分辨率0.1",
+                "躯干肌肉量(kg) 分辨率0.1 范围0.0-200kg",
+                "躯干肌肉率 分辨率0.1",
+                "100KHz左手阻抗加密值",
+                "100KHz左腳阻抗加密值",
+                "100KHz右手阻抗加密值",
+                "100KHz右腳阻抗加密值",
+                "100KHz軀幹阻抗加密值",
+                "20KHz左手阻抗加密值",
+                "20KHz左腳阻抗加密值",
+                "20KHz右手阻抗加密值",
+                "20KHz右腳阻抗加密值",
+                "20KHz軀幹阻抗加密值",
+                "身体细胞量(kg)",
+                "100KHz左手阻抗解密值",
+                "100KHz左腳阻抗解密值",
+                "100KHz右手阻抗解密值",
+                "100KHz右腳阻抗解密值",
+                "100KHz軀幹阻抗解密值",
+                "20KHz左手阻抗解密值",
+                "20KHz左腳阻抗解密值",
+                "20KHz右手阻抗解密值",
+                "20KHz右腳阻抗解密值",
+                "20KHz軀幹阻抗解密值",
+                "骨骼肌量",
+                "骨骼肌质量指数",
+                "腰臀比",
+                "右手肌肉标准",
+                "左手肌肉标准",
+                "躯干肌肉标准",
+                "右脚肌肉标准",
+                "左脚肌肉标准",
+                "右手脂肪标准",
+                "左手脂肪标准",
+                "躯干脂肪标准",
+                "右脚脂肪标准",
+                "左脚脂肪标准",
+                "上肢肌肉均衡",
+                "下肢肌肉均衡",
+                "肌肉-上下均衡度",
+                "上肢脂肪均衡",
+                "下肢脂肪均衡",
+                "脂肪-上下均衡度",
+                "单条数据唯一id",
+                "渠道类型 1 后台接口、2 Android、3 IOS、4 固件",
+                "批次编号",
+                "上传编号",
+                "数据类型 1 计算库原始数据、2 封装数据",
+                "性别0:女 1:男",
+                "身高cm",
+                "年龄",
+                "精度",
+                "阻抗",
+                "双脚解密阻抗",
+                "0普通模式，1运动员模式",
+                "数据生成时间，客户端时间",
+                "体脂数据的key json格式",
+                "体重数据",
                 "体脂率(%)",
-                "BMI",
+                "人体质量指数",
                 "脂肪量(kg)",
                 "肌肉率(%)",
                 "肌肉量(kg)",
-                "骨骼肌率(%)",
-                "骨骼肌量(kg)",
-                "水分率(%)",
-                "水分量(kg)",
-                "蛋白质率(%)",
-                "蛋白质量(kg)",
-                "去脂体重(kg)",
-                "皮下脂肪率(%)",
-                "皮下脂肪量(kg)",
-
-                "基础代谢",
                 "内脏脂肪等级",
+                "基础代谢",
+                "体水分率(%)",
                 "骨量(kg)",
-                "肌肉控制量(kg)",
-                "脂肪控制量(kg)",
-                "标准体重(kg)",
-                "理想体重(kg)",
-                "控制体重(kg)",
-                "身体类型",
-                "肥胖等级",
-                "健康评估",
-                "身体年龄",
+                "蛋白质率(%)",
+                "骨量率/骨骼肌率(%)",
+                "去脂体重(%)",
+                "心率",
                 "身体得分",
-                "错误类型"
+                "身体类型",
+                "身体年龄",
+                "皮下脂肪率",
+                "健康等级",
+                "肥胖等级",
+                "脂肪控制量",
+                "体重控制量",
+                "标准体重",
+                "体脂数据的value",
+                "肌肉控制量",
+                "蛋白质量(kg)",
+                "皮下脂肪量(kg)",
+                "建议卡路里摄入量 _kcal/day",
+                "无机盐量(_kg)",
+                "肥胖度(%)",
+                "是否存在扩充字段，八电极字段更多",
+                "计算库的错误类型",
+                "设备mac",
+                "sdk版本号",
+                "水分量",
+                "组织id",
+                "计算类型",
+                "计算版本",
+                "骨骼肌量",
+                "躯干阻抗",
+                "躯干阻抗",
+                "躯干阻抗"
             )
         )
 
@@ -760,46 +928,128 @@ object CSVFIleUtil {
     private fun createCSVDataLine(row: CSVExportRow, impedanceKeys: List<String> = listOf("impedance50Khz", "impedance100Khz")): String {
         val values = mutableListOf<Any>()
 
-        // 基础数据
-        values.addAll(listOf(row.id, row.name, row.weight, row.height, row.gender, row.age))
-
-        // 动态阻抗字段
-        impedanceKeys.forEach { key ->
-            values.add(row.impedanceValues[key] ?: 0L)
-        }
-
-        // 计算结果数据
+        // 按照表头字段顺序输出数据，确保完全对应
         values.addAll(
             listOf(
-                // 计算结果 - 按字段类型分组，每组包含1、2、3
-                row.data1_ppFat,
-                row.data1_ppBMI,
-                row.data1_ppBodyfatKg,
-                row.data1_ppMusclePercentage,
-                row.data1_ppMuscleKg,
-                row.data1_ppBodySkeletal,
-                row.data1_ppBodySkeletalKg,
-                row.data1_ppWaterPercentage,
-                row.data1_ppWaterKg,
-                row.data1_ppProteinPercentage,
-                row.data1_ppProteinKg,
-                row.data1_ppLoseFatWeightKg,
-                row.data1_ppBodyFatSubCutPercentage,
-                row.data1_ppBodyFatSubCutKg,
-                row.data1_ppBMR,
-                row.data1_ppVisceralFat,
-                row.data1_ppBoneKg,
-                row.data1_ppBodyMuscleControl,
-                row.data1_ppFatControlKg,
-                row.data1_ppBodyStandardWeightKg,
-                row.data1_ppIdealWeightKg,
-                row.data1_ppControlWeightKg,
-                row.data1_ppBodyType,
-                row.data1_ppFatGrade,
-                row.data1_ppBodyHealth,
-                row.data1_ppBodyAge,
-                row.data1_ppBodyScore,
-                row.data1_errorType
+                row.ppWaterECWKg,                    // 全身体组成:细胞外水量(kg)
+                row.ppWaterICWKg,                    // 全身体组成:细胞内水量(kg)
+                row.ppBodyFatKgLeftArm,              // 左手脂肪量(%), 分辨率0.1
+                row.ppBodyFatKgLeftLeg,              // 左脚脂肪量(%), 分辨率0.1
+                row.ppBodyFatKgRightArm,             // 右手脂肪量(%), 分辨率0.1
+                row.ppBodyFatKgRightLeg,             // 右脚脂肪量(%), 分辨率0.1
+                row.ppBodyFatKgTrunk,                // 躯干脂肪量(%), 分辨率0.1
+                row.ppBodyFatRateLeftArm,            // 左手脂肪率(%), 分辨率0.1
+                row.ppBodyFatRateLeftLeg,            // 左脚脂肪率(%), 分辨率0.1
+                row.ppBodyFatRateRightArm,           // 右手脂肪率(%), 分辨率0.1
+                row.ppBodyFatRateRightLeg,           // 右脚脂肪率(%), 分辨率0.1
+                row.ppBodyFatRateTrunk,              // 躯干脂肪率(%), 分辨率0.1
+                row.ppMuscleKgLeftArm,               // 左手肌肉量(kg), 分辨率0.1
+                row.ppMuscleRateLeftArm,             // 左手肌肉率, 分辨率0.1
+                row.ppMuscleKgLeftLeg,               // 左脚肌肉量(kg), 分辨率0.1
+                row.ppMuscleRateLeftLeg,             // 左脚肌肉率, 分辨率0.1
+                row.ppMuscleKgRightArm,              // 右手肌肉量(kg), 分辨率0.1
+                row.ppMuscleRateRightArm,            // 右手肌肉率, 分辨率0.1
+                row.ppMuscleKgRightLeg,              // 右脚肌肉量(kg), 分辨率0.1
+                row.ppMuscleRateRightLeg,            // 右脚肌肉率, 分辨率0.1
+                row.ppMuscleKgTrunk,                 // 躯干肌肉量(kg), 分辨率0.1
+                row.ppMuscleRateTrunk,               // 躯干肌肉率, 分辨率0.1
+                // 注意：这里是第23列，应该对应"100KHz左手阻抗加密值"
+                row.z100KhzLeftArmEnCode,            // 100KHz左手阻抗加密值
+                row.z100KhzLeftLegEnCode,            // 100KHz左腳阻抗加密值
+                row.z100KhzRightArmEnCode,           // 100KHz右手阻抗加密值
+                row.z100KhzRightLegEnCode,           // 100KHz右腳阻抗加密值
+                row.z100KhzTrunkEnCode,              // 100KHz軀幹阻抗加密值
+                row.z20KhzLeftArmEnCode,             // 20KHz左手阻抗加密值
+                row.z20KhzLeftLegEnCode,             // 20KHz左腳阻抗加密值
+                row.z20KhzRightArmEnCode,            // 20KHz右手阻抗加密值
+                row.z20KhzRightLegEnCode,            // 20KHz右腳阻抗加密值
+                row.z20KhzTrunkEnCode,               // 20KHz軀幹阻抗加密值
+                row.ppCellMassKg,                    // 身体细胞量(kg)
+                row.z100KhzLeftArmDeCode,            // 100KHz左手阻抗解密值
+                row.z100KhzLeftLegDeCode,            // 100KHz左腳阻抗解密值
+                row.z100KhzRightArmDeCode,           // 100KHz右手阻抗解密值
+                row.z100KhzRightLegDeCode,           // 100KHz右腳阻抗解密值
+                row.z100KhzTrunkDeCode,              // 100KHz軀幹阻抗解密值
+                row.z20KhzLeftArmDeCode,             // 20KHz左手阻抗解密值
+                row.z20KhzLeftLegDeCode,             // 20KHz左腳阻抗解密值
+                row.z20KhzRightArmDeCode,            // 20KHz右手阻抗解密值
+                row.z20KhzRightLegDeCode,            // 20KHz右腳阻抗解密值
+                row.z20KhzTrunkDeCode,               // 20KHz軀幹阻抗解密值
+                row.ppBodySkeletalKg,                // 骨骼肌量
+                row.ppSmi,                           // 骨骼肌质量指数
+                row.ppWHR,                           // 腰臀比
+                row.ppRightArmMuscleLevel,           // 右手肌肉标准
+                row.ppLeftArmMuscleLevel,            // 左手肌肉标准
+                row.ppTrunkMuscleLevel,              // 躯干肌肉标准
+                row.ppRightLegMuscleLevel,           // 右脚肌肉标准
+                row.ppLeftLegMuscleLevel,            // 左脚肌肉标准
+                row.ppRightArmFatLevel,              // 右手脂肪标准
+                row.ppLeftArmFatLevel,               // 左手脂肪标准
+                row.ppTrunkFatLevel,                 // 躯干脂肪标准
+                row.ppRightLegFatLevel,              // 右脚脂肪标准
+                row.ppLeftLegFatLevel,               // 左脚脂肪标准
+                row.ppBalanceArmsLevel,              // 上肢肌肉均衡
+                row.ppBalanceLegsLevel,              // 下肢肌肉均衡
+                row.ppBalanceArmLegLevel,            // 肌肉-上下均衡度
+                row.ppBalanceFatArmsLevel,           // 上肢脂肪均衡
+                row.ppBalanceFatLegsLevel,           // 下肢脂肪均衡
+                row.ppBalanceFatArmLegLevel,         // 脂肪-上下均衡度
+                row.dataId,                          // 单条数据唯一id
+                row.channelType,                     // 渠道类型 1 后台接口、2 Android、3 IOS、4 固件
+                row.batchNumber,                     // 批次编号
+                row.uploadNumber,                    // 上传编号
+                row.dataType,                        // 数据类型 1 计算库原始数据、2 封装数据
+                row.ppSex,                           // 性别0:女 1:男
+                row.ppHeightCm,                      // 身高cm
+                row.ppAge,                           // 年龄
+                row.accuracy,                        // 精度
+                row.impedance,                       // 阻抗
+                row.decryptedImpedance,              // 双脚解密阻抗
+                row.athleteMode,                     // 0普通模式，1运动员模式
+                row.dataGenerateTime,                // 数据生成时间，客户端时间
+                row.bodyFatDataKey,                  // 体脂数据的key,json格式
+                row.ppWeightKg,                      // 体重数据
+                row.ppFat,                           // 体脂率(%)
+                row.ppBMI,                           // 人体质量指数
+                row.ppBodyfatKg,                     // 脂肪量(kg)
+                row.ppMusclePercentage,              // 肌肉率(%)
+                row.ppMuscleKg,                      // 肌肉量(kg)
+                row.ppVisceralFat,                   // 内脏脂肪等级
+                row.ppBMR,                           // 基础代谢
+                row.ppWaterPercentage,               // 体水分率(%)
+                row.ppBoneKg,                        // 骨量(kg)
+                row.ppProteinPercentage,             // 蛋白质率(%)
+                row.ppBodySkeletal,                  // 骨量率/骨骼肌率(%)
+                row.ppLoseFatWeightKg,               // 去脂体重(%)
+                row.ppHeartRate,                     // 心率
+                row.ppBodyScore,                     // 身体得分
+                row.ppBodyType,                      // 身体类型
+                row.ppBodyAge,                       // 身体年龄
+                row.ppBodyFatSubCutPercentage,       // 皮下脂肪率
+                row.ppBodyHealth,                    // 健康等级
+                row.ppFatGrade,                      // 肥胖等级
+                row.ppFatControlKg,                  // 脂肪控制量
+                row.ppControlWeightKg,               // 体重控制量
+                row.ppBodyStandardWeightKg,          // 标准体重
+                row.bodyFatDataValue,                // 体脂数据的value
+                row.ppBodyMuscleControl,             // 肌肉控制量
+                row.ppProteinKg,                     // 蛋白质量(kg)
+                row.ppBodyFatSubCutKg,               // 皮下脂肪量(kg)
+                row.ppDCI,                           // 建议卡路里摄入量 _kcal/day
+                row.ppMineralKg,                     // 无机盐量(_kg)
+                row.ppObesity,                       // 肥胖度(%)
+                row.hasExtendedFields,               // 是否存在扩充字段，八电极字段更多
+                row.errorType,                       // 计算库的错误类型
+                row.deviceMac,                       // 设备mac
+                row.ppSDKVersion,                    // sdk版本号
+                row.ppWaterKg,                       // 水分量
+                row.organizationId,                  // 组织id
+                row.calculateType,                   // 计算类型
+                row.calculateVersion,                // 计算版本
+                row.ppBodySkeletalKg2,               // 骨骼肌量
+                row.trunkImpedance1,                 // 躯干阻抗
+                row.trunkImpedance2,                 // 躯干阻抗
+                row.trunkImpedance3                  // 躯干阻抗
             )
         )
 
@@ -863,36 +1113,125 @@ object CSVFIleUtil {
             age = dataRow.age,
             impedanceValues = dataRow.impedanceValues,
 
-            // Data1计算结果 (Product0-普通人)
-            data1_errorType = data1Result?.errorType?.toString() ?: "无数据",
-            data1_ppBMI = data1Result?.ppBMI ?: 0f,
-            data1_ppFat = data1Result?.ppFat ?: 0f,
-            data1_ppBodyfatKg = data1Result?.ppBodyfatKg ?: 0f,
-            data1_ppMusclePercentage = data1Result?.ppMusclePercentage ?: 0f,
-            data1_ppMuscleKg = data1Result?.ppMuscleKg ?: 0f,
-            data1_ppBodySkeletal = data1Result?.ppBodySkeletal ?: 0f,
-            data1_ppBodySkeletalKg = data1Result?.ppBodySkeletalKg ?: 0f,
-            data1_ppWaterPercentage = data1Result?.ppWaterPercentage ?: 0f,
-            data1_ppWaterKg = data1Result?.ppWaterKg ?: 0f,
-            data1_ppProteinPercentage = data1Result?.ppProteinPercentage ?: 0f,
-            data1_ppProteinKg = data1Result?.ppProteinKg ?: 0f,
-            data1_ppLoseFatWeightKg = data1Result?.ppLoseFatWeightKg ?: 0f,
-            data1_ppBodyFatSubCutPercentage = data1Result?.ppBodyFatSubCutPercentage ?: 0f,
-            data1_ppBodyFatSubCutKg = data1Result?.ppBodyFatSubCutKg ?: 0f,
-            data1_ppBMR = data1Result?.ppBMR ?: 0,
-            data1_ppVisceralFat = data1Result?.ppVisceralFat ?: 0,
-            data1_ppBoneKg = data1Result?.ppBoneKg ?: 0f,
-            data1_ppBodyMuscleControl = data1Result?.ppBodyMuscleControl ?: 0f,
-            data1_ppFatControlKg = data1Result?.ppFatControlKg ?: 0f,
-            data1_ppBodyStandardWeightKg = data1Result?.ppBodyStandardWeightKg ?: 0f,
-            data1_ppIdealWeightKg = data1Result?.ppIdealWeightKg ?: 0f,
-            data1_ppControlWeightKg = data1Result?.ppControlWeightKg ?: 0f,
-            data1_ppBodyType = data1Result?.ppBodyType?.toString() ?: "无数据",
-            data1_ppFatGrade = data1Result?.ppFatGrade?.toString() ?: "无数据",
-            data1_ppBodyHealth = data1Result?.ppBodyHealth?.toString() ?: "无数据",
-            data1_ppBodyAge = data1Result?.ppBodyAge ?: 0,
-            data1_ppBodyScore = data1Result?.ppBodyScore ?: 0
-
+            // 从PPBodyFatModel获取所有字段数据
+            ppWaterECWKg = data1Result?.ppWaterECWKg ?: 0f,
+            ppWaterICWKg = data1Result?.ppWaterICWKg ?: 0f,
+            ppBodyFatKgLeftArm = data1Result?.ppBodyFatKgLeftArm ?: 0f,
+            ppBodyFatKgLeftLeg = data1Result?.ppBodyFatKgLeftLeg ?: 0f,
+            ppBodyFatKgRightArm = data1Result?.ppBodyFatKgRightArm ?: 0f,
+            ppBodyFatKgRightLeg = data1Result?.ppBodyFatKgRightLeg ?: 0f,
+            ppBodyFatKgTrunk = data1Result?.ppBodyFatKgTrunk ?: 0f,
+            ppBodyFatRateLeftArm = data1Result?.ppBodyFatRateLeftArm ?: 0f,
+            ppBodyFatRateLeftLeg = data1Result?.ppBodyFatRateLeftLeg ?: 0f,
+            ppBodyFatRateRightArm = data1Result?.ppBodyFatRateRightArm ?: 0f,
+            ppBodyFatRateRightLeg = data1Result?.ppBodyFatRateRightLeg ?: 0f,
+            ppBodyFatRateTrunk = data1Result?.ppBodyFatRateTrunk ?: 0f,
+            ppMuscleKgLeftArm = data1Result?.ppMuscleKgLeftArm ?: 0f,
+            ppMuscleRateLeftArm = data1Result?.ppMuscleRateLeftArm ?: 0f,
+            ppMuscleKgLeftLeg = data1Result?.ppMuscleKgLeftLeg ?: 0f,
+            ppMuscleRateLeftLeg = data1Result?.ppMuscleRateLeftLeg ?: 0f,
+            ppMuscleKgRightArm = data1Result?.ppMuscleKgRightArm ?: 0f,
+            ppMuscleRateRightArm = data1Result?.ppMuscleRateRightArm ?: 0f,
+            ppMuscleKgRightLeg = data1Result?.ppMuscleKgRightLeg ?: 0f,
+            ppMuscleRateRightLeg = data1Result?.ppMuscleRateRightLeg ?: 0f,
+            ppMuscleKgTrunk = data1Result?.ppMuscleKgTrunk ?: 0f,
+            ppMuscleRateTrunk = data1Result?.ppMuscleRateTrunk ?: 0f,
+            z100KhzLeftArmEnCode = dataRow.z100KhzLeftArmEnCode,
+            z100KhzLeftLegEnCode = dataRow.z100KhzLeftLegEnCode,
+            z100KhzRightArmEnCode = dataRow.z100KhzRightArmEnCode,
+            z100KhzRightLegEnCode = dataRow.z100KhzRightLegEnCode,
+            z100KhzTrunkEnCode = dataRow.z100KhzTrunkEnCode,
+            z20KhzLeftArmEnCode = dataRow.z20KhzLeftArmEnCode,
+            z20KhzLeftLegEnCode = dataRow.z20KhzLeftLegEnCode,
+            z20KhzRightArmEnCode = dataRow.z20KhzRightArmEnCode,
+            z20KhzRightLegEnCode = dataRow.z20KhzRightLegEnCode,
+            z20KhzTrunkEnCode = dataRow.z20KhzTrunkEnCode,
+            ppCellMassKg = data1Result?.ppCellMassKg ?: 0f,
+            z100KhzLeftArmDeCode = data1Result?.ppBodyBaseModel?.z100KhzLeftArmDeCode?.toLong() ?: 0L,
+            z100KhzLeftLegDeCode = data1Result?.ppBodyBaseModel?.z100KhzLeftLegDeCode?.toLong() ?: 0L,
+            z100KhzRightArmDeCode = data1Result?.ppBodyBaseModel?.z100KhzRightArmDeCode?.toLong() ?: 0L,
+            z100KhzRightLegDeCode = data1Result?.ppBodyBaseModel?.z100KhzRightLegDeCode?.toLong() ?: 0L,
+            z100KhzTrunkDeCode = data1Result?.ppBodyBaseModel?.z100KhzTrunkDeCode?.toLong() ?: 0L,
+            z20KhzLeftArmDeCode = data1Result?.ppBodyBaseModel?.z20KhzLeftArmDeCode?.toLong() ?: 0L,
+            z20KhzLeftLegDeCode = data1Result?.ppBodyBaseModel?.z20KhzLeftLegDeCode?.toLong() ?: 0L,
+            z20KhzRightArmDeCode = data1Result?.ppBodyBaseModel?.z20KhzRightArmDeCode?.toLong() ?: 0L,
+            z20KhzRightLegDeCode = data1Result?.ppBodyBaseModel?.z20KhzRightLegDeCode?.toLong() ?: 0L,
+            z20KhzTrunkDeCode = data1Result?.ppBodyBaseModel?.z20KhzTrunkDeCode?.toLong() ?: 0L,
+            ppBodySkeletalKg = data1Result?.ppBodySkeletalKg ?: 0f,
+            ppSmi = data1Result?.ppSmi ?: 0f,
+            ppWHR = data1Result?.ppWHR ?: 0f,
+            ppRightArmMuscleLevel = data1Result?.ppRightArmMuscleLevel ?: 0,
+            ppLeftArmMuscleLevel = data1Result?.ppLeftArmMuscleLevel ?: 0,
+            ppTrunkMuscleLevel = data1Result?.ppTrunkMuscleLevel ?: 0,
+            ppRightLegMuscleLevel = data1Result?.ppRightLegMuscleLevel ?: 0,
+            ppLeftLegMuscleLevel = data1Result?.ppLeftLegMuscleLevel ?: 0,
+            ppRightArmFatLevel = data1Result?.ppRightArmFatLevel ?: 0,
+            ppLeftArmFatLevel = data1Result?.ppLeftArmFatLevel ?: 0,
+            ppTrunkFatLevel = data1Result?.ppTrunkFatLevel ?: 0,
+            ppRightLegFatLevel = data1Result?.ppRightLegFatLevel ?: 0,
+            ppLeftLegFatLevel = data1Result?.ppLeftLegFatLevel ?: 0,
+            ppBalanceArmsLevel = data1Result?.ppBalanceArmsLevel ?: 0,
+            ppBalanceLegsLevel = data1Result?.ppBalanceLegsLevel ?: 0,
+            ppBalanceArmLegLevel = data1Result?.ppBalanceArmLegLevel ?: 0,
+            ppBalanceFatArmsLevel = data1Result?.ppBalanceFatArmsLevel ?: 0,
+            ppBalanceFatLegsLevel = data1Result?.ppBalanceFatLegsLevel ?: 0,
+            ppBalanceFatArmLegLevel = data1Result?.ppBalanceFatArmLegLevel ?: 0,
+            dataId = dataRow.id, // 使用计算前的原始数据中的id字段
+            channelType = 2, // Android
+            batchNumber = dataRow.batchNumber, // 使用源数据中的批次编号
+            uploadNumber = "UPLOAD_${System.currentTimeMillis()}",
+            dataType = 1, // 计算库原始数据
+            ppSex = data1Result?.ppSex?.ordinal ?: 0,
+            ppHeightCm = data1Result?.ppHeightCm ?: 100,
+            ppAge = data1Result?.ppAge ?: 0,
+            accuracy = "0.1", // 默认精度
+            impedance = dataRow.impedance50Khz, // 使用50KHz阻抗
+            decryptedImpedance = dataRow.impedance50Khz, // 使用50KHz阻抗作为解密阻抗
+            athleteMode = 0, // 默认普通模式
+            dataGenerateTime = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date()), // 生成当前时间戳
+            bodyFatDataKey = "", // 设置为空字符串
+            ppWeightKg = data1Result?.ppWeightKg ?: 0f,
+            ppFat = data1Result?.ppFat ?: 0f,
+            ppBMI = data1Result?.ppBMI ?: 0f,
+            ppBodyfatKg = data1Result?.ppBodyfatKg ?: 0f,
+            ppMusclePercentage = data1Result?.ppMusclePercentage ?: 0f,
+            ppMuscleKg = data1Result?.ppMuscleKg ?: 0f,
+            ppVisceralFat = data1Result?.ppVisceralFat ?: 0,
+            ppBMR = data1Result?.ppBMR ?: 0,
+            ppWaterPercentage = data1Result?.ppWaterPercentage ?: 0f,
+            ppBoneKg = data1Result?.ppBoneKg ?: 0f,
+            ppProteinPercentage = data1Result?.ppProteinPercentage ?: 0f,
+            ppBodySkeletal = data1Result?.ppBodySkeletal ?: 0f,
+            ppLoseFatWeightKg = data1Result?.ppLoseFatWeightKg ?: 0f,
+            ppHeartRate = data1Result?.ppHeartRate ?: 0,
+            ppBodyScore = data1Result?.ppBodyScore ?: 0,
+            ppBodyType = data1Result?.ppBodyType?.toString() ?: "",
+            ppBodyAge = data1Result?.ppBodyAge ?: 0,
+            ppBodyFatSubCutPercentage = data1Result?.ppBodyFatSubCutPercentage ?: 0f,
+            ppBodyHealth = data1Result?.ppBodyHealth?.toString() ?: "",
+            ppFatGrade = data1Result?.ppFatGrade?.toString() ?: "",
+            ppFatControlKg = data1Result?.ppFatControlKg ?: 0f,
+            ppControlWeightKg = data1Result?.ppControlWeightKg ?: 0f,
+            ppBodyStandardWeightKg = data1Result?.ppBodyStandardWeightKg ?: 0.0f,
+            bodyFatDataValue = "{\"firewareReversion\"}", // 生成JSON格式的value
+            ppBodyMuscleControl = data1Result?.ppBodyMuscleControl ?: 0f,
+            ppProteinKg = data1Result?.ppProteinKg ?: 0f,
+            ppBodyFatSubCutKg = data1Result?.ppBodyFatSubCutKg ?: 0f,
+            ppDCI = data1Result?.ppDCI ?: 0,
+            ppMineralKg = data1Result?.ppMineralKg ?: 0f,
+            ppObesity = data1Result?.ppObesity ?: 0f,
+            hasExtendedFields = true, // 八电极字段更多
+            errorType = data1Result?.errorType?.toString() ?: "",
+            deviceMac = "00:00:00:00:00:00", // 默认设备MAC地址
+            ppSDKVersion = data1Result?.ppSDKVersion ?: "", // 默认SDK版本
+            ppWaterKg = data1Result?.ppWaterKg ?: 0f,
+            organizationId = "DEFAULT_ORG", // 默认组织ID
+            calculateType = data1Result?.ppBodyBaseModel?.deviceModel?.deviceCalcuteType?.getType().toString() ?: "", // 默认计算类型
+            calculateVersion = data1Result?.ppSDKVersion ?: "", // 默认计算版本
+            ppBodySkeletalKg2 = data1Result?.ppBodySkeletalKg ?: 0f, // 重复字段
+            trunkImpedance1 = dataRow.z100KhzTrunkEnCode, // 使用躯干加密阻抗
+            trunkImpedance2 = dataRow.z20KhzTrunkEnCode,
+            trunkImpedance3 = dataRow.impedance100Khz
         )
     }
 }
