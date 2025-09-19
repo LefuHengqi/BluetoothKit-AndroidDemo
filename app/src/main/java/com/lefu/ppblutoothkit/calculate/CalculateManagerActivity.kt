@@ -41,12 +41,30 @@ class CalculateManagerActivity : BaseImmersivePermissionActivity(), View.OnClick
             if(weightD.isNullOrEmpty()) return@setOnClickListener
 
             val toFloat = weightD.toDouble()
-            val weightValueST_LB = PPUtil.getWeightValueD(PPUnitType.PPUnitST_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
-            val weightValueD_ST = PPUtil.getWeightValueD(PPUnitType.PPUnitST, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
-            val weightValueD_LB = PPUtil.getWeightValueD(PPUnitType.Unit_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
-            val weightValueD_JIN = PPUtil.getWeightValueD(PPUnitType.PPUnitJin, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
+            
+            // PPDeviceAccuracyTypePoint005 精度算法
+            val weightValueST_LB_005 = PPUtil.getWeightValueD(PPUnitType.PPUnitST_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
+            val weightValueD_ST_005 = PPUtil.getWeightValueD(PPUnitType.PPUnitST, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
+            val weightValueD_LB_005 = PPUtil.getWeightValueD(PPUnitType.Unit_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
+            val weightValueD_JIN_005 = PPUtil.getWeightValueD(PPUnitType.PPUnitJin, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint005.getType(), true);
 
-            val text = "KG:$toFloat\nST_LB:$weightValueST_LB\nST:$weightValueD_ST\nLB:$weightValueD_LB\nJIN:$weightValueD_JIN"
+            // PPDeviceAccuracyTypePoint01 精度算法
+            val weightValueST_LB_01 = PPUtil.getWeightValueD(PPUnitType.PPUnitST_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01.getType(), true);
+            val weightValueD_ST_01 = PPUtil.getWeightValueD(PPUnitType.PPUnitST, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01.getType(), true);
+            val weightValueD_LB_01 = PPUtil.getWeightValueD(PPUnitType.Unit_LB, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01.getType(), true);
+            val weightValueD_JIN_01 = PPUtil.getWeightValueD(PPUnitType.PPUnitJin, toFloat ?: 0.0, PPScaleDefine.PPDeviceAccuracyType.PPDeviceAccuracyTypePoint01.getType(), true);
+
+            val text = "KG:$toFloat\n\n" +
+                    "精度0.05:\n" +
+                    "ST_LB:$weightValueST_LB_005\n" +
+                    "ST:$weightValueD_ST_005\n" +
+                    "LB:$weightValueD_LB_005\n" +
+                    "JIN:$weightValueD_JIN_005\n\n" +
+                    "精度0.1:\n" +
+                    "ST_LB:$weightValueST_LB_01\n" +
+                    "ST:$weightValueD_ST_01\n" +
+                    "LB:$weightValueD_LB_01\n" +
+                    "JIN:$weightValueD_JIN_01"
 
             resultTV.text = text
         }
