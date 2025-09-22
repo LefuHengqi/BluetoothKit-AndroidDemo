@@ -3,6 +3,7 @@ package com.lefu.ppblutoothkit.batch_calculate
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppcalculate.PPBodyFatModel
 import java.io.BufferedReader
 import java.io.File
@@ -1181,7 +1182,7 @@ object CSVFIleUtil {
             batchNumber = dataRow.batchNumber, // 使用源数据中的批次编号
             uploadNumber = "UPLOAD_${System.currentTimeMillis()}",
             dataType = 1, // 计算库原始数据
-            ppSex = data1Result?.ppSex?.ordinal ?: 0,
+            ppSex = if (data1Result?.ppSex == PPUserGender.PPUserGenderFemale) 0 else 1,
             ppHeightCm = data1Result?.ppHeightCm ?: 100,
             ppAge = data1Result?.ppAge ?: 0,
             accuracy = "0.1", // 默认精度

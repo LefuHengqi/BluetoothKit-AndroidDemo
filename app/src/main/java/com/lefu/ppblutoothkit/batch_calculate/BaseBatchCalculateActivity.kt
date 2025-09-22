@@ -220,6 +220,7 @@ abstract class BaseBatchCalculateActivity : AppCompatActivity() {
         this.dataRows?.take(3)?.forEachIndexed { index, dataRow ->
             addPrint("第${index + 1}行映射结果:")
             addPrint("  编号: ${dataRow.id}, 姓名: ${dataRow.name}")
+            addPrint("  编号: ${dataRow.id}, 性别: ${dataRow.gender}")
             if (dataRow.impedance50Khz > 0) {
                 addPrint("  50Khz阻抗: ${dataRow.impedance50Khz}")
             }

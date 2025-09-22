@@ -224,7 +224,7 @@ class Calculate8Activity : BaseBatchCalculateActivity() {
     }
 
     override fun calculateCSVDataByProduct0(dataRow: CSVFIleUtil.CSVDataRow): PPBodyFatModel? {
-        val sex = if (dataRow.gender.equals("男", false)) {
+        val sex = if (dataRow.gender.equals("1", false)) {
             PPUserGender.PPUserGenderMale
         } else {
             PPUserGender.PPUserGenderFemale
