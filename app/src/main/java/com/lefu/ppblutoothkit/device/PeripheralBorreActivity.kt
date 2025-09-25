@@ -391,6 +391,36 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
             controller?.getTorreDeviceManager()?.getUserList(userInfoInterface)
         }
 
+        findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                addPrint("startConfigWifi pager")
+                PeripheralTorreSearchWifiListActivity.deviceModel = deviceModel
+                startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
+            addPrint("getWifiSSID")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                controller?.getTorreDeviceManager()?.getWifiSSID(configWifiInterface)
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.getWifiMac).setOnClickListener {
+            addPrint("getWifiMac")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                controller?.getTorreDeviceManager()?.getWifiMac(configWifiInterface)
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.setNetHost).setOnClickListener {
+            addPrint("setNetHost")
+            startActivity(Intent(this, SetHostActivity::class.java))
+        }
+
     }
 
     override fun onResume() {

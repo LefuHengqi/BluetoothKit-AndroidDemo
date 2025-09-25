@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:text="@string/config_wifi"
-            android:textColor="@android:color/black" />
 
         <LinearLayout
             android:id="@+id/mLoadAnimaLL"
@@ -59,12 +60,11 @@
         android:id="@+id/mWifiRefreshSB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="26dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="60dp"
         android:gravity="center"
         android:paddingVertical="12dp"
         android:text="@string/refresh"
         android:textSize="@dimen/text_sp16"
         android:visibility="visible" />
-</RelativeLayout>
+</LinearLayout>

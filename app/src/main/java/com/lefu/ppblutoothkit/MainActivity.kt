@@ -7,22 +7,13 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.lifecycleScope
-import com.lefu.ppbase.util.Logger
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppblutoothkit.calculate.CalculateManagerActivity
 import com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity
 import com.lefu.ppblutoothkit.ext.initDeviceConfig
 import com.lefu.ppblutoothkit.log.LogActivity
-import com.lefu.ppblutoothkit.okhttp.DataTask
-import com.lefu.ppblutoothkit.okhttp.NetUtil
-import com.lefu.ppblutoothkit.okhttp.RetCallBack
-import com.lefu.ppblutoothkit.vo.DemoDeviceConfigVo
-import com.peng.ppscale.PPBluetoothKit
-import com.peng.ppscale.util.json.GsonUtil
-import okhttp3.Call
+
 
 class MainActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
 
@@ -133,7 +124,6 @@ class MainActivity : BaseImmersivePermissionActivity(), View.OnClickListener {
             }
         }
     }
-
 
 
 }

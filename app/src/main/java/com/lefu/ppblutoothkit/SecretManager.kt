@@ -8,12 +8,17 @@ import com.lefu.ppbase.PPScaleDefine.PPDeviceCalcuteType
  *
  */
 object SecretManager {
-
+    //bh/TwoLegs140/5.0.5
     var secretByTwoLegs140_505 = "Hl3R4f7lyP+neAWbZBmvW2di1+gZXGzuYNZ0kAwAjnElNrR/CaoAcy1mB2CfHizc"
+    //bh1/TwoLegs140/5.0.D
     var secretByTwoLegs140 = "up5dkj8oEi4NUmcziVCUkaAZM4j80ffS0p8yEkDNUP+5lY4izQ7iTMV+8Qg4R/Lg"
+    //bh3/TwoLegs240/5.0.C
     var secretByTwoLegs240 = "9emloLinGXEk1n8oqsccPkFjEU4mGOK6r69Lgk2XDBcnQM19AwnWOw/9lIID0ove"
+    //bh2/Body270/1.7.2
     var secretByBody270_172 = "i+OS1Ir4pHlQEnN+N0NGAigejDX3ztNAhHOCNIUXA+TNUHCD5aOKhGVE4jf3uKpi"
+    //bh5/Body270/1.7.4
     var secretByBody270 = "Zvpw7/fttSdetsb9CBPEdsKTIf1Dr7Avu9AnOm8o9LdH3bAxwUeOFJaW/OqmEldp"
+    //bh4/TwoArms140/5.0.B
     var secretTwoArms140 = "gxYx/oJypSlWQDDe7CR5Y1rjKmN7UoL70+c6yFnMS619KFzRn+UvFtoJk08987Hp"
 
     var bodyBaseModel: PPBodyBaseModel? = null
