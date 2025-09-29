@@ -93,13 +93,13 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.peripheral_torre_layout)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
-        
+
         userModel = DataUtil.getUserModel()
         userModel?.userID = "1006451068@qq.com"
         userModel?.memberID = "4C2D82A7-AA9B-46F2-99BB-8B82A1F63626"
@@ -125,7 +125,7 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
         initClick()
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -146,12 +146,12 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
             addPrint("startMeasure")
             controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
             controller?.getTorreDeviceManager()?.registHistoryDataInterface(touristHistoryDataInterface)
-            controller?.getTorreDeviceManager()?.startMeasure() {}
+            controller?.getTorreDeviceManager()?.startMeasure(null)
         }
         findViewById<Button>(R.id.stopMeasureBtn).setOnClickListener {
             addPrint("stopMeasure")
             controller?.getTorreDeviceManager()?.unRegistDataChangeListener()
-            controller?.getTorreDeviceManager()?.stopMeasure() {}
+            controller?.getTorreDeviceManager()?.stopMeasure(null)
         }
         findViewById<Button>(R.id.device_set_light).setOnClickListener {
             val light = (Math.random() * 100).toInt()
@@ -166,9 +166,12 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
-            controller?.getTorreDeviceManager()?.syncTime {
-                addPrint("syncTime Success")
-            }
+            controller?.getTorreDeviceManager()?.syncTime(object : PPBleSendResultCallBack {
+                override fun onResult(sendState: PPScaleSendState?) {
+                    addPrint("syncTime Success")
+
+                }
+            })
         }
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData userID:${userModel?.userID}")
@@ -382,7 +385,7 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
 //            controller?.getTorreDeviceManager()?.getUnit(modeChangeInterface)
             addPrint("setUnit")
             //Firstly, you need to confirm whether the device supports the unit you are switching to, and then call this method to switch units
-            controller?.getTorreDeviceManager()?.syncUnit(PPUnitType.Unit_KG, object : PPBleSendResultCallBack{
+            controller?.getTorreDeviceManager()?.syncUnit(PPUnitType.Unit_KG, object : PPBleSendResultCallBack {
                 override fun onResult(sendState: PPScaleSendState?) {
                     if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
                         addPrint("setUnit Success")

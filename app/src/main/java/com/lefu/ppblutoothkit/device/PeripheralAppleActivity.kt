@@ -55,9 +55,7 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
-    private val mCurrentHostUrl by lazy {
-        findViewById<TextView>(R.id.mCurrentHostUrl)
-    }
+    private val mCurrentHostUrl by lazy { findViewById<TextView>(R.id.mCurrentHostUrl) }
     var controller: PPBlutoothPeripheralAppleController? = PPBlutoothPeripheralAppleInstance.instance.controller
 
     companion object {

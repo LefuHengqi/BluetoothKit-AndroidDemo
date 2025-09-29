@@ -44,6 +44,7 @@ import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.peng.ppscale.business.ble.PPScaleHelper
+import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface
@@ -58,6 +59,7 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralForre.PPBlutoothPeripheralForreController
+import com.peng.ppscale.vo.PPScaleSendState
 
 /**
  * 一定要先连接设备，确保设备在已连接状态下使用
@@ -92,10 +94,10 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding = PeripheralForreLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
 
@@ -125,7 +127,7 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -150,9 +152,11 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
-            controller?.getTorreDeviceManager()?.syncTime {
-                addPrint("syncTime Success")
-            }
+            controller?.getTorreDeviceManager()?.syncTime(object : PPBleSendResultCallBack {
+                override fun onResult(sendState: PPScaleSendState?) {
+                    addPrint("syncTime Success")
+                }
+            })
         }
         findViewById<Button>(R.id.startKeepAlive).setOnClickListener {
             addPrint("startKeepAlive")

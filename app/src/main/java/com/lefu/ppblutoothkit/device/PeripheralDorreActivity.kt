@@ -53,6 +53,9 @@ import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
 import com.lefu.ppblutoothkit.databinding.PeripheralDorreLayoutBinding
+import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
+import com.peng.ppscale.vo.PPScaleSendState
+
 // 移除这行导入：
 // import kotlinx.android.synthetic.main.product_test_dfu_test_activity.mTestStateTv
 
@@ -147,12 +150,12 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
         findViewById<Button>(R.id.startMeasureBtn).setOnClickListener {
             addPrint("startMeasure")
             controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
-            controller?.getTorreDeviceManager()?.startMeasure() {}
+            controller?.getTorreDeviceManager()?.startMeasure(null)
         }
         findViewById<Button>(R.id.stopMeasureBtn).setOnClickListener {
             addPrint("stopMeasure")
             controller?.getTorreDeviceManager()?.unRegistDataChangeListener()
-            controller?.getTorreDeviceManager()?.stopMeasure() {}
+            controller?.getTorreDeviceManager()?.stopMeasure(null)
         }
         findViewById<Button>(R.id.device_set_light).setOnClickListener {
             val light = (Math.random() * 100).toInt()
@@ -167,9 +170,11 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
-            controller?.getTorreDeviceManager()?.syncTime {
-                addPrint("syncTime Success")
-            }
+            controller?.getTorreDeviceManager()?.syncTime(object : PPBleSendResultCallBack {
+                override fun onResult(sendState: PPScaleSendState?) {
+                    addPrint("syncTime Success")
+                }
+            })
         }
         findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
             addPrint("syncUserHistoryData userID:${userModel?.userID}")
