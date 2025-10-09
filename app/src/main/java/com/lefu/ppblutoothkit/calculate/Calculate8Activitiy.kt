@@ -183,7 +183,6 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         bodyBaseModel.z20KhzRightLegEnCode = z20KhzRightLegEnCode
         bodyBaseModel.z20KhzTrunkEnCode = z20KhzTrunkEnCode
 
-        SecretManager.bodyBaseModel = bodyBaseModel
         bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
 
         val fatModel = PPBodyFatModel(bodyBaseModel)
