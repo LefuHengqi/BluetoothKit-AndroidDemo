@@ -24,6 +24,7 @@ import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
+import com.peng.ppscale.business.ble.PPScaleHelper
 
 // 移除所有 kotlinx.android.synthetic 导入
 
@@ -35,6 +36,12 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
     var deviceName: String = ""
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
     var spinner: Spinner? = null
+    /**
+     * 身体年龄计算方式
+     * 0默认计算方式 1-使用乐福自定义公式，2-使用计算库原始值； 0不填则保持原有方式（双频：原始值，其他算法：自定义）
+     */
+    var bodyAgeType: Int = 0
+
     private lateinit var binding: ActivityCalculate4acBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +103,9 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
         if (tag != null) {
             val bodyBaseModel = DataUtil.bodyBaseModel
             deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
+            val configDevice = PPScaleHelper.getConfigDevice(bodyBaseModel?.deviceModel?.deviceSettingId)
+            bodyAgeType = configDevice?.advancedConfig?.bodyAgeType ?: 0
+
             binding.etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
             binding.etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
             binding.etAge.setText(bodyBaseModel?.userModel?.age.toString())
@@ -142,9 +152,12 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
         bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
-
+        /**
+         * 身体年龄计算方式
+         * 0默认计算方式 1-使用乐福自定义公式，2-使用计算库原始值； 0不填则保持原有方式（双频：原始值，其他算法：自定义）
+         */
+        bodyBaseModel.bodyAgeType = bodyAgeType
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
-
         val ppBodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
         Log.d("liyp_", ppBodyDetailModel.toString())
 

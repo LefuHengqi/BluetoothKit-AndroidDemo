@@ -1,32 +1,29 @@
 package com.lefu.ppblutoothkit.calculate
 
-import android.app.Activity
-import androidx.appcompat.widget.Toolbar
-import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
+// 添加 View Binding 导入
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.Spinner
-
+import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserGender
 import com.lefu.ppbase.vo.PPUserModel
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.SecretManager
+import com.lefu.ppblutoothkit.databinding.ActivityCalculate8acBinding
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.UnitUtil
 import com.lefu.ppcalculate.PPBodyFatModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
-// 添加 View Binding 导入
-import com.lefu.ppblutoothkit.databinding.ActivityCalculate8acBinding
+import com.peng.ppscale.business.ble.PPScaleHelper
 
 // 移除 kotlinx.android.synthetic 导入
 
@@ -38,6 +35,11 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
     var spinner: Spinner? = null
     var deviceName: String = ""
+    /**
+     * 身体年龄计算方式
+     * 0默认计算方式 1-使用乐福自定义公式，2-使用计算库原始值； 0不填则保持原有方式（双频：原始值，其他算法：自定义）
+     */
+    var bodyAgeType: Int = 0
     private lateinit var binding: ActivityCalculate8acBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,6 +107,8 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         if (tag != null) {
             val bodyBaseModel = DataUtil.bodyBaseModel
             deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
+            val configDevice = PPScaleHelper.getConfigDevice(bodyBaseModel?.deviceModel?.deviceSettingId)
+            bodyAgeType = configDevice?.advancedConfig?.bodyAgeType ?: 0
             binding.etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
             binding.etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
             binding.etAge.setText(bodyBaseModel?.userModel?.age.toString())
@@ -184,7 +188,11 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         bodyBaseModel.z20KhzTrunkEnCode = z20KhzTrunkEnCode
 
         bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
-
+        /**
+         * 身体年龄计算方式
+         * 0默认计算方式 1-使用乐福自定义公式，2-使用计算库原始值； 0不填则保持原有方式（双频：原始值，其他算法：自定义）
+         */
+        bodyBaseModel.bodyAgeType = bodyAgeType
         val fatModel = PPBodyFatModel(bodyBaseModel)
         val ppDetailModel = PPBodyDetailModel(fatModel)
         Log.d("liyp_", ppDetailModel.toString())

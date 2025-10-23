@@ -21,6 +21,7 @@ import com.lefu.ppcalculate.vo.PPBodyDetailModel
 import com.peng.ppscale.util.DeviceUtil
 // 添加 View Binding 导入
 import com.lefu.ppblutoothkit.databinding.ActivityCalculate4dcBinding
+import com.peng.ppscale.business.ble.PPScaleHelper
 
 /**
  * 直流秤计算库
@@ -29,6 +30,11 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
 
     var deviceName: String = ""
     private lateinit var binding: ActivityCalculate4dcBinding
+    /**
+     * 身体年龄计算方式
+     * 0默认计算方式 1-使用乐福自定义公式，2-使用计算库原始值； 0不填则保持原有方式（双频：原始值，其他算法：自定义）
+     */
+    var bodyAgeType: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +69,8 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
             //显示称重完成后的数据
             val bodyBaseModel = DataUtil.bodyBaseModel
             deviceName = bodyBaseModel?.deviceModel?.deviceName ?: ""
+            val configDevice = PPScaleHelper.getConfigDevice(bodyBaseModel?.deviceModel?.deviceSettingId)
+            bodyAgeType = configDevice?.advancedConfig?.bodyAgeType ?: 0
             binding.etSex.setText(if (bodyBaseModel?.userModel?.sex == PPUserGender.PPUserGenderFemale) "0" else "1")
             binding.etHeight.setText(bodyBaseModel?.userModel?.userHeight.toString())
             binding.etAge.setText(bodyBaseModel?.userModel?.age.toString())
@@ -103,6 +111,11 @@ class Calculate4DCActivitiy : BaseImmersivePermissionActivity() {
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
         bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
+        /**
+         * 身体年龄计算方式
+         * 0默认计算方式 1-使用乐福自定义公式，2-使用计算库原始值； 0不填则保持原有方式（双频：原始值，其他算法：自定义）
+         */
+        bodyBaseModel.bodyAgeType = bodyAgeType
         val ppBodyFatModel = PPBodyFatModel(bodyBaseModel)
         val bodyDetailModel = PPBodyDetailModel(ppBodyFatModel)
         
