@@ -132,8 +132,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.11.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
 
     implementation project(':data_db')
 
@@ -153,14 +154,17 @@ dependencies {
 
     //https://github.com/LefuHengqi/PPBaseKit-Android
     //基础模块，必须/Basic module, must
-    api 'com.lefu.ppbasekit:ppbasekit:4.6.5'
+    api 'com.lefu.ppbasekit:ppbasekit:4.6.6'
     //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
-    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.6.5'
+    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.6.6'
     //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
-    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.6.5'
+    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.6.6'
     //基础计算库/Basic computing library
     //https://github.com/LefuPPScale/PPBasicCalculateKit-Android.git
     api 'com.lefu.ppbasiccalculatekit:ppbasiccalculatekit:1.1.0'
+
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
 
 //    api(project(":ppsdkkit:ppbasekit"))
