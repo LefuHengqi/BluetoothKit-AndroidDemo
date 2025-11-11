@@ -11,8 +11,6 @@ def fileName
 
 def GROUP_ID = "com.lefu.ppbasekit"
 def ARTIFACT_ID = "ppbasekit"
-def LIB_VERSION = "4.0.1.10"
-def LIB_VERSION_CODE = "105"
 
 android {
     namespace 'com.lefu.ppbasekit'
@@ -55,10 +53,9 @@ android {
 }
 
 dependencies {
-//    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
-    api(project(":ppsdkkit:lefulib:lfgson"))
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
 }
 

@@ -43,12 +43,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     /******************************以上Demo配置项，你的项目中无需引入*************************************/
 
@@ -137,8 +137,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.11.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
     implementation project(':data_db')
 
@@ -158,15 +158,20 @@ dependencies {
 
     //https://github.com/LefuHengqi/PPBaseKit-Android
     //基础模块，必须/Basic module, must
-//    api 'com.lefu.ppbasekit:ppbasekit:4.1.8.1'
-//    //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
-//    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.1.8.1'
-//    //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
-//    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.1.8.1'
+    api 'com.lefu.ppbasekit:ppbasekit:4.4.1'
+    //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
+    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.4.1'
+    //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
+    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.4.1'
 
-    api(project(":ppsdkkit:ppbasekit"))
-    api(project(":ppsdkkit:ppbluetoothkit"))
-    api(project(":ppsdkkit:ppcalculatekit"))
+    //内部会用到kotlinx协程库，如你的项目中已经引入，则可以注释掉下面两行
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+
+//    api(project(":ppsdkkit:ppbasekit"))
+//    api(project(":ppsdkkit:ppbluetoothkit"))
+//    api(project(":ppsdkkit:ppcalculatekit"))
 
 
 }

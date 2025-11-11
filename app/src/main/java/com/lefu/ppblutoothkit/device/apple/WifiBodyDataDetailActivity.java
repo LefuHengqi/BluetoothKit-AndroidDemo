@@ -57,11 +57,11 @@ public class WifiBodyDataDetailActivity extends BaseImmersivePermissionActivity 
             PPDeviceModel deviceModel = new PPDeviceModel(wifiDataBean.getMac(), DeviceManager.HEALTH_SCALE6);
 
             PPBodyBaseModel bodyBaseModel = new PPBodyBaseModel();
-            bodyBaseModel.impedance = wifiDataBean.getImpedance();
-            bodyBaseModel.deviceModel = deviceModel;
-            bodyBaseModel.userModel = userModel;
-            bodyBaseModel.unit = PPUnitType.Unit_KG;
-            bodyBaseModel.weight = (int) (wifiDataBean.getWeight() * 100);
+            bodyBaseModel.setImpedance(wifiDataBean.getImpedance());
+            bodyBaseModel.setDeviceModel(deviceModel);
+            bodyBaseModel.setUserModel(userModel);
+            bodyBaseModel.setUnit(PPUnitType.Unit_KG);
+            bodyBaseModel.setWeight((int) (wifiDataBean.getWeight() * 100));
 
             BodyFataDataModel bodyFataDataModel = new BodyFataDataModel(bodyBaseModel);
 

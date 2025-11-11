@@ -71,9 +71,10 @@ android {
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-    api project(":ppsdkkit:lefulib:bluetoothkit")
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+    compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+//    api project(":ppsdkkit:lefulib:bluetoothkit")
     compileOnly(project(":ppsdkkit:ppbasekit"))
 
 }

@@ -39,7 +39,7 @@ public class DeviceListAdapter extends BaseQuickAdapter<DeviceVo, BaseViewHolder
 
     public boolean isFuncTypeWifi(PPDeviceModel device) {
         if (device != null) {
-            return (device.deviceFuncType & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeWifi.getType())
+            return (device.getDeviceFuncType() & PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeWifi.getType())
                     == PPScaleDefine.PPDeviceFuncType.PPDeviceFuncTypeWifi.getType();
         } else {
             return false;
