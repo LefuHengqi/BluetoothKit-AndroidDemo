@@ -158,11 +158,11 @@ dependencies {
 
     //https://github.com/LefuHengqi/PPBaseKit-Android
     //基础模块，必须/Basic module, must
-    api 'com.lefu.ppbasekit:ppbasekit:4.4.1'
+    api 'com.lefu.ppbasekit:ppbasekit:4.4.2'
     //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
-    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.4.1'
+    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.4.2'
     //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
-    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.4.1'
+    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.4.2'
 
     //内部会用到kotlinx协程库，如你的项目中已经引入，则可以注释掉下面两行
 //    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
