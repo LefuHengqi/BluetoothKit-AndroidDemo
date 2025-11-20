@@ -31,6 +31,7 @@ import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralCoconut.PPBlutoothPeripheralCoconutController
 import com.lefu.ppbase.util.PPUtil
+import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface
 import com.peng.ppscale.vo.*
 
 /**
@@ -174,6 +175,30 @@ class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
             } else {
                 addPrint("device does not support")
             }
+        }
+        findViewById<Button>(R.id.readDeviceBattery).setOnClickListener {
+            addPrint("stopConnectDevice")
+            controller?.readDeviceBattery(object : PPDeviceInfoInterface() {
+
+                /**
+                 * 读取电量
+                 * @param power -1 失败，0-100
+                 * @param state -1 不支持 0正常 1充电中
+                 */
+                override fun readDevicePower(power: Int, state: Int) {
+                    if (state >= 0) {
+                        if (power > 0) {
+                            addPrint("readDeviceBattery:$power")
+                        } else {
+                            addPrint("readDeviceBattery fail")
+                        }
+                    } else {
+                        addPrint("device not support readDeviceBattery")
+                    }
+
+                }
+
+            })
         }
     }
 

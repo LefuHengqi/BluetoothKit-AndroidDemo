@@ -88,10 +88,10 @@
                 <Button
                     android:id="@+id/startConnectDevice"
                     android:layout_width="0dp"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/connect_device" />
+                    android:text="@string/connect_device"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/syncUserInfo"
@@ -105,8 +105,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:text="@string/sync_time" />
+                    android:text="@string/sync_time"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
 
@@ -120,16 +120,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:text="@string/change_unit" />
+                    android:text="@string/change_unit"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/syncUserHistoryData"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:text="@string/history_data" />
+                    android:text="@string/history_data"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/deleteHistory"
@@ -137,8 +137,22 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textAllCaps="false"
-                    android:text="@string/clear_history" />
+                    android:text="@string/clear_history"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/readDeviceBattery"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/read_device_battery"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
 
