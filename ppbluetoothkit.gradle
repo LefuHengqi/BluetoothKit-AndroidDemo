@@ -12,9 +12,13 @@ def fileName
 def GROUP_ID = "com.lefu.ppbluetoothkit"
 def ARTIFACT_ID = "ppbluetoothkit"
 
+def BLUETOOTHKIT_GROUP_ID = "com.lefu"
+def BLUETOOTHKIT_ARTIFACT_ID = "bluetoothkit"
+def BLUETOOTHKIT_VERSION = "1.5.5"
+
 android {
     namespace 'com.lefu.ppbluetoothkit'
-    compileSdkVersion 31
+    compileSdk 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -61,7 +65,12 @@ android {
 }
 
 dependencies {
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    // 仅打包 libs 下的 AAR，避免将本地 JAR（bluetoothkit-1.5.5.jar）合并进 AAR 导致重复类
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
+
+    // 作为编译依赖引入 bluetoothkit，真正的传递性由 POM 提供给下游工程
+    api "${BLUETOOTHKIT_GROUP_ID}:${BLUETOOTHKIT_ARTIFACT_ID}:${BLUETOOTHKIT_VERSION}"
+
     compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 //    api project(":ppsdkkit:lefulib:bluetoothkit")
@@ -82,6 +91,34 @@ afterEvaluate {
                 groupId = GROUP_ID
                 artifactId = ARTIFACT_ID
                 version = LIB_VERSION
+
+                // 在 POM 中声明 bluetoothkit 依赖（以及可能的传递依赖）
+                pom.withXml {
+                    def root = asNode()
+                    def depsNode = root.appendNode('dependencies')
+
+                    // bluetoothkit 主依赖
+                    def btDep = depsNode.appendNode('dependency')
+                    btDep.appendNode('groupId', BLUETOOTHKIT_GROUP_ID)
+                    btDep.appendNode('artifactId', BLUETOOTHKIT_ARTIFACT_ID)
+                    btDep.appendNode('version', BLUETOOTHKIT_VERSION)
+                    btDep.appendNode('scope', 'compile')
+
+                    // 如果 bluetoothkit 还依赖其他库，可在此追加（示例注释）：
+                    // def another = depsNode.appendNode('dependency')
+                    // another.appendNode('groupId', 'xxx')
+                    // another.appendNode('artifactId', 'yyy')
+                    // another.appendNode('version', 'zzz')
+                    // another.appendNode('scope', 'compile')
+                }
+            }
+
+            // 发布 bluetoothkit-1.5.5.jar 到同一仓库，便于 POM 解析
+            bluetoothkitJar(MavenPublication) {
+                groupId = BLUETOOTHKIT_GROUP_ID
+                artifactId = BLUETOOTHKIT_ARTIFACT_ID
+                version = BLUETOOTHKIT_VERSION
+                artifact("$projectDir/libs/bluetoothkit-1.5.5.jar")
             }
         }
 

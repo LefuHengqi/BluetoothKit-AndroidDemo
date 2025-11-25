@@ -12,7 +12,7 @@ static def releaseTime() {
 
 android {
     namespace 'com.lefu.ppblutoothkit'  // 添加 namespace 配置
-    compileSdkVersion 35  // 从34升级到35
+    compileSdk 35  // 从34升级到35
 
     // 启用 BuildConfig 生成
     buildFeatures {
@@ -38,12 +38,14 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        // 为排查 IDE “Cannot access Handler$Callback” 类型解析问题，临时下调到 Java 11
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        // 同步下调 Kotlin jvmTarget 到 11，避免 JDK17 + AAR 合并类引发的索引问题
+        jvmTarget = '11'
     }
     /******************************以上Demo配置项，你的项目中无需引入*************************************/
 
@@ -125,8 +127,9 @@ android {
 }
 
 dependencies {
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    // 排除本地 ppbluetoothkit AAR，避免与坐标依赖重复导致类冲突
+    api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'com.google.android.material:material:1.11.0'
@@ -152,25 +155,19 @@ dependencies {
     api 'com.github.getActivity:XXPermissions:18.63'
 
 
-    //https://github.com/LefuHengqi/PPBaseKit-Android
-    //基础模块，必须/Basic module, must
-    api 'com.lefu.ppbasekit:ppbasekit:4.6.8'
-    //蓝牙协议模块，集成设备和解析体重信息/Bluetooth protocol module, integrating devices and parsing weight information
-    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.6.8'
-    //体脂计算库，根据需要引入/Body fat calculation library, introduced as needed
-    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.6.8'
-    //基础计算库/Basic computing library
-    //https://github.com/LefuPPScale/PPBasicCalculateKit-Android.git
-    api 'com.lefu.ppbasiccalculatekit:ppbasiccalculatekit:1.1.0'
-
-//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
-//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-
-//
 //    api(project(":ppsdkkit:ppbasekit"))
 //    api(project(":ppsdkkit:ppbluetoothkit"))
 //    api(project(":ppsdkkit:ppcalculatekit"))
 //    api(project(':ppbasiccalculatekit'))
 
-
+    //基础组建库，必须集成
+    api 'com.lefu.ppbasekit:ppbasekit:4.6.8'
+    // 蓝牙库
+    api 'com.lefu:bluetoothkit:1.5.5'
+    //蓝牙数据协议解析库
+    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.6.8.4'
+    //体脂数据解析库
+    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.6.8'
+    //体脂计算库
+    api 'com.lefu.ppbasiccalculatekit:ppbasiccalculatekit:1.1.0'
 }

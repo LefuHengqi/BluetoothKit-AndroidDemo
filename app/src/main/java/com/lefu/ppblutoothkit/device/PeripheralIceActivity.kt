@@ -10,10 +10,13 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import androidx.core.widget.NestedScrollView
+import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
@@ -26,16 +29,17 @@ import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
-import com.peng.ppscale.business.ble.listener.*
+import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
+import com.peng.ppscale.business.ble.listener.PPBleStateInterface
+import com.peng.ppscale.business.ble.listener.PPDataChangeListener
+import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface
+import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface
+import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
+import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
 import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralIce.PPBlutoothPeripheralIceController
-import com.lefu.ppbase.util.Logger
-import com.lefu.ppbase.util.PPUtil
-import com.lefu.ppbase.PPBodyBaseModel
-import com.lefu.ppbase.PPDeviceModel
-import com.lefu.ppbase.PPScaleDefine
 import com.peng.ppscale.vo.PPScaleSendState
 
 /**
@@ -167,7 +171,7 @@ class PeripheralIceActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.deleteHistory).setOnClickListener {
             addPrint("deleteHistory")
-            if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType) ?: false) {
+            if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType)) {
                 controller?.deleteHistoryData(object : PPBleSendResultCallBack {
                     override fun onResult(sendState: PPScaleSendState?) {
                         if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {

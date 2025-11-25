@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.8.22'
+        kotlin_version = '1.9.22'
     }
     repositories {
         maven { url "https://raw.githubusercontent.com/LefuHengqi/PPBaseKit-Android/main" }
@@ -30,6 +30,8 @@ buildscript {
 
 allprojects {
     repositories {
+        // 优先使用项目根目录下的本地 maven 仓库，确保解析到我们刚发布的 AAR 与 POM
+        maven { url uri("${rootProject.projectDir}/maven") }
         /******PPBluetoothKit/PPCalculateKit SDK**********/
         maven { url "https://raw.githubusercontent.com/LefuHengqi/PPBaseKit-Android/main" }
 
