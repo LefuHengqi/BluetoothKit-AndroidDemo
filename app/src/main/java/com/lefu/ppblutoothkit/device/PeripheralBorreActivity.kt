@@ -577,6 +577,7 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
                     || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2
                     || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
                     || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_5
                 ) {
                     //8电极交流算法  48项数据
                     val intent = Intent(this@PeripheralBorreActivity, Calculate8Activitiy::class.java)

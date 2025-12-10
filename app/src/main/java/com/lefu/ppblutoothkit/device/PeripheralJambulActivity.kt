@@ -1,5 +1,6 @@
 package com.lefu.ppblutoothkit.device
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
@@ -21,6 +22,16 @@ import com.peng.ppscale.device.PeripheralJambul.PPBlutoothPeripheralJambulContro
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.vo.PPUserModel
+import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
+import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.device.PeripheralBorreActivity
+import com.lefu.ppblutoothkit.util.DataUtil
+import com.lefu.ppblutoothkit.view.MsgDialog
 
 /**
  * 对应的协议: 3.x
@@ -43,13 +54,13 @@ class PeripheralJambulActivity : BaseImmersivePermissionActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_jambul_layout)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
-        
+
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
@@ -69,7 +80,7 @@ class PeripheralJambulActivity : BaseImmersivePermissionActivity() {
         initClick()
 
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -124,9 +135,26 @@ class PeripheralJambulActivity : BaseImmersivePermissionActivity() {
          * @param bodyBaseModel
          */
         override fun monitorLockData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
+            addPrint(getString(R.string.measure_complete))
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType(), true)
             weightTextView?.text = "lock:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
             weightMeasureState?.text = ""
+
+            addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
+//            addPrint("impedance:${bodyBaseModel?.impedance}")
+            addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
+
+
+            var userModel: PPUserModel? = null
+            userModel = DataUtil.getUserModel()
+            userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
+            userModel?.memberID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
+            userModel?.userName = "AB"
+
+            bodyBaseModel?.userModel = userModel
+
+            bodyBaseModel?.let { showCalculateDialog(deviceModel, it) }
+
         }
 
         /**
@@ -172,6 +200,50 @@ class PeripheralJambulActivity : BaseImmersivePermissionActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         controller?.stopSeach()
+    }
+
+    private fun showCalculateDialog(deviceModel: PPDeviceModel, bodyBaseModel: PPBodyBaseModel) {
+        DataUtil.bodyBaseModel = bodyBaseModel
+        Logger.d("DataUtil.bodyBaseModel:${DataUtil.bodyBaseModel.hashCode()} bodyBaseModel:${bodyBaseModel.hashCode()}")
+        Logger.d("PeripheralBorreActivity showCalculateDialog 四电极 双频 impedance:${bodyBaseModel.impedance} impedance100EnCode:${bodyBaseModel.ppImpedance100EnCode}")
+        MsgDialog.init(supportFragmentManager)
+            .setTitle(getString(R.string.tips))
+            .setMessage(getString(R.string.is_body_fat_calculated))
+            .setAnimStyle(R.style.dialog_)
+            .setCancelableAll(true)
+            .setNegativeButton(getString(R.string.cancel))
+            .setPositiveButton(getString(R.string.confirm), View.OnClickListener() {
+                if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
+                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_5
+                ) {
+                    //8电极交流算法  48项数据
+                    val intent = Intent(this@PeripheralJambulActivity, Calculate8Activitiy::class.java)
+                    intent.putExtra("bodyDataModel", "bodyDataModel")
+                    startActivity(intent)
+                } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1) {
+                    Logger.d("PeripheralBorreActivity 四电极 双频 impedance1:${DataUtil.bodyBaseModel?.impedance} impedance100EnCode:${DataUtil.bodyBaseModel?.ppImpedance100EnCode}")
+                    //4电极交流算法  24项数据
+                    val intent = Intent(this@PeripheralJambulActivity, Calculate4AC2ChannelActivitiy::class.java)
+                    intent.putExtra("bodyDataModel", "bodyDataModel")
+                    startActivity(intent)
+                } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect) {
+                    //4电极直流算法
+                    val intent = Intent(this@PeripheralJambulActivity, Calculate4DCActivitiy::class.java)
+                    intent.putExtra("bodyDataModel", "bodyDataModel")
+                    startActivity(intent)
+                } else {
+                    //4电极交流算法  24项数据
+                    val intent = Intent(this@PeripheralJambulActivity, Calculate4ACActivitiy::class.java)
+                    intent.putExtra("bodyDataModel", "bodyDataModel")
+                    startActivity(intent)
+                }
+            })
+            .show()
     }
 
 }

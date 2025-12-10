@@ -155,19 +155,19 @@ dependencies {
     api 'com.github.getActivity:XXPermissions:18.63'
 
 
-//    api(project(":ppsdkkit:ppbasekit"))
-//    api(project(":ppsdkkit:ppbluetoothkit"))
-//    api(project(":ppsdkkit:ppcalculatekit"))
-//    api(project(':ppbasiccalculatekit'))
+    api(project(":ppsdkkit:ppbasekit"))
+    api(project(":ppsdkkit:ppbluetoothkit"))
+    api(project(":ppsdkkit:ppcalculatekit"))
+    api(project(':ppbasiccalculatekit'))
 
-    //基础组建库，必须集成
-    api 'com.lefu.ppbasekit:ppbasekit:4.6.8'
-    // 蓝牙库
-    api 'com.lefu:bluetoothkit:1.5.5'
-    //蓝牙数据协议解析库
-    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.6.8.4'
-    //体脂数据解析库
-    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.6.8'
-    //体脂计算库
-    api 'com.lefu.ppbasiccalculatekit:ppbasiccalculatekit:1.1.0'
+    //基础组建库，必须集成/Basic group library construction must be integrated
+//    api 'com.lefu.ppbasekit:ppbasekit:4.6.8'
+//    // 蓝牙库/Bluetooth library
+//    api 'com.lefu:bluetoothkit:1.5.5'
+//    //蓝牙数据协议解析库/Bluetooth Data Protocol Analysis Library
+//    api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.6.8.4'
+//    //体脂数据解析库/Body fat data analysis library
+//    api 'com.lefu.ppcalculatekit:ppcalculatekit:4.6.8'
+//    //体脂计算库/Body fat calculation library
+//    api 'com.lefu.ppbasiccalculatekit:ppbasiccalculatekit:1.1.0'
 }
