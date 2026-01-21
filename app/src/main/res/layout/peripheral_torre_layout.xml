@@ -79,7 +79,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:orientation="vertical">
 
             <LinearLayout
@@ -257,7 +256,6 @@
                     android:layout_weight="1"
                     android:text="@string/reset"
                     android:textAllCaps="false" />
-
 
                 <Button
                     android:id="@+id/setUserInfo"
@@ -460,12 +458,39 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <!--      Only specific devices support it          -->
+                <Button
+                    android:id="@+id/getGravityAcceleration"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/gravity_acceleration_area"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <Button
+                    android:id="@+id/setGravityAcceleration"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/set_gravity_acceleration_area"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/mCurrentHostUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimens_4dp"
-                android:layout_marginTop="@dimen/dimens_12dp"
                 android:text="当前的域名"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="@dimen/text_sp16" />

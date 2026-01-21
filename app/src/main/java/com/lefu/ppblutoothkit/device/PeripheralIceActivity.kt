@@ -36,6 +36,7 @@ import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
+import com.peng.ppscale.business.ble.listener.PPTorreDeviceModeChangeInterface
 import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
@@ -70,13 +71,13 @@ class PeripheralIceActivity : BaseImmersivePermissionActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_ice_layout)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
-        
+
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
         whetherFullyDFUToggleBtn = findViewById<ToggleButton>(R.id.whetherFullyDFUToggleBtn)
@@ -98,8 +99,37 @@ class PeripheralIceActivity : BaseImmersivePermissionActivity() {
         controller?.registDataChangeListener(dataChangeListener)
         initClick()
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+
+        findViewById<ToggleButton>(R.id.switchModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
+            addPrint("maternity mode isChecked:$isChecked")
+            /**
+             *     0x00：关闭基础模式 不测脂肪
+             *     0x01：打开基础模式 测脂肪
+             */
+            controller?.controlImpendance(if (isChecked) 0 else 1, object : PPTorreDeviceModeChangeInterface {
+                /**
+                 * @param type  0x01：设置开关 0x02：获取开关
+                 * @param state 0x00：设置成功 0x01：设置失败
+                 * 0x00：阻抗测量打开 0x01：阻抗测量关闭
+                 */
+                override fun controlImpendanceCallBack(type: Int, state: Int) {
+                    when (state) {
+                        0 -> {
+                            addPrint("controlImpendanceCallBack:设置成功")
+                        }
+
+                        1 -> {
+                            addPrint("controlImpendanceCallBack:设置失败")
+                        }
+                    }
+                }
+
+
+            })
+        }
+
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -320,7 +350,7 @@ class PeripheralIceActivity : BaseImmersivePermissionActivity() {
                  * @param power -1失败，0-100  /  -1 for failure, 0-100
                  * @param state -1不支持 0正常 1充电中  /  -1 Not supported 0 Normal 1 Charging
                  */
-                override fun readDevicePower(power: Int, state : Int) {
+                override fun readDevicePower(power: Int, state: Int) {
                     if (state == -1) {
                         addPrint("The device does not support reading battery level")
                     } else if (state == 0) {
@@ -404,7 +434,7 @@ class PeripheralIceActivity : BaseImmersivePermissionActivity() {
          * @param deviceModel
          */
         override fun monitorProcessData(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-            Log.e("liyp","process:${bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0} kg")
+            Log.e("liyp", "process:${bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0} kg")
             val weightStr = PPUtil.getWeightValueD(bodyBaseModel?.unit, bodyBaseModel?.getPpWeightKg()?.toDouble() ?: 0.0, deviceModel!!.deviceAccuracyType.getType(), true)
             weightTextView?.text = "process:$weightStr ${PPUtil.getWeightUnit(bodyBaseModel?.unit)}"
         }

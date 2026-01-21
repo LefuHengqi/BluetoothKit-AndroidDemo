@@ -54,6 +54,7 @@ import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPScaleState
 import com.lefu.ppbase.vo.PPUserModel
+import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.vo.PPScaleSendState
@@ -164,12 +165,15 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
             val fileFath = filesDir.absolutePath + "/Log/DeviceLog"
             controller?.getTorreDeviceManager()?.syncLog(fileFath, deviceLogInterface)
         }
+        findViewById<Button>(R.id.setUserInfo).setOnClickListener {
+            addPrint("start UserInfo pager")
+            startActivity(Intent(this, UserinfoActivity::class.java))
+        }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
             controller?.getTorreDeviceManager()?.syncTime(object : PPBleSendResultCallBack {
                 override fun onResult(sendState: PPScaleSendState?) {
                     addPrint("syncTime Success")
-
                 }
             })
         }
@@ -184,7 +188,12 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
             controller?.getTorreDeviceManager()?.syncTouristHistory(touristHistoryDataInterface)
         }
         findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
-            addPrint("syncUserInfo userName:${userModel?.userName}")
+            if (PPScaleHelper.isSupportBirthday(deviceModel?.deviceSettingId)) {
+                userModel?.birthday ="2000-01-01" //yyyy-MM-dd
+                addPrint("syncUserInfo userName:${userModel?.userName} birthday:${userModel?.birthday}")
+            } else {
+                addPrint("syncUserInfo userName:${userModel?.userName}")
+            }
             userModel?.let { user ->
                 controller?.getTorreDeviceManager()?.syncUserInfo(user, userInfoInterface)
             }
@@ -395,11 +404,39 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
             })
         }
 
+        if (deviceModel?.deviceName?.contains("LFS01") == true) {
+            val getGravityAcceleration = findViewById<Button>(R.id.getGravityAcceleration)
+            val setGravityAcceleration = findViewById<Button>(R.id.setGravityAcceleration)
+            getGravityAcceleration.visibility = View.VISIBLE
+            setGravityAcceleration.visibility = View.VISIBLE
+            getGravityAcceleration.setOnClickListener {
+                addPrint("getGravityAcceleration")
+                /// 获取重力加速度区域（部分设备支持）
+                /// - Parameters:
+                ///   - result: 1： 9.805，2 ： 9.8009，3： 9.7969，4： 9.7949，5 ：  9.7905
+                controller?.getTorreDeviceManager()?.getGravityAcceleration { result ->
+                    //这里根据动态打印值
+                    addPrint("getGravityAcceleration result:$result")
+                }
+            }
+            setGravityAcceleration.setOnClickListener {
+                addPrint("setGravityAcceleration")
+                /// 设置重力加速度区域（部分设备支持）
+                /// - Parameters:
+                ///   - interval: 1： 9.805，2 ： 9.8009，3： 9.7969，4： 9.7949，5 ：  9.7905
+                //0设置成功 1设置失败
+                controller?.getTorreDeviceManager()?.setGravityAcceleration(1) { result ->
+                    addPrint("setGravityAcceleration result:${result == 0}")
+                }
+            }
+        }
+
+
     }
 
     override fun onResume() {
         super.onResume()
-        mCurrentHostUrl?.text = "当前域名：${NetUtil.getScaleDomain()}"
+        mCurrentHostUrl?.text = "Current domain：${NetUtil.getScaleDomain()}"
     }
 
     val bleStateInterface = object : PPBleStateInterface() {

@@ -254,6 +254,27 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="阻抗模式" />
+
+                <ToggleButton
+                    android:id="@+id/switchModeToggleBtn"
+                    android:layout_width="@dimen/size_dp58"
+                    android:layout_height="@dimen/size_dp30"
+                    android:background="@drawable/tone_switch_selector"
+                    android:checked="false"
+                    android:textOff="Off"
+                    android:textOn="On" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/device_dfu_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

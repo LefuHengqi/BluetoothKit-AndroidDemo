@@ -165,6 +165,8 @@
     <string name="setting">设置</string>
     <string name="can_be_connected">可连接</string>
     <string name="read_language">读取语言</string>
+    <string name="gravity_acceleration_area">获取加速度</string>
+    <string name="set_gravity_acceleration_area">设置加速度</string>
     <string name="search_device">搜索设备</string>
     <string name="set_domain_name">设置域名</string>
     <string name="query_domain_name">查询域名</string>

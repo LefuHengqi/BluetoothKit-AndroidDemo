@@ -9,9 +9,9 @@ import com.lefu.ppbase.PPScaleHelper
 object SecretManager {
 
     //TwoLegs140,TwoArms140,TwoLegs240
-    val BodyCompositionDetection1 = "Jyn7dEtLTGS9J3+jmtczIergA7Wiz9iqFVNVmcxmmkNtIWiFTIrf1WWpGmkDYuVB"
+    val BodyCompositionDetection1 = "0Msv6DxhEMCBX+gZxdPxekPXZ2fETyeeNYJmdjAM2P/DDeq4jWfjP13x3HLi05jO"
     //Body270
-    val BodyCompositionDetection2 = "qqlnPbHg95UEFQgmJs+bep+IQjdvY4kK9wbCGEVQr2Vv2+t9PbOP8l6NCcPSxqtk"
+    val BodyCompositionDetection2 = "/Vz74YxCHZ0RXZnwZxUjL43zojyXO+d40a+22J8Of5OwQKswLy1ttTH75aIOipeY"
 
     fun getSecret(calculateType: Int): String {
         if (PPScaleHelper.isCalcute8(calculateType)) {

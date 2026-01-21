@@ -68,7 +68,8 @@ class PPApplication : Application() {
          * @param appSecret Appp的密钥
          * @param configPath 在开放平台下载相应的配置文件以.config结尾，并放到assets目录下，将config文件全名传给SDK
          */
-        PPBluetoothKit.initSdk(this, appKey, appSecret, "lefu.config")
+//        PPBluetoothKit.initSdk(this, appKey, appSecret, "lefu.config")
+        PPBluetoothKit.initSdk(this, appKey, appSecret, "Device.json")
         /**
          * PPCalculateKit 计算库初始化
          */
