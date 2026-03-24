@@ -163,7 +163,7 @@ dependencies {
 
     //基础组建库，必须集成/Basic group library construction must be integrated
     api 'com.lefu.ppbasekit:ppbasekit:4.6.11'
-    // 蓝牙库/Bluetooth library
+    //基础蓝牙库/Bluetooth library
     api 'com.lefu:bluetoothkit:1.5.5'
     //蓝牙数据协议解析库/Bluetooth Data Protocol Analysis Library
     api 'com.lefu.ppbluetoothkit:ppbluetoothkit:4.6.11'

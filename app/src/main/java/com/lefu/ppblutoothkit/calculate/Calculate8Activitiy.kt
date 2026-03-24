@@ -35,6 +35,7 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
     var spinner: Spinner? = null
     var deviceName: String = ""
+
     /**
      * 身体年龄计算方式
      * 0默认计算方式 1-使用乐福自定义公式，2-使用计算库原始值； 0不填则保持原有方式（双频：原始值，其他算法：自定义）
@@ -161,6 +162,24 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         val z20KhzRightArmEnCode = binding.z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 1634195706L
         val z20KhzRightLegEnCode = binding.z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463L
         val z20KhzTrunkEnCode = binding.z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429L
+
+//        val sex = PPUserGender.PPUserGenderFemale
+//
+//        val height = 168
+//        val age = 34
+//        val weight = 62.85
+//
+//        val z100KhzLeftArmEnCode = 1638170641L
+//        val z100KhzLeftLegEnCode = 273583225L
+//        val z100KhzRightArmEnCode = 1375395659L
+//        val z100KhzRightLegEnCode = 1911090953L
+//        val z100KhzTrunkEnCode = 1351901590L
+//        val z20KhzLeftArmEnCode = 1371679960L
+//        val z20KhzLeftLegEnCode = 4123498L
+//        val z20KhzRightArmEnCode = 566797253L
+//        val z20KhzRightLegEnCode = 23178490L
+//        val z20KhzTrunkEnCode = 275997162L
+
 
         val userModel = PPUserModel.Builder()
             .setSex(sex)
