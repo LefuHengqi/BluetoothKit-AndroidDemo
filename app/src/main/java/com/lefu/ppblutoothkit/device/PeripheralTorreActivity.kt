@@ -105,6 +105,9 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
         userModel?.userID = "1006451068@qq.com"
         userModel?.memberID = "4C2D82A7-AA9B-46F2-99BB-8B82A1F63626"
         userModel?.userName = "AB"
+        //设置设备端名字的字体大小，秤端支持显示名字的生效，不设置则默认0,动态根据高度自动匹配，单位：px
+        //Set the font size of the device name. The scale supports displaying the effective name. If not set, it defaults to 0. It dynamically matches automatically based on height, in px
+        userModel?.nameFontSize = 0
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
