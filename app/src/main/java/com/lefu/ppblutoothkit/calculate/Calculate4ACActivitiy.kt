@@ -36,6 +36,7 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
     var deviceName: String = ""
     var calcuteType: PPScaleDefine.PPDeviceCalcuteType? = PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate
     var spinner: Spinner? = null
+
     /**
      * 身体年龄计算方式
      * 0默认计算方式 1-使用乐福自定义公式，2-使用计算库原始值； 0不填则保持原有方式（双频：原始值，其他算法：自定义）
@@ -48,10 +49,10 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCalculate4acBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
 
@@ -85,7 +86,7 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
         }
         initData()
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -152,6 +153,7 @@ class Calculate4ACActivitiy : BaseImmersivePermissionActivity() {
         bodyBaseModel.userModel = userModel
         bodyBaseModel.unit = PPUnitType.Unit_KG
         bodyBaseModel.secret = SecretManager.getSecret(deviceModel.deviceCalcuteType.getType())
+        bodyBaseModel.heartRate = DataUtil.bodyBaseModel?.heartRate ?: 0
         /**
          * 身体年龄计算方式
          * 0默认计算方式 1-使用乐福自定义公式，2-使用计算库原始值； 0不填则保持原有方式（双频：原始值，其他算法：自定义）

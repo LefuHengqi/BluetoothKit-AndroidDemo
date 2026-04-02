@@ -42,6 +42,7 @@ import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
 import com.peng.ppscale.vo.PPScaleSendState
+import com.peng.ppscale.vo.PPZoneType
 
 /**
  * 对应的协议: 2.x
@@ -65,13 +66,13 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.peripheral_apple_layout)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
-        
+
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         wifiConfigLayout = findViewById<LinearLayout>(R.id.wifiConfigLayout)
         logTxt = findViewById<TextView>(R.id.logTxt)
@@ -98,7 +99,7 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
         initClick()
 
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -148,6 +149,9 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
+            controller?.syncDeviceTimeWithZone(PPZoneType.PPZoneTypeUTC) { result ->
+
+            }
             controller?.syncTime(object : PPBleSendResultCallBack {
                 override fun onResult(sendState: PPScaleSendState?) {
                     if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
@@ -427,7 +431,8 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
 
                 addPrint("weightKg:${bodyBaseModel?.getPpWeightKg()}")
                 addPrint("impedance:${bodyBaseModel?.impedance}")
-                addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
+                addPrint("heartRate:${bodyBaseModel?.heartRate}")
+                addPrint("deviceCalculateType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
 
 
                 MsgDialog.init(supportFragmentManager)
