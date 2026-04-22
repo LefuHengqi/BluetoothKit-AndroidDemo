@@ -169,5 +169,5 @@ dependencies {
     //体脂数据解析库/Body fat data analysis library
     api 'com.lefu.ppcalculatekit:ppcalculatekit:4.6.14'
     //体脂计算库/Body fat calculation library
-    api 'com.lefu.ppbasiccalculatekit:ppbasiccalculatekit:1.1.0'
+    api 'com.lefu.ppbasiccalculatekit:ppbasiccalculatekit:1.1.1'
 }
