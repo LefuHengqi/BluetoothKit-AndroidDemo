@@ -20,6 +20,12 @@ android {
         viewBinding true
     }
 
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
     defaultConfig {
         applicationId "com.lefu.demo"
         minSdkVersion 24
