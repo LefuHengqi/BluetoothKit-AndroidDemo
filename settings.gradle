@@ -6,7 +6,6 @@ include ':ppsdkkit:ppbluetoothkit'
 include ':ppsdkkit:ppcalculatekit'
 include ':ppsdkkit:ppbasekit'
 
-
-//开源的module
 include ':ppbasiccalculatekit'
+include ':ppbluetoothkit:bluetoothkit'
 

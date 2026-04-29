@@ -165,6 +165,7 @@ dependencies {
 //    api(project(":ppsdkkit:ppbluetoothkit"))
 //    api(project(":ppsdkkit:ppcalculatekit"))
 //    api(project(':ppbasiccalculatekit'))
+//    api(project(':ppbluetoothkit:bluetoothkit'))
 
     //基础组建库，必须集成/Basic group library construction must be integrated
     api 'com.lefu.ppbasekit:ppbasekit:4.6.14'
