@@ -88,7 +88,7 @@
                 <Button
                     android:id="@+id/startConnectDevice"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/connect_device"
                     android:textAllCaps="false" />
@@ -96,7 +96,7 @@
                 <Button
                     android:id="@+id/startMeasureBtn"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/start_measure"
                     android:textAllCaps="false" />
@@ -104,7 +104,7 @@
                 <Button
                     android:id="@+id/stopMeasureBtn"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/stop_measure"
                     android:textAllCaps="false" />
@@ -112,9 +112,18 @@
                 <Button
                     android:id="@+id/syncTime"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/sync_time"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/device_set_confirm_current_userinfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/confirm_current_user"
                     android:textAllCaps="false" />
 
             </LinearLayout>
@@ -133,7 +142,7 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/deleteUserinfo"
+                    android:id="@+id/deleteAllUserinfo"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -142,12 +151,12 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/device_set_confirm_current_userinfo"
+                    android:id="@+id/deleteUserinfo"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/confirm_current_user"
+                    android:text="删除单个用户"
                     android:textAllCaps="false" />
 
                 <Button
