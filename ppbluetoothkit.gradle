@@ -14,7 +14,7 @@ def ARTIFACT_ID = "ppbluetoothkit"
 
 def BLUETOOTHKIT_GROUP_ID = "com.lefu"
 def BLUETOOTHKIT_ARTIFACT_ID = "bluetoothkit"
-def BLUETOOTHKIT_VERSION = "1.5.5"
+def BLUETOOTHKIT_VERSION = "1.5.6"
 
 android {
     namespace 'com.lefu.ppbluetoothkit'
@@ -65,7 +65,7 @@ android {
 }
 
 dependencies {
-    // 仅打包 libs 下的 AAR，避免将本地 JAR（bluetoothkit-1.5.5.jar）合并进 AAR 导致重复类
+    // 仅打包 libs 下的 AAR，避免将本地 JAR（bluetoothkit-${BLUETOOTHKIT_VERSION}.jar）合并进 AAR 导致重复类
     implementation fileTree(include: ['*.aar'], dir: 'libs')
 
     // 作为编译依赖引入 bluetoothkit，真正的传递性由 POM 提供给下游工程
@@ -113,12 +113,12 @@ afterEvaluate {
                 }
             }
 
-            // 发布 bluetoothkit-1.5.5.jar 到同一仓库，便于 POM 解析
+            // 发布 bluetoothkit-${BLUETOOTHKIT_VERSION}.jar 到同一仓库，便于 POM 解析
             bluetoothkitJar(MavenPublication) {
                 groupId = BLUETOOTHKIT_GROUP_ID
                 artifactId = BLUETOOTHKIT_ARTIFACT_ID
                 version = BLUETOOTHKIT_VERSION
-                artifact("$projectDir/libs/bluetoothkit-1.5.5.jar")
+                artifact("$projectDir/libs/bluetoothkit-${BLUETOOTHKIT_VERSION}.jar")
             }
         }
 
@@ -135,7 +135,6 @@ afterEvaluate {
         dependsOn assembleRelease
     }
 }
-
 
 
 

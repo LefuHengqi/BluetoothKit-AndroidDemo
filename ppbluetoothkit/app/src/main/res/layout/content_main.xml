@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:background="#000000"
+        android:gravity="center"
+        android:text="@string/devices"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/startScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="启动扫描" />
+
+        <Button
+            android:id="@+id/stopScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="停止扫描" />
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <com.lefu.bluetooth.view.PullToRefreshFrameLayout
+        android:id="@+id/pulllayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/button"
+        custom:has_divider="true"
+        custom:has_footer="false"
+        custom:has_header="true"
+        custom:has_shadow="false" />
+</RelativeLayout>
