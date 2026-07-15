@@ -10,7 +10,7 @@ def releaseTime() {
 def fileName
 
 def GROUP_ID = "com.lefu.ppbluetoothkit"
-def ARTIFACT_ID = "ppbluetoothkit"
+def ARTIFACT_ID = "cm"
 
 def BLUETOOTHKIT_GROUP_ID = "com.lefu"
 def BLUETOOTHKIT_ARTIFACT_ID = "bluetoothkit"
