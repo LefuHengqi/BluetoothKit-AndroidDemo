@@ -30,9 +30,11 @@ import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
+import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
@@ -53,6 +55,7 @@ import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
 import com.lefu.ppblutoothkit.databinding.PeripheralDorreLayoutBinding
+import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.vo.PPScaleSendState
 
@@ -73,6 +76,7 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
+    private var mCurrentHostUrl: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
 
@@ -112,6 +116,7 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         logTxt = findViewById<TextView>(R.id.logTxt)
+        mCurrentHostUrl = findViewById<TextView>(R.id.mCurrentHostUrl)
         whetherFullyDFUToggleBtn = findViewById<ToggleButton>(R.id.whetherFullyDFUToggleBtn)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
@@ -167,6 +172,10 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
             //logFilePath 指定文件存储路径，必传例如：val fileFath = context.filesDir.absolutePath + "/Log/DeviceLog"
             val fileFath = filesDir.absolutePath + "/Log/DeviceLog"
             controller?.getTorreDeviceManager()?.syncLog(fileFath, deviceLogInterface)
+        }
+        findViewById<Button>(R.id.setUserInfo).setOnClickListener {
+            addPrint("start UserInfo pager")
+            startActivity(Intent(this, UserinfoActivity::class.java))
         }
         findViewById<Button>(R.id.syncTime).setOnClickListener {
             addPrint("syncTime")
@@ -282,6 +291,37 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
                 }
             })
         }
+        findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                addPrint("startConfigWifi pager")
+                // 注意：Dorre与Torre公用
+                 PeripheralTorreSearchWifiListActivity.deviceModel = deviceModel
+                 startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
+//                addPrint("WiFi配置功能需要实现对应的配网页面")
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.getWifiInfo).setOnClickListener {
+            addPrint("getWifiSSID")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                controller?.getTorreDeviceManager()?.getWifiSSID(configWifiInterface)
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.getWifiMac).setOnClickListener {
+            addPrint("getWifiMac")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                controller?.getTorreDeviceManager()?.getWifiMac(configWifiInterface)
+            } else {
+                addPrint("device does not support")
+            }
+        }
+        findViewById<Button>(R.id.setNetHost).setOnClickListener {
+            addPrint("setNetHost")
+            startActivity(Intent(this, SetHostActivity::class.java))
+        }
         val device_ota_layout = findViewById<LinearLayout>(R.id.device_ota_layout)
         val device_dfu_layout = findViewById<LinearLayout>(R.id.device_dfu_layout)
         findViewById<Button>(R.id.device_set_startLocalOTA).setOnClickListener {
@@ -293,9 +333,11 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
         if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
             device_ota_layout.visibility = View.VISIBLE
             device_dfu_layout.visibility = View.GONE
+            mCurrentHostUrl?.visibility = View.VISIBLE
         } else {
             device_ota_layout.visibility = View.GONE
             device_dfu_layout.visibility = View.VISIBLE
+            mCurrentHostUrl?.visibility = View.GONE
         }
         findViewById<ToggleButton>(R.id.pregnancyModeToggleBtn).setOnCheckedChangeListener { buttonView, isChecked ->
             addPrint("maternity mode isChecked:$isChecked")
@@ -535,10 +577,12 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface {
 
         override fun onReadDeviceInfo(deviceModel: PPDeviceModel?) {
-            addPrint("firmwareVersion: ${deviceModel?.firmwareVersion}")
-            addPrint("serialNumber: ${deviceModel?.serialNumber}")
-            addPrint("hardwareRevision: ${deviceModel?.hardwareVersion}")
-            addPrint("softwareRevision: ${deviceModel?.softwareVersion}")
+            deviceModel?.let {
+                addPrint("firmwareVersion: ${it.firmwareVersion}")
+                addPrint("serialNumber: ${it.serialNumber}")
+                addPrint("hardwareRevision: ${it.hardwareVersion}")
+                addPrint("softwareRevision: ${it.softwareVersion}")
+            }
         }
 
 
@@ -870,6 +914,11 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mCurrentHostUrl?.text = "Current domain：${NetUtil.getScaleDomain()}"
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE) {
@@ -888,6 +937,48 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
 //        PPBlutoothKit.setDebug(true)
         if (controller?.getTorreDeviceManager()?.isDFU ?: false) {
             controller?.getTorreDeviceManager()?.stopDFU()
+        }
+    }
+
+    fun requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 先判断有没有权限
+            if (Environment.isExternalStorageManager()) {
+                performFileSearch()
+            } else {
+                val intent = Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                intent.data = Uri.parse("package:$packageName")
+                startActivityForResult(intent, 2)
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // 先判断有没有权限
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            ) {
+                performFileSearch()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    REQUEST_CODE
+                )
+            }
+        } else {
+            performFileSearch()
+        }
+    }
+
+    fun performFileSearch() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
+        startActivityForResult(intent, REQUEST_CODE)
+    }
+
+    fun handleSingleDocument(data: Intent?) {
+        val uri = data?.data
+        if (uri != null) {
+            dfuFilePath = uri.path
+            addPrint("DFU file path: $dfuFilePath")
         }
     }
 

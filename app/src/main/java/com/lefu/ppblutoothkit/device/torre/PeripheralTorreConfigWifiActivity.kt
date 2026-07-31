@@ -1,28 +1,28 @@
 package com.lefu.ppblutoothkit.device.torre
 
-import android.app.Activity
-import androidx.appcompat.widget.Toolbar
-import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.os.Bundle
 import android.text.InputType
 import android.text.TextUtils
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
+import androidx.appcompat.widget.Toolbar
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.PPScaleDefine
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
+import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.peng.ppscale.business.ble.configWifi.PPConfigStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
-import com.lefu.ppbase.util.Logger
-import com.lefu.ppbase.PPDeviceModel
-import com.lefu.ppbase.PPScaleDefine
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
-import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
 
 class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
 
@@ -41,10 +41,10 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wifi_config_torre)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
 
@@ -69,7 +69,8 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
             etWifiKey?.setSelection(etWifiKey?.text?.length ?: 0)
         }
 
-        findViewById<Button>(R.id.tvNext).setOnClickListener {
+        val tvNext = findViewById<Button>(R.id.tvNext);
+        tvNext.setOnClickListener {
             var pwd = ""
             if (etWifiKey?.text != null) {
                 pwd = etWifiKey?.text.toString()
@@ -80,33 +81,55 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
 //            val domainName = "http://nat.lefuenergy.com:10082"
             val domainName = NetUtil.getScaleDomain()
 //            val domainName = "http://test-mirrorapi.ruleye.com"
-            configResultTV?.text = getString(R.string.start_config_net)
+            addLog(getString(R.string.start_config_net))
+            tvNext.visibility = View.GONE
             if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {
+                if (PPBlutoothPeripheralIceInstance.instance.controller?.connectState() == false) {
+                    addLog("Device not connected")
+                    return@setOnClickListener
+                }
                 var mDomain = domainName
                 if (mDomain.contains("http://")) {
                     mDomain = domainName.replace("http://", "")
                 } else if (mDomain.contains("https://")) {
                     mDomain = domainName.replace("https://", "")
                 }
-                Logger.e("configwifi domainName: $domainName")
-                PPBlutoothPeripheralIceInstance.instance.controller?.sendModifyServerDomain(
-                    mDomain,
-                    configWifiInfoInterface
-                )
+                addLog("configwifi domainName: $mDomain")
+                PPBlutoothPeripheralIceInstance.instance.controller?.sendModifyServerDomain(mDomain, configWifiInfoInterface)
             } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
-                PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()
-                    ?.configWifi(domainName, ssid, pwd, configWifiInterface)
+                if (PPBlutoothPeripheralTorreInstance.instance.controller?.connectState() == false) {
+                    addLog("Device not connected")
+                    return@setOnClickListener
+                }
+                addLog("configwifi domainName: $domainName")
+                addLog("configwifi ssid: $ssid")
+                addLog("configwifi pwd: $pwd")
+                PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
             } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre) {
-                PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()
-                    ?.configWifi(domainName, ssid, pwd, configWifiInterface)
+                if (PPBlutoothPeripheralBorreInstance.instance.controller?.connectState() == false) {
+                    addLog("Device not connected")
+                    return@setOnClickListener
+                }
+                addLog("configwifi domainName: $domainName")
+                addLog("configwifi ssid: $ssid")
+                addLog("configwifi pwd: $pwd")
+                PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
             } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre) {
-                PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()
-                    ?.configWifi(domainName, ssid, pwd, configWifiInterface)
+                if (PPBlutoothPeripheralDorreInstance.instance.controller?.connectState() == false) {
+                    addLog("Device not connected")
+                    return@setOnClickListener
+                }
+                addLog("configwifi domainName: $domainName")
+                addLog("configwifi ssid: $ssid")
+                addLog("configwifi pwd: $pwd")
+                PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
+            } else {
+                addLog("Unsupported device type")
             }
         }
 
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -121,8 +144,7 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
     val configWifiInterface = object : PPTorreConfigWifiInterface() {
 
         override fun configResult(configStateMenu: PPConfigStateMenu?, resultCode: String?) {
-            configResultTV?.text =
-                "configResult configStateMenu: $configStateMenu\nresultCode: $resultCode"
+            addLog("configResult configStateMenu: $configStateMenu\nresultCode: $resultCode")
         }
 
     }
@@ -130,13 +152,11 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
     val configWifiInfoInterface = object : PPConfigWifiInfoInterface {
 
         override fun monitorConfigSn(sn: String?, deviceModel: PPDeviceModel?) {
-            addPrint("getWifiInfo sn:$sn")
-            configResultTV?.text = "configResult Success sn: $sn"
+            addLog("configResult Success sn: $sn")
         }
 
         override fun monitorModifyServerDomainSuccess() {
-            addPrint("monitorModifyServerDomainSuccess")
-            configResultTV?.text = "monitorModifyServerDomainSuccess"
+            addLog("monitorModifyServerDomainSuccess")
             if (!TextUtils.isEmpty(ssid)) {
                 var pwd = ""
                 if (etWifiKey?.text != null) {
@@ -144,41 +164,42 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
                 }
                 PPBlutoothPeripheralIceInstance.instance.controller?.configWifiData(ssid, pwd, this)
             } else {
-                configResultTV?.text = "ssid is null"
-                Logger.e("configwifi monitorModifyServerDomainSuccess onConfigResultFail ssid is null")
+                addLog("configwifi onConfigResultFail ssid is null")
             }
         }
 
         override fun monitorConfigFail(stateMenu: PPConfigWifiAppleStateMenu?) {
             when (stateMenu) {
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_LOW_BATTERY_LEVEL -> {
-                    configResultTV?.text = "Config wifi fail because: Low battery level"
+                    addLog("Config wifi fail because: Low battery level")
                 }
 
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_REGIST_FAIL -> {
-                    configResultTV?.text = "Config wifi fail because: login has failed"
+                    addLog("Config wifi fail because: login has failed")
                 }
 
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_GET_CONFIG_FAIL -> {
-                    configResultTV?.text =
+                    addLog(
                         "Config wifi fail because: Failed to obtain configuration"
+                    )
                 }
 
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_ROUTER_FAIL -> {
-                    configResultTV?.text = "Config wifi fail because: Unable to find route"
+                    addLog("Config wifi fail because: Unable to find route")
                 }
 
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_PASSWORD_ERR -> {
-                    configResultTV?.text = "Config wifi fail because: Password error"
+                    addLog("Config wifi fail because: Password error")
                 }
 
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_OTHER_FAIL -> {
-                    configResultTV?.text =
+                    addLog(
                         "Config wifi fail because: Other errors (app can be ignored)"
+                    )
                 }
 
                 else -> {
-                    configResultTV?.text = "Config wifi fail because: Other errors"
+                    addLog("Config wifi fail because: Other errors")
                 }
             }
         }
@@ -204,5 +225,11 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
     fun addPrint(msg: String) {
         Logger.d("msg:$msg")
     }
+
+    fun addLog(msg: String) {
+        Logger.d("msg:$msg")
+        configResultTV?.append(msg + "\n")
+    }
+
 
 }

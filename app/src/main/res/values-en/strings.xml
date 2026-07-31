@@ -162,8 +162,11 @@
     <string name="please_input_your_domain">Domain</string>
     <string name="set_password">Set Password</string>
     <string name="refresh">Refresh</string>
-
     <string name="copy">Copy</string>
     <string name="body_data_status">Physical data status</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+
+    <string name="support">Support</string>
+    <string name="no_support">Not support</string>
+
 </resources>

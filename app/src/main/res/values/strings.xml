@@ -179,5 +179,7 @@
     <string name="please_input_your_domain">域名</string>
     <string name="set_password">设置密码</string>
     <string name="refresh">刷新</string>
+    <string name="support">支持</string>
+    <string name="no_support">不支持</string>
 
 </resources>

@@ -30,38 +30,56 @@ class LogActivity : BaseImmersivePermissionActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_log)
-        
+
+        // 确定日志类型和标题
+        if (logType == 0) {
+            deviceLog = "/Log/AppLog"
+        } else if (logType == 1) {
+            deviceLog = "/Log/DeviceLog"
+        } else {
+            deviceLog = "/Log/AppLog"
+        }
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
-        
+
+        // 处理底部导航栏的WindowInsets
+        setupBottomInsets()
+
         initView()
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
+        val title = if (logType == 1) "DeviceLog" else "AppLog"
         toolbar?.let {
             setupUnifiedToolbar(
                 toolbar = it,
-                title = "日志",
+                title = title,
                 showBackButton = true
             )
         }
     }
 
-    private fun initView() {
-        if (logType == 0) {
-            deviceLog = "/Log/AppLog"
-            findViewById<TextView>(R.id.title).setText("AppLog")
-        } else if (logType == 1) {
-            deviceLog = "/Log/DeviceLog"
-            findViewById<TextView>(R.id.title).setText("DeviceLog")
-        } else {
-            deviceLog = "/Log/AppLog"
-            findViewById<TextView>(R.id.title).setText("AppLog")
+    private fun setupBottomInsets() {
+        val rootLayout = findViewById<View>(R.id.root_layout)
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { view, insets ->
+            val systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+            // 只设置底部内边距，避免影响顶部的Toolbar
+            view.setPadding(
+                view.paddingLeft,
+                0, // 顶部不需要padding，由Toolbar处理
+                view.paddingRight,
+                systemBars.bottom // 底部导航栏高度
+            )
+            insets
         }
+    }
+
+    private fun initView() {
          initData()
      }
 

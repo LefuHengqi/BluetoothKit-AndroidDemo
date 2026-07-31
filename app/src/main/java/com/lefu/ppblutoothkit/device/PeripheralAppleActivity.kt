@@ -73,6 +73,9 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
         // 初始化Toolbar
         initToolbar()
 
+        // 处理底部导航栏的WindowInsets
+        setupBottomInsets()
+
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         wifiConfigLayout = findViewById<LinearLayout>(R.id.wifiConfigLayout)
         logTxt = findViewById<TextView>(R.id.logTxt)
@@ -98,6 +101,21 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
 
         initClick()
 
+    }
+
+    private fun setupBottomInsets() {
+        val rootLayout = findViewById<View>(R.id.root_layout)
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { view, insets ->
+            val systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+            // 只设置底部内边距，避免影响顶部的Toolbar
+            view.setPadding(
+                view.paddingLeft,
+                0, // 顶部不需要padding，由Toolbar处理
+                view.paddingRight,
+                systemBars.bottom // 底部导航栏高度
+            )
+            insets
+        }
     }
 
     private fun initToolbar() {

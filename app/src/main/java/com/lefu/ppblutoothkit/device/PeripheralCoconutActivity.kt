@@ -230,7 +230,7 @@ class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
         }
 
         override fun monitorDataFail(bodyBaseModel: PPBodyBaseModel?, deviceModel: PPDeviceModel?) {
-
+            addPrint("monitorDataFail")
         }
 
         /**
