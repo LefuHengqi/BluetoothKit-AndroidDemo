@@ -1,13 +1,11 @@
 package com.lefu.ppblutoothkit.calculate
 
-import android.app.Activity
-import androidx.appcompat.widget.Toolbar
-import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil.bodyDataModel
 import com.lefu.ppcalculate.vo.PPBodyDetailModel
@@ -36,7 +34,8 @@ class BodyDataStateActivity : BaseImmersivePermissionActivity() {
             val ppBodyDetailModel = PPBodyDetailModel(bodyData)
             ppBodyDetailModel.ppBodyDetailInfoModelToJsonVo?.lefuBodyData?.forEach {
                 if (it.bodyParamNameString.isNullOrEmpty().not()) {
-                    buffer.append("${JsonLanguageDefaultValueUtils.getValueFromJson(it.bodyParamNameString)}:${PPUtil.keepPoint1f(it.currentValue)}${it.unit}")
+                    buffer.append("${JsonLanguageDefaultValueUtils.getValueFromJson(it.bodyParamNameString)}:" +
+                            "${PPUtil.keepPoint1f(it.currentValue)}${it.unit} [${it.standardArray}]")
                     if (it.hasStandard) {
                         buffer.append(" ")
                         buffer.append("standTile:${JsonLanguageDefaultValueUtils.getValueFromJson(it.standardTitle)}")
