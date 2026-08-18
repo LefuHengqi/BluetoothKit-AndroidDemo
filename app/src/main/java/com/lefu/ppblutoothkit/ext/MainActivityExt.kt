@@ -47,7 +47,8 @@ fun MainActivity.initDeviceConfig() {
 
                             }
                         } else {
-                            Logger.w("MainActivity 配置数据无效或为空")
+                            Logger.e("MainActivity 配置数据无效或为空:\n${response}")
+
                         }
 
                     } catch (e: Exception) {
