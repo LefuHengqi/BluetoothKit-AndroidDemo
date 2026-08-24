@@ -3,6 +3,7 @@ package com.lefu.ppblutoothkit.device
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,21 +17,30 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import com.lefu.ppbase.PPBodyBaseModel
+import com.lefu.ppbase.PPDeviceModel
+import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.util.PPUtil
+import com.lefu.ppbase.vo.PPScaleState
+import com.lefu.ppbase.vo.PPUnitType
+import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
+import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
 import com.lefu.ppblutoothkit.view.MsgDialog
 import com.peng.ppscale.business.ble.PPScaleHelper
+import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface
@@ -38,7 +48,6 @@ import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
 import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
 import com.peng.ppscale.business.ble.listener.PPTorreDeviceModeChangeInterface
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface
-import com.lefu.ppbase.vo.PPUnitType
 import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
@@ -46,17 +55,6 @@ import com.peng.ppscale.business.torre.listener.OnDFUStateListener
 import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralTorre.PPBlutoothPeripheralTorreController
-import com.lefu.ppbase.util.Logger
-import com.lefu.ppbase.util.PPUtil
-import com.lefu.ppbase.PPBodyBaseModel
-import com.lefu.ppcalculate.PPBodyFatModel
-import com.lefu.ppbase.PPDeviceModel
-import com.lefu.ppbase.PPScaleDefine
-import com.lefu.ppbase.vo.PPScaleState
-import com.lefu.ppbase.vo.PPUserModel
-import com.lefu.ppblutoothkit.UserinfoActivity
-import com.lefu.ppblutoothkit.okhttp.NetUtil
-import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.vo.PPScaleSendState
 
 /**
@@ -197,6 +195,10 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
             } else {
                 addPrint("syncUserInfo userName:${userModel?.userName}")
             }
+            val boldItalic = Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
+            userModel?.nameFont = boldItalic
+            userModel?.userName = "12AB"
+            userModel?.nameFontSize = 18
             userModel?.let { user ->
                 controller?.getTorreDeviceManager()?.syncUserInfo(user, userInfoInterface)
             }
