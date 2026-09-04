@@ -56,6 +56,8 @@ import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
 import com.lefu.ppblutoothkit.databinding.PeripheralDorreLayoutBinding
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
+import com.lefu.ppblutoothkit.device.torre.ZipFileUtil
+import com.lefu.ppblutoothkit.util.LogUtils
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.vo.PPScaleSendState
 
@@ -72,7 +74,7 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
 
     private lateinit var binding: PeripheralDorreLayoutBinding
     private var mTestStateTv: TextView? = null
-    
+
     private var userModel: PPUserModel? = null
     private var weightTextView: TextView? = null
     private var logTxt: TextView? = null
@@ -95,20 +97,20 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        
+
         binding = PeripheralDorreLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         // 在 setContentView 之后调用沉浸式设置
         setupImmersiveMode()
-        
+
         // 初始化Toolbar
         initToolbar()
-        
+
         // 如果 mTestStateTv 在 peripheral_dorre_layout.xml 中，使用 binding 访问
         // 如果在其他布局文件中，需要单独 findViewById
         mTestStateTv = findViewById(R.id.mTestStateTv) // 或者使用 binding.mTestStateTv
-        
+
         userModel = DataUtil.getUserModel()
         userModel?.userID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
         userModel?.memberID = "0EFA1294-A2D4-4476-93DC-1C2A2D8F1FEE"
@@ -135,7 +137,7 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
         deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
         controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
     }
-    
+
     private fun initToolbar() {
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.let {
@@ -240,6 +242,12 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
                     val isFullyDFUState = whetherFullyDFUToggleBtn?.isChecked ?: true //是否全量升级
                     if (isFullyDFUState) {
                         addPrint("Start full upgrade")
+                        if (dfuFilePath?.contains(":") == true) {
+                            LogUtils.d("dfuFilePath", dfuFilePath ?: "")
+                            dfuFilePath = dfuFilePath?.let {
+                                it.split(":")[1]
+                            }
+                        }
                         controller?.getTorreDeviceManager()?.startDFU(dfuFilePath, onDFUStateListener)
                     } else {
                         addPrint("readDeviceInfo")
@@ -295,8 +303,8 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
             if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
                 addPrint("startConfigWifi pager")
                 // 注意：Dorre与Torre公用
-                 PeripheralTorreSearchWifiListActivity.deviceModel = deviceModel
-                 startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
+                PeripheralTorreSearchWifiListActivity.deviceModel = deviceModel
+                startActivity(Intent(this, PeripheralTorreSearchWifiListActivity::class.java))
 //                addPrint("WiFi配置功能需要实现对应的配网页面")
             } else {
                 addPrint("device does not support")
@@ -694,6 +702,7 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
 
         override fun onDfuFail(errorType: String?) {
             addPrint("onDfuFail $errorType")
+
 //            PPBlutoothKit.setDebug(true)
         }
 
@@ -976,10 +985,11 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
 
     fun handleSingleDocument(data: Intent?) {
         val uri = data?.data
-        if (uri != null) {
-            dfuFilePath = uri.path
-            addPrint("DFU file path: $dfuFilePath")
+        dfuFilePath = this.getFilesDir().getAbsolutePath() + "/dfu/"
+        dfuFilePath = ZipFileUtil.zipUriToLocalFile(this, uri, dfuFilePath) { filePath ->
+            addPrint("DFU 升级文件路径：$filePath\n")
         }
+        addPrint("DFU 文件解压路径：$dfuFilePath")
     }
 
     override fun onDestroy() {

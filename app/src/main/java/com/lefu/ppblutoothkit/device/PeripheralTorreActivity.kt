@@ -195,8 +195,6 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
             } else {
                 addPrint("syncUserInfo userName:${userModel?.userName}")
             }
-            val boldItalic = Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
-            userModel?.nameFont = boldItalic
             userModel?.userName = "12AB"
             userModel?.nameFontSize = 18
             userModel?.let { user ->
