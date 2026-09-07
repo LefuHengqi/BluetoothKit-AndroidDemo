@@ -275,6 +275,39 @@
                         android:text="@string/start_user_ota" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/device_ca_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!--CA证书相关操作 仅支持个别设备-->
+
+                    <Button
+                        android:id="@+id/fetchCAInfo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/fetch_ca"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/getMTU"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/fetch"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/updateCA"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/update_ca"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/mCurrentHostUrl"
                     android:layout_width="match_parent"

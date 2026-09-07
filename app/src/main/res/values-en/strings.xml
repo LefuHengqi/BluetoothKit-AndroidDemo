@@ -165,8 +165,10 @@
     <string name="copy">Copy</string>
     <string name="body_data_status">Physical data status</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
-
     <string name="support">Support</string>
     <string name="no_support">Not support</string>
+    <string name="fetch_ca">Fetch CA</string>
+    <string name="fetch">Fetch MTU</string>
+    <string name="update_ca">Update CA</string>
 
 </resources>

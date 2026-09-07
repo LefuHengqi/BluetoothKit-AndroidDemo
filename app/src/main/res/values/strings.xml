@@ -181,5 +181,8 @@
     <string name="refresh">刷新</string>
     <string name="support">支持</string>
     <string name="no_support">不支持</string>
+    <string name="fetch_ca">获取CA证书</string>
+    <string name="fetch">获取MTU</string>
+    <string name="update_ca">更新CA证书</string>
 
 </resources>

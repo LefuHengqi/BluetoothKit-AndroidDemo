@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppbase.PPBodyBaseModel
@@ -33,6 +32,7 @@ import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
+import com.peng.ppscale.business.ble.listener.PPCAInfoInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
@@ -41,6 +41,7 @@ import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.device.PeripheralApple.PPBlutoothPeripheralAppleController
+import com.peng.ppscale.vo.PPCAInfoModel
 import com.peng.ppscale.vo.PPScaleSendState
 import com.peng.ppscale.vo.PPZoneType
 
@@ -53,11 +54,15 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
 
     private var weightTextView: TextView? = null
     private var wifiConfigLayout: LinearLayout? = null
+    private var deviceCaLayout: LinearLayout? = null
     private var logTxt: TextView? = null
     private var device_set_connect_state: TextView? = null
     private var weightMeasureState: TextView? = null
     private val mCurrentHostUrl by lazy { findViewById<TextView>(R.id.mCurrentHostUrl) }
     var controller: PPBlutoothPeripheralAppleController? = PPBlutoothPeripheralAppleInstance.instance.controller
+
+    /** 当前协商的BLE MTU，默认20，monitorMtuChange回调后更新，用于updateCA分包 */
+    var currentMtu = 20
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -78,6 +83,7 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
 
         weightTextView = findViewById<TextView>(R.id.weightTextView)
         wifiConfigLayout = findViewById<LinearLayout>(R.id.wifiConfigLayout)
+        deviceCaLayout = findViewById<LinearLayout>(R.id.device_ca_layout)
         logTxt = findViewById<TextView>(R.id.logTxt)
         device_set_connect_state = findViewById<TextView>(R.id.device_set_connect_state)
         weightMeasureState = findViewById<TextView>(R.id.weightMeasureState)
@@ -357,6 +363,62 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
                 addPrint("device does not support wifi")
             }
         }
+
+        //CA证书相关操作 仅支持个别设备
+        //CA certificate related operations are only supported on certain devices.
+        findViewById<Button>(R.id.fetchCAInfo).setOnClickListener {
+            addPrint("fetchCAInfo")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                // 获取秤端CA证书信息（有效期、指纹），结果通过caInfoInterface回调
+                controller?.fetchCAInfo(caInfoInterface, object : PPBleSendResultCallBack {
+                    override fun onResult(sendState: PPScaleSendState?) {
+                        if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                            addPrint("getCA send success")
+                        } else {
+                            addPrint("getCA send fail: $sendState")
+                        }
+                    }
+                })
+            } else {
+                addPrint("device does not support wifi")
+            }
+        }
+
+        //获取BLE MTU长度，结果通过bleStateInterface的monitorMtuChange回调
+        //Get the BLE MTU length, the result is called back via monitorMtuChange of bleStateInterface
+        findViewById<Button>(R.id.getMTU).setOnClickListener {
+            addPrint("requestMtu")
+            controller?.requestMtu()
+        }
+        findViewById<Button>(R.id.updateCA).setOnClickListener {
+            addPrint("updateCA mtu:$currentMtu")
+            if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
+                try {
+                    // 从assets读取CA证书文件
+                    val inputStream = assets.open("Digicert_global_root.pem")
+                    val caContent = inputStream.bufferedReader().use { it.readText() }
+                    inputStream.close()
+
+                    addPrint("CA content length: ${caContent.length}")
+
+                    // 调用Controller发送CA证书，传入协商后的MTU用于分包，结果通过caInfoInterface回调
+                    controller?.updateCA(caContent, caInfoInterface, currentMtu, object : PPBleSendResultCallBack {
+                        override fun onResult(sendState: PPScaleSendState?) {
+                            if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
+                                addPrint("updateCA send success")
+                            } else {
+                                addPrint("updateCA send fail: $sendState")
+                            }
+                        }
+                    })
+                } catch (e: Exception) {
+                    addPrint("updateCA error: ${e.message}")
+                    e.printStackTrace()
+                }
+            } else {
+                addPrint("device does not support wifi")
+            }
+        }
         //用户环境升级，需要用户先进行配网，然后升级，采用的是App配置的域名。
         //User environment upgrade requires users to first configure the network and then upgrade, using the domain name configured by the app.
         findViewById<Button>(R.id.device_set_startUserOTA).setOnClickListener {
@@ -405,9 +467,11 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
         super.onResume()
         if (PPScaleHelper.isFuncTypeWifi(deviceModel?.deviceFuncType)) {
             wifiConfigLayout?.visibility = View.VISIBLE
+            deviceCaLayout?.visibility = View.VISIBLE
             mCurrentHostUrl?.text = "当前域名：${NetUtil.getScaleDomain()}"
         } else {
             wifiConfigLayout?.visibility = View.GONE
+            deviceCaLayout?.visibility = View.GONE
         }
     }
 
@@ -490,7 +554,32 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
          * 超重
          */
         override fun monitorOverWeight() {
-            weightMeasureState?.text = "超重"
+            weightMeasureState?.text = "Over weight"
+        }
+
+    }
+
+    /**
+     * CA证书业务回调，接收更新/获取CA证书后的有效期、指纹或失败错误码
+     */
+    val caInfoInterface = object : PPCAInfoInterface {
+
+        override fun onCAInfoSuccess(caInfo: PPCAInfoModel?) {
+            addPrint("CA Info Success:")
+            addPrint("  expirationDate: ${caInfo?.expirationDate}")
+            addPrint("  fingerprint: ${caInfo?.caFingerprint}")
+        }
+
+        override fun onCAInfoFail(errorCode: Int) {
+            val reason = when (errorCode) {
+                1 -> "异或校验失败"
+                2 -> "包序错误"
+                3 -> "长度错误"
+                4 -> "证书校验失败"
+                5 -> "证书有效期异常"
+                else -> "未知错误(errorCode=$errorCode)"
+            }
+            addPrint("CA Info Fail: $reason")
         }
 
     }
@@ -598,6 +687,17 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
                 addPrint(getString(R.string.system_blutooth_on))
                 Toast.makeText(this@PeripheralAppleActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
             }
+        }
+
+        /**
+         * MTU协商结果回调
+         * MTU negotiation result callback
+         */
+        override fun monitorMtuChange(deviceModel: PPDeviceModel?) {
+            addPrint("monitorMtuChange mtu:${deviceModel?.mtu}")
+            // 更新全局MTU变量，供updateCA分包使用
+            currentMtu = deviceModel?.mtu ?: 20
+
         }
 
     }
