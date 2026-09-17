@@ -124,10 +124,10 @@ class DeviceListAdapter : BaseQuickAdapter<DeviceVo?, BaseViewHolder?>(R.layout.
     private fun getCalculateAPI(deviceModel: PPDeviceModel): String {
         val type = deviceModel.deviceCalcuteType
         return when (type) {
-            PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect -> "AC Four-Electrode Algorithm"
+            PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect -> "DC Four-Electrode Algorithm v2.0"
             PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate,
-            PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal -> "DC Four-Electrode Algorithm v2.0"
-            PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0 -> "DC Four-Electrode Algorithm"
+            PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeNormal,
+            PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_0 -> "AC Four-Electrode Algorithm"
             PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1 -> "Dual-Frequency AC Four-Electrode Algorithm"
             PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0,
             PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1,
@@ -135,8 +135,9 @@ class DeviceListAdapter : BaseQuickAdapter<DeviceVo?, BaseViewHolder?>(R.layout.
             PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3,
             PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4,
             PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8 -> "AC Eight-Electrode Algorithm"
+
             PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_5 -> "AC Eight-Electrode Algorithm Smooth"
-            else -> "DC Four-Electrode Algorithm"
+            else -> "AC Four-Electrode Algorithm"
         }
     }
 }
