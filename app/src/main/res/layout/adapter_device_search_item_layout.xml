@@ -4,19 +4,38 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
     android:background="@android:color/white"
+    android:gravity="center_vertical"
     android:paddingHorizontal="20dp"
     android:paddingVertical="10dp">
 
-    <TextView
-        android:id="@+id/mWifiNameSsidSB"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.8"
-        android:ellipsize="end"
-        android:lines="1"
-        android:text="haisilen"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_16sp" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mWifiNameSsidSB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="haisilen"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_16sp" />
+
+        <TextView
+            android:id="@+id/mWifiBssidSB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="00:00:00:00:00:00"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/text_12sp" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/mWifiNameSignSB"

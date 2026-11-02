@@ -42,7 +42,7 @@
                 android:ems="10"
                 android:hint="@string/value_range_30_220"
                 android:inputType="number"
-                android:text="170"
+                android:text="212"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -108,7 +108,7 @@
                 android:ems="8"
                 android:hint="0.0kg"
                 android:inputType="numberDecimal"
-                android:text="66.25"
+                android:text="85.00"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -173,7 +173,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="1343012553"
+                android:text="1349413202"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -202,7 +202,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="537483970"
+                android:text="537449894"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -237,7 +237,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="1348207576"
+                android:text="1346232012"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -266,7 +266,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="1888092345"
+                android:text="1088032976"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -301,7 +301,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="808605405"
+                android:text="1075846655"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -330,7 +330,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="3025280"
+                android:text="545066830"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -365,7 +365,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="1889350941"
+                android:text="553539492"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -394,7 +394,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="1102073564"
+                android:text="851983"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -429,7 +429,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="540921544"
+                android:text="837002708"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -458,7 +458,7 @@
                 android:ems="8"
                 android:hint="0"
                 android:inputType="number"
-                android:text="1349589316"
+                android:text="14200484"
                 android:textSize="12sp" />
 
         </LinearLayout>

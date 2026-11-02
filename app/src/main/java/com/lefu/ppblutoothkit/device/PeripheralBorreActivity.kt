@@ -241,6 +241,7 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
                              * 设备信息返回
                              *
                              * @param deviceModel
+                             * @param deviceModel
                              */
 //                            override fun readDeviceInfoComplete(deviceModel: PPDeviceModel?) {}
                             override fun onReadDeviceInfo(deviceModel: PPDeviceModel?) {

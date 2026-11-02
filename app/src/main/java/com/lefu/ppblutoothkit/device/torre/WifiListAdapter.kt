@@ -33,6 +33,7 @@ class WifiListAdapter(var wifiList: List<PPWifiModel>) :
 
         fun bind(wifiBean: PPWifiModel, listener: OnItemClickListener?) {
             binding.mWifiNameSsidSB.text = wifiBean.ssid
+            binding.mWifiBssidSB.text = wifiBean.bssid
             binding.mWifiNameSignSB.text = wifiBean.sign.toString()
             
             binding.root.setOnClickListener {

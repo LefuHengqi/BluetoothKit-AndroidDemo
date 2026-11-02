@@ -148,20 +148,20 @@ class Calculate8Activitiy : BaseImmersivePermissionActivity() {
         } else {
             PPUserGender.PPUserGenderMale
         }
-        val height = binding.etHeight.text?.toString()?.toInt() ?: 168
-        val age = binding.etAge.text?.toString()?.toInt() ?: 35
-        val weight = binding.etWeight.text?.toString()?.toDouble() ?: 83.00
+        val height = binding.etHeight.text?.toString()?.toInt() ?: 212
+        val age = binding.etAge.text?.toString()?.toInt() ?: 28
+        val weight = binding.etWeight.text?.toString()?.toDouble() ?: 85.00
 
-        val z100KhzLeftArmEnCode = binding.z100KhzLeftArmEnCode.text?.toString()?.toLong() ?: 294794323L
-        val z100KhzLeftLegEnCode = binding.z100KhzLeftLegEnCode.text?.toString()?.toLong() ?: 806102147L
-        val z100KhzRightArmEnCode = binding.z100KhzRightArmEnCode.text?.toString()?.toLong() ?: 26360525L
-        val z100KhzRightLegEnCode = binding.z100KhzRightLegEnCode.text?.toString()?.toLong() ?: 816581534L
-        val z100KhzTrunkEnCode = binding.z100KhzTrunkEnCode.text?.toString()?.toLong() ?: 1080247226L
-        val z20KhzLeftArmEnCode = binding.z20KhzLeftArmEnCode.text?.toString()?.toLong() ?: 27983001L
-        val z20KhzLeftLegEnCode = binding.z20KhzLeftLegEnCode.text?.toString()?.toLong() ?: 837194050L
-        val z20KhzRightArmEnCode = binding.z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 1634195706L
-        val z20KhzRightLegEnCode = binding.z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 29868463L
-        val z20KhzTrunkEnCode = binding.z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 1881406429L
+        val z100KhzLeftArmEnCode = binding.z100KhzLeftArmEnCode.text?.toString()?.toLong() ?: 1349413202L
+        val z100KhzLeftLegEnCode = binding.z100KhzLeftLegEnCode.text?.toString()?.toLong() ?: 537449894L
+        val z100KhzRightArmEnCode = binding.z100KhzRightArmEnCode.text?.toString()?.toLong() ?: 1346232012L
+        val z100KhzRightLegEnCode = binding.z100KhzRightLegEnCode.text?.toString()?.toLong() ?: 1088032976L
+        val z100KhzTrunkEnCode = binding.z100KhzTrunkEnCode.text?.toString()?.toLong() ?: 1075846655L
+        val z20KhzLeftArmEnCode = binding.z20KhzLeftArmEnCode.text?.toString()?.toLong() ?: 545066830L
+        val z20KhzLeftLegEnCode = binding.z20KhzLeftLegEnCode.text?.toString()?.toLong() ?: 553539492L
+        val z20KhzRightArmEnCode = binding.z20KhzRightArmEnCode.text?.toString()?.toLong() ?: 851983L
+        val z20KhzRightLegEnCode = binding.z20KhzRightLegEnCode.text?.toString()?.toLong() ?: 837002708L
+        val z20KhzTrunkEnCode = binding.z20KhzTrunkEnCode.text?.toString()?.toLong() ?: 14200484L
 
 //        val sex = PPUserGender.PPUserGenderFemale
 //
