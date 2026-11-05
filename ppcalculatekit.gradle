@@ -59,7 +59,8 @@ dependencies {
 //    compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
     compileOnly(project(":ppsdkkit:ppbasekit"))
-    compileOnly(project(":ppbasiccalculatekit"))
+    //基础计算库/Basic computing library（独立仓库发布，使用 Maven 坐标）
+    compileOnly 'com.lefu.ppbasiccalculatekit:ppbasiccalculatekit:1.1.1'
 
 }
 
