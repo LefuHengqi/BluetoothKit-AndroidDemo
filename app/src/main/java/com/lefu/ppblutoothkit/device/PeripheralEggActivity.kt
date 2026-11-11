@@ -13,6 +13,8 @@ import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.foodscale.FoodScaleCacluteHelper
+import com.lefu.ppblutoothkit.device.auto.SyncTimeAutoFlow
+import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralEggInstance
 import com.peng.ppscale.business.ble.listener.FoodScaleDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
@@ -38,6 +40,14 @@ class PeripheralEggActivity : BaseImmersivePermissionActivity() {
     private var device_set_connect_state: TextView? = null
 
     var controller: PPBlutoothPeripheralEggController? = PPBlutoothPeripheralEggInstance.instance.controller
+
+    /**
+     * 连接后的自动指令流程：连接成功 -> 发现服务 -> 同步时间
+     */
+    private val autoFlow = SyncTimeAutoFlow.ofSendResult(
+        log = { addPrint(it) },
+        syncTime = { callback -> controller?.sendSyncTime(callback) }
+    )
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -68,10 +78,22 @@ class PeripheralEggActivity : BaseImmersivePermissionActivity() {
             }
         })
         controller?.deviceModel = deviceModel
+        initClick()
+        connectDevice()
+    }
+
+    /**
+     * 进入页面即自动连接；如果设备已连接，直接执行剩下的自动指令。
+     */
+    private fun connectDevice() {
+        val model = Companion.deviceModel ?: return
         addPrint("startConnect")
         controller?.registDataChangeListener(dataChangeListener)
-        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
-        initClick()
+        val alreadyConnected = isDeviceConnected(model.deviceMac)
+        controller?.startConnect(model, bleStateInterface)
+        if (alreadyConnected) {
+            autoFlow.onAlreadyConnected()
+        }
     }
     
     private fun initToolbar() {
@@ -88,8 +110,7 @@ class PeripheralEggActivity : BaseImmersivePermissionActivity() {
     fun initClick() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
-            controller?.registDataChangeListener(dataChangeListener)
-            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+            connectDevice()
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
             addPrint("syncUnit")
@@ -143,6 +164,7 @@ class PeripheralEggActivity : BaseImmersivePermissionActivity() {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 device_set_connect_state?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
+                autoFlow.onConnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
                 device_set_connect_state?.text = getString(R.string.can_be_connected)
                 addPrint(getString(R.string.can_be_connected))
@@ -152,9 +174,11 @@ class PeripheralEggActivity : BaseImmersivePermissionActivity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 device_set_connect_state?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))
+                autoFlow.onConnecting()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
                 device_set_connect_state?.text = getString(R.string.device_disconnected)
                 addPrint(getString(R.string.device_disconnected))
+                autoFlow.onDisconnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 device_set_connect_state?.text = getString(R.string.stop_scanning)
                 addPrint(getString(R.string.stop_scanning))
@@ -166,6 +190,7 @@ class PeripheralEggActivity : BaseImmersivePermissionActivity() {
                 addPrint(getString(R.string.scanning))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
+                autoFlow.onReady()
             }
         }
 
@@ -187,6 +212,7 @@ class PeripheralEggActivity : BaseImmersivePermissionActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        autoFlow.onDestroy()
         controller?.disConnect()
     }
 

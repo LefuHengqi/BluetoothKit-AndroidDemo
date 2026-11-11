@@ -32,6 +32,8 @@ import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.device.auto.TorreFamilyAutoFlow
+import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
 import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.okhttp.NetUtil
@@ -79,6 +81,20 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
 
     var controller: PPBlutoothPeripheralBorreController? = PPBlutoothPeripheralBorreInstance.instance.controller
 
+    /**
+     * 连接后的自动指令流程：
+     * 连接成功 -> 发现服务 -> 更新MTU -> 同步时间 -> 同步成员 -> 选择成员 -> 启动保活
+     * Borre 上秤后设备自动测量，不需要主动下发开始测量指令。
+     */
+    private val autoFlow = TorreFamilyAutoFlow(
+        log = { addPrint(it) },
+        userModelProvider = { userModel },
+        managerProvider = { controller?.getTorreDeviceManager() },
+        deviceSettingIdProvider = { Companion.deviceModel?.deviceSettingId },
+        startMeasure = false,
+        dataChangeListenerProvider = { dataChangeListener }
+    )
+
     companion object {
         var deviceModel: PPDeviceModel? = null
     }
@@ -117,8 +133,20 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
             }
         })
         initClick()
-        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+        connectDevice()
         controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
+    }
+
+    /**
+     * 进入页面即自动连接；如果设备已连接，直接执行剩下的自动指令。
+     */
+    private fun connectDevice() {
+        val model = Companion.deviceModel ?: return
+        val alreadyConnected = isDeviceConnected(model.deviceMac)
+        controller?.startConnect(model, bleStateInterface)
+        if (alreadyConnected) {
+            autoFlow.onAlreadyConnected()
+        }
     }
 
     private fun initToolbar() {
@@ -135,7 +163,7 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
     fun initClick() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
-            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+            connectDevice()
         }
         findViewById<Button>(R.id.getRGBMode).setOnClickListener {
             addPrint("getRGBMode")
@@ -437,6 +465,7 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 device_set_connect_state?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
+                autoFlow.onConnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
                 addPrint("startConnect")
                 if (Companion.deviceModel != null) {
@@ -450,9 +479,11 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 device_set_connect_state?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))
+                autoFlow.onConnecting()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
                 device_set_connect_state?.text = getString(R.string.device_disconnected)
                 addPrint(getString(R.string.device_disconnected))
+                autoFlow.onDisconnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 device_set_connect_state?.text = getString(R.string.stop_scanning)
                 addPrint(getString(R.string.stop_scanning))
@@ -481,7 +512,7 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
          * 其他的PeripheralType 设备要在PPBleWorkStateWritable中下发数据
          */
         override fun monitorMtuChange(deviceModel: PPDeviceModel?) {
-            addPrint("monitorMtuChange mtu:${deviceModel?.mtu}")
+            autoFlow.onMtuChanged(deviceModel?.mtu)
         }
 
     }
@@ -988,6 +1019,7 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        autoFlow.onDestroy()
         controller?.stopSeach()
         controller?.disConnect()
     }

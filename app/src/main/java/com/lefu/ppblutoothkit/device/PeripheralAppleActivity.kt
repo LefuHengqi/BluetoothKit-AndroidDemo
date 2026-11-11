@@ -23,6 +23,8 @@ import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
 import com.lefu.ppblutoothkit.device.apple.BleConfigWifiActivity
+import com.lefu.ppblutoothkit.device.auto.SyncTimeAutoFlow
+import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
@@ -64,6 +66,15 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
     /** 当前协商的BLE MTU，默认20，monitorMtuChange回调后更新，用于updateCA分包 */
     var currentMtu = 20
 
+    /**
+     * 连接后的自动指令流程：连接成功 -> 发现服务 -> 同步时间
+     * 其他可连接协议的设备都按这个流程初始化，进入页面即可直接上秤测量。
+     */
+    private val autoFlow = SyncTimeAutoFlow.ofSendResult(
+        log = { addPrint(it) },
+        syncTime = { callback -> controller?.syncTime(callback) }
+    )
+
     companion object {
         var deviceModel: PPDeviceModel? = null
     }
@@ -100,13 +111,23 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
         })
 
         controller?.registDataChangeListener(dataChangeListener)
-        deviceModel?.let { it1 ->
-            addPrint("startConnect")
-            controller?.startConnect(it1, bleStateInterface)
-        }
-
         initClick()
+        connectDevice()
 
+    }
+
+    /**
+     * 进入页面即自动连接；如果设备已连接，直接执行剩下的自动指令。
+     */
+    private fun connectDevice() {
+        val model = Companion.deviceModel ?: return
+        addPrint("startConnect")
+        controller?.registDataChangeListener(dataChangeListener)
+        val alreadyConnected = isDeviceConnected(model.deviceMac)
+        controller?.startConnect(model, bleStateInterface)
+        if (alreadyConnected) {
+            autoFlow.onAlreadyConnected()
+        }
     }
 
     private fun setupBottomInsets() {
@@ -139,8 +160,7 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             controller?.stopSeach()
             addPrint("startConnect")
-            controller?.registDataChangeListener(dataChangeListener)
-            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+            connectDevice()
         }
         findViewById<Button>(R.id.readDeviceBattery).setOnClickListener {
             addPrint("stopConnectDevice")
@@ -651,6 +671,7 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 device_set_connect_state?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
+                autoFlow.onConnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
                 device_set_connect_state?.text = getString(R.string.can_be_connected)
                 addPrint(getString(R.string.can_be_connected))
@@ -660,9 +681,11 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 device_set_connect_state?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))
+                autoFlow.onConnecting()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
                 device_set_connect_state?.text = getString(R.string.device_disconnected)
                 addPrint(getString(R.string.device_disconnected))
+                autoFlow.onDisconnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 device_set_connect_state?.text = getString(R.string.stop_scanning)
                 addPrint(getString(R.string.stop_scanning))
@@ -674,6 +697,7 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
                 addPrint(getString(R.string.scanning))
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
+                autoFlow.onReady()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnectFailed) {
 //                addPrint(getString(R.string.writable))
             }
@@ -704,6 +728,7 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        autoFlow.onDestroy()
         controller?.disConnect()
     }
 

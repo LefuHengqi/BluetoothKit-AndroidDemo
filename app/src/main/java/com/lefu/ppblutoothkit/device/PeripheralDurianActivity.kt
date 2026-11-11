@@ -14,6 +14,8 @@ import androidx.core.widget.NestedScrollView
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.vo.PPUserModel
+import com.lefu.ppblutoothkit.device.auto.SyncTimeAutoFlow
+import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDurianInstance
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.util.DataUtil
@@ -42,6 +44,14 @@ class PeripheralDurianActivity : BaseImmersivePermissionActivity() {
     var userModel: PPUserModel? = null
 
     var controller: PPBlutoothPeripheralDurianController? = PPBlutoothPeripheralDurianInstance.instance.controller
+
+    /**
+     * 连接后的自动指令流程：连接成功 -> 发现服务 -> 同步时间
+     */
+    private val autoFlow = SyncTimeAutoFlow.ofSendResult(
+        log = { addPrint(it) },
+        syncTime = { callback -> controller?.syncTime(callback) }
+    )
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -76,11 +86,23 @@ class PeripheralDurianActivity : BaseImmersivePermissionActivity() {
         })
 
         controller?.userModel = userModel     //必传参数 This is a required parameter
+        initClick()
+        connectDevice()
+
+    }
+
+    /**
+     * 进入页面即自动连接；如果设备已连接，直接执行剩下的自动指令。
+     */
+    private fun connectDevice() {
+        val model = Companion.deviceModel ?: return
         addPrint("startConnect")
         controller?.registDataChangeListener(dataChangeListener)
-        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
-        initClick()
-
+        val alreadyConnected = isDeviceConnected(model.deviceMac)
+        controller?.startConnect(model, bleStateInterface)
+        if (alreadyConnected) {
+            autoFlow.onAlreadyConnected()
+        }
     }
     
     private fun initToolbar() {
@@ -97,8 +119,7 @@ class PeripheralDurianActivity : BaseImmersivePermissionActivity() {
     fun initClick() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
-            controller?.registDataChangeListener(dataChangeListener)
-            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+            connectDevice()
         }
         findViewById<Button>(R.id.syncUserInfo).setOnClickListener {
             syncUnitAndSyncUser()
@@ -172,6 +193,7 @@ class PeripheralDurianActivity : BaseImmersivePermissionActivity() {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 device_set_connect_state?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
+                autoFlow.onConnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
                 device_set_connect_state?.text = getString(R.string.can_be_connected)
                 addPrint(getString(R.string.can_be_connected))
@@ -181,9 +203,11 @@ class PeripheralDurianActivity : BaseImmersivePermissionActivity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 device_set_connect_state?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))
+                autoFlow.onConnecting()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
                 device_set_connect_state?.text = getString(R.string.device_disconnected)
                 addPrint(getString(R.string.device_disconnected))
+                autoFlow.onDisconnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 device_set_connect_state?.text = getString(R.string.stop_scanning)
                 addPrint(getString(R.string.stop_scanning))
@@ -196,6 +220,7 @@ class PeripheralDurianActivity : BaseImmersivePermissionActivity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
                 syncUnitAndSyncUser()
+                autoFlow.onReady()
             }
         }
 
@@ -213,6 +238,7 @@ class PeripheralDurianActivity : BaseImmersivePermissionActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        autoFlow.onDestroy()
         controller?.disConnect()
     }
 

@@ -38,6 +38,8 @@ import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
 import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
 import com.lefu.ppblutoothkit.databinding.PeripheralForreLayoutBinding
 import com.lefu.ppblutoothkit.databinding.ProductTestDfuTestActivityBinding
+import com.lefu.ppblutoothkit.device.auto.SyncTimeAutoFlow
+import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralForreInstance
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
@@ -83,6 +85,15 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
 
     var controller: PPBlutoothPeripheralForreController? = PPBlutoothPeripheralForreInstance.instance.controller
 
+    /**
+     * 连接后的自动指令流程：连接成功 -> 发现服务 -> 同步时间
+     * Forre 属于 Torre 系协议，等待 monitorMtuChange 后再下发指令。
+     */
+    private val autoFlow = SyncTimeAutoFlow.ofSendResult(
+        log = { addPrint(it) },
+        syncTime = { callback -> controller?.getTorreDeviceManager()?.syncTime(callback) }
+    )
+
     companion object {
         var deviceModel: PPDeviceModel? = null
     }
@@ -124,8 +135,21 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
             }
         })
         initClick()
-        deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+        connectDevice()
+    }
+
+    /**
+     * 进入页面即自动连接；如果设备已连接，直接执行剩下的自动指令。
+     */
+    private fun connectDevice() {
+        val model = Companion.deviceModel ?: return
+        addPrint("startConnect")
         controller?.getTorreDeviceManager()?.registDataChangeListener(dataChangeListener)
+        val alreadyConnected = isDeviceConnected(model.deviceMac)
+        controller?.startConnect(model, bleStateInterface)
+        if (alreadyConnected) {
+            autoFlow.onAlreadyConnected()
+        }
     }
 
     private fun initToolbar() {
@@ -142,7 +166,7 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
     fun initClick() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
-            deviceModel?.let { it1 -> controller?.startConnect(it1, bleStateInterface) }
+            connectDevice()
         }
         findViewById<Button>(R.id.device_set_sync_log).setOnClickListener {
             addPrint("syncLog")
@@ -276,6 +300,7 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 device_set_connect_state?.text = getString(R.string.device_connected)
                 addPrint(getString(R.string.device_connected))
+                autoFlow.onConnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
                 addPrint("startConnect")
                 if (Companion.deviceModel != null) {
@@ -290,9 +315,11 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 device_set_connect_state?.text = getString(R.string.device_connecting)
                 addPrint(getString(R.string.device_connecting))
+                autoFlow.onConnecting()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
                 device_set_connect_state?.text = getString(R.string.device_disconnected)
                 addPrint(getString(R.string.device_disconnected))
+                autoFlow.onDisconnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleStateSearchCanceled) {
                 device_set_connect_state?.text = getString(R.string.stop_scanning)
                 addPrint(getString(R.string.stop_scanning))
@@ -322,6 +349,7 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
          */
         override fun monitorMtuChange(deviceModel: PPDeviceModel?) {
             addPrint("monitorMtuChange mtu:${deviceModel?.mtu}")
+            autoFlow.onReady()
         }
 
     }
@@ -668,6 +696,7 @@ class PeripheralForreActivity : BaseImmersivePermissionActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        autoFlow.onDestroy()
         controller?.stopSeach()
         controller?.disConnect()
     }

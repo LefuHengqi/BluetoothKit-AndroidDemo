@@ -14,6 +14,8 @@ import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
+import com.lefu.ppblutoothkit.device.auto.SyncTimeAutoFlow
+import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBluetoothPeripheralMorreInstance
 import com.lefu.ppblutoothkit.device.morre.foodScaleDataChangeListener
 import com.lefu.ppblutoothkit.util.FileUtil
@@ -38,6 +40,15 @@ class PeripheralMorreActivity : BaseImmersivePermissionActivity() {
     var device_set_connect_state: TextView? = null
     var foodNoTv: TextView? = null
     var foodRemoteIdTv: TextView? = null
+
+    /**
+     * 连接后的自动指令流程：连接成功 -> 发现服务 -> 同步时间
+     * Morre 属于 Torre 系协议，等待 monitorMtuChange 后再下发指令。
+     */
+    private val autoFlow = SyncTimeAutoFlow.ofBoolean(
+        log = { addPrint(it) },
+        syncTime = { callback -> PPBluetoothPeripheralMorreInstance.syncTime(callback) }
+    )
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -77,9 +88,21 @@ class PeripheralMorreActivity : BaseImmersivePermissionActivity() {
                 nestedScrollViewLog.fullScroll(View.FOCUS_DOWN)
             }
         })
-        addPrint("startConnect")
         initClick()
-        deviceModel?.let { it1 -> PPBluetoothPeripheralMorreInstance.startConnect(it1, foodScaleDataChangeListener, bleStateInterface) }
+        connectDevice()
+    }
+
+    /**
+     * 进入页面即自动连接；如果设备已连接，直接执行剩下的自动指令。
+     */
+    private fun connectDevice() {
+        val model = Companion.deviceModel ?: return
+        addPrint("startConnect")
+        val alreadyConnected = isDeviceConnected(model.deviceMac)
+        PPBluetoothPeripheralMorreInstance.startConnect(model, foodScaleDataChangeListener, bleStateInterface)
+        if (alreadyConnected) {
+            autoFlow.onAlreadyConnected()
+        }
     }
 
     private fun initToolbar() {
@@ -96,7 +119,7 @@ class PeripheralMorreActivity : BaseImmersivePermissionActivity() {
     fun initClick() {
         findViewById<Button>(R.id.startConnectDevice).setOnClickListener {
             addPrint("startConnect")
-            deviceModel?.let { it1 -> PPBluetoothPeripheralMorreInstance.startConnect(it1, foodScaleDataChangeListener, bleStateInterface) }
+            connectDevice()
         }
         findViewById<Button>(R.id.syncUnit).setOnClickListener {
             addPrint("syncUnit")
@@ -145,6 +168,7 @@ class PeripheralMorreActivity : BaseImmersivePermissionActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        autoFlow.onDestroy()
         PPBluetoothPeripheralMorreInstance.disConnect()
     }
 
@@ -153,17 +177,21 @@ class PeripheralMorreActivity : BaseImmersivePermissionActivity() {
             if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnected) {
                 addPrint(getString(R.string.device_connected))
                 device_set_connect_state?.text = getString(R.string.device_connected)
+                autoFlow.onConnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateCanBeConnected) {
                 addPrint(getString(R.string.can_be_connected))
                 device_set_connect_state?.text = getString(R.string.can_be_connected)
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateConnecting) {
                 addPrint(getString(R.string.device_connecting))
                 device_set_connect_state?.text = getString(R.string.device_connecting)
+                autoFlow.onConnecting()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateDisconnected) {
                 addPrint(getString(R.string.device_disconnected))
                 device_set_connect_state?.text = getString(R.string.device_disconnected)
+                autoFlow.onDisconnected()
             } else if (ppBleWorkState == PPBleWorkState.PPBleWorkStateWritable) {
                 addPrint(getString(R.string.writable))
+                autoFlow.onReady()
             }
         }
 
@@ -175,6 +203,14 @@ class PeripheralMorreActivity : BaseImmersivePermissionActivity() {
                 addPrint(getString(R.string.system_blutooth_on))
                 Toast.makeText(this@PeripheralMorreActivity, getString(R.string.system_blutooth_on), Toast.LENGTH_SHORT).show()
             }
+        }
+
+        /**
+         * Torre 系协议的设备在 MTU 协商完成后才可以下发指令
+         */
+        override fun monitorMtuChange(deviceModel: PPDeviceModel?) {
+            addPrint("monitorMtuChange mtu:${deviceModel?.mtu}")
+            autoFlow.onReady()
         }
     }
 
