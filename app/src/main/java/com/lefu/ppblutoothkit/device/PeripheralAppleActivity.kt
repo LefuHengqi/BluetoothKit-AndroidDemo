@@ -14,21 +14,16 @@ import androidx.core.widget.NestedScrollView
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppbase.PPDeviceModel
-import com.lefu.ppbase.PPScaleDefine
-import com.lefu.ppbase.util.Logger
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
-import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
+import com.lefu.ppblutoothkit.calculate.BodyDataAutoCalculateHelper
 import com.lefu.ppblutoothkit.device.apple.BleConfigWifiActivity
 import com.lefu.ppblutoothkit.device.auto.SyncTimeAutoFlow
 import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralAppleInstance
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
-import com.lefu.ppblutoothkit.view.MsgDialog
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiAppleStateMenu
 import com.peng.ppscale.business.ble.configWifi.PPConfigWifiInfoInterface
@@ -537,34 +532,10 @@ class PeripheralAppleActivity : BaseImmersivePermissionActivity() {
                 addPrint("deviceCalculateType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
 
 
-                MsgDialog.init(supportFragmentManager)
-                    .setTitle(getString(R.string.tips))
-                    .setMessage(getString(R.string.is_body_fat_calculated))
-                    .setAnimStyle(R.style.dialog_)
-                    .setCancelableAll(true)
-                    .setNegativeButton(getString(R.string.cancel))
-                    .setPositiveButton(getString(R.string.confirm), View.OnClickListener {
-                        DataUtil.bodyBaseModel = bodyBaseModel
-                        if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect) {
-                            //4电极直流算法  24项数据
-                            val intent = Intent(this@PeripheralAppleActivity, Calculate4DCActivitiy::class.java)
-                            intent.putExtra("bodyDataModel", "bodyDataModel")
-                            startActivity(intent)
-                        } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1) {
-                            Logger.i("PeripheralAppleActivity 四电极 双频 impedance1:${DataUtil.bodyBaseModel?.impedance} impedance100EnCode:${DataUtil.bodyBaseModel?.ppImpedance100EnCode}")
-                            //4电极交流算法  24项数据
-                            val intent = Intent(this@PeripheralAppleActivity, Calculate4AC2ChannelActivitiy::class.java)
-                            intent.putExtra("bodyDataModel", "bodyDataModel")
-                            startActivity(intent)
-                        } else {
-                            //4电极交流算法  24项数据
-                            val intent = Intent(this@PeripheralAppleActivity, Calculate4ACActivitiy::class.java)
-                            intent.putExtra("bodyDataModel", "bodyDataModel")
-                            startActivity(intent)
-                        }
-
-                    })
-                    .show()
+                //测量完成后直接自动计算并进入结果页，不再弹窗
+                bodyBaseModel?.let {
+                    BodyDataAutoCalculateHelper.calculateAndOpen(this@PeripheralAppleActivity, it, deviceModel)
+                }
 
             }
 

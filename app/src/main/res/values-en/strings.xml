@@ -159,6 +159,11 @@
     <string name="current_domain_name">Current domain name</string>
     <string name="delete_wifi_config">Delete WiFi configuration</string>
     <string name="calculation_results">Calculation results</string>
+    <string name="measure_result">Measurement Result</string>
+    <string name="unit_age">years</string>
+    <string name="unit_score">pts</string>
+    <string name="no_data">No data</string>
+    <string name="calculate_fail">Calculation failed</string>
     <string name="please_input_your_domain">Domain</string>
     <string name="set_password">Set Password</string>
     <string name="refresh">Refresh</string>

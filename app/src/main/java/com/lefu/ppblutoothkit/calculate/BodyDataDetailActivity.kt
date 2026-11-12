@@ -31,6 +31,11 @@ class BodyDataDetailActivity : BaseImmersivePermissionActivity() {
         if (bodyData != null) {
             textView.text = bodyData.toString()
         }
+
+        //计算完成后直接叠加「测量结果」页；从测量结果页返回时回到当前页，不会再次打开
+        if (savedInstanceState == null && bodyData != null) {
+            startActivity(Intent(this, MeasureResultActivity::class.java))
+        }
         
         findViewById<android.view.View>(R.id.copyBodyFatInfo).setOnClickListener {
             if (bodyData != null) {

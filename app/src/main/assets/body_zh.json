@@ -425,5 +425,7 @@
   "SkeletalMuscleKg_leve3_evaluation": "骨骼肌量优秀，有较强的身体力量、耐力等。",
   "SkeletalMuscleKg_leve3_name": "优秀",
   "heart_leve2_evaluation": "心率在正常范围内，符合健康标准。",
-  "BodyHealth_leve5_evaluation": "身体状况非常良好。"
+  "BodyHealth_leve5_evaluation": "身体状况非常良好。",
+  "BodyIdealWeight_name": "理想体重",
+  "FootLen_name": "脚长"
 }

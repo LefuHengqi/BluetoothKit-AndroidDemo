@@ -425,5 +425,7 @@
   "SkeletalMuscleKg_leve3_evaluation": "Excellent skeletal muscle mass, strong physical strength, endurance, etc.",
   "SkeletalMuscleKg_leve3_name": "excellent",
   "heart_leve2_evaluation": "The heart rate is within the normal range and meets health standards.",
-  "BodyHealth_leve5_evaluation": "Very good physical condition"
+  "BodyHealth_leve5_evaluation": "Very good physical condition",
+  "BodyIdealWeight_name": "Ideal Weight",
+  "FootLen_name": "Foot Length"
 }

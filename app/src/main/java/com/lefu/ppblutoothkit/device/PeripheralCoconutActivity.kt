@@ -17,13 +17,11 @@ import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
-import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate4DCActivitiy
+import com.lefu.ppblutoothkit.calculate.BodyDataAutoCalculateHelper
 import com.lefu.ppblutoothkit.device.auto.SyncTimeAutoFlow
 import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralCoconutInstance
 import com.lefu.ppblutoothkit.util.DataUtil
-import com.lefu.ppblutoothkit.view.MsgDialog
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
@@ -277,28 +275,10 @@ class PeripheralCoconutActivity : BaseImmersivePermissionActivity() {
                 addPrint("impedance:${bodyBaseModel?.impedance}")
                 addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
 
-                MsgDialog.init(supportFragmentManager)
-                    .setTitle(getString(R.string.tips))
-                    .setMessage(getString(R.string.is_body_fat_calculated))
-                    .setAnimStyle(R.style.dialog_)
-                    .setCancelableAll(true)
-                    .setNegativeButton(getString(R.string.cancel))
-                    .setPositiveButton(getString(R.string.confirm), View.OnClickListener {
-                        DataUtil.bodyBaseModel = bodyBaseModel
-                        if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeDirect) {
-                            //4电极直流算法  24项数据
-                            val intent = Intent(this@PeripheralCoconutActivity, Calculate4DCActivitiy::class.java)
-                            intent.putExtra("bodyDataModel", "bodyDataModel")
-                            startActivity(intent)
-                        } else {
-                            //4电极交流算法  24项数据
-                            val intent = Intent(this@PeripheralCoconutActivity, Calculate4ACActivitiy::class.java)
-                            intent.putExtra("bodyDataModel", "bodyDataModel")
-                            startActivity(intent)
-                        }
-
-                    })
-                    .show()
+                //测量完成后直接自动计算并进入结果页，不再弹窗
+                bodyBaseModel?.let {
+                    BodyDataAutoCalculateHelper.calculateAndOpen(this@PeripheralCoconutActivity, it, deviceModel)
+                }
             }
         }
 

@@ -24,23 +24,19 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
-import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.util.Logger
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
-import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.calculate.BodyDataAutoCalculateHelper
 import com.lefu.ppblutoothkit.device.auto.TorreFamilyAutoFlow
 import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
-import com.lefu.ppblutoothkit.view.MsgDialog
-import com.lefu.ppcalculate.PPBodyFatModel
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
@@ -536,33 +532,10 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
                 addPrint("impedance:${bodyBaseModel?.impedance}")
                 addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
 
-                MsgDialog.init(supportFragmentManager)
-                    .setTitle(getString(R.string.tips))
-                    .setMessage(getString(R.string.is_body_fat_calculated))
-                    .setAnimStyle(R.style.dialog_)
-                    .setCancelableAll(true)
-                    .setNegativeButton(getString(R.string.cancel))
-                    .setPositiveButton(getString(R.string.confirm), View.OnClickListener() {
-                        DataUtil.bodyBaseModel = bodyBaseModel
-                        if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
-                            || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
-                        ) {
-                            //8电极交流算法  48项数据
-                            val intent = Intent(this@PeripheralDorreActivity, Calculate8Activitiy::class.java)
-                            intent.putExtra("bodyDataModel", "bodyDataModel")
-                            startActivity(intent)
-                        } else {
-                            //4电极交流算法  24项数据
-                            val intent = Intent(this@PeripheralDorreActivity, Calculate4ACActivitiy::class.java)
-                            intent.putExtra("bodyDataModel", "bodyDataModel")
-                            startActivity(intent)
-                        }
-                    })
-                    .show()
+                //测量完成后直接自动计算并进入结果页，不再弹窗
+                bodyBaseModel?.let {
+                    BodyDataAutoCalculateHelper.calculateAndOpen(this@PeripheralDorreActivity, it, deviceModel)
+                }
             }
 
         }

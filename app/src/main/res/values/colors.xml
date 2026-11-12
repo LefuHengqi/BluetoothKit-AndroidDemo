@@ -10,4 +10,9 @@
     <color name="text_blue">#FF508BDD</color>
     <color name="btn_background_normal">#B4B2B2</color>
     <color name="btn_background_light">#C9C7C7</color>
+
+    <!-- 测量结果页 -->
+    <color name="body_page_background">#F5F6F7</color>
+    <color name="body_value_text">#212121</color>
+    <color name="body_status_text">#F5A623</color>
 </resources>

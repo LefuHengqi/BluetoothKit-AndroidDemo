@@ -22,16 +22,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.lefu.ppbase.PPBodyBaseModel
 import com.lefu.ppbase.PPDeviceModel
-import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.util.Logger
 import com.lefu.ppbase.util.PPUtil
 import com.lefu.ppbase.vo.PPUnitType
 import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
-import com.lefu.ppblutoothkit.calculate.Calculate4AC2ChannelActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate4ACActivitiy
-import com.lefu.ppblutoothkit.calculate.Calculate8Activitiy
+import com.lefu.ppblutoothkit.calculate.BodyDataAutoCalculateHelper
 import com.lefu.ppblutoothkit.device.auto.TorreFamilyAutoFlow
 import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
@@ -39,7 +36,6 @@ import com.lefu.ppblutoothkit.device.torre.PeripheralTorreSearchWifiListActivity
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
-import com.lefu.ppblutoothkit.view.MsgDialog
 import com.peng.ppscale.business.ble.PPScaleHelper
 import com.peng.ppscale.business.ble.listener.PPBleSendResultCallBack
 import com.peng.ppscale.business.ble.listener.PPBleStateInterface
@@ -559,7 +555,10 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
                 addPrint("impedance100EnCode:${bodyBaseModel?.ppImpedance100EnCode}")
                 addPrint("deviceCalcuteType:${bodyBaseModel?.deviceModel?.deviceCalcuteType}")
 
-                bodyBaseModel?.let { showCalculateDialog(deviceModel, it) }
+                //测量完成后直接自动计算并进入结果页，不再弹窗
+                bodyBaseModel?.let {
+                    BodyDataAutoCalculateHelper.calculateAndOpen(this@PeripheralBorreActivity, it, deviceModel)
+                }
             }
 
         }
@@ -590,45 +589,6 @@ class PeripheralBorreActivity : BaseImmersivePermissionActivity() {
             addPrint("关机")
         }
 
-    }
-
-    private fun showCalculateDialog(deviceModel: PPDeviceModel, bodyBaseModel: PPBodyBaseModel) {
-        DataUtil.bodyBaseModel = bodyBaseModel
-        Logger.d("DataUtil.bodyBaseModel:${DataUtil.bodyBaseModel.hashCode()} bodyBaseModel:${bodyBaseModel.hashCode()}")
-        Logger.d("PeripheralBorreActivity showCalculateDialog 四电极 双频 impedance:${bodyBaseModel.impedance} impedance100EnCode:${bodyBaseModel.ppImpedance100EnCode}")
-        MsgDialog.init(supportFragmentManager)
-            .setTitle(getString(R.string.tips))
-            .setMessage(getString(R.string.is_body_fat_calculated))
-            .setAnimStyle(R.style.dialog_)
-            .setCancelableAll(true)
-            .setNegativeButton(getString(R.string.cancel))
-            .setPositiveButton(getString(R.string.confirm), View.OnClickListener() {
-                if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_0
-                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8
-                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_1
-                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_2
-                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_3
-                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_4
-                    || deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate8_5
-                ) {
-                    //8电极交流算法  48项数据
-                    val intent = Intent(this@PeripheralBorreActivity, Calculate8Activitiy::class.java)
-                    intent.putExtra("bodyDataModel", "bodyDataModel")
-                    startActivity(intent)
-                } else if (deviceModel.deviceCalcuteType == PPScaleDefine.PPDeviceCalcuteType.PPDeviceCalcuteTypeAlternate4_1) {
-                    Logger.d("PeripheralBorreActivity 四电极 双频 impedance1:${DataUtil.bodyBaseModel?.impedance} impedance100EnCode:${DataUtil.bodyBaseModel?.ppImpedance100EnCode}")
-                    //4电极交流算法  24项数据
-                    val intent = Intent(this@PeripheralBorreActivity, Calculate4AC2ChannelActivitiy::class.java)
-                    intent.putExtra("bodyDataModel", "bodyDataModel")
-                    startActivity(intent)
-                } else {
-                    //4电极交流算法  24项数据
-                    val intent = Intent(this@PeripheralBorreActivity, Calculate4ACActivitiy::class.java)
-                    intent.putExtra("bodyDataModel", "bodyDataModel")
-                    startActivity(intent)
-                }
-            })
-            .show()
     }
 
     fun addPrint(msg: String) {

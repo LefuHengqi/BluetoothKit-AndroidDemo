@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="144dp"
+    android:layout_margin="@dimen/dimens_6dp"
+    android:background="@drawable/bg_measure_result_card"
+    android:elevation="1dp"
+    android:orientation="vertical"
+    android:padding="@dimen/dimens_16dp">
+
+    <TextView
+        android:id="@+id/measureResultName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/back_font"
+        android:textSize="@dimen/text_sp14" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_10dp"
+        android:baselineAligned="true"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/measureResultValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textColor="@color/body_value_text"
+            android:textSize="@dimen/text_sp24"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/measureResultUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimens_4dp"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textColor="@color/body_value_text"
+            android:textSize="@dimen/text_sp14"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/measureResultStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/body_status_text"
+        android:textSize="@dimen/text_sp13" />
+
+</LinearLayout>
