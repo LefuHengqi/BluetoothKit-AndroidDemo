@@ -31,6 +31,7 @@ import com.lefu.ppbase.vo.PPUserModel
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.BodyDataAutoCalculateHelper
+import com.lefu.ppblutoothkit.device.history.DeviceHistoryDataActivity
 import com.lefu.ppblutoothkit.device.auto.TorreFamilyAutoFlow
 import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
@@ -42,7 +43,6 @@ import com.peng.ppscale.business.ble.listener.PPBleStateInterface
 import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
-import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
 import com.peng.ppscale.business.ble.listener.PPTorreDeviceModeChangeInterface
 import com.peng.ppscale.business.ble.listener.PPUserInfoInterface
 import com.peng.ppscale.business.ota.OnOTAStateListener
@@ -211,13 +211,10 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
                 }
             })
         }
-        findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
-            addPrint("syncUserHistoryData userID:${userModel?.userID}")
-            controller?.getTorreDeviceManager()?.syncUserHistory(userModel, userHistoryDataInterface)
-        }
-        findViewById<Button>(R.id.syncTouristHistoryData).setOnClickListener {
-            addPrint("syncTouristHistoryData username:游客")
-            controller?.getTorreDeviceManager()?.syncTouristHistory(touristHistoryDataInterface)
+        findViewById<Button>(R.id.deviceHistoryData).setOnClickListener {
+            //设备历史数据：获取用户/游客历史数据
+            addPrint("start DeviceHistoryData pager")
+            DeviceHistoryDataActivity.start(this, DeviceHistoryDataActivity.Protocol.DORRE, deviceModel, userModel)
         }
         findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
             addPrint("syncUserInfo userName:${userModel?.userName}")
@@ -807,45 +804,6 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
         override fun configWifiState(state: Int) {
             addPrint("configWifiState state:$state")
         }
-    }
-
-    val touristHistoryDataInterface = object : PPHistoryDataInterface() {
-
-        override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
-            addPrint("touristHistoryData: weight:${bodyBaseModel?.getPpWeightKg()} dateTime:$dateTime")
-        }
-
-        override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
-            addPrint("touristHistoryDataEnd")
-        }
-
-        override fun monitorHistoryFail() {
-            addPrint("touristHistoryDataFail")
-        }
-
-        /**
-         * 历史数据发生改变,目前只在Torre/Borre/Dorre设备上生效
-         */
-        override fun onHistoryChange() {
-            addPrint("There is new historical data available")
-        }
-
-    }
-
-    val userHistoryDataInterface = object : PPHistoryDataInterface() {
-
-        override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
-            addPrint("monitorHistoryData: weight:${bodyBaseModel?.getPpWeightKg()} dateTime:$dateTime")
-        }
-
-        override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
-            addPrint("monitorHistoryEnd")
-        }
-
-        override fun monitorHistoryFail() {
-            addPrint("monitorHistoryFail")
-        }
-
     }
 
     val deviceLogInterface = object : PPDeviceLogInterface {

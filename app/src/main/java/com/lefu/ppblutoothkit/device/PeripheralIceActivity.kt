@@ -20,6 +20,7 @@ import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.BodyDataAutoCalculateHelper
+import com.lefu.ppblutoothkit.device.history.DeviceHistoryDataActivity
 import com.lefu.ppblutoothkit.device.auto.SyncTimeAutoFlow
 import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralIceInstance
@@ -35,7 +36,6 @@ import com.peng.ppscale.business.ble.listener.PPDataChangeListener
 import com.peng.ppscale.business.ble.listener.PPDeviceInfoInterface
 import com.peng.ppscale.business.ble.listener.PPDeviceLogInterface
 import com.peng.ppscale.business.ble.listener.PPDeviceSetInfoInterface
-import com.peng.ppscale.business.ble.listener.PPHistoryDataInterface
 import com.peng.ppscale.business.ble.listener.PPTorreDeviceModeChangeInterface
 import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
@@ -199,41 +199,10 @@ class PeripheralIceActivity : BaseImmersivePermissionActivity() {
                 }
             })
         }
-        findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
-            addPrint("syncUserHistoryData")
-            if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType)) {
-                controller?.getHistory(object : PPHistoryDataInterface() {
-                    override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
-                        addPrint("monitorHistoryData weight: ${bodyBaseModel?.weight}" + " dateTime:$dateTime")
-                    }
-
-                    override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
-                        addPrint("monitorHistoryEnd")
-                    }
-
-                    override fun monitorHistoryFail() {
-                        addPrint("monitorHistoryFail")
-                    }
-                })
-            } else {
-                addPrint("device does not support")
-            }
-        }
-        findViewById<Button>(R.id.deleteHistory).setOnClickListener {
-            addPrint("deleteHistory")
-            if (PPScaleHelper.isSupportHistoryData(deviceModel?.deviceFuncType)) {
-                controller?.deleteHistoryData(object : PPBleSendResultCallBack {
-                    override fun onResult(sendState: PPScaleSendState?) {
-                        if (sendState == PPScaleSendState.PP_SEND_SUCCESS) {
-                            addPrint("deleteHistory success")
-                        } else {
-                            addPrint("deleteHistory fail")
-                        }
-                    }
-                })
-            } else {
-                addPrint("device does not support")
-            }
+        findViewById<Button>(R.id.deviceHistoryData).setOnClickListener {
+            //设备历史数据：获取/删除设备历史数据
+            addPrint("start DeviceHistoryData pager")
+            DeviceHistoryDataActivity.start(this, DeviceHistoryDataActivity.Protocol.ICE, deviceModel)
         }
         findViewById<Button>(R.id.startConfigWifi).setOnClickListener {
             addPrint("startConfigWifi pager")

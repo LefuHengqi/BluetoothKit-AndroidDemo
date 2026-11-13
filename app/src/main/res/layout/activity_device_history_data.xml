@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_58dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimens_10dp"
+        android:theme="@style/ToolbarTheme" />
+
+    <!-- 顶部操作按钮：Torre/Borre/Dorre 为 获取用户/游客历史数据；Apple/Ice 为 获取/删除设备历史数据 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dimens_15dp"
+        android:paddingTop="@dimen/dimens_20dp"
+        android:paddingEnd="@dimen/dimens_15dp">
+
+        <TextView
+            android:id="@+id/historyActionLeftBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimens_40dp"
+            android:layout_marginEnd="@dimen/dimens_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_history_tab_selector"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingStart="@dimen/dimens_4dp"
+            android:paddingEnd="@dimen/dimens_4dp"
+            android:textColor="#1C1C1E"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/historyActionRightBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimens_40dp"
+            android:layout_marginStart="@dimen/dimens_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_history_tab_selector"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingStart="@dimen/dimens_4dp"
+            android:paddingEnd="@dimen/dimens_4dp"
+            android:textColor="#1C1C1E"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/dimens_15dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_history_list_container"
+        android:padding="1dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyDataRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+        <!-- 空列表提示 -->
+        <TextView
+            android:id="@+id/historyEmptyTips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/dimens_2dp"
+            android:paddingStart="@dimen/dimens_15dp"
+            android:paddingEnd="@dimen/dimens_15dp"
+            android:text="@string/device_history_empty_tips"
+            android:textColor="#8E8E93"
+            android:textSize="15sp" />
+
+    </FrameLayout>
+
+</LinearLayout>

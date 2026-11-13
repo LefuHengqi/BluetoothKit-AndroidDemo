@@ -176,4 +176,21 @@
     <string name="fetch">Fetch MTU</string>
     <string name="update_ca">Update CA</string>
 
+    <!-- Device history data page -->
+    <string name="device_history_data">Device History Data</string>
+    <string name="get_user_history_data">Get User History Data</string>
+    <string name="get_tourist_history_data">Get Visitor History Data</string>
+    <string name="get_device_history_data">Get Device History Data</string>
+    <string name="delete_device_history_data">Delete Device History Data</string>
+    <string name="device_history_empty_tips">Note: When the device is disconnected from Bluetooth and has not been configured for a network, measurement data is saved locally on the device (as \"historical data\"). You can retrieve this data by calling the method for fetching historical data once the device is reconnected.</string>
+    <string name="history_item_time">Time: %s</string>
+    <string name="history_item_weight">Weight: %s kg</string>
+    <string name="history_item_member_id">Member ID:%s</string>
+    <string name="history_fetching">Fetching history data…</string>
+    <string name="history_fetch_fail">Failed to fetch history data</string>
+    <string name="history_fetch_end">Done, %d history records</string>
+    <string name="history_delete_success">Device history data deleted</string>
+    <string name="history_delete_fail">Failed to delete device history data</string>
+    <string name="history_device_not_connected">Device is not connected, please connect first</string>
+
 </resources>

@@ -124,20 +124,11 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/syncUserHistoryData"
+                    android:id="@+id/deviceHistoryData"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/history_data"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/deleteHistory"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/clear_history"
+                    android:text="@string/device_history_data"
                     android:textAllCaps="false" />
 
             </LinearLayout>

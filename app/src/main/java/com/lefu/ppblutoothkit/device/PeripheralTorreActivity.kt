@@ -32,6 +32,7 @@ import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.UserinfoActivity
 import com.lefu.ppblutoothkit.calculate.BodyDataAutoCalculateHelper
+import com.lefu.ppblutoothkit.device.history.DeviceHistoryDataActivity
 import com.lefu.ppblutoothkit.device.auto.TorreFamilyAutoFlow
 import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralTorreInstance
@@ -94,8 +95,6 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
     )
 
     var touristDatas: MutableList<PPBodyBaseModel> = ArrayList<PPBodyBaseModel>() //存放游客数据/Storing visitor data
-
-    var historyDatas: MutableList<PPBodyBaseModel> = ArrayList<PPBodyBaseModel>() //存放用户历史数据/Store user history data
 
     companion object {
         var deviceModel: PPDeviceModel? = null
@@ -204,15 +203,10 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
                 }
             })
         }
-        findViewById<Button>(R.id.syncUserHistoryData).setOnClickListener {
-            addPrint("syncUserHistoryData userID:${userModel?.userID}")
-            historyDatas.clear()
-            controller?.getTorreDeviceManager()?.syncUserHistory(userModel, userHistoryDataInterface)
-        }
-        findViewById<Button>(R.id.syncTouristHistoryData).setOnClickListener {
-            addPrint("syncTouristHistoryData username:游客")
-            touristDatas.clear()
-            controller?.getTorreDeviceManager()?.syncTouristHistory(touristHistoryDataInterface)
+        findViewById<Button>(R.id.deviceHistoryData).setOnClickListener {
+            //设备历史数据：获取用户/游客历史数据
+            addPrint("start DeviceHistoryData pager")
+            DeviceHistoryDataActivity.start(this, DeviceHistoryDataActivity.Protocol.TORRE, deviceModel, userModel)
         }
         findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
             if (PPScaleHelper.isSupportBirthday(deviceModel?.deviceSettingId)) {
@@ -870,32 +864,6 @@ class PeripheralTorreActivity : BaseImmersivePermissionActivity() {
 
         override fun monitorHistoryFail() {
             addPrint("touristHistoryDataFail")
-        }
-
-        /**
-         * 历史数据发生改变,目前只在Torre/Borre/Dorre设备上生效
-         * The historical data has changed. Currently, it is only effective on Torre/Borre/Dorre devices.
-         */
-        override fun onHistoryChange() {
-            addPrint("There is new historical data available")
-        }
-
-    }
-
-    val userHistoryDataInterface = object : PPHistoryDataInterface() {
-
-        override fun monitorHistoryData(bodyBaseModel: PPBodyBaseModel?, dateTime: String?) {
-            addPrint("monitorHistoryData: weight:${bodyBaseModel?.getPpWeightKg()} dateTime:$dateTime")
-            bodyBaseModel?.let { historyDatas.add(it) }
-        }
-
-        override fun monitorHistoryEnd(deviceModel: PPDeviceModel?) {
-            addPrint("monitorHistoryEnd")
-            addPrint("There are ${historyDatas.size} visitors' historical data")
-        }
-
-        override fun monitorHistoryFail() {
-            addPrint("monitorHistoryFail")
         }
 
         /**

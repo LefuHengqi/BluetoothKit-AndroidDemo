@@ -190,4 +190,21 @@
     <string name="fetch">获取MTU</string>
     <string name="update_ca">更新CA证书</string>
 
+    <!-- 设备历史数据页 -->
+    <string name="device_history_data">设备历史数据</string>
+    <string name="get_user_history_data">获取用户历史数据</string>
+    <string name="get_tourist_history_data">获取游客历史数据</string>
+    <string name="get_device_history_data">获取设备历史数据</string>
+    <string name="delete_device_history_data">删除设备历史数据</string>
+    <string name="device_history_empty_tips">说明：设备在断开蓝牙连接，并且无配网情况下，上称测量的数据才会保存在设备中(历史数据)，再次连接设备时，调用获取历史数据方法即可获取设备中的历史数据。</string>
+    <string name="history_item_time">时间：%s</string>
+    <string name="history_item_weight">体重：%s kg</string>
+    <string name="history_item_member_id">Member ID:%s</string>
+    <string name="history_fetching">正在获取历史数据…</string>
+    <string name="history_fetch_fail">获取历史数据失败</string>
+    <string name="history_fetch_end">获取完成，共%d条历史数据</string>
+    <string name="history_delete_success">删除设备历史数据成功</string>
+    <string name="history_delete_fail">删除设备历史数据失败</string>
+    <string name="history_device_not_connected">设备未连接，请先连接设备</string>
+
 </resources>
