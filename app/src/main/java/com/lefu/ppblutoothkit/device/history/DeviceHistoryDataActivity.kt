@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lefu.ppbase.PPBodyBaseModel
@@ -98,6 +100,9 @@ class DeviceHistoryDataActivity : BaseImmersivePermissionActivity() {
         // 初始化Toolbar
         initToolbar()
 
+        // 处理底部导航栏（三键/手势条）的WindowInsets，避免列表被遮挡
+        setupBottomInsets()
+
         protocol = runCatching { Protocol.valueOf(intent.getStringExtra(EXTRA_PROTOCOL) ?: "") }.getOrNull() ?: run {
             finish()
             return
@@ -124,6 +129,16 @@ class DeviceHistoryDataActivity : BaseImmersivePermissionActivity() {
             title = getString(R.string.device_history_data),
             showBackButton = true
         )
+    }
+
+    private fun setupBottomInsets() {
+        val rootLayout = findViewById<View>(R.id.root_layout)
+        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // 只设置底部内边距，顶部由Toolbar处理
+            view.setPadding(view.paddingLeft, 0, view.paddingRight, systemBars.bottom)
+            insets
+        }
     }
 
     private fun initActions() {
