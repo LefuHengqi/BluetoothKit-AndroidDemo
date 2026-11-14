@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
@@ -25,6 +26,7 @@ class BleConfigWifiActivity : BaseImmersivePermissionActivity() {
     var RET_CODE_SYSTEM_WIFI_SETTINGS = 8161
     private var etWifiName: EditText? = null
     var etWifiKey: EditText? = null
+    var etDomain: EditText? = null
     var mWifiUtil: WifiUtil? = null
     private var is2_4G = false //2.4G false    非2.4G true
     private var spHintTimer: Timer? = null
@@ -78,6 +80,12 @@ class BleConfigWifiActivity : BaseImmersivePermissionActivity() {
         etWifiName = findViewById(R.id.etWifiName)
         etWifiKey = findViewById(R.id.etWifiKey)
         snTv = findViewById(R.id.snTv)
+        etDomain = findViewById(R.id.etDomain)
+        etDomain?.setText(NetUtil.getScaleDomain())
+        findViewById<View>(R.id.tvQueryDomain)?.setOnClickListener {
+            confiWifiStateTV?.text = ""
+            PPBlutoothPeripheralAppleInstance.instance.controller?.getDeviceDomain(configWifiInfoInterface)
+        }
         if (etWifiName != null) {
             etWifiName!!.setText("")
             etWifiName!!.keyListener = null
@@ -98,6 +106,22 @@ class BleConfigWifiActivity : BaseImmersivePermissionActivity() {
     }
 
     private fun startNextStep() {
+        //域名与进入页面时不一致，先二次确认，防止误改导致设备无法上报数据
+        val oldDomain = NetUtil.getScaleDomain().orEmpty()
+        val newDomain = etDomain?.text?.toString()?.trim().orEmpty()
+        if (newDomain.isNotEmpty() && newDomain != oldDomain) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.wifi_config_domain_confirm_title)
+                .setMessage(getString(R.string.wifi_config_domain_confirm_msg, oldDomain, newDomain))
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.confirm) { _, _ -> doNextStep() }
+                .show()
+        } else {
+            doNextStep()
+        }
+    }
+
+    private fun doNextStep() {
         tvNext!!.isEnabled = false
         snTv!!.text = ""
         sendModifyServerDomain()
@@ -119,8 +143,10 @@ class BleConfigWifiActivity : BaseImmersivePermissionActivity() {
      */
     private fun sendModifyServerDomain() {
         Handler().postDelayed({
-            var scaleDomain = NetUtil.getScaleDomain()
+            val scaleDomain = etDomain?.text?.toString()?.trim().orEmpty()
             if (!TextUtils.isEmpty(scaleDomain)) {
+                //同步更新App侧的域名，保证设备详情页显示及下次进入本页预填的是同一个域名
+                NetUtil.setScaleDomain(scaleDomain)
                 PPBlutoothPeripheralAppleInstance.instance.controller?.sendModifyServerDomain(scaleDomain, configWifiInfoInterface)
             } else {
                 startConfigWifi()

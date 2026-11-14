@@ -127,6 +127,13 @@
     <string name="wifi_config_other">Change other Wi-Fi</string>
     <string name="select_device_type_next">Next</string>
     <string name="wifi_config_disconnected">The network is disconnected</string>
+    <string name="wifi_config_domain_hint">Enter device server domain</string>
+    <string name="wifi_config_query_domain">Read current device domain</string>
+    <string name="wifi_config_device_domain">Current device domain: %1$s</string>
+    <string name="wifi_config_domain_label">Device server domain</string>
+    <string name="wifi_config_domain_warning">The device reports measurement data through this domain. Do not change it unless necessary; a wrong value will stop the device from reporting data after Wi-Fi setup</string>
+    <string name="wifi_config_domain_confirm_title">Confirm domain change</string>
+    <string name="wifi_config_domain_confirm_msg">The domain will change from\n%1$s\nto\n%2$s\n\nMake sure the new domain is correct, otherwise the device will not be able to report data after Wi-Fi setup.</string>
     <string name="scan_time_out">scan timeout</string>
     <string name="scan_cancle">cancel scanning </string>
     <string name="data_list">data list</string>

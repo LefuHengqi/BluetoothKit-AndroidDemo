@@ -64,6 +64,13 @@ val BleConfigWifiActivity.configWifiInfoInterface: PPConfigWifiInfoInterface
             startConfigWifi()
         }
 
+        override fun getDeviceDomainSuccess(domain: String?) {
+            Logger.d("getDeviceDomainSuccess domain:$domain")
+            runOnUiThread {
+                addPrint(getString(R.string.wifi_config_device_domain, domain ?: ""))
+            }
+        }
+
         override fun monitorConfigFail(stateMenu: PPConfigWifiAppleStateMenu?) {
             when (stateMenu) {
                 PPConfigWifiAppleStateMenu.CONFIG_STATE_LOW_BATTERY_LEVEL -> {

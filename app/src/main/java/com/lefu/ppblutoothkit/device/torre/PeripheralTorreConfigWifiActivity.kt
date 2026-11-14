@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
@@ -30,6 +31,7 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
     var ivShowPassword: ImageView? = null
 
     var etWifiKey: EditText? = null
+    var etDomain: EditText? = null
 
     private var isPasswordVisible = false
 
@@ -51,6 +53,8 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
         findViewById<TextView>(R.id.etWifiName)?.text = ssid
         etWifiKey = findViewById<EditText>(R.id.etWifiKey)
         ivShowPassword = findViewById<ImageView>(R.id.ivShowPassword)
+        etDomain = findViewById<EditText>(R.id.etDomain)
+        etDomain?.setText(NetUtil.getScaleDomain())
 
         configResultTV = findViewById<TextView>(R.id.configResultTV)
 
@@ -71,61 +75,83 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
 
         val tvNext = findViewById<Button>(R.id.tvNext);
         tvNext.setOnClickListener {
-            var pwd = ""
-            if (etWifiKey?.text != null) {
-                pwd = etWifiKey?.text.toString()
-            }
             //注意：域名在您自己的App中需要换成你App自己的服务器域名，并确保服务器已完成Wifi体脂秤相关功能开发，
             //https://uniquehealth.lefuenergy.com/unique-open-web/#/document
             //找到"乐福体脂秤自建服务器接入方案"-> PeripheralIce/PeripheralTorre 对应"Torre系列产品"
 //            val domainName = "http://nat.lefuenergy.com:10082"
-            val domainName = NetUtil.getScaleDomain()
 //            val domainName = "http://test-mirrorapi.ruleye.com"
-            addLog(getString(R.string.start_config_net))
-            tvNext.visibility = View.GONE
-            if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {
-                if (PPBlutoothPeripheralIceInstance.instance.controller?.connectState() == false) {
-                    addLog("Device not connected")
-                    return@setOnClickListener
-                }
-                var mDomain = domainName
-                if (mDomain.contains("http://")) {
-                    mDomain = domainName.replace("http://", "")
-                } else if (mDomain.contains("https://")) {
-                    mDomain = domainName.replace("https://", "")
-                }
-                addLog("configwifi domainName: $mDomain")
-                PPBlutoothPeripheralIceInstance.instance.controller?.sendModifyServerDomain(mDomain, configWifiInfoInterface)
-            } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
-                if (PPBlutoothPeripheralTorreInstance.instance.controller?.connectState() == false) {
-                    addLog("Device not connected")
-                    return@setOnClickListener
-                }
-                addLog("configwifi domainName: $domainName")
-                addLog("configwifi ssid: $ssid")
-                addLog("configwifi pwd: $pwd")
-                PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
-            } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre) {
-                if (PPBlutoothPeripheralBorreInstance.instance.controller?.connectState() == false) {
-                    addLog("Device not connected")
-                    return@setOnClickListener
-                }
-                addLog("configwifi domainName: $domainName")
-                addLog("configwifi ssid: $ssid")
-                addLog("configwifi pwd: $pwd")
-                PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
-            } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre) {
-                if (PPBlutoothPeripheralDorreInstance.instance.controller?.connectState() == false) {
-                    addLog("Device not connected")
-                    return@setOnClickListener
-                }
-                addLog("configwifi domainName: $domainName")
-                addLog("configwifi ssid: $ssid")
-                addLog("configwifi pwd: $pwd")
-                PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
-            } else {
-                addLog("Unsupported device type")
+            val domainName = etDomain?.text?.toString()?.trim().orEmpty()
+            if (domainName.isEmpty()) {
+                addLog(getString(R.string.wifi_config_domain_hint))
+                return@setOnClickListener
             }
+            //域名与进入页面时不一致，先二次确认，防止误改导致设备无法上报数据
+            val oldDomain = NetUtil.getScaleDomain().orEmpty()
+            if (domainName != oldDomain) {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.wifi_config_domain_confirm_title)
+                    .setMessage(getString(R.string.wifi_config_domain_confirm_msg, oldDomain, domainName))
+                    .setNegativeButton(R.string.cancel, null)
+                    .setPositiveButton(R.string.confirm) { _, _ -> startConfig(tvNext, domainName) }
+                    .show()
+            } else {
+                startConfig(tvNext, domainName)
+            }
+        }
+
+    }
+
+    private fun startConfig(tvNext: Button, domainName: String) {
+        var pwd = ""
+        if (etWifiKey?.text != null) {
+            pwd = etWifiKey?.text.toString()
+        }
+        //同步更新App侧保存的域名，保证设备详情页显示及下次进入本页预填的是同一个域名
+        NetUtil.setScaleDomain(domainName)
+        addLog(getString(R.string.start_config_net))
+        tvNext.visibility = View.GONE
+        if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralIce) {
+            if (PPBlutoothPeripheralIceInstance.instance.controller?.connectState() == false) {
+                addLog("Device not connected")
+                return
+            }
+            var mDomain = domainName
+            if (mDomain.contains("http://")) {
+                mDomain = domainName.replace("http://", "")
+            } else if (mDomain.contains("https://")) {
+                mDomain = domainName.replace("https://", "")
+            }
+            addLog("configwifi domainName: $mDomain")
+            PPBlutoothPeripheralIceInstance.instance.controller?.sendModifyServerDomain(mDomain, configWifiInfoInterface)
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralTorre) {
+            if (PPBlutoothPeripheralTorreInstance.instance.controller?.connectState() == false) {
+                addLog("Device not connected")
+                return
+            }
+            addLog("configwifi domainName: $domainName")
+            addLog("configwifi ssid: $ssid")
+            addLog("configwifi pwd: $pwd")
+            PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre) {
+            if (PPBlutoothPeripheralBorreInstance.instance.controller?.connectState() == false) {
+                addLog("Device not connected")
+                return
+            }
+            addLog("configwifi domainName: $domainName")
+            addLog("configwifi ssid: $ssid")
+            addLog("configwifi pwd: $pwd")
+            PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
+        } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre) {
+            if (PPBlutoothPeripheralDorreInstance.instance.controller?.connectState() == false) {
+                addLog("Device not connected")
+                return
+            }
+            addLog("configwifi domainName: $domainName")
+            addLog("configwifi ssid: $ssid")
+            addLog("configwifi pwd: $pwd")
+            PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
+        } else {
+            addLog("Unsupported device type")
         }
 
     }

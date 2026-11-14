@@ -142,6 +142,13 @@
     <string name="wifi_config_other">Change other Wi-Fi</string>
     <string name="select_device_type_next">下一步</string>
     <string name="wifi_config_disconnected">The network is disconnected</string>
+    <string name="wifi_config_domain_hint">请输入设备服务器域名</string>
+    <string name="wifi_config_query_domain">读取设备当前域名</string>
+    <string name="wifi_config_device_domain">设备当前域名：%1$s</string>
+    <string name="wifi_config_domain_label">设备服务器域名</string>
+    <string name="wifi_config_domain_warning">设备通过该域名上报测量数据，非必要请勿修改；填写错误将导致配网后设备无法上报数据</string>
+    <string name="wifi_config_domain_confirm_title">确认修改域名</string>
+    <string name="wifi_config_domain_confirm_msg">域名将由\n%1$s\n修改为\n%2$s\n\n请确认新域名正确，否则设备配网后将无法上报数据。</string>
     <string name="scan_time_out">扫描超时</string>
     <string name="scan_cancle">取消扫描</string>
     <string name="data_list">数据列表</string>
