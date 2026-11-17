@@ -200,4 +200,39 @@
     <string name="history_delete_fail">Failed to delete device history data</string>
     <string name="history_device_not_connected">Device is not connected, please connect first</string>
 
+    <!-- Device user management -->
+    <string name="device_user_manage">Device User Management</string>
+    <string name="device_user_manage_tips_user">The device is configured to support up to %1$d UserIds, and each UserId can be associated with %2$d memberIds. If the configuration is incorrect, please contact our sales to confirm the maximum number of users of this device.</string>
+    <string name="device_user_manage_tips_member">The device is configured to support up to %1$d members. If the configuration is incorrect, please contact our sales to confirm the maximum number of users of this device.</string>
+    <string name="device_user_item_id">User ID:%1$s</string>
+    <string name="device_user_delete">Delete</string>
+    <string name="device_user_sync">Sync User</string>
+    <string name="device_user_clear">Clear Users</string>
+    <string name="device_user_empty_tips">No users on the device</string>
+    <string name="device_user_busy">The previous operation is in progress, please wait</string>
+    <string name="device_user_timeout">Operation timed out, please try again</string>
+    <string name="device_user_fetching">Fetching user list…</string>
+    <string name="device_user_fetch_end">%1$d users found</string>
+    <string name="device_user_delete_confirm">All members under UserId \"%1$s\" will be deleted. Are you sure?</string>
+    <string name="device_user_delete_success">User deleted</string>
+    <string name="device_user_delete_fail">Failed to delete user</string>
+    <string name="device_user_clear_confirm">All users on the scale (all accounts) will be cleared. Are you sure?</string>
+    <string name="device_user_clear_success">Users cleared</string>
+    <string name="device_user_clear_fail">Failed to clear users</string>
+    <string name="device_user_sync_all_exist">All preset test users are already on the device</string>
+    <string name="device_user_sync_success">User synced</string>
+    <string name="device_user_sync_fail">Failed to sync user</string>
+    <string name="device_user_sync_selecting">Sync failed, the scale is selecting a user</string>
+    <string name="device_user_sync_need_name">Synced, nickname font data needs to be synced</string>
+    <string name="device_user_sync_storage_full">Sync failed, the scale is full</string>
+    <string name="device_user_sync_invalid_data">Sync failed, data length mismatch</string>
+
+    <!-- Member management (Borre/Dorre) -->
+    <string name="device_member_manage">Member Management</string>
+    <string name="device_member_manage_tips">The device is configured to support up to %1$d members (memberId). If the configuration is incorrect, please contact our sales to confirm the maximum number of members supported by this device.</string>
+    <string name="device_member_empty_tips">Note: some devices do not support the command to get the member list. If no member list can be obtained from the device after a user is synced successfully, the device most likely does not support this command. For such devices, it is recommended to manage device members in the cloud.</string>
+    <string name="device_member_item_member_id">Member ID:%1$s</string>
+    <string name="device_member_item_name">Name:%1$s</string>
+    <string name="device_member_delete_confirm">Member \"%2$s\" under UserId \"%1$s\" will be deleted. Are you sure?</string>
+
 </resources>

@@ -134,47 +134,6 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/device_set_sync_userinfo"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/sync_all_user_info"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/deleteAllUserinfo"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/delete_all_user_info"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/deleteUserinfo"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="删除单个用户"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/device_set_get_userinfo_list"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/get_user_list"
-                    android:textAllCaps="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
                     android:id="@+id/getUnit"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -275,12 +234,12 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/device_set_clearUser"
+                    android:id="@+id/deviceUserManage"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/clear_user_info"
+                    android:text="@string/device_user_manage"
                     android:textAllCaps="false" />
 
             </LinearLayout>

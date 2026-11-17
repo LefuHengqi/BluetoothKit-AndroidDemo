@@ -103,15 +103,6 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/device_set_clearUser"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/clear_user_info"
-                    android:textAllCaps="false" />
-
-                <Button
                     android:id="@+id/syncTime"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -126,20 +117,12 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/device_set_sync_userinfo"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/sync_all_user_info"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/deleteUserinfo"
+                    android:id="@+id/deviceMemberManage"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/delete_all_user_info"
+                    android:text="@string/device_member_manage"
                     android:textAllCaps="false" />
 
                 <Button
@@ -149,15 +132,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/confirm_current_user"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/device_set_get_userinfo_list"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/get_user_list"
                     android:textAllCaps="false" />
 
             </LinearLayout>

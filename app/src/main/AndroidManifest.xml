@@ -69,6 +69,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Immersive" />
         <activity
+            android:name="com.lefu.ppblutoothkit.device.usermanage.DeviceUserManageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Immersive" />
+        <activity
+            android:name="com.lefu.ppblutoothkit.device.usermanage.DeviceMemberManageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Immersive" />
+        <activity
             android:name="com.lefu.ppblutoothkit.devicelist.ScanDeviceListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Immersive" />

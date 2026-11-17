@@ -214,4 +214,39 @@
     <string name="history_delete_fail">删除设备历史数据失败</string>
     <string name="history_device_not_connected">设备未连接，请先连接设备</string>
 
+    <!-- 设备用户管理 -->
+    <string name="device_user_manage">设备用户管理</string>
+    <string name="device_user_manage_tips_user">设备配置最大支持%1$d个UserId，每个UserId支持关联%2$d个memberId。如果配置不正确，请联系我们的销售确认该设备最大用户数。</string>
+    <string name="device_user_manage_tips_member">设备配置最大支持绑定%1$d个成员。如果配置不正确，请联系我们的销售确认该设备最大用户数。</string>
+    <string name="device_user_item_id">User ID:%1$s</string>
+    <string name="device_user_delete">删除</string>
+    <string name="device_user_sync">同步用户</string>
+    <string name="device_user_clear">清空用户</string>
+    <string name="device_user_empty_tips">设备中暂无用户</string>
+    <string name="device_user_busy">正在执行上一个操作，请稍候</string>
+    <string name="device_user_timeout">操作超时，请重试</string>
+    <string name="device_user_fetching">正在获取用户列表…</string>
+    <string name="device_user_fetch_end">获取到%1$d个用户</string>
+    <string name="device_user_delete_confirm">将删除UserId“%1$s”下的所有成员，确定删除吗？</string>
+    <string name="device_user_delete_success">删除用户成功</string>
+    <string name="device_user_delete_fail">删除用户失败</string>
+    <string name="device_user_clear_confirm">将清空整台秤上的所有用户（不区分账号），确定清空吗？</string>
+    <string name="device_user_clear_success">清空用户成功</string>
+    <string name="device_user_clear_fail">清空用户失败</string>
+    <string name="device_user_sync_all_exist">预设测试用户都已同步到设备</string>
+    <string name="device_user_sync_success">同步用户成功</string>
+    <string name="device_user_sync_fail">同步用户失败</string>
+    <string name="device_user_sync_selecting">同步失败，称端正在选择用户</string>
+    <string name="device_user_sync_need_name">同步成功，需要同步昵称字模数据</string>
+    <string name="device_user_sync_storage_full">同步失败，称端用户已存满</string>
+    <string name="device_user_sync_invalid_data">同步失败，数据长度不匹配</string>
+
+    <!-- 成员管理（Borre/Dorre） -->
+    <string name="device_member_manage">成员管理</string>
+    <string name="device_member_manage_tips">设备配置最大支持%1$d个成员 (memberId)。如果配置不正确，请联系我们的销售确认该设备支持的最大成员数。</string>
+    <string name="device_member_empty_tips">注意：部分设备不支持获取成员列表指令，如果同步用户成功后，无法从设备获取到成员列表，很可能是设备不支持该指令。对于这类设备建议使用云端管理设备成员。</string>
+    <string name="device_member_item_member_id">Member ID:%1$s</string>
+    <string name="device_member_item_name">Name:%1$s</string>
+    <string name="device_member_delete_confirm">将删除UserId“%1$s”下的成员“%2$s”，确定删除吗？</string>
+
 </resources>

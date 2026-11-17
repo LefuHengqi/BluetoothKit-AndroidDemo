@@ -3,10 +3,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- 统一的Toolbar -->
+    <include layout="@layout/layout_unified_toolbar" />
+
     <LinearLayout
         android:id="@+id/inputContentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_10dp"
         android:orientation="vertical">
 
         <LinearLayout

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F7"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_58dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimens_10dp"
+        android:theme="@style/ToolbarTheme" />
+
+    <!-- 顶部提示：设备配置的最大用户数 -->
+    <TextView
+        android:id="@+id/userManageTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="@dimen/dimens_2dp"
+        android:paddingStart="@dimen/dimens_15dp"
+        android:paddingTop="@dimen/dimens_15dp"
+        android:paddingEnd="@dimen/dimens_15dp"
+        android:paddingBottom="@dimen/dimens_5dp"
+        android:textColor="#8E8E93"
+        android:textSize="15sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userListRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/dimens_12dp"
+            android:paddingTop="@dimen/dimens_5dp"
+            android:paddingEnd="@dimen/dimens_12dp"
+            android:paddingBottom="@dimen/dimens_10dp" />
+
+        <!-- 空列表提示 -->
+        <TextView
+            android:id="@+id/userEmptyTips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingStart="@dimen/dimens_15dp"
+            android:paddingEnd="@dimen/dimens_15dp"
+            android:text="@string/device_user_empty_tips"
+            android:textColor="#8E8E93"
+            android:textSize="15sp" />
+
+    </FrameLayout>
+
+    <!-- 底部按钮：同步用户 / 清空用户 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dimens_12dp"
+        android:paddingTop="@dimen/dimens_10dp"
+        android:paddingEnd="@dimen/dimens_12dp"
+        android:paddingBottom="@dimen/dimens_15dp">
+
+        <TextView
+            android:id="@+id/syncUserBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimens_44dp"
+            android:layout_marginEnd="@dimen/dimens_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_user_sync_btn"
+            android:gravity="center"
+            android:text="@string/device_user_sync"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/clearUserBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimens_44dp"
+            android:layout_marginStart="@dimen/dimens_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_user_clear_btn"
+            android:gravity="center"
+            android:text="@string/device_user_clear"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -35,6 +35,7 @@ import com.lefu.ppblutoothkit.device.history.DeviceHistoryDataActivity
 import com.lefu.ppblutoothkit.device.auto.TorreFamilyAutoFlow
 import com.lefu.ppblutoothkit.device.auto.isDeviceConnected
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralDorreInstance
+import com.lefu.ppblutoothkit.device.usermanage.DeviceMemberManageActivity
 import com.lefu.ppblutoothkit.okhttp.NetUtil
 import com.lefu.ppblutoothkit.util.DataUtil
 import com.lefu.ppblutoothkit.util.FileUtil
@@ -49,7 +50,6 @@ import com.peng.ppscale.business.ota.OnOTAStateListener
 import com.peng.ppscale.business.state.PPBleSwitchState
 import com.peng.ppscale.business.state.PPBleWorkState
 import com.peng.ppscale.business.torre.listener.OnDFUStateListener
-import com.peng.ppscale.business.torre.listener.PPClearDataInterface
 import com.peng.ppscale.business.torre.listener.PPTorreConfigWifiInterface
 import com.peng.ppscale.device.PeripheralDorre.PPBlutoothPeripheralDorreController
 import com.lefu.ppblutoothkit.databinding.PeripheralDorreLayoutBinding
@@ -214,31 +214,17 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
         findViewById<Button>(R.id.deviceHistoryData).setOnClickListener {
             //设备历史数据：获取用户/游客历史数据
             addPrint("start DeviceHistoryData pager")
-            DeviceHistoryDataActivity.start(this, DeviceHistoryDataActivity.Protocol.DORRE, deviceModel, userModel)
+            DeviceHistoryDataActivity.start(this, DeviceHistoryDataActivity.Protocol.DORRE, deviceModel)
         }
-        findViewById<Button>(R.id.device_set_sync_userinfo).setOnClickListener {
-            addPrint("syncUserInfo userName:${userModel?.userName}")
-            userModel?.let { user ->
-                controller?.getTorreDeviceManager()?.syncUserInfo(user, userInfoInterface)
-            }
-        }
-        findViewById<Button>(R.id.deleteUserinfo).setOnClickListener {
-            //根据userID去删除该userId下的所有子成员
-            addPrint("deleteAllUserInfo userID:${userModel?.userID}")
-            userModel?.let { user ->
-                controller?.getTorreDeviceManager()?.deleteAllUserInfo(user, userInfoInterface)
-            }
-            //删除单个用户,根据memberID去删除
-//            controller?.getTorreDeviceManager()?.deleteUserInfo(userModel, userInfoInterface)
+        findViewById<Button>(R.id.deviceMemberManage).setOnClickListener {
+            //成员管理：获取成员列表、同步用户、删除成员、清空用户
+            addPrint("start DeviceMemberManage pager")
+            DeviceMemberManageActivity.start(this, DeviceMemberManageActivity.Protocol.DORRE, deviceModel)
         }
         findViewById<Button>(R.id.device_set_confirm_current_userinfo).setOnClickListener {
             //下发当前称重用户
             addPrint("confirmCurrentUser userName:${userModel?.userName}")
             controller?.getTorreDeviceManager()?.confirmCurrentUser(userModel, userInfoInterface)
-        }
-        findViewById<Button>(R.id.device_set_get_userinfo_list).setOnClickListener {
-            addPrint("getUserList")
-            controller?.getTorreDeviceManager()?.getUserList(userInfoInterface)
         }
         findViewById<Button>(R.id.startKeepAlive).setOnClickListener {
             addPrint("startKeepAlive")
@@ -394,10 +380,6 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
             controller?.getTorreDeviceManager()?.demoModeSwitch(1, if (isChecked) 1 else 0, modeChangeInterface)
         }
 
-        findViewById<Button>(R.id.device_set_clearUser).setOnClickListener {
-            addPrint("clear Device User Info")
-            controller?.getTorreDeviceManager()?.clearDeviceUserInfo(clearDataInterface)
-        }
         findViewById<Button>(R.id.device_set_reset).setOnClickListener {
             addPrint("resetDevice")
             controller?.getTorreDeviceManager()?.resetDevice(deviceSetInterface)
@@ -572,17 +554,6 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
         }
     }
 
-    val clearDataInterface = object : PPClearDataInterface {
-        override fun onClearSuccess() {
-            addPrint("onClearSuccess")
-        }
-
-        override fun onClearFail() {
-            addPrint("onClearFail")
-        }
-
-    }
-
     val modeChangeInterface = object : PPTorreDeviceModeChangeInterface {
 
         override fun onReadDeviceInfo(deviceModel: PPDeviceModel?) {
@@ -741,34 +712,10 @@ class PeripheralDorreActivity : BaseImmersivePermissionActivity() {
 
     }
 
+    /**
+     * 确认当前用户回调；获取列表/同步/删除/清空用户已移到 [DeviceMemberManageActivity]
+     */
     val userInfoInterface = object : PPUserInfoInterface {
-
-        override fun getUserListByUserModelSuccess(userList: MutableList<PPUserModel>?) {
-            if (userList.isNullOrEmpty().not()) {
-                userList?.forEach {
-                    addPrint("uid:${it.userID} \nmemberId:${it.memberID} \nheight:${it.userHeight} age:${it.age} sex:${it.sex} weight:${it.weightKg}")
-                }
-            } else {
-                addPrint("getUserListSuccess user list is null")
-            }
-        }
-
-        override fun syncUserInfoSuccess() {
-            addPrint("syncUserInfoSuccess")
-        }
-
-        override fun syncUserInfoFail() {
-            addPrint("syncUserInfoFail")
-        }
-
-        override fun deleteUserInfoSuccess(userModel: PPUserModel?) {
-            //这里自行根据调用的方法去判断是删除的所有用户还是删除的单个用户
-            addPrint("deleteUserInfoSuccess userID:${userModel?.userID} userName:${userModel?.userName}")
-        }
-
-        override fun deleteUserInfoFail(userModel: PPUserModel?) {
-            addPrint("deleteUserInfoFail userID:${userModel?.userID} userName:${userModel?.userName}")
-        }
 
         override fun confirmCurrentUserInfoSuccess() {
             addPrint("confirmCurrentUserInfoSuccess")
