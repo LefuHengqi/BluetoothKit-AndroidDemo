@@ -84,7 +84,8 @@ afterEvaluate {
         repositories {
             maven {
                 // 指定绝对路径到项目根目录下的maven文件夹
-                url = uri("${rootProject.projectDir}/maven")
+                // 可通过 -PPUBLISH_REPO_DIR=<路径> 发布到其他目录（如远程 Maven 仓库 PPBaseKit-Android 的本地克隆）
+                url = uri(project.findProperty("PUBLISH_REPO_DIR") ?: "${rootProject.projectDir}/maven")
             }
         }
     }
