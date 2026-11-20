@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import com.lefu.ppbase.PPDeviceModel
 import com.lefu.ppbase.PPScaleDefine
 import com.lefu.ppbase.util.Logger
+import com.lefu.ppbase.vo.PPWifiInputModel
 import com.lefu.ppblutoothkit.BaseImmersivePermissionActivity
 import com.lefu.ppblutoothkit.R
 import com.lefu.ppblutoothkit.device.instance.PPBlutoothPeripheralBorreInstance
@@ -132,6 +133,14 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
             addLog("configwifi ssid: $ssid")
             addLog("configwifi pwd: $pwd")
             PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
+//            PPBlutoothPeripheralTorreInstance.instance.controller?.getTorreDeviceManager()?.dataConfigNetWork(
+//                PPWifiInputModel(
+//                    ssid = ssid,
+//                    wifiPassword = pwd,
+//                    domain = domainName
+//                ),
+//                configWifiInterface
+//            )
         } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralBorre) {
             if (PPBlutoothPeripheralBorreInstance.instance.controller?.connectState() == false) {
                 addLog("Device not connected")
@@ -141,6 +150,14 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
             addLog("configwifi ssid: $ssid")
             addLog("configwifi pwd: $pwd")
             PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
+//            PPBlutoothPeripheralBorreInstance.instance.controller?.getTorreDeviceManager()?.dataConfigNetWork(
+//                PPWifiInputModel(
+//                    ssid = ssid,
+//                    wifiPassword = pwd,
+//                    domain = domainName
+//                ),
+//                configWifiInterface
+//            )
         } else if (deviceModel?.getDevicePeripheralType() == PPScaleDefine.PPDevicePeripheralType.PeripheralDorre) {
             if (PPBlutoothPeripheralDorreInstance.instance.controller?.connectState() == false) {
                 addLog("Device not connected")
@@ -150,6 +167,14 @@ class PeripheralTorreConfigWifiActivity : BaseImmersivePermissionActivity() {
             addLog("configwifi ssid: $ssid")
             addLog("configwifi pwd: $pwd")
             PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()?.configWifi(domainName, ssid, pwd, configWifiInterface)
+//            PPBlutoothPeripheralDorreInstance.instance.controller?.getTorreDeviceManager()?.dataConfigNetWork(
+//                PPWifiInputModel(
+//                    ssid = ssid,
+//                    wifiPassword = pwd,
+//                    domain = domainName
+//                ),
+//                configWifiInterface
+//            )
         } else {
             addLog("Unsupported device type")
         }

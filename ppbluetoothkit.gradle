@@ -76,6 +76,9 @@ dependencies {
 //    api project(":ppsdkkit:lefulib:bluetoothkit")
     compileOnly(project(":ppsdkkit:ppbasekit"))
 
+    // 纯 JVM 单元测试（TorreDataConfigCodec 字节序列验证）；test 作用域不泄漏到发布 POM
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation project(":ppsdkkit:ppbasekit")
 }
 
 
